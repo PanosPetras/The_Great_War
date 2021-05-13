@@ -1,0 +1,62 @@
+Consumer goods
+Canning factory
+Liquor Distillery
+Automobile factory
+Shipyard
+Lumber Mill
+Cement factory
+Clothes
+Radio factory
+Telephone factory
+Glass factory
+Paper Mill
+Furniture factory
+Fuel Refinery
+
+War equipment
+Ammunition
+Plane
+Explosives
+Small arms
+Artillery
+Tank
+Airship
+
+Industrial equipment
+Machine parts
+Electric gear
+
+
+State Resources
+Coal
+Oil
+Timber
+Rubber
+Cotton
+Iron
+Grain
+Fruit
+
+Goods
+Electric gear
+Machine parts
+Glass
+Lumber
+Cement
+Ammunition
+Planes
+Explosives
+Small arms
+Artillery
+Tanks
+Canned food
+Furniture
+Clothes
+Automobiles
+Merchant ship
+Radios
+Telephones
+Fuel
+Paper
+Liquor
+Airship

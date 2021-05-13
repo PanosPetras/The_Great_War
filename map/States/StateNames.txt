@@ -1,0 +1,2703 @@
+Sitka
+Yakutat
+Kenai
+Dutch Harbor
+Unalakleet
+Whitehorse
+Dawson
+Ross River
+Fort Simpson
+Inuvik
+Echo Bay
+Reliance
+Vancouver
+Vancouver Island
+Prince Rupert
+Glenora
+Atlin
+Fort Saint John
+Prince George
+Kelowna
+Vernon
+Edmonton
+Athabaska Landing
+Jasper
+Banff
+Calgary
+Denwood
+Fort MacLeod
+Medicine Hat
+Regina
+Stanley
+Prince Albert
+Asquith
+Saskatoon
+Maple Creek
+Winnipeg
+Churchill
+Indian Lakes
+Norway House
+Dauphin
+Brandon
+Pembina
+Arviat
+Echo Bay
+Baffin Island
+Toronto
+Fort Severn
+Fort Albany
+Dryden
+Thunder Bay
+Sault Ste Marie
+Sudbury
+Barrie
+Windsor
+Hamilton
+Kingston
+Ottawa
+Montreal
+Nitchequon
+Charles Fort
+Chicoutimi
+Sept-Iles
+Temiscaming
+Trois Rivieres
+Quebec City
+Sherbrooke
+Rimouski
+Fredericton
+Bathurst
+Prince Edward Island
+Halifax
+Truro
+Cape Breton Island
+Saint Johns
+Millertown
+Hopedale
+St Pierre & Miquelon
+Seattle
+Spokane
+Walla Walla
+Portland
+Baker City
+Klamath Falls
+San Francisco
+Eureka
+Sacramento
+Monterey
+Mariposa
+Los Angeles
+San Diego
+Boise
+Coeur D'Alene
+Pocatello
+Carson City
+Elko
+Las Vegas
+Salt Lake City
+Loa
+Moab
+Phoenix
+Flagstaff
+Tucson
+Santa Fe
+Albuquerque
+Las Cruces
+Denver
+Grand Junction
+Alamosa
+Pueblo
+Chyenne
+Cody
+Casper
+Bozeman
+Missoula
+Great Falls
+Billings
+Bismarck
+Minot
+Dickinson
+Sioux Falls
+Dupree
+Rapid City
+Omaha
+Alliance
+North Platte
+Topeka
+Goodland
+Wichita
+Oklahoma City
+Tahlequah
+Okmulgee
+Houston
+Austin
+Dallas
+Lubbock
+El Paso
+San Antonio
+Laredo
+New Orleans
+Baton Rouge
+Lake Charles
+Shreveport
+Little Rock
+Hot Springs
+Fayetteville
+St Louis
+Joplin
+Malden
+Jefferson City
+Kansas City
+Des Moines
+Oskaloosa
+Cedar Rapids
+Sioux City
+Minneapolis
+Granite Falls
+Moorehead
+Duluth
+Milwaukee
+Eau Claire
+Green Bay
+Madison
+Chicago
+Rockford
+Champaign
+Peoria
+Springfield
+Carbondale
+Indianapolis
+Evansville
+South Bend
+Fort Wayne
+Detroit
+Grand Rapids
+Saginaw
+Traverse City
+Marquette
+Cleveland
+Columbus
+Sandusky
+Dayton
+Cincinnati
+Marietta
+Louisville
+Lexington
+Bowling Green
+Paducah
+Nashville
+Memphis
+Knoxville
+Chattanooga
+Jackson
+Vicksburg
+Biloxi
+Montgomery
+Tuscaloosa
+Mobile
+Tallahassee
+St Augustine
+Tampa
+Atlanta
+Valdosta
+Bermuda
+Savannah
+Charleston
+Columbia
+Raleigh
+Winston-Salem
+Charlotte
+WIlmington
+Richmond
+Manassas
+Fredericksburg
+Norfolk
+Staunton
+Roanoke
+Wheeling
+Huntington
+Baltimore
+Washington
+Hagerstown
+Dover
+Philadelphia
+Scranton
+Williamsport
+Harrisburg
+Pittsburgh
+Erie
+Newark
+Trenton
+Atlantic City
+New York
+Long Island
+Albany
+Binghamton
+Buffalo
+Rochester
+Syracuse
+Watertown
+Plattsburgh
+Hartford
+Providence
+Boston
+New Bedford
+Pittsfield
+Burlington
+Concord
+Lewiston
+Bangor
+Caribou
+Nuuk
+Iceland
+Faroe Islands
+Belfast
+Londonderry
+Armagh
+Donegal
+Galway
+Sligo
+Cork
+Limerick
+Waterford
+Dublin
+Kildare
+Wexford
+Aberdeen
+Inverness
+Dundee
+Edinburgh
+Stirling
+Glasgow
+Dumfries
+Cardiff
+Cardigan
+Llandrindod
+Holyhead
+Liverpool
+Manchester
+Carlisle
+Newcastle On Tyne
+Hull
+Leeds
+Sheffield
+Birmingham
+Chester
+Shrewesbury
+Coventry
+Nottingham
+Leicester
+Lincoln
+Cambridge
+Ipswich
+Chelmsford
+Oxford
+St Albans
+Bristol
+Salisbury
+Bath
+Plymouth
+London
+Canterbury
+Brighton
+Southampton
+Isle of Man
+Trondheim
+Bodo
+Hammerfest
+Alesund
+Bergen
+Christiansand
+Skien
+Drammen
+Christiania
+Hamar
+Lillehammer
+Frederiksstad
+Gavle
+Sundsvall
+Ostersund
+Umea
+Lulea
+Stockholm
+Falun
+Uppsala
+Norrkoping
+Vasteras
+Orebro
+Karlstad
+Gothenburg
+Boras
+Gotland
+Kalmar
+Vaxjo
+Malmo
+Karlskrona
+Oulu
+Kajaani
+Tornio
+Viipuri
+Kotka
+Mikkeli
+Kuopio
+Helsinki
+Hameenlinna
+Turku
+Vaasa
+Tampere
+Aland Islands
+Reval
+Narva
+Parnu
+Dorpat
+Kuressaare
+Riga
+Valmiera
+Daugavpils
+Jelgava
+Ventspils
+Liepaja
+Vilnius
+Kaunas
+Marijampole
+Panevezys
+Siauliai
+Palanga
+Aarhus
+Aalborg
+Ribe
+Kiel
+Flensburg
+Abenra
+Copenhagen
+Odense
+Bornholm
+Amsterdam
+Rotterdam
+Utrecht
+Middelburg
+Eindhoven
+Breda
+Maastricht
+Arnhem
+Groningen
+Zwolle
+Leeuwarden
+Assen
+Brussels
+Bruges
+Ghent
+Antwerp
+Hasselt
+Namur
+Tournai
+Charleroi
+Liege
+Spa
+Luxembourg
+Arlon
+Lille
+Dunkirk
+Arras
+Amiens
+Laon
+Cambrai
+Charleville
+Troyes
+Chaumont
+Chalons
+Strasbourg
+Colmar
+Nancy
+Metz
+Verdun
+Epinal
+Rouen
+Evreux
+Alencon
+Caen
+Channel Islands
+Brest
+St Brieuc
+Vannes
+Nantes
+Rennes
+Paris
+Chartres
+Melun
+Dijon
+Auxerre
+Moulins
+Macon
+Besancon
+Lons
+Angers
+Laval
+Le Mans
+La Roche
+Orleans
+Bourges
+Blois
+Tours
+La Rochelle
+Poitiers
+Angouleme
+Limoges
+Chateauroux
+Tulle
+Clermont-Ferrand
+Aurillac
+Cahors
+Lyon
+St Etienne
+Valence
+Grenoble
+Toulouse
+Montauban
+Foix
+Bordeaux
+Mont de Marsan
+Pau
+Montpellier
+Rodez
+Carcassone
+Perpignan
+Annency
+Chambery
+Marseilles
+Avignon
+Digne
+Toulon
+Frejus
+Nice
+Corsica
+La Coruna
+Oviedo
+Vigo
+Leon
+Santander
+Burgos
+Valladolid
+Soria
+Salamanca
+Avila
+Badajoz
+Almendralejo
+Caceres
+Madrid
+Siguenza
+Toledo
+Cuenca
+Ciudad Real
+BIlbao
+Pamplona
+Logrono
+Zaragoza
+Huesca
+Teruel
+Barcelona
+Gerona
+Lerida
+Tarragona
+Balearic Islands
+Valencia
+Castellon
+Alicante
+Cartagena
+Murcia
+Albacete
+Seville
+Cordoba
+Huelva
+Cadiz
+Granada
+Malaga
+Almeria
+Jaen
+Gibraltar
+Oporto
+Vila Real
+Covilha
+Lisbon
+Coimbra
+Abrantes
+Setubal
+Evora
+Beja
+Faro
+Hamburg
+Lauenburg
+Lubeck
+Stade
+Luneburg
+Heligoland
+Hanover
+Nienburg
+Brunswick
+Gottingen
+Osnabruck
+Bremen
+Oldenburg
+Cloppenburg
+Lingen
+Emden
+Schwerin
+Neustrelitz
+Stettin
+Swinemunde
+Stralsund
+Berlin
+Prenzlau
+Pritzwalk
+Cottbus
+Magdeburg
+Erfurt
+Dessau
+Halle
+Stendal
+Dresden
+Leipzig
+Chemnitz
+Weimar
+Gotha
+Meiningen
+Frankfurt
+Wiesbaden
+Kassel
+Giessen
+Fulda
+Mannheim
+Mainz
+Kaiserlautern
+Trier
+Saarbrucken
+Kreuznach
+Cologne
+Aachen
+Kleves
+Dusseldorf
+Koblenz
+Dortmund
+Munster
+Minden
+Siegen
+Korbach
+Detmold
+Karlsruhe
+Freiburg
+Konstanz
+Stuttgart
+Heilbronn
+Tubingen
+Augsburg
+Ulm
+Sigmaringen
+Nuremburg
+Aschaffenburg
+Wurzburg
+Bayreuth
+Munich
+Landshut
+Ingolstadt
+Regensburg
+Zurich
+Basel
+Bern
+Lucern
+Geneva
+Neuchatel
+Sitten
+Ponape
+Chur
+Innsbruck
+Salzburg
+Bregenz
+Lienz
+Graz
+Judenburg
+Klagenfurt
+Vienna
+Sankt Polten
+Krems
+Linz
+Sopron
+Eisenstadt
+Prague
+Hradec Kralove
+Karlsbad
+Aussig
+Plzen
+Budejovice
+Brno
+Olomouc
+Bratislava
+Trencin
+Nitra
+Banska Bystrica
+Kosice
+Roznava
+Zalaegerszeg
+Pecs
+Budapest
+Gyor
+Szekesfehevar
+Kaposvar
+Kecskemet
+Miskolc
+Oradea
+Debrecen
+Szeged
+Bekescsaba
+Szatmar
+Temesvar
+Resicabanya
+Cluj
+Gyulafehervar
+Deva
+Nagyszeben
+Hawaii
+Brasso
+Udvarhely
+Beszterce
+Cernauti
+Suceava
+Bucharest
+Tirgu Jiu
+Craiova
+Tirgoviste
+Braila
+Calarasi
+Iasi
+Botosani
+Bacau
+Galati
+Constanta
+Tulcea
+Chisinau
+Balti
+Izmail
+Kolberg
+Koslin
+Kustrin
+Breslau
+Liegnitz
+Oppeln
+Kattowitz
+Line Islands
+Gorlitz
+Troppau
+Tesin
+Danzig
+Tuchel
+Deutsch Krone
+Elbing
+Torun
+Konigsburg
+Allenstein
+Gumbinnen
+Memel
+Posen
+Bromberg
+Gniezno
+Lvov
+Krakow
+Novy Sacz
+Przemysl
+Warsaw
+Suwalki
+Plock
+Lomza
+Skierniewicz
+Siedlice
+Lodz
+Radom
+Tarnow
+Lublin
+Kielce
+Kalisz
+Minsk
+Bialystock
+Turin
+Aosta
+Novara
+Alessandria
+Genoa
+Savona
+Milan
+Bergamo
+Brescia
+Venice
+Verona
+Padua
+Treviso
+Udine
+Trent
+Bozen
+Trieste
+Gorizia
+Parma
+Modena
+Massa
+Bologna
+Ferrara
+Ravenna
+Florence
+Leghorn
+Lucca
+Siena
+Grosetto
+Rome
+Viterbo
+Perugia
+Ancona
+Aquila
+Naples
+Salerno
+Bari
+Foggia
+Brindisi
+Reggio di Calabria
+Catanzaro
+Potenza
+Palermo
+Messina
+Catania
+Cagliari
+Sassari
+Maribor
+Ljubljana
+Postojna
+Pola
+Zagreb
+Sisak
+Karlovac
+Senj
+Varadzin
+Bjelovar
+Pozega
+Fiume
+Osijek
+Split
+Zadar
+Dubrovnik
+Sarajevo
+Bihac
+Banja Luka
+Tuzla
+Foca
+Mostar
+Livno
+Kitwe
+Mitrovica
+Pancevo
+Vukovar
+Belgrade
+Bor
+Kragujevac
+Uzice
+Nis
+Leskovac
+Ulcinj
+Tahiti
+Pristina
+Prizren
+Novi Pazar
+Salonika
+Skopje
+Bitola
+Petrich
+Sofia
+Vidin
+Ruse
+Pleven
+Shumen
+Varna
+Plovdiv
+Stara Zagora
+Burgas
+Silistre
+Florina
+Grevena
+Edessa
+Polygyros
+Kavala
+Janina
+Arta
+Corfu
+Zante
+Edirne
+Xanthe
+Dedeagatch
+Larisa
+Volos
+Trikkala
+Athens
+Amfissa
+Lamia
+Missolonghi
+Khalkis
+Nafplion
+Corinth
+Kalamata
+Patras
+Chios
+Myteline
+Cyclades
+Dodecanese
+Chania
+Iraklion
+Tirana
+Shkoder
+Durres
+Vlore
+Gjirokaster
+Malta
+Nicosia
+Limassol
+Famagusta
+Kirklareli
+Gallipoli
+Istanbul
+Uskudar
+Izmit
+Bursa
+Balikesir
+Canakkale
+Afyon
+Kutahya
+Eskishehir
+Izmir
+Manisa
+Denizli
+Mugla
+Konya
+Burdur
+Antalya
+Ankara
+Amasya
+Kayseri
+Sivas
+Kastamonu
+Bolu
+Trabzon
+Sinop
+Giresun
+Kars
+Ardahan
+Erzurum
+Erzincan
+Malatya
+Van
+Bitlis
+Hakkari
+Diyarbakir
+Adana
+Mersin
+Marash
+Aleppo
+Antep
+Urfa
+Antioch
+Dayr al-Zour
+Damascus
+Homs
+Hama
+Latakia
+Suwayda
+Palmyra
+Amman
+Jerash
+Ruwayshid
+Maan
+Baalbeck
+Beirut
+Askaleh
+Sidon
+Acre
+Jerusalem
+Nablus
+Jaffa
+Gaza
+Beersheba
+Aqaba
+Mosul
+Arbil
+Kirkuk
+Baghdad
+Samarra
+Mendeli
+Karbala
+Kut
+Rutbah
+Basra
+Nasiriyya
+Najaf
+Kuwait
+Grodno
+Brest-Litovsk
+Lida
+Baranovichi
+Pinsk
+Slutsk
+Mozyr
+Smolensk
+Orsha
+Vitebsk
+Polotsk
+Pastavy
+Mogilev
+Gomel
+Uzgorord
+Stryi
+Ternopil
+Stanislavov
+Vinnitsa
+Proskorov
+Rovne
+Kovel
+Kiev
+Korosten
+Zhitomir
+Cherkassy
+Chernigov
+Poltava
+Simferopol
+Cherson
+Kerch
+Sevastopol
+Odessa
+Pervomaisk
+Nikolaev
+Krivoy Rog
+Ekaterinoslav
+Melitopol
+Kramatorsk
+Yuzovka
+Mariopol
+Kursk
+Kharkov
+Rostov
+Luhansk
+Archangel
+Petsamo
+Kandalaksha
+Kostomushka
+Mezen
+Naryn Mar
+Ust Sysolsk
+Povyents
+Vologda
+Kotlas
+Uglich
+Belozersk
+Vyterga
+St Petersburg
+Petrozavorsk
+Luga
+Gdov
+Tver
+Rzhev
+Staritsa
+Yaroslavl
+Manzhouli
+Novgorod
+Tikhvin
+Borovichi
+Pskov
+Velikiye Luki
+Moscow
+Borodino
+Kaluga
+Tula
+Ryazan
+Vladimir
+Vyazma
+Peremyshl
+Bryansk
+Orel
+Belgorod
+Voronets
+Nizhni Novgorod
+Penza
+Ivanovo
+Kostorma
+Galich
+Tambov
+Perm
+Vetluga
+Vyatkha
+Glasov
+Kazan
+Sarapol
+Chistopol
+Simbirsk
+Samara
+Syzran
+Astrakhan
+Saratov
+Novo Uzensk
+Tsaritsyn
+Zarevka
+Elitsa
+Ufa
+Busuluk
+Orenburg
+Migolinskaya
+Chirskaya
+Azov
+Ekaterinodar
+Novorossiysk
+Stavropol
+Adygei
+Derbent
+Gunib
+Vladikavkaz
+Grozny
+Pyatigorsk
+Kizylyar
+Ekaterinburg
+Chelyabinsk
+Orsk
+Tyumen
+Berezov
+Tomsk
+Omsk
+Surgut
+Tobolsk
+Kemerevo
+Ulala
+Yakutsk
+Tunginskoye
+Lazo
+Okhotsk
+Gizhiga
+Petropavlovsk
+Irkutsk
+Chunskoye
+Krasnoyarsk
+Chita
+Nerchinsk
+Bauntovskiy
+Yaksa
+HaIshenwai
+Boli
+Utchan
+Ulusamudan
+Pogobi
+Ootomari
+Shumshu
+Etorofu
+Tblisi
+Pasanauri
+Kutaisi
+Akhaltsikhe
+Poti
+Sukhumi
+Batum
+New Caledonia
+Erivan
+Gyumri
+Kapan
+Nakhichevan
+Baku
+Siyazen
+Sheki
+Ganja
+Agdam
+Lankaran
+Tabriz
+Khvoy
+Urumia
+Mahabad
+Ardabil
+Rasht
+Noshehr
+Sari
+Gorgan
+Kermanshah
+Sanandaj
+Ilam
+Khoramabad
+Tehran
+Hamadan
+Zanjan
+Qazvin
+Qom
+Semnan
+Isfahan
+Arak
+Kashan
+Yazd
+Ahvaz
+Abadan
+Dezful
+Dehkord
+Shiraz
+Bushire
+Yasuj
+Kangan
+Sirjan
+Kerman
+Lengeh
+Bandar Abbas
+Bam
+Zahedan
+Jask
+Chabahar
+Mashhad
+Birjand
+Sabzevar
+Bojnurd
+Mecca
+Jidda
+Medina
+Tabuk
+Abha
+Kaf
+Riyadh
+Rafha
+Halaban
+Hail
+Sharawrah
+Bahrain
+Qatif
+Hufuf
+Doha
+Muscat
+Abu Dhabi
+Dubai
+Suhar
+Nizwa
+Sur
+Duqm
+Mukalla
+Salalah
+Ghayda
+Bayda
+Socotra
+Sana
+Hodeida
+Taizz
+Qaraganda
+Guryev
+Aqtobe
+Kokshetau
+Yasi
+Alma Ata
+Semipalatinsk
+Qaratal
+Bishkek
+Naryn
+Khiva
+Nukus
+Kyzylorda
+Aqtau
+Tashkent
+Dashhowuz
+Shymkent
+Bukhara
+Samarkand
+Qarshi
+Khojand
+Kokand
+Osh
+Ashkabad
+Kizil Arvat
+Merv
+Kulob
+Khorug
+Kabul
+Faizabad
+Balkh
+Herat
+Bamyan
+Farrah
+Kandahar
+Jalalabad
+Ghazni
+Peshawar
+Quetta
+Dalbandin
+Kalat
+Bela
+Chitral
+Srinagar
+Gilgit
+Leh
+Lahore
+Multan
+Sialkot
+Attock
+Bahawalpur
+Shahpur
+Amritsar
+Firuzapur
+Simla
+Delhi
+Panipat
+Dehra Dun
+Meerut
+Agra
+Cawnpore
+Lucknow
+Allahabad
+Fyzabad
+Benares
+Gorakhpur
+Patna
+Gaya
+Kharswari
+Bhagalpur
+Calcutta
+Darjeeling
+Bardwan
+Dacca
+Rajshahi
+Jessore
+Chittagong
+Gauhati
+Imphal
+Dibrugarh
+Cuttack
+Keunjahr
+Sambalpur
+Ajmer
+Jaisalmer
+Jodhpur
+Bikaner
+Jaipur
+Udaipur
+Gwalior
+Indore
+Bhopal
+Chatarpur
+Rewa
+Jubulpore
+Hoshangabad
+Nagpur
+Amarati
+Jagdalpur
+Raipur
+Bilaspur
+Raigarh
+Hyderabad
+Aurangabad
+Nizamabad
+Gulbarga
+Warangal
+Karachi
+Sukkur
+Umarkot
+Ahmedabad
+Rajkot
+Mandvi
+Patan
+Baroda
+Surat
+Bombay
+Nasik
+Poona
+Bijapur
+Kolhapur
+Belgaum
+Goa
+Madras
+Vizagapatnam
+Masulipatnam
+Nellore
+Kurnool
+Tanjore
+Madurai
+Coimbatore
+Pondicherry
+Bangalore
+Mysore
+Chitaldroog
+Mangalore
+Calicut
+Cochin
+Trivandrum
+Andaman Islands
+Colombo
+Jaffna
+Kandy
+Trincomalee
+Maldives
+Katmandu
+Jumla
+Tumlong
+Thimpu
+Rangoon
+Bassein
+Pegu
+Toungoo
+Ava
+Kyaukse
+Magwe
+Prome
+Taunggyi
+Haka
+Lashio
+Putao
+Myitkyina
+Moulmein
+Mergui
+Sittwe
+Bangkok
+Lopburi
+Nakhon Sawan
+Sukothai
+Nakhon Ratchasima
+Prachinburi
+Phuket
+Ratchaburi
+Nakhon Si Thammanet
+Chiang Mai
+Luangprabang
+Vientiane
+Udon Thani
+Sisaket
+Xiangabouli
+Savannakhet
+Satavan
+Pakche
+Oudong
+Chanthaburi
+Battambang
+Kampot
+Stongtreng
+Hanoi
+Haiphong
+Cao Bang
+Son La
+Lang Son
+Thanh Hoa
+Hue
+Vinh
+Tourane
+Pleiku
+Quinhon
+Saigon
+Dongquai
+Hatien
+Vinhlong
+Singapore
+Johor Bahru
+Malacca
+Kuala Lumpur
+Penang
+Alor Setar
+Kuantan
+Kota Bahru
+Pattani
+Brunei
+Kuching
+Bintulu
+Api
+Sandakan
+Jambi
+Palembang
+Inderagiri
+Siak
+Tanjungpinang
+Lampung
+Palakpinang
+Banda Aceh
+Medan
+Tapaktuan
+Padang
+Sibolga
+Bencoolen
+Gunungsitoli
+Aden
+Batavia
+Bogor
+Cirebon
+Yogyakarta
+Semarang
+Surabaya
+Surakarta
+Probolinggo
+Madura
+Muraleve
+Banjarmasin
+Pasir
+Tarakan
+Pontianak
+Kota Waringin
+Sintang
+Samarinda
+Makassar
+Bone
+Mamuju
+Menado
+Luwuk
+Palu
+Kendari
+Bulon
+Bali
+Flores
+Sumbawa
+Sumba
+Lombok
+Roti
+Alor
+Kaupeng
+Dili
+Ternate
+Jilolo
+Ambon
+Ceram
+Aru
+Biak
+Sorong
+Merah
+Manila
+Vigan
+Legazpi
+Mindoro
+Palawan
+Iloilo
+Tacloban
+Zamboanga
+Davao
+Sulu
+Urga
+Dalandzadgad
+Bayan Tumen
+Altai
+Kyzyl
+Anqing
+Chizhou
+Fengyang
+Huizhou
+Luzhou
+Ningguo
+Sizhou
+Taiping
+Yingzhou
+Mukden
+Jinzhou
+Port Arthur
+Fuzhou
+Jianning
+Quanzhou
+Taibei
+Tingzhou
+Zhangzhou
+Gansu
+Gongchang
+Lanzhou
+Ningxia
+Pingliang
+Canton
+Chaozhou
+Gauzhou
+Hong Kong
+Waizao
+Macao
+Hainan
+Shaozhou
+Zhaoqing
+Nanning
+Guilin
+Pingle
+Guiyang
+Anshun
+Zhenyuan
+Kaifeng
+Guide
+Henan
+Huaiqing
+Chenzhou
+Nanyang
+Runing
+Weihui
+Hanyang
+Dean
+Huangzhou
+Anlu
+Jingzhou
+Shinan
+Wuchang
+Xiangyang
+Changsha
+Changde
+Baoqing
+Hengzhou
+Yuezhou
+Yongshun
+Yongzhou
+New Ireland
+Guihua Tumed
+Jirim Chuulgan
+Ulaan Chab Chuulghan
+Yeke Juu Chuulghan
+Huaian
+Changzhou
+Shanghai
+Suzhou
+Taicangzhou
+Tongzhou
+Xuzhou
+Yangzhou
+Zhenjiang
+Nanchang
+Guangxin
+Jian
+Jianchang
+Jiujiang
+Ganzhou
+Raozhou
+Qiqihar
+Aigun
+Ninguta
+Jilin
+Makhai
+Balekungomi
+Kegudo
+Xian
+Merauke
+Yenan
+Hanzhong
+Jinan
+Caozhou
+Laizhou
+Qingdao
+Qingzhou
+Taian
+Weihaiwei
+Wuding
+Yizhou
+Taiyuan
+Fenzhou
+Luan
+Pingyang
+Datong
+Chongqing
+Chengdu
+Baotung
+Jiading
+Kuizhou
+Longan
+Shunqing
+Tongchuan
+Yibin
+Yazhou
+Lhasa
+Chamdo
+Shigatse
+Lhodrak
+Changtang
+Ngari
+Tawang
+Kashgar
+Ili
+Tulta
+Aksu
+Khotan
+Kumul
+Urumqi
+Kunming
+Dali
+Puer
+Hangzhou
+Huzhou
+Jiaxing
+Jinhua
+Ningbo
+Shaoxing
+Taizhou
+Wenzhou
+Beijing
+Chengde
+Daming
+Jizhou
+Shuntian
+Tianjin
+Zhongding
+Pyongyang
+Chonchon
+Hamhung
+Chongjin
+Kimchaek
+Seoul
+Kaesong
+Haeju
+Sariwon
+Inchon
+Wonsan
+Kangnung
+Wonju
+Pusan
+Taegu
+Pohang
+Kwangju
+Taejon
+Cheju
+Hiroshima
+Okayama
+Yamaguchi
+Matsue
+Hakodate
+Ishikara
+Nemuru
+Niigata
+Kanazawa
+Fukui
+Toyama
+Edo
+Chiba
+Yokohama
+Urawa
+Mito
+Bonin
+Osaka
+Wakayama
+Kyoto
+Nara
+Kobe
+Fukuoka
+Nagasaki
+Kagoshima
+Miyazaki
+Kumamoto
+Kochi
+Matsuyama
+Tokushima
+Sendai
+Fukushima
+Morioka
+Akita
+Aomori
+Yamagata
+Utsunomiya
+Nagoya
+Shizuoka
+Nagano
+Okinawa
+Amari
+Fez
+Wazzan
+Meknes
+Taza
+Wujda
+Rabat
+Tangier
+Tetouan
+Ajdir
+Melilla
+Marrakesh
+Casablanca
+Huribka
+Sawira
+Agadir
+Ifni
+Tarfaya
+Figuig
+Rashidia
+Warzazat
+Algiers
+Bougie
+Setif
+Medea
+Oran
+Tlemcen
+Mustaghanim
+Mascara
+Constantine
+Bone
+Biskra
+Ouargla
+Tuggurt
+Laghwat
+Bechar
+Naama
+Tindouf
+Chenachene
+In Salah
+Ilizi
+Timimoun
+In Guezzam
+Tin Zawatene
+Panama Canal
+Tamanrasset
+Tunis
+Bizerte
+Gafsa
+Kairouan
+Tozeur
+Gabes
+Tripoli
+Ghayran
+Misratah
+Sirt
+Benghazi
+Darna
+Tobruk
+Jaghbub
+Kufra
+Waddan
+Murzuk
+Sabha
+Ghat
+Ghadamis
+Cairo
+Dumyat
+Tanta
+Mansura
+Ziqaziq
+Giza
+Alexandria
+Matruh
+Sidi Barrani
+Siwa
+Suez Canal
+Al Arish
+Sharm al-Shaykh
+Hariga
+Bawiti
+Mut
+Baris
+Asyut
+Bani Suwayf
+Minya
+Fayyum
+Aswan
+Luxor
+Idfu
+Qina
+Qusayr
+Marsa Alam
+Ras Gharib
+Aaiun
+Dakhla
+Nouakchott
+Rosso
+Aleg
+Maghama
+Shingit
+Tishit
+Walata
+Bir Murghayn
+Dakar
+Saint-Louis
+Banjul
+Linguere
+Diourbel
+Kaolack
+Podor
+Matam
+Bakel
+Ziguinchor
+Velingara
+Bamako
+Kayes
+Nioro
+Kita
+Bougouni
+Sikasso
+Segu
+Mourdiah
+Jenne
+Timbuktu
+Bandiagara
+Gao
+Taoudenni
+Tessalit
+Niamey
+Say
+Dosso
+Maradi
+Agades
+Arlit
+Madama
+Zinder
+Kufe
+Bilma
+Massenya
+Moundou
+Bongor
+Abeche
+Am Timan
+Mongo
+Mao
+Zouar
+Faya
+Khartoum
+Wad Madani
+Kassala
+Sennar
+Rabak
+Fashoda
+Suakin
+Halaib
+Dongola
+Hayya
+Atbara
+Obeid
+Nuhud
+Kaduqli
+Fasher
+Junayah
+Waw
+Bor
+Yambio
+Lado
+Kapoeta
+Asmara
+Massawa
+Akordat
+Assab
+Gonder
+Debre Tabor
+Matamma
+Debre Markos
+Aksum
+Antalo
+Awsa
+Ankober
+Awasa
+Aselia
+Bonga
+Asosa
+Negele
+Harer
+Goba
+Werder
+Mogadishu
+Baidoa
+Kismayo
+Hobye
+Busaso
+Berbera
+Zeyla
+Djibuti
+Cape Verde
+Bissau
+Gabu
+Boffa
+Timbo
+Dinguiraye
+Kankan
+Beyla
+Freetown
+Falaba
+Bo
+Monrovia
+Harper
+Bopolu
+Gbarnga
+Zwedru
+Grand Lahou
+Sassandra
+Grand Bassam
+Bouake
+Man
+Akoupe
+Kong
+Bondouku
+Odienne
+Wagadugu
+Wahiguya
+Dori
+Fada Ngourma
+Bobo Dioulasso
+Orodaro
+Accra
+Cape Coast
+Sekondi
+Kumasi
+Kintampo
+Wa
+Tamale
+Lome
+Ho
+Yendi
+Atakpane
+Sokode
+Cotonou
+Abomey
+Nikki
+Jugu
+Lagos
+Abeokuta
+Ibadan
+Ife
+Ilorin
+Benin
+Akure
+Lokoja
+Warri
+Bonny
+Awka
+Calabar
+Aruchukwu
+Makurdi
+Tukari
+Bussa
+Zaria
+Bida
+Abuja
+Bauchi
+Jos
+Gombe
+Kano
+Kebbi
+Katsina
+Sokoto
+Hadejia
+Yola
+Kuka
+Nguru
+Dikoa
+Sao Tome
+Fernando Po
+Douala
+Buea
+Kribi
+Yaounde
+Bafoussam
+Bamenda
+Bertoua
+Ngaoundere
+Maroua
+Bangui
+Nola
+Bouar
+Bossangoa
+Zemio
+Bangassou
+Ndele
+Libreville
+Bata
+Mayumbe
+Moanda
+Makokou
+Nkuna
+Madingou
+Biloka
+Djambala
+Impfondo
+Kinshasa
+Boma
+Kananga
+Kumbana
+Lusambo
+Bunkeya
+Mussumba
+Munza
+Nyangwe
+Uvira
+Basoko
+Irebu
+Nsheng
+Gemena
+Kisangani
+Mungbane
+Baramo
+Luanda
+Cabinda
+Mbanza
+Quibala
+Benguela
+Mocamedes
+Huambo
+Kuito
+Mavinga
+Ondjiva
+Malanje
+Saurimo
+Kubanda
+Lusaka
+Mongu
+Kasempa
+Monzo
+Kazembe
+Kasema
+Chipata
+Entebbe
+Mbarara
+Masindi
+Kitgum
+Jinja
+Nairobi
+Marsabit
+Lodwar
+Nakuru
+Kisumu
+Mombasa
+Lamu
+Wajir
+Garissa
+Voi
+Kigali
+Usumbura
+Dar Es Salaam
+Tanga
+Kilwa
+Lindi
+Songea
+Masasi
+Iringa
+Tabora
+Mwanza
+Morogoro
+Ujiji
+Arusha
+Zanzibar
+Maputo
+Chaimate
+Inhambane
+Massekisse
+Sena
+Tete
+Songo
+Zombo
+Sofala
+Mossurize
+Quelimane
+Mocambique
+Angoche
+Shangzhou
+Ibo
+Nampula
+Milange
+Zomba
+Lilongwe
+Harare
+Gweru
+Mutare
+Bulawayo
+Hwange
+Masvingo
+Gaborone
+Serowe
+Nokaneng
+Tsabong
+Windhoek
+Swakopmund
+Tsumeb
+Linyati
+Otjinene
+Walvis Bay
+Angra Pequena
+Nugouses
+Karasburg
+Cape Town
+Springbok
+Worcester
+Swettenham
+Mossel Bay
+Beaufort
+Calvinia
+Kimberley
+Dikathong
+Port Elizabeth
+Graaf Reinet
+Bisho
+Mathele
+Umtata
+Bloemfontein
+Winburg
+Philippolis
+Thaba Bosiu
+Pretoria
+Johannesburg
+Klerksdorp
+Mosega
+Lydenburg
+Thohoyandu
+Durban
+Ladysmith
+Ulundi
+Mbabane
+Tananarive
+Fianarantsoa
+Ampanihy
+Tolanaro
+Toamasina
+Antsiranana
+Mahajanga
+Toliara
+Comoros
+Mayotte
+Mauritius
+Bourbon
+Seychelles
+Diego Garcia
+Saint Helena
+Ascension
+Falkland Islands
+Tristan da Cunha
+South Georgia
+Azores
+Madeira
+Canary Islands
+Hermosillo
+Loreto
+Rosarito
+Nogales
+Guaymas
+Chihuahua
+Paso del Norte
+Delicias
+Parral
+Monterrey
+Morelos
+Reynosa
+Matamoros
+Ciudad Victoria
+Saltillo
+Monclova
+Durango
+Santa Maria del Oro
+Torreon
+Mazatlan
+Culiacan
+Zacatecas
+San Luis Potosi
+Aguascalientes
+Tepic
+Veracruz
+Tampico
+Mintatitlan
+Villahermosa
+Guadalajara
+Guanajuato
+Puerto Vallarta
+Colima
+Morelia
+Los Alaniles
+Mexico City
+Queretaro
+Toluca
+Tulacingo
+Puebla
+Oaxaca
+Collataro
+Acapuilco
+Chilpancingo
+Tuxtla
+Tapachula
+Merida
+Campeche
+Bacalar
+Guatemala
+Quetzaltenango
+Puerto Barrios
+Sayaxche
+Belize
+San Salvador
+San Miguel
+Comayagua
+San Pedro Sula
+La Ceiba
+Puerto Lempira
+Managua
+Rivas
+Leon
+Bluefields
+San Jose
+Liberia
+Limon
+Panama City
+David
+Penonome
+Sainshand
+Yaviza
+Havana
+Jagua
+Camaguey
+Santiago de Cuba
+Port Au Prince
+Santo Domingo
+Cap Haitien
+La Vega
+Jamaica
+Cayman Islands
+Bahamas
+Turks And Caicos
+Nanjing
+Puerto Rico
+Saint Thomas
+Antigua
+Montserrat
+Tortola
+Saint Kitts
+Martinique
+Barbados
+Guadeloupe
+Saint Lucia
+Dominica
+Grenada
+Curacao
+Aruba
+Saint Martin
+Trinidad
+Tobago
+Georgetown
+Paramaribo
+Cayenne
+Mahdia
+Essequibo
+Christmas Island
+Apetina
+Maripasoula
+Bogota
+Ibaque
+Tunja
+Manizales
+Cucuta
+Medellin
+Quibdo
+Cartagena de Indias
+Barranquilla
+Cali
+Popayan
+Buenaventura
+Pasto
+San Jose del Gauaviare
+Obando
+Casanare
+El Encanto
+Caracas
+Guanare
+Calabozo
+Cumana
+San Felipe
+Guiria
+Maracaibo
+Valera
+Coro
+Barquisimento
+Barinas
+Angostura
+Curiapo
+El Jobal
+San Fernado de Atabapo
+Quito
+Guayaquil
+Esmereldas
+Loja
+Zamora
+Tena
+Galapagos
+Iquitos
+Yurimagues
+Yuncos
+Puca Urco
+Cajamarca
+Piura
+Trujillo
+Huanuco
+Moyobamba
+Lima
+Huancavelica
+Ica
+Huaraz
+Ayacucho
+Pucallpa
+Puerto Maldonado
+Cusco
+Puno
+Arequipa
+Antofagasta
+Sorocaba
+Iquique
+Arica
+Calama
+La Paz
+Cochabamba
+Oruro
+Chuquisaca
+Potosi
+Tarija
+Santa Cruz
+San Ignacio
+Robore
+Santa Ana
+Riberalta
+Cobija
+Copiapo
+La Serena
+Santiago
+Valparaiso
+Vina del Mar
+Talca
+Valdivia
+Temuco
+Cauquenes
+Chillan
+Osorno
+Puerto Aisen
+Punta Arenas
+Porvenir
+Easter Island
+Fortin Falcon
+Puerto Gaurani
+Asuncion
+Pilar
+Encarnacion
+San Pedro
+Concepcion
+Montevideo
+Paysandu
+Tacumba
+Melo
+Buenos Aires
+Junin
+Azul
+La Plata
+Mar del Plata
+Trenque Lanquen
+Bahia Blanca
+Carmen
+Corrientes
+Curuzu Cuatia
+Santo Tomas
+Colon
+Parana
+Santa Espiritu
+Reconquista
+Rosario
+Resistencia
+Villa Angela
+Formosa
+Xolotas
+Salta
+Jujuy
+Cochinoca
+Equia
+Rivadavia
+Tucuman
+Catamarca
+Vinchina
+Santiago del Estero
+Anatuya
+Mailin
+Cordoba de Argentina
+Villa Nueva
+Rio Cuarto
+Renanco
+San Luis
+Mercedes
+La Rioja
+Santa Rita
+San Juan
+Calingasta
+Mendoza
+San Rafael
+Nequen
+Viedma
+Telen
+Bariloche
+Curaco
+Rawson
+Esquel
+Puerto Deseado
+Rio Galleagos
+Rio Grande
+Marabitanas
+Manaus
+Cachoeira
+Tefe
+Borba
+Cocos Islands
+Tabatinga
+Oriximina
+Saint Vincent
+Belem
+Santarem
+Obidos
+Maraba
+Amapa
+Macapa
+Dourados
+Vila Bela
+Cuiaba
+Corumba
+Iguatemi
+Vila Boa
+Aganja
+Palmas
+Sao Luis
+Chapada
+Teresina
+Oieras
+Paraiba
+Fortaleza
+Crato
+Natal
+Recife
+Cabrobo
+Maceio
+Aracaju
+Salvador de Bahia
+Juazeiro
+Vila do Barra
+Porto Seguro
+Vitoria da Conquista
+Ouro Preto
+Sabara
+Januaria
+Paracatu
+Uberaba
+Sao Joao del Rey
+Rio de Janeiro
+Campos
+Vitoria
+Sao Paulo
+Santos
+Campinas
+Assis
+Fiji
+Iguape
+Araraquara
+Curitiba
+Garapuava
+Lajes
+Castro
+Desterro
+Sao Miguel
+Porto Alegre
+Pelotas
+Passo Fundo
+Santa Maria
+Alegrete
+Sydney
+Newcastle
+Port Macquarie
+Ophir
+Eden
+Wagga Wagga
+Moree
+Broken Hill
+Melbourne
+Warmambool
+Ballarat
+Sale
+Beechworth
+Swan Hill
+Tasmania
+Brisbane
+Gladstone
+Clermont
+Toowoomba
+Townsville
+Cooktown
+Longreach
+Charleville
+Adelaide
+Port Lincolon
+Robe
+Port Augusta
+Oodnadatta
+Tarcoola
+Perth
+Kojonup
+Geraldton
+Kalgoorlie
+Broome
+Dampier
+Wiluna
+Esperance
+Palmerston
+Tennant Creek
+Alice Springs
+Norfolk Island
+Auckland
+New Plymouth
+Napier
+Wellington
+Dunedin
+Hokitika
+Christchurch
+Nelson
+Guam
+Palau
+Yap
+Taveuni
+Saipan
+Marshall Islands
+Nauru
+Wake
+Marcus
+Palmyra
+Gilbert Islands
+Port Moresby
+Kerema
+Lae
+Madang
+Forte Sao Joaquim
+Targu Mures
+Solomon Islands
+New Hebrides
+Santa Cruz Islands
+New Britain
+Novi Sad
+Bougainville
+Tonga
+Ellice Islands
+Wallis And Futuna
+Apia
+Pago Pago
+Rarotonga
+Tongareva
+Tokelau
+Niue
+Tarauaca
+Forte do Principe
+Marquesas
+Pitcairn
+Tuamotus
+Posadas
+Augusta
+Asheville
+Esbjerg
+De Aar
+Suhaj
+Darmstadt
+Siegburg
+Tainan
+Safi
+Salima
+Cebu
+Agartala
+Gaeta
+Lugano
+Niksic
+Beauvais
+Tauranga
+Nan
+Mboul
+Mochudi
+Ipoh
+Natuna
+Pljevlja
+Tacna
+Truk
+Stara Ladoga
+Mataka
+Kotor
+Cetinje
+Bielsko
+Matan as Sarah
+Al-Ahsa
+Kola
+Onega
+Kanin
+Chukchi
+Sisimiut
+Ungava
+Fort George
+Pickle
+Nunavut
+Fort Resolution
+Fort Vermilion
+Fort Liard
+Fort Yukon
+Altamira
+Sandy Desert
+Roebourne
+Tanami
+Normanton
+Gibson's Desert
+Aktogay
+Taklamakan
+Khatgal
+Araouane
+Oral
+Turgay
+Zhambyl
+Novyj Urengoj
+Panajevsk
+Sidorovsk
+Korf
+Amgun
+Talaya
+Indigirka
+Kolyma
+Srednekolymsk
+Majn
+Midway Island
+Loango
+Port Hope Simpson
+Port Harrison
+Fort Chimo
+Attawapiskat
+Beatton River
+Fairbanks
+Yukon
+Isortoq
+Palana
+Khatyrka
+Kariba
+Aasiaat
+Navarin
+Sugoj
+Susuman
+Ugolnoe
+Ajan
+Tomtor
+Honuu
+Tommot
+Artemovskij
+Niznevartovsk
+Deputackij
+Handyga
+Tomtor
+Malykaj
+Zigansk
+Kular
+Saskylah
+Hatanga
+Essej
+Vanavara
+Svetlogorsk
+Kheta
+Guba
+Anuj
+Anjuj
+Ambarcik
+Manily
+Omolon
+Cokurdah
+Komsomolskiy
+Kazace
+Adyca
+Majja
+Tiksi
+Lena
+Borogoncy
+Olenek
+Novyj Kajak
+Ajhal
+Kirensk
+Nepa
+Bulgan
+Khovd
+Dudinka
+Taz
+Nadym
+Vasjugan
+Aksarka
+Njagan
+Isim
+Amderma
+Inta
+Vojvoz
+Gornopravdinsk
+Vorgovo
+Kostino
+Kotuj
+Erbogacen
+Lensk
+Nerjungri
+Tygda
+Slavgorod
+Izma
+Usogorsk
+Cunyja
+Aralsk
+Jan Mayen
