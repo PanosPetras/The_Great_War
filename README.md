@@ -4,7 +4,7 @@ Created with Visual Studio 2019
 C++ version: C++/11
 
 Starting date: January 1st 1910
-The world is in turmoil, tensions between the great powers of europe are rising.
+ The world is in turmoil, tensions between the great powers of europe are rising.
 The balkan Nation-states are in a state of constant war.
 This might spark a greater conflict that will change europe forever.
 
