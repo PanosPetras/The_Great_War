@@ -10,6 +10,7 @@ The balkan Nation-states are in a state of constant war.
 This might spark a greater conflict that will change europe forever.
 
 "One day the great European War will come out of some damned foolish thing in the Balkans."
+
 -Otto von Bismarck
 
 In this time of crisis you take control over one of the following countries:
