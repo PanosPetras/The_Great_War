@@ -36,12 +36,21 @@ the concepts are already drawn out. They will be implemented over time.
 The game is stable at it's current state and there are 
 no bugs that will cause a crash as far as I'm aware of.
 
-This project requires the following libraries to be linked to it in order to compile.
-- SDL 2.0.14
-- SDL Mixer 2.0.4
-- SDL Image 2.0.5
-- SDL ttf 2.0.15
-Edit the settings on Project > Project properties
+This project requires the following libraries:
+- SDL 2.0.14(Link: https://www.libsdl.org/download-2.0.php)
+- SDL Mixer 2.0.4(Link: https://www.libsdl.org/projects/SDL_mixer/)
+- SDL Image 2.0.5(Link: https://www.libsdl.org/projects/SDL_image/)
+- SDL ttf 2.0.15(Link: https://www.libsdl.org/projects/SDL_ttf/)
+
+Download the Visual C++ 32/64-bit Development Library
+
+Edit the settings on Project > Project properties as following
+
+Add "SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;" in Configuration Properties > Linker > Input > Additonal Dependencies
+
+Add the path to all the "include" folders of the aforementioned libraries in Configuration Properties > VC++ Directories > Include Directories
+
+Add the path to all the "lib" folders of the aforementioned libraries in Configuration Properties > VC++ Directories > Library Directories
 
 The project is a work in progress and currently on a non-playable state.
 Many features are missing and/or are not working as intended.
