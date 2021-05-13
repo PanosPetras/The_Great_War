@@ -30,8 +30,13 @@ in order to sustain his Country's population and it's military.
 Excess goods will be sold on the market with prices that will change
 based on supply and demand.
 
-The rest of the game mechanics are still not added to the game, but
-the concepts are already drawn out. They will be implemented over time.
+The trade tab will allow the player to keep track of the prices of all goods to understand the state of the market and invest in the most profitable goods.
+
+The player will be able to manage his relations with other countries through the diplomacy tab, make alliances declare wars etc.
+
+When all diplomacy fails, the player will have to lead his army to victory, by attacking at the most suitable locations, supplying his army, training officers and many more.
+
+Last but not least, the player will have the ability to create universities. If the universities are adequately funded they will start discovering new technologies over time that will increase the country's indusrial efficiency, improve it's military equipment, improve the healthcare system and many more more.
 
 The game is stable at it's current state and there are 
 no bugs that will cause a crash as far as I'm aware of.
