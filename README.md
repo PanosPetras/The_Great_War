@@ -1,6 +1,8 @@
 # The Great War
 A ww1 themed strategy game on progress. Built using C++ and SDL2.0.
+
 Created with Visual Studio 2019
+
 C++ version: C++/11
 
 Starting date: January 1st 1910
@@ -63,6 +65,9 @@ Many features are missing and/or are not working as intended.
 Note that some parts of the code are not documented with comments yet.
 
 Minimum System requirements:
+
 CPU: Intel Core i5 3450 or AMD ryzen 3 1200
+
 Ram: 4 Gb
+
 GPU: Nvidia GeForce GTX 750 TI or AMD Radeon RX 550
