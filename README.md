@@ -66,6 +66,6 @@ Note that some parts of the code are not documented with comments yet.
 
 Minimum System requirements:
 
-- CPU: Intel Core i5 3450 or AMD ryzen 3 1200
+- CPU: Intel Core i5 3450 or AMD Ryzen 3 1200
 - Ram: 4 Gb
 - GPU: Nvidia GeForce GTX 750 TI or AMD Radeon RX 550
