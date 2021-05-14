@@ -1,5 +1,5 @@
 # The Great War
-A ww1 themed strategy game on progress. Built using C++ and SDL2.0.
+A ww1 themed strategy game in progress. Built using C++ and SDL2.0.
 
 Created with Visual Studio 2019
 
