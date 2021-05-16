@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="CountrySelection.cpp" />
     <ClCompile Include="CreditScreen.cpp" />
+    <ClCompile Include="FactoriesScreen.cpp" />
     <ClCompile Include="IndustryScreen.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="GameScreen.cpp" />

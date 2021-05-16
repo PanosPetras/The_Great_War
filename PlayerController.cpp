@@ -85,7 +85,7 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 		myfile.close();
 	}
 
-	int Res[31] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 1000 };
+	int Res[31] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000 };
 
 	//Create all countries
 	for (x = 0; x < 58; x++) {

@@ -92,6 +92,9 @@
     <ClCompile Include="Slider.cpp">
       <Filter>UI_Elements\Source_Files</Filter>
     </ClCompile>
+    <ClCompile Include="FactoriesScreen.cpp">
+      <Filter>Screen_Classes\Source_Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">

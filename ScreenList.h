@@ -2,6 +2,7 @@
 #include <SDL_Image.h>
 #include <functional>
 #include <string>
+#include <vector>
 #include "PlayerController.h"
 #include "Screen.h"
 
@@ -216,16 +217,6 @@ public:
 
 #endif
 
-#ifndef IndustryScreen1_H
-#define IndustryScreen1_H
-
-class IndustryScreen1 : public Screen {
-public:
-    IndustryScreen1(SDL_Renderer* r, int Width, int Height, int Stockpile[30], std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
-};
-
-#endif
-
 #ifndef StatePreview_H
 #define StatePreview_H
 
@@ -235,3 +226,13 @@ public:
 };
 
 #endif 
+
+#ifndef FactoriesScreen_H
+#define FactoriesScreen_H
+
+class FactoriesScreen : public Screen {
+public:
+    FactoriesScreen(SDL_Renderer* r, int Width, int Height, std::vector<std::string> StatesNames, std::vector<std::string> Factories, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+};
+
+#endif
