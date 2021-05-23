@@ -232,7 +232,7 @@ public:
 
 class FactoriesScreen : public Screen {
 public:
-    FactoriesScreen(SDL_Renderer* r, int Width, int Height, std::vector<std::string> StatesNames, std::vector<std::string> Factories, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+    FactoriesScreen(SDL_Renderer* r, int Width, int Height, std::vector<std::string> StatesNames, std::vector<std::vector<std::string>> Factories, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
 };
 
 #endif

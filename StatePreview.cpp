@@ -20,16 +20,16 @@ StatePreview::StatePreview(SDL_Renderer* r, int Width, int Height, std::string S
 
 	ImageArr[0] = new Image(r, "Backgrounds/StatePreview.png", 0, int(Height * .55), int(Width * 0.2), int(Height * 0.45));
 	std::string str = "Flags/" + Controller + ".png";
-	ImageArr[1] = new Image(r, str.c_str() , int(WindowSize[0] * 0.2 - 72 * WindowSize[0] / 1920), int(WindowSize[1] * .55), int(72 * WindowSize[0] / 1920), int(48 * WindowSize[1] / 1080));
-	str = "Icons/Goods/" + Factories[0] + ".png";
-	ImageArr[2] = new Image(r, str.c_str(), int(Width * 0.055), int(Height * 0.8999), 48, 48);
-	str = "Icons/Goods/" + Factories[1] + ".png";
-	ImageArr[3] = new Image(r, str.c_str(), int(Width * 0.0838), int(Height * 0.8999), 48, 48);
-	str = "Icons/Goods/" + Factories[2] + ".png";
-	ImageArr[4] = new Image(r, str.c_str(), int(Width * 0.1125), int(Height * 0.8999), 48, 48);
-	str = "Icons/Goods/" + Factories[3] + ".png";
-	ImageArr[5] = new Image(r, str.c_str(), int(Width * 0.141), int(Height * 0.8999), 48, 48);
-	ImageArrtop = 6;
+	ImageArr[1] = new Image(r, str.c_str(), int(WindowSize[0] * 0.2 - 72 * WindowSize[0] / 1920), int(WindowSize[1] * .55), int(72 * WindowSize[0] / 1920), int(48 * WindowSize[1] / 1080));
+	ImageArrtop = 2;
+
+	for (int x = 0; x < 4; x++) {
+		if (Factories[x] != "") {
+			str = "Icons/Goods/" + Factories[x] + ".png";
+			ImageArr[x + 2] = new Image(r, str.c_str(), int(Width * (0.055 + 0.0288 * x)), int(Height * 0.8999), 48, 48);
+			ImageArrtop++;
+		}
+	}
 
 	ButtonArr[0] = new Button(r, int(Width*.2) - int((32 * WindowSize[0] / 1920) / 2), int(Height * .55) - int((32 * WindowSize[1] / 1080) / 2), int(32 * WindowSize[0] /1920), int(32 * WindowSize[1] / 1080), "Buttons/UI/Close", CloseFunc);
 	ButtonArrtop = 1;
