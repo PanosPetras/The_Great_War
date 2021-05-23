@@ -11,11 +11,13 @@ UI::UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController
 	std::string flg = "Buttons/Flags/" + str;
 	flag = new Button(r, int(Width * 0.005), int(Height * 0.005), int(Width * 0.05), int(Height * 0.05), flg.c_str(), NULL, SDLK_q);
 	Buttons[0] = new Button(r, int(Width * 0.1), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Technology", NULL, SDLK_w);
-	Buttons[1] = new Button(r, int(Width * 0.15), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Economy", NULL, SDLK_e);
-	auto change = std::bind(&UI::OpenIndustryScreen, this);
+	auto change = std::bind(&UI::OpenEconomyScreen, this);
+	Buttons[1] = new Button(r, int(Width * 0.15), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Economy", change, SDLK_e);
+	change = std::bind(&UI::OpenIndustryScreen, this);
 	Buttons[2] = new Button(r, int(Width * 0.2), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Industry", change, SDLK_r);
-	Buttons[3] = new Button(r, int(Width * 0.25), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Military", NULL, SDLK_t);
-	Buttons[4] = new Button(r, int(Width * 0.3), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Diplomacy", NULL, SDLK_y);
+	Buttons[3] = new Button(r, int(Width * 0.25), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Diplomacy", NULL, SDLK_t);
+	Buttons[4] = new Button(r, int(Width * 0.3), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Military", NULL, SDLK_y);
+
 	flagbg = new Image(r, "Backgrounds/FlagBg.png", 0, 0, int(Width * 0.06), int(Height * 0.06));
 
 	//The date tab
@@ -107,7 +109,7 @@ void UI::PauseDate(){
 }
 
 void UI::OpenIndustryScreen(){
-	/*int Res[30] = {	PCref->CountriesArr[PCref->player_index]->Stock.Coal,
+	int Res[30] = {	PCref->CountriesArr[PCref->player_index]->Stock.Coal,
 					PCref->CountriesArr[PCref->player_index]->Stock.Oil,
 					PCref->CountriesArr[PCref->player_index]->Stock.Timber,
 					PCref->CountriesArr[PCref->player_index]->Stock.Rubber,
@@ -137,17 +139,32 @@ void UI::OpenIndustryScreen(){
 					PCref->CountriesArr[PCref->player_index]->Stock.Paper,
 					PCref->CountriesArr[PCref->player_index]->Stock.Liquor,
 					PCref->CountriesArr[PCref->player_index]->Stock.Airship};
-	Screen* NS = new IndustryScreen(renderer, WindowSize[0], WindowSize[1], Res, NULL, NULL);*/
-	std::vector<std::string> str;
+	Screen* NS = new IndustryScreen(renderer, WindowSize[0], WindowSize[1], Res, NULL, NULL);
+	/*std::vector<std::string> str;
 	std::vector<std::vector<std::string>> str1;
 	std::vector<std::string> pp;
-	for (int i = 0; i < 4; i++) {
-		pp.push_back("k");
+	for (int x = 0; x < 4; x++) {
+		pp.push_back("");
 	}
-	str1.push_back(pp);
+
+	//Save all the owned states' names and factories
 	for (int x = 0; x < PCref->CountriesArr[PCref->player_index]->Country_State_Count; x++) {
 		str.push_back(PCref->CountriesArr[PCref->player_index]->OwnedStates[x]->State_Name);
+		for (int y = 0; y < 4; y++) {
+			if (PCref->CountriesArr[PCref->player_index]->OwnedStates[x]->State_Factories[y] != nullptr) {
+				pp[y] = PCref->CountriesArr[PCref->player_index]->OwnedStates[x]->State_Factories[y]->Type;
+			} else {
+				pp[y] = "";
+			}
+		}
+		str1.push_back(pp);
 	}
-	Screen* NS = new FactoriesScreen(renderer, WindowSize[0], WindowSize[1], str, str1, NULL, NULL);
+
+	Screen* NS = new FactoriesScreen(renderer, WindowSize[0], WindowSize[1], str, str1, NULL, NULL);*/
+	ChangeScreenFunc(NS);
+}
+
+void UI::OpenEconomyScreen() {
+	Screen* NS = new EconomyScreen(renderer, WindowSize[0], WindowSize[1], NULL, NULL);
 	ChangeScreenFunc(NS);
 }

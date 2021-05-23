@@ -51,6 +51,8 @@ public:
     std::function<void(Screen*)> ChangeScreenFunc;
 
     void OpenIndustryScreen();
+
+    void OpenEconomyScreen();
 };
 
 #endif
@@ -233,6 +235,17 @@ public:
 class FactoriesScreen : public Screen {
 public:
     FactoriesScreen(SDL_Renderer* r, int Width, int Height, std::vector<std::string> StatesNames, std::vector<std::vector<std::string>> Factories, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+};
+
+#endif
+
+#ifndef EconomicsScreen_H
+#define EconomicsScreen_H
+
+class EconomyScreen : public Screen {
+public:
+    EconomyScreen(SDL_Renderer* r, int Width, int Height, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+
 };
 
 #endif

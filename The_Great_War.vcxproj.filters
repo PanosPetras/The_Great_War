@@ -95,6 +95,9 @@
     <ClCompile Include="FactoriesScreen.cpp">
       <Filter>Screen_Classes\Source_Files</Filter>
     </ClCompile>
+    <ClCompile Include="EconomyScreen.cpp">
+      <Filter>Screen_Classes\Source_Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">
