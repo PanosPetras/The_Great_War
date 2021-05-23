@@ -29,6 +29,7 @@
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="ProgressCircle.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -46,6 +47,7 @@
   <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="Factory.h" />
+    <ClInclude Include="ProgressCircle.h" />
     <ClInclude Include="Stockpile.h" />
     <ClInclude Include="SDL_ColorDetection.h" />
     <ClInclude Include="Image.h" />

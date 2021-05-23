@@ -98,6 +98,9 @@
     <ClCompile Include="EconomyScreen.cpp">
       <Filter>Screen_Classes\Source_Files</Filter>
     </ClCompile>
+    <ClCompile Include="ProgressCircle.cpp">
+      <Filter>UI_Elements\Source_Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">
@@ -139,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="Stockpile.h">
       <Filter>Game_Classes\Header_Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressCircle.h">
+      <Filter>UI_Elements\Header_Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
