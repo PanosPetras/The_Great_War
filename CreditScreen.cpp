@@ -15,6 +15,7 @@ CreditScreen::CreditScreen(SDL_Renderer* r, int Width, int Height, std::function
 	ButtonArrtop = 1;
 	LabelArrtop = 4;
 	ImageArrtop = 0;
+	SliderArrtop = 0;
 	ChangeScreenFunc = fpl;
 	QuitFunc = fp;
 }

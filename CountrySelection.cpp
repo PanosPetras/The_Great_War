@@ -55,6 +55,7 @@ CountrySelection::CountrySelection(SDL_Renderer* r, int Width, int Height, std::
 	ButtonArrtop = 10;
 	LabelArrtop = 10;
 	ImageArrtop = 11;
+	SliderArrtop = 0;
 	ChangeScreenFunc = fpl;
 	mousepressed = false;
 	ChangeScreenFunc = fpl;

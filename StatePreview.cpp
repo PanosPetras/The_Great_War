@@ -33,4 +33,5 @@ StatePreview::StatePreview(SDL_Renderer* r, int Width, int Height, std::string S
 
 	ButtonArr[0] = new Button(r, int(Width*.2) - int((32 * WindowSize[0] / 1920) / 2), int(Height * .55) - int((32 * WindowSize[1] / 1080) / 2), int(32 * WindowSize[0] /1920), int(32 * WindowSize[1] / 1080), "Buttons/UI/Close", CloseFunc);
 	ButtonArrtop = 1;
+	SliderArrtop = 0;
 }

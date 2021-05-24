@@ -39,6 +39,7 @@ IndustryScreen::IndustryScreen(SDL_Renderer* r, int Width, int Height, int Stock
 	LabelArr[29] = new Label(r, std::to_string(Stockpile[29]).c_str(), 32, int(Width * 0.365), int(Height * 0.86));
 	LabelArrtop = 30;
 	ImageArrtop = 0;
+	SliderArrtop = 0;
 	ChangeScreenFunc = fpl;
 	QuitFunc = fp;
 }

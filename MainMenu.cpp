@@ -14,6 +14,7 @@ MainMenu::MainMenu(SDL_Renderer* r, int Width, int Height, std::function<void()>
 	ButtonArrtop = 5;
 	LabelArrtop = 0;
 	ImageArrtop = 0;
+	SliderArrtop = 0;
 	WindowSize[0] = Width;
 	WindowSize[1] = Height;
 	ChangeScreenFunc = fpl;

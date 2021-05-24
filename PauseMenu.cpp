@@ -14,6 +14,7 @@ PauseMenu::PauseMenu(SDL_Renderer* r, int Width, int Height, std::function<void(
 	ButtonArrtop = 4;
 	LabelArrtop = 0;
 	ImageArrtop = 1;
+	SliderArrtop = 0;
 	bHasBackground = false;
 	ChangeScreenFunc = fpl;
 	QuitFunc = fp;

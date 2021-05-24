@@ -109,7 +109,7 @@ void UI::PauseDate(){
 }
 
 void UI::OpenIndustryScreen(){
-	int Res[30] = {	PCref->CountriesArr[PCref->player_index]->Stock.Coal,
+	/*int Res[30] = {	PCref->CountriesArr[PCref->player_index]->Stock.Coal,
 					PCref->CountriesArr[PCref->player_index]->Stock.Oil,
 					PCref->CountriesArr[PCref->player_index]->Stock.Timber,
 					PCref->CountriesArr[PCref->player_index]->Stock.Rubber,
@@ -139,8 +139,8 @@ void UI::OpenIndustryScreen(){
 					PCref->CountriesArr[PCref->player_index]->Stock.Paper,
 					PCref->CountriesArr[PCref->player_index]->Stock.Liquor,
 					PCref->CountriesArr[PCref->player_index]->Stock.Airship};
-	Screen* NS = new IndustryScreen(renderer, WindowSize[0], WindowSize[1], Res, NULL, NULL);
-	/*std::vector<std::string> str;
+	Screen* NS = new IndustryScreen(renderer, WindowSize[0], WindowSize[1], Res, NULL, NULL);*/
+	std::vector<std::string> str;
 	std::vector<std::vector<std::string>> str1;
 	std::vector<std::string> pp;
 	for (int x = 0; x < 4; x++) {
@@ -160,7 +160,7 @@ void UI::OpenIndustryScreen(){
 		str1.push_back(pp);
 	}
 
-	Screen* NS = new FactoriesScreen(renderer, WindowSize[0], WindowSize[1], str, str1, NULL, NULL);*/
+	Screen* NS = new FactoriesScreen(renderer, WindowSize[0], WindowSize[1], str, str1, NULL, NULL);
 	ChangeScreenFunc(NS);
 }
 

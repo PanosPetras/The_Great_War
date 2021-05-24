@@ -235,6 +235,12 @@ public:
 class FactoriesScreen : public Screen {
 public:
     FactoriesScreen(SDL_Renderer* r, int Width, int Height, std::vector<std::string> StatesNames, std::vector<std::vector<std::string>> Factories, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+    void UpdateFactoriesStats(int Value);
+    
+    std::vector<std::string> StateNames;
+    std::vector<std::vector<std::string>> StateFactories;
+
+    int index;
 };
 
 #endif
@@ -245,7 +251,6 @@ public:
 class EconomyScreen : public Screen {
 public:
     EconomyScreen(SDL_Renderer* r, int Width, int Height, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
-
 };
 
 #endif

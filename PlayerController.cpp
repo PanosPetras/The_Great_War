@@ -123,6 +123,10 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	StatesArr[555]->AddFactory(FC);
 	FC = new AirshipFactory(&CountriesArr[0]->Stock);
 	StatesArr[558]->AddFactory(FC);
+	FC = new SmallArmsFactory(&CountriesArr[0]->Stock);
+	StatesArr[368]->AddFactory(FC);
+	FC = new CanningFactory(&CountriesArr[0]->Stock);
+	StatesArr[408]->AddFactory(FC);
 
 	//Initialize the date
 	Date = { .Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .bIsPaused = true, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31} };

@@ -8,6 +8,7 @@ GameScreen::GameScreen(SDL_Renderer* r, int Width, int Height, const char* tag, 
 	ButtonArrtop = 0;
 	LabelArrtop = 0;
 	ImageArrtop = 0;
+	SliderArrtop = 0;
 	bIsPaused = false;
 	bZoom = true;
 	factor = 1.0f;
@@ -130,6 +131,7 @@ void GameScreen::Render() {
 				PC->CountriesArr[PC->player_index]->Stock.Liquor,
 				PC->CountriesArr[PC->player_index]->Stock.Airship };
 			static_cast<IndustryScreen*>(ActiveScreen)->UpdateText(Res);
+			static_cast<FactoriesScreen*>(ActiveScreen)->UpdateFactoriesStats(static_cast<FactoriesScreen*>(ActiveScreen)->SliderArr[0]->Values.Value);
 		}
 		ActiveScreen->Render();
 	}
@@ -166,6 +168,10 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 		if (bHasStatePreview == false) {
 			flag = true;
 		}
+	}
+
+	if (bHasActiveScreen == true) {
+		ActiveScreen->Handle_Input(ev);
 	}
 
 	//Handle clicks on the map

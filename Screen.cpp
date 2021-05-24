@@ -13,6 +13,10 @@ Screen::~Screen(){
 	for (int x = 0; x < ImageArrtop; x++) {
 		delete ImageArr[x];
 	}
+
+	for (int x = 0; x < SliderArrtop; x++) {
+		delete SliderArr[x];
+	}
 	//Free all the allocated memory
 	SDL_DestroyTexture(texture);
 }
@@ -36,6 +40,12 @@ void Screen::Render(){
 	for (int x = 0; x < ImageArrtop; x++) {
 		ImageArr[x]->RenderImage();
 	}
+
+	//Calls the render method for every active slider
+	for (int x = 0; x < SliderArrtop; x++) {
+		SliderArr[x]->RenderSlider();
+	}
+
 	//Calls the render method for every active button
 	for (int x = 0; x < ButtonArrtop; x++) {
 		ButtonArr[x]->RenderButton();
@@ -50,6 +60,10 @@ void Screen::Render(){
 void Screen::Handle_Input(SDL_Event* ev){
 	for (int x = 0; x < ButtonArrtop; x++) {
 		ButtonArr[x]->button_process_event(ev);
+	}
+
+	for (int x = 0; x < SliderArrtop; x++) {
+		SliderArr[x]->HandleInput(ev);
 	}
 }
 

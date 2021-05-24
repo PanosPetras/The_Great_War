@@ -11,4 +11,5 @@ EconomyScreen::EconomyScreen(SDL_Renderer* r, int Width, int Height, std::functi
 	LabelArrtop = 0;
 	ImageArrtop = 0;
 	ButtonArrtop = 0;
+	SliderArrtop = 0;
 }

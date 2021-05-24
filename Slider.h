@@ -8,7 +8,7 @@
 class Slider {
 public:
 	//Constructor, initializes the values
-	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue, int maxvalue);
+	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100);
 
 	//Destructor, frees up the memory
 	~Slider();

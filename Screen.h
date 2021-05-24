@@ -8,6 +8,7 @@
 #include "Button.h"
 #include "Label.h"
 #include "Image.h"
+#include "Slider.h"
 
 class Screen{
 public:
@@ -34,6 +35,12 @@ public:
 
 	//This is the count of the Labels being displayed
 	int LabelArrtop;
+
+	//Allows the creation of up to 35 Labels on the screen
+	Slider* SliderArr[5];
+
+	//This is the count of the Labels being displayed
+	int SliderArrtop;
 
 	//Stores the main window's dimensions
 	int WindowSize[2];
