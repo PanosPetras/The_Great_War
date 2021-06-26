@@ -19,7 +19,7 @@ FactoriesScreen::FactoriesScreen(SDL_Renderer* r, int Width, int Height, std::ve
 			for (int i = 0; i < 4; i++) {
 				if (Factories[x][i] != "") {
 					path = "Icons/Goods/" + Factories[x][i] + ".png";
-					ImageArr[ImageArrtop] = new Image(r, path.c_str(), 447 + (x % 2) * 650, 285 + int(x / 2) * 300, 36, 36);
+					ImageArr[ImageArrtop] = new Image(renderer, path.c_str(), 447 + (x % 2) * 650 + i * 100, 285 + int(x / 2) * 300, 36, 36);
 					ImageArrtop++;
 				}
 			}
@@ -32,7 +32,7 @@ FactoriesScreen::FactoriesScreen(SDL_Renderer* r, int Width, int Height, std::ve
 
 	ButtonArrtop = 0;
 
-	SliderArr[0] = new Slider(r, int(Width * 0.5), int(Height * 0.5), 150, 25, 0, 100);
+	SliderArr[0] = new Slider(r, int(Width * 0.45), int(Height * 0.94), int(1080 * 0.1), int(1920 * 0.014), 0, 100);
 	SliderArrtop = 1;
 
 	index = 0;
@@ -45,13 +45,19 @@ void FactoriesScreen::UpdateFactoriesStats(int Value){
 	index = Value;
 	for (int x = 0; x < 6; x++) {
 		if (StateNames[x + index * 2] != "") {
+			if (LabelArr[x] != nullptr) {
+				delete LabelArr[x];
+			}
 			LabelArr[x] = new Label(renderer, StateNames[x + index * 2].c_str(), 32, 420 + (x % 2) * 650, 140 + int(x / 2) * 300);
 			LabelArrtop++;
 
 			for (int i = 0; i < 4; i++) {
 				if (StateFactories[x + index * 2][i] != "") {
 					path = "Icons/Goods/" + StateFactories[x + index * 2][i] + ".png";
-					ImageArr[ImageArrtop] = new Image(renderer, path.c_str(), 447 + (x % 2) * 650, 285 + int(x / 2) * 300, 36, 36);
+					if (ImageArr[ImageArrtop] != nullptr) {
+						delete ImageArr[ImageArrtop];
+					}
+					ImageArr[ImageArrtop] = new Image(renderer, path.c_str(), 447 + (x % 2) * 650 + i * 100, 285 + int(x / 2) * 300, 36, 36);
 					ImageArrtop++;
 				}
 			}

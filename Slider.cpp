@@ -40,7 +40,6 @@ int Slider::HandleInput(SDL_Event* ev){
 	}
 	if (bmousepressed == true) {
 		Values.Value = int((marker_rect.x - bg_rect.x - bg_rect.w * 0.09) / (bg_rect.w * 0.76) * Values.Maximum);
-		std::cout << Values.Value << std::endl;
 		if (ev->button.x > bg_rect.x + bg_rect.w * 0.85) {
 			if (marker_rect.x != bg_rect.x + bg_rect.w * 0.85) {
 				marker_rect.x = int(bg_rect.x + bg_rect.w * 0.85);

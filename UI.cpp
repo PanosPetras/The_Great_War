@@ -1,6 +1,6 @@
 #include "ScreenList.h"
 
-UI::UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController* PC, std::function<void(Screen*)> fpl){
+UI::UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController* PC, std::function<void(Screen*, std::string)> fpl){
 	renderer = r;
 	WindowSize[0] = Width;
 	WindowSize[1] = Height;
@@ -65,7 +65,7 @@ void UI::Render(){
 	std::string str = std::to_string(PCref->Date.Day) + "-" + std::to_string(PCref->Date.Month) + "-" + std::to_string(PCref->Date.Year);
 	if (Date->text != str) {
 		bDateUpdated = true;
-	} else {
+	} else if (bDateUpdated == true) {
 		bDateUpdated = false;
 	}
 	Date->ChangeText(str.c_str());
@@ -161,10 +161,10 @@ void UI::OpenIndustryScreen(){
 	}
 
 	Screen* NS = new FactoriesScreen(renderer, WindowSize[0], WindowSize[1], str, str1, NULL, NULL);
-	ChangeScreenFunc(NS);
+	ChangeScreenFunc(NS, "FactoryScreen");
 }
 
 void UI::OpenEconomyScreen() {
 	Screen* NS = new EconomyScreen(renderer, WindowSize[0], WindowSize[1], NULL, NULL);
-	ChangeScreenFunc(NS);
+	ChangeScreenFunc(NS, "EconomyScreen");
 }

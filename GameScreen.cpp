@@ -24,7 +24,7 @@ GameScreen::GameScreen(SDL_Renderer* r, int Width, int Height, const char* tag, 
 	QuitFunc = fp;
 
 	PC = new PlayerController(renderer, tag);
-	auto change = std::bind(&GameScreen::ChangeActiveScreen, this, std::placeholders::_1);
+	auto change = std::bind(&GameScreen::ChangeActiveScreen, this, std::placeholders::_1, std::placeholders::_2);
 	overlay = new UI(r, Width, Height, tag, PC, change);
 
 	StateViewingScreen = nullptr;
@@ -34,7 +34,7 @@ GameScreen::GameScreen(SDL_Renderer* r, int Width, int Height, const char* tag, 
 }
 
 GameScreen::~GameScreen(){
-	delete PC;
+	delete PC, overlay;
 
 	//Delete all items created by the screen in order to avoid memory leaks
 	for (int x = 0; x < ButtonArrtop; x++) {
@@ -51,7 +51,6 @@ GameScreen::~GameScreen(){
 	if (bIsPaused == true) {
 		delete PM;
 	}
-	delete overlay;
 	if (bHasActiveScreen == true) {
 		delete ActiveScreen;
 	}
@@ -99,7 +98,7 @@ void GameScreen::Render() {
 	if (bHasActiveScreen == false) {
 		this->SetBackground();
 	} else {
-		if (overlay->bDateUpdated == true) {
+		if (overlay->bDateUpdated == true && ScreenID == "IndustryScreen") {
 			int Res[30] = { PC->CountriesArr[PC->player_index]->Stock.Coal,
 				PC->CountriesArr[PC->player_index]->Stock.Oil,
 				PC->CountriesArr[PC->player_index]->Stock.Timber,
@@ -131,8 +130,12 @@ void GameScreen::Render() {
 				PC->CountriesArr[PC->player_index]->Stock.Liquor,
 				PC->CountriesArr[PC->player_index]->Stock.Airship };
 			static_cast<IndustryScreen*>(ActiveScreen)->UpdateText(Res);
+		}	
+		if (ScreenID == "FactoryScreen") {
+			int num = int(static_cast<FactoriesScreen*>(ActiveScreen)->SliderArr[0]->Values.Value / PC->CountriesArr[PC->player_index]->OwnedStates.size() * 100);
 			static_cast<FactoriesScreen*>(ActiveScreen)->UpdateFactoriesStats(static_cast<FactoriesScreen*>(ActiveScreen)->SliderArr[0]->Values.Value);
 		}
+
 		ActiveScreen->Render();
 	}
 
@@ -140,6 +143,7 @@ void GameScreen::Render() {
 	for (int x = 0; x < ImageArrtop; x++) {
 		ImageArr[x]->RenderImage();
 	}
+
 	//Calls the render method for every active button
 	for (int x = 0; x < ButtonArrtop; x++) {
 		ButtonArr[x]->RenderButton();
@@ -334,7 +338,7 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 	}
 }
 
-void GameScreen::ChangeActiveScreen(Screen* NewScreen){
+void GameScreen::ChangeActiveScreen(Screen* NewScreen, std::string ID){
 	if (bHasActiveScreen == false) {
 		bHasActiveScreen = true;
 		if (bHasStatePreview == true) {
@@ -343,7 +347,7 @@ void GameScreen::ChangeActiveScreen(Screen* NewScreen){
 	} else {
 		delete ActiveScreen;
 	}
-
+	ScreenID = ID;
 	ActiveScreen = NewScreen;
 }
 
@@ -351,6 +355,7 @@ void GameScreen::CloseActiveScreen(){
 	if (bHasActiveScreen == true) {
 		bHasActiveScreen = false;
 		delete ActiveScreen;
+		ScreenID = "0";
 	}
 }
 

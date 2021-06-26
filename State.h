@@ -51,7 +51,7 @@ public:
         short int b;
     } Color;
 
-    //This is the resources contained within one stat
+    //This is the resources contained within one state
     struct {
         short int Coal;
         short int Oil;

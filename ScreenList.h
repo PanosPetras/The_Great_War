@@ -11,7 +11,7 @@
 
 class UI {
 public:
-    UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController* PC, std::function<void(Screen*)> fpl = NULL);
+    UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController* PC, std::function<void(Screen*, std::string)> fpl = NULL);
     //Destructor
     ~UI();
 
@@ -48,7 +48,7 @@ public:
 
     PlayerController* PCref;
 
-    std::function<void(Screen*)> ChangeScreenFunc;
+    std::function<void(Screen*, std::string)> ChangeScreenFunc;
 
     void OpenIndustryScreen();
 
@@ -150,11 +150,12 @@ public:
     SDL_Texture* assets;
 
     void HandleMouseMovement(SDL_Event* ev);
-    void ChangeActiveScreen(Screen* NewScreen);
+    void ChangeActiveScreen(Screen* NewScreen, std::string ID);
     void CloseActiveScreen();
     void CloseScreenPreview();
 
     bool bHasActiveScreen;
+    std::string ScreenID;
     Screen* ActiveScreen;
 };
 
