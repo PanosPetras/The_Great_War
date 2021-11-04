@@ -39,7 +39,9 @@ int Slider::HandleInput(SDL_Event* ev){
 		bmousepressed = false;
 	}
 	if (bmousepressed == true) {
-		Values.Value = int((marker_rect.x - bg_rect.x - bg_rect.w * 0.09) / (bg_rect.w * 0.76) * Values.Maximum);
+		if (bg_rect.w != 0) {
+			Values.Value = int((marker_rect.x - bg_rect.x - bg_rect.w * 0.09) / (bg_rect.w * 0.76) * Values.Maximum);
+		}
 		if (ev->button.x > bg_rect.x + bg_rect.w * 0.85) {
 			if (marker_rect.x != bg_rect.x + bg_rect.w * 0.85) {
 				marker_rect.x = int(bg_rect.x + bg_rect.w * 0.85);

@@ -130,10 +130,6 @@ void GameScreen::Render() {
 				PC->CountriesArr[PC->player_index]->Stock.Liquor,
 				PC->CountriesArr[PC->player_index]->Stock.Airship };
 			static_cast<IndustryScreen*>(ActiveScreen)->UpdateText(Res);
-		}	
-		if (ScreenID == "FactoryScreen") {
-			int num = int(static_cast<FactoriesScreen*>(ActiveScreen)->SliderArr[0]->Values.Value / PC->CountriesArr[PC->player_index]->OwnedStates.size() * 100);
-			static_cast<FactoriesScreen*>(ActiveScreen)->UpdateFactoriesStats(static_cast<FactoriesScreen*>(ActiveScreen)->SliderArr[0]->Values.Value);
 		}
 
 		ActiveScreen->Render();

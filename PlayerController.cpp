@@ -190,7 +190,7 @@ int PlayerController::AdvanceDate(void* ref){
 		reference->Date.Day++;
 
 		//Execute the tick function
-		//reference->Tick();
+		reference->Tick();
 
 		//Check whether the month has changed
 		if (reference->Date.Day == reference->Date.MonthDays[reference->Date.Month - 1] + 1) {

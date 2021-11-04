@@ -12,6 +12,9 @@
 
 class Screen{
 public:
+	//Constructor
+	Screen(SDL_Renderer* r, int Width, int Height);
+
 	//Destructor
 	virtual ~Screen();
 
