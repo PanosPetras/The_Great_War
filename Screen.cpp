@@ -1,5 +1,9 @@
 #include "Screen.h"
 
+Screen::Screen(SDL_Renderer* r, int Width, int Height){
+	this->renderer = r;
+}
+
 Screen::~Screen(){
 	//Delete all items created by the screen in order to avoid memory leaks
 	for (int x = 0; x < ButtonArrtop; x++) {
