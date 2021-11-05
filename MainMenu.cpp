@@ -1,7 +1,6 @@
 #include "ScreenList.h"
 
-MainMenu::MainMenu(SDL_Renderer* r, int Width, int Height, std::function<void()> fp, std::function<void(Screen*)> fpl) {
-	renderer = r;
+MainMenu::MainMenu(SDL_Renderer* r, int Width, int Height, std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r, Width, Height) {
 	bHasBackground = true;
 	SetupBg("Backgrounds/test.png");
 	auto change = std::bind(&MainMenu::StartGame, this);
@@ -15,8 +14,6 @@ MainMenu::MainMenu(SDL_Renderer* r, int Width, int Height, std::function<void()>
 	LabelArrtop = 0;
 	ImageArrtop = 0;
 	SliderArrtop = 0;
-	WindowSize[0] = Width;
-	WindowSize[1] = Height;
 	ChangeScreenFunc = fpl;
 	QuitFunc = fp;
 }

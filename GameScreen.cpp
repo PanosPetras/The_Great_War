@@ -1,9 +1,6 @@
 #include "ScreenList.h"
 
-GameScreen::GameScreen(SDL_Renderer* r, int Width, int Height, const char* tag,  std::function<void()> fp, std::function<void(Screen*)> fpl) {
-	renderer = r;
-	WindowSize[0] = Height;
-	WindowSize[1] = Width;
+GameScreen::GameScreen(SDL_Renderer* r, int Width, int Height, const char* tag,  std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r, Width, Height) {
 	bHasBackground = true;
 	ButtonArrtop = 0;
 	LabelArrtop = 0;
@@ -70,7 +67,7 @@ void GameScreen::Pause() {
 		}
 		else {
 			auto unpause = std::bind(&GameScreen::Pause, this);
-			PM = new PauseMenu(renderer, WindowSize[1], WindowSize[0], QuitFunc, unpause, ChangeScreenFunc);
+			PM = new PauseMenu(renderer, WindowSize[0], WindowSize[1], QuitFunc, unpause, ChangeScreenFunc);
 			bIsPaused = true;
 			if (PC->Date.bIsPaused == false) {
 				overlay->PauseDate();
@@ -80,7 +77,7 @@ void GameScreen::Pause() {
 	}
 }
 
-void GameScreen::SetBackground() {
+void GameScreen::RenderBackground() {
 	/*Check if the rendered Image must be zoomed.
 	If it musn't, then we just cope the image to the surface.
 	If it does, then we create a rectangle and give it the
@@ -96,9 +93,9 @@ void GameScreen::SetBackground() {
 void GameScreen::Render() {
 	//Calls the method responsible for rendering the background
 	if (bHasActiveScreen == false) {
-		this->SetBackground();
+		this->RenderBackground();
 	} else {
-		if (overlay->bDateUpdated == true && ScreenID == "IndustryScreen") {
+		if (/*overlay->bDateUpdated == true && */ScreenID == "IndustryScreen") {
 			int Res[30] = { PC->CountriesArr[PC->player_index]->Stock.Coal,
 				PC->CountriesArr[PC->player_index]->Stock.Oil,
 				PC->CountriesArr[PC->player_index]->Stock.Timber,
@@ -201,11 +198,11 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 
 						//Create the StatePreview screen
 						if (bHasStatePreview == false) {
-							StateViewingScreen = new StatePreview(renderer, WindowSize[1], WindowSize[0], PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, res, PC->StatesArr[u]->State_Population, fcs, close);
+							StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, res, PC->StatesArr[u]->State_Population, fcs, close);
 							bHasStatePreview = true;
 						} else {
 							delete StateViewingScreen;
-							StateViewingScreen = new StatePreview(renderer, WindowSize[1], WindowSize[0], PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, res, PC->StatesArr[u]->State_Population, fcs, close);
+							StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, res, PC->StatesArr[u]->State_Population, fcs, close);
 						}
 						break;
 					}

@@ -31,8 +31,6 @@ UI::UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController
 	SpeedBg = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.7), 0, int(Width * 0.222), int(Height * 0.04));
 	SpeedImg = new Image(r, "Icons/1-Speed.png", int(Width * 0.735), 0, int(Width * 0.022), int(Height * 0.04));
 
-	bDateUpdated = false;
-
 	//A reference to the player controller
 	PCref = PC;
 
@@ -41,7 +39,7 @@ UI::UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController
 
 UI::~UI(){
 	//Delete all objects from memory before we destroy this object
-	delete flag, flagbg;
+	delete flag, flagbg, Balance;
 	for (int x = 0; x < 5; x++) {
 		delete Buttons[x];
 	}
@@ -64,11 +62,8 @@ void UI::Render(){
 	SpeedBg->RenderImage();
 	std::string str = std::to_string(PCref->Date.Day) + "-" + std::to_string(PCref->Date.Month) + "-" + std::to_string(PCref->Date.Year);
 	if (Date->text != str) {
-		bDateUpdated = true;
-	} else if (bDateUpdated == true) {
-		bDateUpdated = false;
+		Date->ChangeText(str.c_str());
 	}
-	Date->ChangeText(str.c_str());
 	Date->RenderLabel();
 	SpeedImg->RenderImage();
 	for (int x = 0; x < 3; x++) {

@@ -1,11 +1,7 @@
 #include "ScreenList.h"
 
 
-StatePreview::StatePreview(SDL_Renderer* r, int Width, int Height, std::string StateName, std::string Controller, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc) {
-	renderer = r;
-	WindowSize[0] = Width;
-	WindowSize[1] = Height;
-
+StatePreview::StatePreview(SDL_Renderer* r, int Width, int Height, std::string StateName, std::string Controller, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc) : Screen(r, Width, Height) {
 	LabelArr[0] = new Label(r, StateName.c_str(), 32, 0, int(WindowSize[1] * .55));
 	LabelArr[1] = new Label(r, std::to_string(res[7]).c_str(), 32, int(Width * 0.03), int(WindowSize[1] * 0.6));
 	LabelArr[2] = new Label(r, std::to_string(res[1]).c_str(), 32, int(Width * 0.03), int(WindowSize[1] * 0.65));

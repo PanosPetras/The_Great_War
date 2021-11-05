@@ -2,6 +2,8 @@
 
 Screen::Screen(SDL_Renderer* r, int Width, int Height){
 	this->renderer = r;
+	WindowSize[0] = Width;
+	WindowSize[1] = Height; 
 }
 
 Screen::~Screen(){
@@ -25,7 +27,7 @@ Screen::~Screen(){
 	SDL_DestroyTexture(texture);
 }
 
-void Screen::SetBackground() {
+void Screen::RenderBackground() {
 	/*Check if the rendered Image must be zoomed.
 	If it musn't, then we just cope the image to the surface.
 	If it does, then we create a rectangle and give it the
@@ -37,7 +39,7 @@ void Screen::SetBackground() {
 void Screen::Render(){
 	//Calls the method responsible for rendering the background
 	if (bHasBackground) {
-		this->SetBackground();
+		this->RenderBackground();
 	}
 
 	//Calls the render method for every active image

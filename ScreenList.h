@@ -11,11 +11,11 @@
 
 class UI {
 public:
+    //Constructor
     UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController* PC, std::function<void(Screen*, std::string)> fpl = NULL);
+
     //Destructor
     ~UI();
-
-    bool bDateUpdated;
 
     //This is a reference to the main window's renderer
     SDL_Renderer* renderer;
@@ -29,26 +29,27 @@ public:
     //Handles input events
     void Handle_Input(SDL_Event* ev);
 
-    void IncreaseSpeed();
-    void DecreaseSpeed();
-    void PauseDate();
-
     Label* Date;
-
-    Button* DateButtons[3];
+    Label* Balance;
 
     Image* SpeedBg;
     Image* SpeedImg;
-
-    Button* flag;
+    Image* flagbg;
 
     Button* Buttons[5];
-
-    Image* flagbg;
+    Button* DateButtons[3];
+    Button* flag;
 
     PlayerController* PCref;
 
     std::function<void(Screen*, std::string)> ChangeScreenFunc;
+
+    //Functions
+
+    //Date related
+    void IncreaseSpeed();
+    void DecreaseSpeed();
+    void PauseDate();
 
     void OpenIndustryScreen();
 
@@ -98,7 +99,7 @@ public:
 
     void Pause();
 
-    void SetBackground() override;
+    void RenderBackground() override;
     void Render() override;
 
     //Handles input events

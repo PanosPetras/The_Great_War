@@ -1,10 +1,7 @@
 #include "ScreenList.h"
 
-PauseMenu::PauseMenu(SDL_Renderer* r, int Width, int Height, std::function<void()> fp, std::function<void()> UnpauseF, std::function<void(Screen*)> fpl) {
-	this->renderer = r;
+PauseMenu::PauseMenu(SDL_Renderer* r, int Width, int Height, std::function<void()> fp, std::function<void()> UnpauseF, std::function<void(Screen*)> fpl) : Screen(r, Width, Height) {
 	bHasBackground = false;
-	WindowSize[0] = Height;
-	WindowSize[1] = Width;
 	auto change = std::bind(&PauseMenu::ReturnToMainMenu, this);
 	ImageArr[0] = new Image(renderer, "Backgrounds/Pause_Menu.png", int(Width * 0.25), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
 	ButtonArr[0] = new Button(r, int(Width * 0.36), int(Height * 0.35), int(Width * 0.08), int(Height * 0.06), "Buttons/Menus/Back", UnpauseF);
@@ -21,6 +18,6 @@ PauseMenu::PauseMenu(SDL_Renderer* r, int Width, int Height, std::function<void(
 }
 
 void PauseMenu::ReturnToMainMenu(){
-	MainMenu* MM = new MainMenu(renderer, WindowSize[1], WindowSize[0], QuitFunc, ChangeScreenFunc);
+	MainMenu* MM = new MainMenu(renderer, WindowSize[0], WindowSize[1], QuitFunc, ChangeScreenFunc);
 	ChangeScreenFunc(MM);
 }

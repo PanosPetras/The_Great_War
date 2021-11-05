@@ -1,11 +1,8 @@
 #include "ScreenList.h"
 
-CountrySelection::CountrySelection(SDL_Renderer* r, int Width, int Height, std::function<void()> UnpauseF, std::function<void(Screen*)> fpl) {
-	this->renderer = r;
+CountrySelection::CountrySelection(SDL_Renderer* r, int Width, int Height, std::function<void()> UnpauseF, std::function<void(Screen*)> fpl) : Screen(r, Width, Height) {
 	bHasBackground = true;
 	SetupBg("Backgrounds/CountrySelection.png");
-	WindowSize[0] = Width;
-	WindowSize[1] = Height;
 	auto change = std::bind(&CountrySelection::StartGame, this);
 	ButtonArr[0] = new Button(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Buttons/Menus/Confirm", change, SDLK_KP_ENTER);
 	change = std::bind(&CountrySelection::Back, this);

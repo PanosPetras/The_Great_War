@@ -51,7 +51,7 @@ public:
 	bool bHasBackground;
 
 	//Sets the screen's background
-	virtual void SetBackground();
+	virtual void RenderBackground();
 
 	//Renders all of the screen's components
 	virtual void Render();

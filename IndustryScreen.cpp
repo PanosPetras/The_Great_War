@@ -1,11 +1,8 @@
 #include "ScreenList.h"
 
-IndustryScreen::IndustryScreen(SDL_Renderer* r, int Width, int Height, int Stockpile[30], std::function<void()> fp, std::function<void(Screen*)> fpl){
-	this->renderer = r;
+IndustryScreen::IndustryScreen(SDL_Renderer* r, int Width, int Height, int Stockpile[30], std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r, Width, Height) {
 	bHasBackground = true;
 	SetupBg("Backgrounds/Industry1.png");
-	WindowSize[0] = Height;
-	WindowSize[1] = Width;
 	ButtonArrtop = 0;
 	LabelArr[0] = new Label(r, std::to_string(Stockpile[0]).c_str(), 32, int(Width * 0.24), int(Height * 0.165));
 	LabelArr[1] = new Label(r, std::to_string(Stockpile[5]).c_str(), 32, int(Width * 0.365), int(Height * 0.165));
