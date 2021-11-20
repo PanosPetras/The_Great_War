@@ -7,9 +7,9 @@ C++ version: C++/11
 
 Starting date: January 1st 1910
 
-The world is in turmoil, tensions between the great powers of europe are rising.
-The balkan Nation-states are in a state of constant war.
-This might spark a greater conflict that will change europe forever.
+The world is in turmoil, tensions between the great powers of Europe are rising.
+The Balkan Nation-states are in a state of constant war.
+This might spark a greater conflict that will change the World forever.
 
 "One day the great European War will come out of some damned foolish thing in the Balkans."
 
@@ -27,7 +27,7 @@ In this time of crisis you take control over one of the following countries:
 
 The game is meant to be played in various ways.
 A real life economy simulation is currently in progress.
-The player will be producing different kinds of good
+The player will be producing different kinds of goods
 in order to sustain his Country's population and it's military.
 Excess goods will be sold on the market with prices that will change
 based on supply and demand.
