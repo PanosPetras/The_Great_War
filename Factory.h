@@ -6,7 +6,6 @@
 struct Factory {
 public:
 	int size;
-	int cost;
 	virtual void Tick();
 	std::string Type;
 

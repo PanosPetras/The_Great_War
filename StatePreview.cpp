@@ -1,7 +1,7 @@
 #include "ScreenList.h"
 
 
-StatePreview::StatePreview(SDL_Renderer* r, int Width, int Height, std::string StateName, std::string Controller, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc) : Screen(r, Width, Height) {
+StatePreview::StatePreview(SDL_Renderer* r, int Width, int Height, std::string StateName, std::string Controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc) : Screen(r, Width, Height) {
 	LabelArr[0] = new Label(r, StateName.c_str(), 32, 0, int(WindowSize[1] * .55));
 	LabelArr[1] = new Label(r, std::to_string(res[7]).c_str(), 32, int(Width * 0.03), int(WindowSize[1] * 0.6));
 	LabelArr[2] = new Label(r, std::to_string(res[1]).c_str(), 32, int(Width * 0.03), int(WindowSize[1] * 0.65));
@@ -28,6 +28,9 @@ StatePreview::StatePreview(SDL_Renderer* r, int Width, int Height, std::string S
 	}
 
 	ButtonArr[0] = new Button(r, int(Width*.2) - int((32 * WindowSize[0] / 1920) / 2), int(Height * .55) - int((32 * WindowSize[1] / 1080) / 2), int(32 * WindowSize[0] /1920), int(32 * WindowSize[1] / 1080), "Buttons/UI/Close", CloseFunc);
+	//ButtonArr[1] = new Button();
 	ButtonArrtop = 1;
 	SliderArrtop = 0;
+
+	PCref = PC;
 }
