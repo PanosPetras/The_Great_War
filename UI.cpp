@@ -14,9 +14,10 @@ UI::UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController
 	auto change = std::bind(&UI::OpenEconomyScreen, this);
 	Buttons[1] = new Button(r, int(Width * 0.15), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Economy", change, SDLK_e);
 	change = std::bind(&UI::OpenIndustryScreen, this);
-	Buttons[2] = new Button(r, int(Width * 0.2), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Industry", change, SDLK_r);
-	Buttons[3] = new Button(r, int(Width * 0.25), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Diplomacy", NULL, SDLK_t);
-	Buttons[4] = new Button(r, int(Width * 0.3), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Military", NULL, SDLK_y);
+	Buttons[3] = new Button(r, int(Width * 0.2), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Industry", change, SDLK_r);
+	Buttons[2] = new Button(r, int(Width * 0.25), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Trade", NULL, SDLK_t);
+	Buttons[4] = new Button(r, int(Width * 0.3), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Diplomacy", NULL, SDLK_y);
+	Buttons[5] = new Button(r, int(Width * 0.35), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Military", NULL, SDLK_u);
 
 	flagbg = new Image(r, "Backgrounds/FlagBg.png", 0, 0, int(Width * 0.06), int(Height * 0.06));
 

@@ -36,7 +36,7 @@ public:
     Image* SpeedImg;
     Image* flagbg;
 
-    Button* Buttons[5];
+    Button* Buttons[6];
     Button* DateButtons[3];
     Button* flag;
 
@@ -219,18 +219,6 @@ public:
     void UpdateText(int Stockpile[29]);
 };
 
-#endif
-
-#ifndef StatePreview_H
-#define StatePreview_H
-
-class StatePreview : public Screen {
-public:
-    StatePreview(SDL_Renderer* r, int Width, int Height, std::string StateName, std::string Controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc);
-
-    PlayerController* PCref;
-};
-
 #endif 
 
 #ifndef EconomicsScreen_H
@@ -249,6 +237,28 @@ public:
 class OpenFactoryScreen : public Screen {
 public:
     OpenFactoryScreen(SDL_Renderer* r, int Width, int Height, std::function<void()> fp, std::function<void(Screen*)> fpl);
+};
+
+#endif
+
+#ifndef StatePreview_H
+#define StatePreview_H
+
+class StatePreview : public Screen {
+public:
+    OpenFactoryScreen* OFS = nullptr;
+
+    StatePreview(SDL_Renderer* r, int Width, int Height, std::string StateName, std::string Controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc);
+
+    ~StatePreview();
+
+    PlayerController* PCref;
+
+    void Render() override;
+
+    void Handle_Input(SDL_Event* ev) override;
+
+    void OpenOFS();
 };
 
 #endif

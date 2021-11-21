@@ -160,9 +160,9 @@ void GameScreen::Render() {
 
 void GameScreen::Handle_Input(SDL_Event* ev) {
 	bool flag = false;
-	if (bHasStatePreview == true) {
+	if (bHasStatePreview) {
 		StateViewingScreen->Handle_Input(ev);
-		if (bHasStatePreview == false) {
+		if (!bHasStatePreview) {
 			flag = true;
 		}
 	}
@@ -172,55 +172,62 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 	}
 
 	//Handle clicks on the map
-	if (bHasActiveScreen == false && flag == false && ev->type == SDL_MOUSEBUTTONDOWN && ev->button.button == SDL_BUTTON_LEFT && ev->button.y > WindowSize[0] * 0.1 && bIsPaused == false && (bHasStatePreview == false || (ev->button.x > WindowSize[1] * .2 + int((32 * WindowSize[1] / 1920) / 2) || ev->button.y < WindowSize[0] * 0.55 - int((32 * WindowSize[0] / 1080) / 2)))) {
-		int x = Cam_Width + int(ev->button.x / factor) - 5384;
-		int y = Cam_Height + int(ev->button.y / factor);
-		SDL_Color rgb = CD::getcolor(PC->provinces, x, y);
+	if (ev->type == SDL_MOUSEBUTTONDOWN && ev->button.button == SDL_BUTTON_LEFT) {
+		if (bHasActiveScreen == false &&
+			flag == false &&
+			ev->button.y > WindowSize[0] * 0.06 &&
+			bIsPaused == false && (bHasStatePreview == false || (ev->button.y < WindowSize[1] * .535 || ev->button.x > WindowSize[0] * .208))) {
+			int x = Cam_Width + int(ev->button.x / factor) - 5384;
+			int y = Cam_Height + int(ev->button.y / factor);
+			SDL_Color rgb = CD::getcolor(PC->provinces, x, y);
 
-		for (int u = 0; u < 2703; u++) {
-			if (PC->StatesArr[u]->Color.r == rgb.r) {
-				if (PC->StatesArr[u]->Color.g == rgb.g) {
-					if (PC->StatesArr[u]->Color.b == rgb.b) {
+			for (int u = 0; u < 2703; u++) {
+				if (PC->StatesArr[u]->Color.r == rgb.r) {
+					if (PC->StatesArr[u]->Color.g == rgb.g) {
+						if (PC->StatesArr[u]->Color.b == rgb.b) {
 
-						//Access the state's factories
-						std::string fcs[4];
-						for (int i = 0; i < 4; i++) {
-							if (PC->StatesArr[u]->State_Factories[i] != nullptr) {
-								fcs[i] = PC->StatesArr[u]->State_Factories[i]->Type;
-							} else {
-								fcs[i] = "";
+							//Access the state's factories
+							std::string fcs[4];
+							for (int i = 0; i < 4; i++) {
+								if (PC->StatesArr[u]->State_Factories[i] != nullptr) {
+									fcs[i] = PC->StatesArr[u]->State_Factories[i]->Type;
+								}
+								else {
+									fcs[i] = "";
+								}
 							}
-						}
 
-						//Access the state's resources
-						int res[8] = { PC->StatesArr[u]->Resources.Coal, PC->StatesArr[u]->Resources.Cotton, PC->StatesArr[u]->Resources.Fruit, PC->StatesArr[u]->Resources.Grain, PC->StatesArr[u]->Resources.Iron, PC->StatesArr[u]->Resources.Oil, PC->StatesArr[u]->Resources.Rubber, PC->StatesArr[u]->Resources.Timber };
-						auto close = std::bind(&GameScreen::Pause, this);
+							//Access the state's resources
+							int res[8] = { PC->StatesArr[u]->Resources.Coal, PC->StatesArr[u]->Resources.Cotton, PC->StatesArr[u]->Resources.Fruit, PC->StatesArr[u]->Resources.Grain, PC->StatesArr[u]->Resources.Iron, PC->StatesArr[u]->Resources.Oil, PC->StatesArr[u]->Resources.Rubber, PC->StatesArr[u]->Resources.Timber };
+							auto close = std::bind(&GameScreen::Pause, this);
 
-						//Create the StatePreview screen
-						if (bHasStatePreview == false) {
-							StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
-							bHasStatePreview = true;
-						} else {
-							delete StateViewingScreen;
-							StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
+							//Create the StatePreview screen
+							if (bHasStatePreview == false) {
+								StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
+								bHasStatePreview = true;
+							}
+							else {
+								delete StateViewingScreen;
+								StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
+							}
+							break;
 						}
-						break;
 					}
 				}
 			}
+			SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
+
+			SDL_Surface* Marker = IMG_Load("Icons/pin1.png");
+
+			SDL_Rect strect = { .x = -x - 5384 + 7, .y = -y + 24, .w = 5616 * 3 , .h = 2160 };
+			SDL_BlitSurface(Marker, &strect, base, NULL);
+
+			SDL_Texture* txt = SDL_CreateTextureFromSurface(renderer, base);
+			SDL_DestroyTexture(PC->overlay);
+			PC->overlay = txt;
+			SDL_FreeSurface(base);
+			SDL_FreeSurface(Marker);
 		}
-		SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
-
-		SDL_Surface* Marker = IMG_Load("Icons/pin1.png");
-
-		SDL_Rect strect = { .x = -x - 5384 + 7, .y = -y + 24, .w = 5616 * 3 , .h = 2160 };
-		SDL_BlitSurface(Marker, &strect, base, NULL);
-
-		SDL_Texture* txt = SDL_CreateTextureFromSurface(renderer, base);
-		SDL_DestroyTexture(PC->overlay);
-		PC->overlay = txt;
-		SDL_FreeSurface(base);
-		SDL_FreeSurface(Marker);
 	}
 
 	//Pause game if esc is pressed

@@ -28,9 +28,63 @@ StatePreview::StatePreview(SDL_Renderer* r, int Width, int Height, std::string S
 	}
 
 	ButtonArr[0] = new Button(r, int(Width*.2) - int((32 * WindowSize[0] / 1920) / 2), int(Height * .55) - int((32 * WindowSize[1] / 1080) / 2), int(32 * WindowSize[0] /1920), int(32 * WindowSize[1] / 1080), "Buttons/UI/Close", CloseFunc);
-	//ButtonArr[1] = new Button();
 	ButtonArrtop = 1;
+	if (Controller == PC->player_tag) {
+		auto change = std::bind(&StatePreview::OpenOFS, this);
+		ButtonArr[1] = new Button(r, int(Width * .058), int(Height * 0.95), int(160 * WindowSize[0] / 1920), int(38 * WindowSize[1] / 1080), "Buttons/UI/Open_Factory", change);
+		ButtonArrtop++;
+	}
 	SliderArrtop = 0;
 
 	PCref = PC;
+}
+
+StatePreview::~StatePreview(){
+	if (OFS != nullptr) {
+		delete OFS;
+	}
+}
+
+void StatePreview::Render(){
+	//Calls the method responsible for rendering the background
+	if (bHasBackground) {
+		this->RenderBackground();
+	}
+
+	//Calls the render method for every active image
+	for (int x = 0; x < ImageArrtop; x++) {
+		ImageArr[x]->RenderImage();
+	}
+
+	//Calls the render method for every active slider
+	for (int x = 0; x < SliderArrtop; x++) {
+		SliderArr[x]->RenderSlider();
+	}
+
+	//Calls the render method for every active button
+	for (int x = 0; x < ButtonArrtop; x++) {
+		ButtonArr[x]->RenderButton();
+	}
+
+	//Calls the render method for every active label
+	for (int x = 0; x < LabelArrtop; x++) {
+		LabelArr[x]->RenderLabel();
+	}
+
+	if (OFS != nullptr) {
+		OFS->Render();
+	}
+}
+
+void StatePreview::Handle_Input(SDL_Event* ev){
+	if (OFS != nullptr) {
+		OFS->Handle_Input(ev);
+	}
+	for (int x = 0; x < ButtonArrtop; x++) {
+		ButtonArr[x]->button_process_event(ev);
+	}
+}
+
+void StatePreview::OpenOFS(){
+	OFS = new OpenFactoryScreen(renderer, WindowSize[0], WindowSize[1], NULL, NULL);
 }
