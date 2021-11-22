@@ -6,9 +6,11 @@
 struct Factory {
 public:
 	int size;
+	int cost;
 	virtual void Tick();
 	std::string Type;
 
+	Factory(Stockpile* Target, std::string arg);
 	void ChangeOwner(Stockpile* NewStockpile);
 	Stockpile* TargetStockpile;
 };

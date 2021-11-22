@@ -3,14 +3,17 @@
 void Factory::Tick(){
 }
 
+Factory::Factory(Stockpile* Target, std::string arg){
+	size = 1;
+	ChangeOwner(Target);
+	Type = arg;
+}
+
 void Factory::ChangeOwner(Stockpile* NewStockpile){
 	TargetStockpile = NewStockpile;
 }
 
-CanningFactory::CanningFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "canned food";
+CanningFactory::CanningFactory(Stockpile* Target) : Factory(Target, "canned food") {
 }
 
 void CanningFactory::Tick(){
@@ -20,10 +23,7 @@ void CanningFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-LiquorDistillery::LiquorDistillery(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "liquor";
+LiquorDistillery::LiquorDistillery(Stockpile* Target) : Factory(Target, "liquor") {
 }
 
 void LiquorDistillery::Tick(){
@@ -33,10 +33,7 @@ void LiquorDistillery::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-AutomobileFactory::AutomobileFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "automobile";
+AutomobileFactory::AutomobileFactory(Stockpile* Target) : Factory(Target, "automobile") {
 }
 
 void AutomobileFactory::Tick(){
@@ -48,19 +45,13 @@ void AutomobileFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-Shipyard::Shipyard(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "merchant ship";
+Shipyard::Shipyard(Stockpile* Target) : Factory(Target, "merchant ship") {
 }
 
 void Shipyard::Tick(){
 }
 
-LumberMill::LumberMill(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "lumber";
+LumberMill::LumberMill(Stockpile* Target) : Factory(Target, "lumber") {
 }
 
 void LumberMill::Tick(){
@@ -69,10 +60,7 @@ void LumberMill::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-CementFactory::CementFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "cement";
+CementFactory::CementFactory(Stockpile* Target) : Factory(Target, "cement") {
 }
 
 void CementFactory::Tick(){
@@ -80,10 +68,7 @@ void CementFactory::Tick(){
 	TargetStockpile->Coal -= 4;
 }
 
-ClothesFactory::ClothesFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "clothes";
+ClothesFactory::ClothesFactory(Stockpile* Target) : Factory(Target, "clothes") {
 }
 
 void ClothesFactory::Tick(){
@@ -92,10 +77,7 @@ void ClothesFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-RadioFactory::RadioFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "radio";
+RadioFactory::RadioFactory(Stockpile* Target) : Factory(Target, "radio") {
 }
 
 void RadioFactory::Tick(){
@@ -104,10 +86,7 @@ void RadioFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-TelephoneFactory::TelephoneFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "telephone";
+TelephoneFactory::TelephoneFactory(Stockpile* Target) : Factory(Target, "telephone") {
 }
 
 void TelephoneFactory::Tick(){
@@ -116,10 +95,7 @@ void TelephoneFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-GlassFactory::GlassFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "glass";
+GlassFactory::GlassFactory(Stockpile* Target) : Factory(Target, "glass") {
 }
 
 void GlassFactory::Tick(){
@@ -127,10 +103,7 @@ void GlassFactory::Tick(){
 	TargetStockpile->Coal -= 4;
 }
 
-PaperMill::PaperMill(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "paper";
+PaperMill::PaperMill(Stockpile* Target) : Factory(Target, "paper") {
 }
 
 void PaperMill::Tick(){
@@ -139,10 +112,7 @@ void PaperMill::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-FurnitureFactory::FurnitureFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "furniture";
+FurnitureFactory::FurnitureFactory(Stockpile* Target) : Factory(Target, "furniture") {
 }
 
 void FurnitureFactory::Tick(){
@@ -151,10 +121,7 @@ void FurnitureFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-FuelRefinery::FuelRefinery(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "fuel";
+FuelRefinery::FuelRefinery(Stockpile* Target) : Factory(Target, "fuel") {
 }
 
 void FuelRefinery::Tick(){
@@ -163,10 +130,7 @@ void FuelRefinery::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-AmmunitionFactory::AmmunitionFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "ammunition";
+AmmunitionFactory::AmmunitionFactory(Stockpile* Target) : Factory(Target, "ammunition") {
 }
 
 void AmmunitionFactory::Tick(){
@@ -175,10 +139,7 @@ void AmmunitionFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-PlaneFactory::PlaneFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "plane";
+PlaneFactory::PlaneFactory(Stockpile* Target) : Factory(Target, "plane") {
 }
 
 void PlaneFactory::Tick(){
@@ -189,10 +150,7 @@ void PlaneFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-ExplosivesFactory::ExplosivesFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "explosives";
+ExplosivesFactory::ExplosivesFactory(Stockpile* Target) : Factory(Target, "explosives") {
 }
 
 void ExplosivesFactory::Tick(){
@@ -200,10 +158,7 @@ void ExplosivesFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-SmallArmsFactory::SmallArmsFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "small arms";
+SmallArmsFactory::SmallArmsFactory(Stockpile* Target) : Factory(Target, "small arms") {
 }
 
 void SmallArmsFactory::Tick(){
@@ -213,10 +168,7 @@ void SmallArmsFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-ArtilleryFactory::ArtilleryFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "artillery";
+ArtilleryFactory::ArtilleryFactory(Stockpile* Target) : Factory(Target, "artillery") {
 }
 
 void ArtilleryFactory::Tick(){
@@ -225,10 +177,7 @@ void ArtilleryFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-TankFactory::TankFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "tank";
+TankFactory::TankFactory(Stockpile* Target) : Factory(Target, "tank") {
 }
 
 void TankFactory::Tick(){
@@ -239,18 +188,16 @@ void TankFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-AirshipFactory::AirshipFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "airship";
+AirshipFactory::AirshipFactory(Stockpile* Target) : Factory(Target, "airship") {
 	days = 0;
 }
 
 void AirshipFactory::Tick(){
-	days++;
-	if (days == 153) {
+	if (days >= 153) {
 		TargetStockpile->Airship += 1 * size;
-		days = 0;
+		//days = 0;
+	} else {
+		days++;
 	}
 	TargetStockpile->Iron -= 10;
 	TargetStockpile->Electric_gear -= 2;
@@ -258,10 +205,7 @@ void AirshipFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-MachinePartFactory::MachinePartFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "machine parts";
+MachinePartFactory::MachinePartFactory(Stockpile* Target) : Factory(Target, "machine parts") {
 }
 
 void MachinePartFactory::Tick(){
@@ -270,10 +214,7 @@ void MachinePartFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-ElectricGearFactory::ElectricGearFactory(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "electric gear";
+ElectricGearFactory::ElectricGearFactory(Stockpile* Target) : Factory(Target, "electric gear") {
 }
 
 void ElectricGearFactory::Tick(){
@@ -282,10 +223,7 @@ void ElectricGearFactory::Tick(){
 	TargetStockpile->Coal -= 2;
 }
 
-SyntheticRubberRefinery::SyntheticRubberRefinery(Stockpile* Target){
-	size = 1;
-	ChangeOwner(Target);
-	Type = "rubber";
+SyntheticRubberRefinery::SyntheticRubberRefinery(Stockpile* Target) : Factory(Target, "rubber") {
 }
 
 void SyntheticRubberRefinery::Tick(){
