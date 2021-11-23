@@ -9,21 +9,21 @@ CountrySelection::CountrySelection(SDL_Renderer* r, int Width, int Height, std::
 	ButtonArr[1] = new Button(r, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Buttons/Menus/Back", change, SDLK_ESCAPE);
 
 	change = std::bind(&CountrySelection::SelectGER, this);
-	ButtonArr[2] = new Button(r, int(Width * 0.3), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Buttons/Flags/ger", change);
+	ButtonArr[2] = new Button(r, int(Width * 0.3), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/ger", change);
 	change = std::bind(&CountrySelection::SelectFRA, this);
-	ButtonArr[3] = new Button(r, int(Width * 0.3), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Buttons/Flags/fra", change);
+	ButtonArr[3] = new Button(r, int(Width * 0.3), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/fra", change);
 	change = std::bind(&CountrySelection::SelectENG, this);
-	ButtonArr[4] = new Button(r, int(Width * 0.3), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Buttons/Flags/eng", change);
+	ButtonArr[4] = new Button(r, int(Width * 0.3), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/eng", change);
 	change = std::bind(&CountrySelection::SelectKUK, this);
-	ButtonArr[5] = new Button(r, int(Width * 0.3), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Buttons/Flags/kuk", change);
+	ButtonArr[5] = new Button(r, int(Width * 0.3), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/kuk", change);
 	change = std::bind(&CountrySelection::SelectITA, this);
-	ButtonArr[6] = new Button(r, int(Width * 0.635), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Buttons/Flags/ita", change);
+	ButtonArr[6] = new Button(r, int(Width * 0.635), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/ita", change);
 	change = std::bind(&CountrySelection::SelectRUS, this);
-	ButtonArr[7] = new Button(r, int(Width * 0.635), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Buttons/Flags/rus", change);
+	ButtonArr[7] = new Button(r, int(Width * 0.635), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/rus", change);
 	change = std::bind(&CountrySelection::SelectOTT, this);
-	ButtonArr[8] = new Button(r, int(Width * 0.635), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Buttons/Flags/ott", change);
+	ButtonArr[8] = new Button(r, int(Width * 0.635), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/ott", change);
 	change = std::bind(&CountrySelection::SelectUSA, this);
-	ButtonArr[9] = new Button(r, int(Width * 0.635), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Buttons/Flags/usa", change);
+	ButtonArr[9] = new Button(r, int(Width * 0.635), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/usa", change);
 
 	LabelArr[0] = new Label(r, "The World in 1910", int(Height * 0.03), int(Width * 0.43), int(Height * 0.07));
 	LabelArr[1] = new Label(r, "Choose your nation", int(Height * 0.03), int(Width * 0.427), int(Height * 0.13));

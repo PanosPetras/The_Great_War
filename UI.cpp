@@ -8,7 +8,7 @@ UI::UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController
 	std::string str = tag;
 
 	//The country management tabs
-	std::string flg = "Buttons/Flags/" + str;
+	std::string flg = "Flags/" + str;
 	flag = new Button(r, int(Width * 0.005), int(Height * 0.005), int(Width * 0.05), int(Height * 0.05), flg.c_str(), NULL, SDLK_q);
 	Buttons[0] = new Button(r, int(Width * 0.1), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Technology", NULL, SDLK_w);
 	auto change = std::bind(&UI::OpenEconomyScreen, this);

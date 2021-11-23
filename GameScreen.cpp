@@ -268,7 +268,8 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 		SDL_GetRelativeMouseState(&x, &y);
 
 		//Moves the camera upwards
-		int lim1 = int((int(ImgSize[1] * factor) - WindowSize[0]) / factor);
+		int lim1 = int((int(ImgSize[1] * factor) - WindowSize[1]) / factor);
+		//int lim1 = int(WindowSize[1] * (-1) + ImgSize[1] * factor);
 		if (y > 0 && mousepressed == true && Cam_Height > 0) {
 			Cam_Height -= int((MouseSensitivity * y) / factor);
 			if (Cam_Height < 0) {
@@ -276,7 +277,7 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 			}
 		}
 		//Moves the camera downwards
-		else if (y < 0 && mousepressed == true && Cam_Height < lim1) {
+		else if (y < 0 && mousepressed == true && Cam_Height < lim1 ) {
 			Cam_Height += int((MouseSensitivity * y * -1) / factor);
 			if (Cam_Height > lim1) {
 				Cam_Height = lim1;
@@ -304,25 +305,25 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 			//Zoom in
 			if (ev->wheel.y > 0 && factor < trunc(ImgSize[1] / WindowSize[0] * 2)) {
 				factor += float(ZoomingSpeed * factor);
-				Cam_Width += int(WindowSize[1] / factor * 0.04);
-				Cam_Height += int(WindowSize[0] / factor * 0.04);
+				Cam_Width += int(WindowSize[0] / factor * 0.04);
+				Cam_Height += int(WindowSize[1] / factor * 0.04);
 			}
 			//Zoom out
 			else if (factor > 0.5 && ev->wheel.y < 0) {
 				factor -= ZoomingSpeed * factor;
-				Cam_Width -= int(WindowSize[1] / factor * 0.04);
-				Cam_Height -= int(WindowSize[0] / factor * 0.04);
+				Cam_Width -= int(WindowSize[0] / factor * 0.04);
+				Cam_Height -= int(WindowSize[1] / factor * 0.04);
 
 				/*If the zoomed out image extends out of the rendered image's bounds,
 				then we move the camera towards the center of the rendered image*/
-				int lim = int((trunc(ImgSize[1] * factor) - WindowSize[0]) / factor);
+				int lim = int((trunc(ImgSize[1] * factor) - WindowSize[1]) / factor);
 				if (Cam_Height < 0) {
 					Cam_Height = 0;
 				}
 				else if (Cam_Height > lim) {
 					Cam_Height = lim;
 				}
-				lim = int((trunc(ImgSize[0] * factor) - WindowSize[1]) / factor);
+				lim = int((trunc(ImgSize[0] * factor) - WindowSize[0]) / factor);
 				if (Cam_Width < 0) {
 					Cam_Width = 0;
 				}

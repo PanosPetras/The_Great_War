@@ -9,9 +9,10 @@ void Button::button_process_event(const SDL_Event* ev) {
 
         if (bHovered == false) {
             //If the button is hovered, change to the hovered button image
-            CurrentImage = imagepath + "_Hovered.png";
+            SDL_SetTextureColorMod(texture, 170, 170, 170);
+            //CurrentImage = imagepath + "_Hovered.png";
             bHovered = true;
-            Update();
+            //Update();
         }
 
         //react on mouse click within button rectangle
@@ -28,8 +29,7 @@ void Button::button_process_event(const SDL_Event* ev) {
     //If not hovered, return to the idle button image
     else if(bHovered == true){
         bHovered = false;
-        CurrentImage = imagepath + "_Idle.png";
-        Update();
+        SDL_SetTextureColorMod(texture, 255, 255, 255);
     }
     if (key) {
         if (ev->type == SDL_KEYDOWN && ev->key.keysym.sym == key) {
@@ -59,7 +59,7 @@ Button::Button(SDL_Renderer* r, int x, int y, int Height, int Width, const char*
 
     //Saving the image path
     imagepath = image;
-    CurrentImage = imagepath + "_Idle.png";
+    CurrentImage = imagepath + ".png";
 
     //saving the binded function
     func = f;
@@ -93,7 +93,7 @@ void Button::RenderButton() {
 void Button::ChangeImage(const char* image) {
     //Saving the new image path
     imagepath = image;
-    CurrentImage = imagepath + "_Idle.png";
+    CurrentImage = imagepath + ".png";
     Update();
 }
 
@@ -103,13 +103,11 @@ void Button::ChangePosition(int x, int y, int Height, int Width) {
     this->draw_rect.y = y;
     this->draw_rect.w = Height;
     this->draw_rect.h = Width;
-    Update();
 }
 
 void Button::ChangeFunctionBinding(std::function<void()> f) {
     //saving the newly binded function
     func = f;
-    Update();
 }
 
 void Button::Update(){
