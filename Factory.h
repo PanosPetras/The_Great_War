@@ -10,7 +10,7 @@ public:
 	virtual void Tick();
 	std::string Type;
 
-	Factory(Stockpile* Target, std::string arg);
+	Factory(Stockpile* Target, std::string arg, int c);
 	void ChangeOwner(Stockpile* NewStockpile);
 	Stockpile* TargetStockpile;
 };

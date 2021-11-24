@@ -1,7 +1,6 @@
 #include "ScreenList.h"
 
-
-StatePreview::StatePreview(SDL_Renderer* r, int Width, int Height, std::string StateName, std::string Controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc) : Screen(r, Width, Height) {
+StatePreview::StatePreview(SDL_Renderer* r, int Width, int Height, int id, std::string StateName, std::string Controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc) : Screen(r, Width, Height) {
 	LabelArr[0] = new Label(r, StateName.c_str(), 32, 0, int(WindowSize[1] * .55));
 	LabelArr[1] = new Label(r, std::to_string(res[7]).c_str(), 32, int(Width * 0.03), int(WindowSize[1] * 0.6));
 	LabelArr[2] = new Label(r, std::to_string(res[1]).c_str(), 32, int(Width * 0.03), int(WindowSize[1] * 0.65));
@@ -24,12 +23,14 @@ StatePreview::StatePreview(SDL_Renderer* r, int Width, int Height, std::string S
 			str = "Icons/Goods/" + Factories[x] + ".png";
 			ImageArr[x + 2] = new Image(r, str.c_str(), int(Width * (0.055 + 0.0288 * x)), int(Height * 0.8999), 48, 48);
 			ImageArrtop++;
+		} else {
+			break;
 		}
 	}
 
 	ButtonArr[0] = new Button(r, int(Width*.2) - int((32 * WindowSize[0] / 1920) / 2), int(Height * .55) - int((32 * WindowSize[1] / 1080) / 2), int(32 * WindowSize[0] /1920), int(32 * WindowSize[1] / 1080), "Buttons/UI/Close", CloseFunc);
 	ButtonArrtop = 1;
-	if (Controller == PC->player_tag) {
+	if (Controller == PC->player_tag && Factories[3] == "") {
 		auto change = std::bind(&StatePreview::OpenOFS, this);
 		ButtonArr[1] = new Button(r, int(Width * .058), int(Height * 0.95), int(160 * WindowSize[0] / 1920), int(38 * WindowSize[1] / 1080), "Buttons/UI/Open_Factory", change);
 		ButtonArrtop++;
@@ -37,6 +38,7 @@ StatePreview::StatePreview(SDL_Renderer* r, int Width, int Height, std::string S
 	SliderArrtop = 0;
 
 	PCref = PC;
+	this->Id = id;
 }
 
 StatePreview::~StatePreview(){
@@ -86,5 +88,13 @@ void StatePreview::Handle_Input(SDL_Event* ev){
 }
 
 void StatePreview::OpenOFS(){
-	OFS = new OpenFactoryScreen(renderer, WindowSize[0], WindowSize[1], NULL, NULL);
+	if (OFS == nullptr) {
+		auto del = std::bind(&StatePreview::DeleteOFS, this);
+		OFS = new OpenFactoryScreen(renderer, WindowSize[0], WindowSize[1], Id, PCref, del);
+	}
+}
+
+void StatePreview::DeleteOFS(){
+	delete OFS;
+	OFS = nullptr;
 }

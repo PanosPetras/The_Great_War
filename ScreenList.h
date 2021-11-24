@@ -6,9 +6,6 @@
 #include "PlayerController.h"
 #include "Screen.h"
 
-#ifndef UI_H
-#define UI_H
-
 class UI {
 public:
     //Constructor
@@ -56,11 +53,6 @@ public:
     void OpenEconomyScreen();
 };
 
-#endif
-
-#ifndef MainMenu_H
-#define MainMenu_H
-
 class MainMenu : public Screen{
 public:
     //Constructor, sets default values and creates all needed assets
@@ -68,11 +60,6 @@ public:
     void ShowCredits();
     void StartGame();
 };
-
-#endif
-
-#ifndef CreditScreen_H
-#define CreditScreen_H
 
 class CreditScreen : public Screen {
 public:
@@ -83,11 +70,6 @@ public:
     std::function<void()> QuitFunc;
     void Back();
 };
-
-#endif
-
-#ifndef GameScreen_H
-#define GameScreen_H
 
 class GameScreen : public Screen {
 public:
@@ -160,11 +142,6 @@ public:
     Screen* ActiveScreen;
 };
 
-#endif
-
-#ifndef PauseMenu_H
-#define PauseMenu_H
-
 class PauseMenu : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
@@ -172,11 +149,6 @@ public:
 
     void ReturnToMainMenu();
 };
-
-#endif
-
-#ifndef CountrySelection_H
-#define CountrySelection_H
 
 class CountrySelection : public Screen {
 public:
@@ -208,47 +180,64 @@ public:
     void Back();
 };
 
-#endif
-
-#ifndef IndustryScreen_H
-#define IndustryScreen_H
-
 class IndustryScreen : public Screen {
 public:
     IndustryScreen(SDL_Renderer* r, int Width, int Height, int Stockpile[30], std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
     void UpdateText(int Stockpile[29]);
 };
 
-#endif 
-
-#ifndef EconomicsScreen_H
-#define EconomicsScreen_H
-
 class EconomyScreen : public Screen {
 public:
     EconomyScreen(SDL_Renderer* r, int Width, int Height, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
 };
 
-#endif
-
-#ifndef OpenFactoryScreen_H
-#define OpenFactoryScreen_H
-
 class OpenFactoryScreen : public Screen {
 public:
-    OpenFactoryScreen(SDL_Renderer* r, int Width, int Height, std::function<void()> fp, std::function<void(Screen*)> fpl);
+    OpenFactoryScreen(SDL_Renderer* r, int Width, int Height, int id, PlayerController* PC, std::function<void()> fp);
+
+    void FactoryTypeLumber();
+    void FactoryTypeGlass();
+    void FactoryTypeFood();
+    void FactoryTypeClothes();
+    void FactoryTypeLiquor();
+    void FactoryTypeFurniture();
+    void FactoryTypeAutomobile();
+    void FactoryTypePaper();
+    void FactoryTypeTelephone();
+    void FactoryTypeRadio();
+    void FactoryTypeMachineParts();
+    void FactoryTypeElectricGear();
+    void FactoryTypeFuel();
+    void FactoryTypeCement();
+    void FactoryTypeMerchantShip();
+    void FactoryTypeSmallArms();
+    void FactoryTypeAmmunition();
+    void FactoryTypeArtillery();
+    void FactoryTypeExplosives();
+    void FactoryTypeTank();
+    void FactoryTypeAirship();
+    void FactoryTypePlane();
+
+    void FactoryType(char t, int cost);
+
+    void BuildFactory();
+
+    void Close();
+
+    //Factory attributes
+    int cost;
+    PlayerController* PCref;
+    int index;
+    char type;
 };
-
-#endif
-
-#ifndef StatePreview_H
-#define StatePreview_H
 
 class StatePreview : public Screen {
 public:
     OpenFactoryScreen* OFS = nullptr;
 
-    StatePreview(SDL_Renderer* r, int Width, int Height, std::string StateName, std::string Controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc);
+    int Id;
+
+    StatePreview(SDL_Renderer* r, int Width, int Height, int id, std::string StateName, std::string Controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc);
 
     ~StatePreview();
 
@@ -259,6 +248,6 @@ public:
     void Handle_Input(SDL_Event* ev) override;
 
     void OpenOFS();
-};
 
-#endif
+    void DeleteOFS();
+};

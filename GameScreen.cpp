@@ -176,7 +176,7 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 		if (bHasActiveScreen == false &&
 			flag == false &&
 			ev->button.y > WindowSize[0] * 0.06 &&
-			bIsPaused == false && (bHasStatePreview == false || (ev->button.y < WindowSize[1] * .535 || ev->button.x > WindowSize[0] * .208))) {
+			bIsPaused == false && bHasStatePreview == false) {
 			int x = Cam_Width + int(ev->button.x / factor) - 5384;
 			int y = Cam_Height + int(ev->button.y / factor);
 			SDL_Color rgb = CD::getcolor(PC->provinces, x, y);
@@ -185,7 +185,6 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 				if (PC->StatesArr[u]->Color.r == rgb.r) {
 					if (PC->StatesArr[u]->Color.g == rgb.g) {
 						if (PC->StatesArr[u]->Color.b == rgb.b) {
-
 							//Access the state's factories
 							std::string fcs[4];
 							for (int i = 0; i < 4; i++) {
@@ -203,12 +202,12 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 
 							//Create the StatePreview screen
 							if (bHasStatePreview == false) {
-								StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
+								StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], u, PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
 								bHasStatePreview = true;
 							}
 							else {
 								delete StateViewingScreen;
-								StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
+								StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], u, PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
 							}
 							break;
 						}
@@ -262,46 +261,48 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 		else if (ev->type == SDL_MOUSEBUTTONUP && ev->button.button == SDL_BUTTON_MIDDLE && mousepressed == true) {
 			mousepressed = false;
 		}
-
 		//Requests the mouse movement
 		int x, y;
 		SDL_GetRelativeMouseState(&x, &y);
 
 		//Moves the camera upwards
 		int lim1 = int((int(ImgSize[1] * factor) - WindowSize[1]) / factor);
-		//int lim1 = int(WindowSize[1] * (-1) + ImgSize[1] * factor);
-		if (y > 0 && mousepressed == true && Cam_Height > 0) {
-			Cam_Height -= int((MouseSensitivity * y) / factor);
-			if (Cam_Height < 0) {
-				Cam_Height = 0;
-			}
-		}
-		//Moves the camera downwards
-		else if (y < 0 && mousepressed == true && Cam_Height < lim1 ) {
-			Cam_Height += int((MouseSensitivity * y * -1) / factor);
-			if (Cam_Height > lim1) {
-				Cam_Height = lim1;
-			}
-		}
 
-		//Moves the camera to the left
-		lim1 = int(((ImgSize[0] * factor) - WindowSize[1]) / factor);
-		if (x > 0 && mousepressed == true && Cam_Width > 0) {
-			Cam_Width -= int((MouseSensitivity * x) / factor);
-			if (Cam_Width < 5384) {
-				Cam_Width = 5384 + 5616;
+		if (mousepressed) {
+			if (y > 0 && Cam_Height > 0) {
+				Cam_Height -= int((MouseSensitivity * y) / factor);
+				if (Cam_Height < 0) {
+					Cam_Height = 0;
+				}
 			}
-		}
-		//Moves the camera to the right
-		else if (x < 0 && mousepressed == true && Cam_Width) {
-			Cam_Width += int((MouseSensitivity * x * -1) / factor);
-			if (Cam_Width > lim1) {
-				Cam_Width = lim1 - 5616;
+			//Moves the camera downwards
+			else if (y < 0 && Cam_Height < lim1) {
+				Cam_Height += int((MouseSensitivity * y * -1) / factor);
+				if (Cam_Height > lim1) {
+					Cam_Height = lim1;
+				}
+			}
+
+			//Moves the camera to the left
+			lim1 = int(((ImgSize[0] * factor) - WindowSize[1]) / factor);
+			if (x > 0 && Cam_Width > 0) {
+				Cam_Width -= int((MouseSensitivity * x) / factor);
+				if (Cam_Width < 5384) {
+					Cam_Width = 5384 + 5616;
+				}
+			}
+			//Moves the camera to the right
+			else if (x < 0 && Cam_Width) {
+				Cam_Width += int((MouseSensitivity * x * -1) / factor);
+				if (Cam_Width > lim1) {
+					Cam_Width = lim1 - 5616;
+				}
 			}
 		}
 
 		//Change the screen's magnification, albeit the zoom factor
 		if (ev->type == SDL_MOUSEWHEEL) {
+
 			//Zoom in
 			if (ev->wheel.y > 0 && factor < trunc(ImgSize[1] / WindowSize[0] * 2)) {
 				factor += float(ZoomingSpeed * factor);

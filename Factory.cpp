@@ -3,7 +3,8 @@
 void Factory::Tick(){
 }
 
-Factory::Factory(Stockpile* Target, std::string arg){
+Factory::Factory(Stockpile* Target, std::string arg, int c = 500){
+	cost = c;
 	size = 1;
 	ChangeOwner(Target);
 	Type = arg;
