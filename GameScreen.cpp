@@ -320,15 +320,13 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 				int lim = int((trunc(ImgSize[1] * factor) - WindowSize[1]) / factor);
 				if (Cam_Height < 0) {
 					Cam_Height = 0;
-				}
-				else if (Cam_Height > lim) {
+				} else if (Cam_Height > lim) {
 					Cam_Height = lim;
 				}
 				lim = int((trunc(ImgSize[0] * factor) - WindowSize[0]) / factor);
 				if (Cam_Width < 0) {
 					Cam_Width = 0;
-				}
-				else if (Cam_Width > lim) {
+				} else if (Cam_Width > lim) {
 					Cam_Width = lim;
 				}
 			}

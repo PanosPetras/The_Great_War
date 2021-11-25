@@ -39,7 +39,7 @@ public:
     int State_Coords[2];
 
     //This is the state's factories
-    Factory* State_Factories[4];
+    Factory* State_Factories[4]= { nullptr, nullptr, nullptr, nullptr };
 
     Stockpile* TargetStockpile;
 

@@ -97,4 +97,18 @@ void StatePreview::OpenOFS(){
 void StatePreview::DeleteOFS(){
 	delete OFS;
 	OFS = nullptr;
+	if (PCref->StatesArr[Id]->State_Factories[3] != nullptr) {
+		delete ButtonArr[1];
+		ButtonArrtop = 1;
+	}
+	for (int x = ImageArrtop - 2; x < 4; x++) {
+		if (PCref->StatesArr[Id]->State_Factories[x] != nullptr) {
+			std::string str = "Icons/Goods/" + PCref->StatesArr[Id]->State_Factories[x]->Type + ".png";
+			ImageArr[x + 2] = new Image(renderer, str.c_str(), int(WindowSize[0] * (0.055 + 0.0288 * x)), int(WindowSize[1] * 0.8999), 48, 48);
+			ImageArrtop++;
+		}
+		else {
+			break;
+		}
+	}
 }
