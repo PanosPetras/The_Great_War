@@ -140,6 +140,9 @@
     <ClInclude Include="Stockpile.h">
       <Filter>Game_Classes\Header_Files</Filter>
     </ClInclude>
+    <ClInclude Include="market.h">
+      <Filter>Game_Classes\Header_Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="The_Great_War.rc" />

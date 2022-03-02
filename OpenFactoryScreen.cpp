@@ -257,10 +257,13 @@ void OpenFactoryScreen::BuildFactory(){
 			return;
 			break;
 	}
-	PCref->StatesArr[index]->AddFactory(NF);
-	PCref->CountriesArr[PCref->player_index]->Stock.Money -= NF->cost;
 
-	QuitFunc();
+	if (PCref->CountriesArr[PCref->player_index]->Stock.Money >= NF->cost) {
+		PCref->StatesArr[index]->AddFactory(NF);
+		PCref->CountriesArr[PCref->player_index]->Stock.Money -= NF->cost;
+		
+		QuitFunc();
+	}
 }
 
 void OpenFactoryScreen::Close(){
