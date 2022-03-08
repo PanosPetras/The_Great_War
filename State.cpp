@@ -38,19 +38,8 @@ State::State(std::string name, int ID, std::string owner, std::string controller
 	TargetStockpile = stock;
 }
 
-State::State(int ID, const char* controller){
-	State_ID = ID;
-	State_Controller = controller;
-
-	for (int x = 0; x < 4; x++) {
-		if (State_Factories[x] != nullptr) {
-			delete State_Factories[x];
-		}
-	}
-}
-
-void State::Tick(){
-	State_Population = int(State_Population * 1.00002);
+void State::Tick(int TaxRate){
+	State_Population = State_Population + int(State_Population * (0.00002 / (1.0 + TaxRate / 100.0)));
 
 	TargetStockpile->Coal += Resources.Coal;
 	TargetStockpile->Oil += Resources.Oil;
@@ -79,24 +68,19 @@ void State::ChangeController(std::string NewOwner, Stockpile* NewStock){
 }
 
 int State::AddFactory(Factory* NewFactory){
-	bool flag = false;
 	for (int x = 0; x < 4; x++) {
 		if (State_Factories[x] == nullptr) {
 			State_Factories[x] = NewFactory;
-			flag = true;
-			break;
+			return 0;
 		}
 	}
-	if (flag == true) return 0;
-	else return -1;
+	return -1;
 }
 
 int State::RemoveFactory(int index){
-	bool flag = false;
 	if (State_Factories[index]) {
 		delete State_Factories[index];
-		flag = true;
-	} 
-	if (flag == true) return 0;
-	else return -1;
+		return 0;
+	}
+	return -1;
 }

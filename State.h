@@ -9,10 +9,9 @@ class State {
 public:
     //Constructor
     State(std::string name, int ID, std::string owner, std::string controller, int pop, short int Coords[2], short int C[3], short int Res[8], Stockpile* stock);
-    State(int ID, const char* controller);
 
     //This is the representing the pass of a single day
-    void Tick();
+    void Tick(int TaxRate);
 
     void ChangeController(std::string NewOwner, Stockpile* NewStock);
 

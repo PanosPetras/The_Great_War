@@ -8,7 +8,7 @@
 class Slider {
 public:
 	//Constructor, initializes the values
-	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100);
+	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1);
 
 	//Destructor, frees up the memory
 	~Slider();
@@ -20,7 +20,7 @@ public:
 	int HandleInput(SDL_Event* ev);
 
 	//Change the slider's maximum and minimum values
-	void ChangeValues(int minvalue, int maxvalue);
+	void ChangeValues(int minvalue, int maxvalue, int value = -1);
 
 	//Change the slider's position on the screen
 	void ChangePosition(int x, int y);

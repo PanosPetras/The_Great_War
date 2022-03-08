@@ -194,11 +194,9 @@ AirshipFactory::AirshipFactory(Stockpile* Target) : Factory(Target, "airship") {
 }
 
 void AirshipFactory::Tick(){
-	if (days >= 153) {
-		TargetStockpile->Airship += 1 * size;
-		//days = 0;
-	} else {
+	if (days < 153) {
 		days++;
+		return;
 	}
 	TargetStockpile->Iron -= 10;
 	TargetStockpile->Electric_gear -= 2;

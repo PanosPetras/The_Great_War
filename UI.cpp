@@ -140,6 +140,6 @@ void UI::OpenIndustryScreen(){
 }
 
 void UI::OpenEconomyScreen() {
-	Screen* NS = new EconomyScreen(renderer, WindowSize[0], WindowSize[1], NULL, NULL);
+	Screen* NS = new EconomyScreen(renderer, WindowSize[0], WindowSize[1], PCref->CountriesArr[PCref->player_index], NULL, NULL);
 	ChangeScreenFunc(NS, "EconomyScreen");
 }

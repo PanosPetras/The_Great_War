@@ -1,11 +1,11 @@
 #include "Slider.h"
 
-Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue, int maxvalue){
+Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value){
 	//Saving a reference to the renderer
 	renderer = r;
 	
 	//Initialize all variables
-	ChangeValues(minvalue, maxvalue);
+	ChangeValues(minvalue, maxvalue, value);
 	ChangeSize(Width, Height);
 	ChangePosition(x, y);
 
@@ -40,18 +40,15 @@ int Slider::HandleInput(SDL_Event* ev){
 	}
 	if (bmousepressed == true) {
 		if (bg_rect.w != 0) {
-			Values.Value = int((marker_rect.x - bg_rect.x - bg_rect.w * 0.09) / (bg_rect.w * 0.76) * Values.Maximum);
+			Values.Value = int((marker_rect.x - bg_rect.x - bg_rect.w * 0.08) / (bg_rect.w * 0.77) * Values.Maximum);
 		}
 		if (ev->button.x > bg_rect.x + bg_rect.w * 0.85) {
-			if (marker_rect.x != bg_rect.x + bg_rect.w * 0.85) {
-				marker_rect.x = int(bg_rect.x + bg_rect.w * 0.85);
-			}
-		} else if (ev->button.x < bg_rect.x + bg_rect.w * 0.09) {
-			if (marker_rect.x != bg_rect.x + bg_rect.w * 0.09) {
-				marker_rect.x = int(bg_rect.x + bg_rect.w * 0.09);
-			}
-		}
-		else {
+			marker_rect.x = int(bg_rect.x + bg_rect.w * 0.85);
+			Values.Value = Values.Maximum;
+		} else if (ev->button.x < bg_rect.x + bg_rect.w * 0.08) {
+			marker_rect.x = int(bg_rect.x + bg_rect.w * 0.08);
+			Values.Value = Values.Minimum;
+		} else {
 			marker_rect.x = ev->button.x;
 		}
 	}
@@ -59,14 +56,17 @@ int Slider::HandleInput(SDL_Event* ev){
 	return Values.Value;
 }
 
-void Slider::ChangeValues(int minvalue, int maxvalue){
+void Slider::ChangeValues(int minvalue, int maxvalue, int value){
 	Values = { .Value = int((minvalue + maxvalue) / 2), .Minimum = minvalue, .Maximum = maxvalue };
+	if (value != -1) {
+		Values.Value = value;
+	}
 }
 
 void Slider::ChangePosition(int x, int y){
 	bg_rect.x = x;
 	bg_rect.y = y;
-	marker_rect.x = bg_rect.x + int(bg_rect.w * Values.Value / Values.Maximum - bg_rect.w * 0.08 / 2);
+	marker_rect.x = bg_rect.x + int(bg_rect.w * Values.Value / Values.Maximum * 0.77) + bg_rect.w * 0.08;
 	marker_rect.y = bg_rect.y;
 }
 

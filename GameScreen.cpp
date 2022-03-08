@@ -127,6 +127,8 @@ void GameScreen::Render() {
 				PC->CountriesArr[PC->player_index]->Stock.Liquor,
 				PC->CountriesArr[PC->player_index]->Stock.Airship };
 			static_cast<IndustryScreen*>(ActiveScreen)->UpdateText(Res);
+		} else if (ScreenID == "EconomyScreen") {
+			static_cast<EconomyScreen*>(ActiveScreen)->Update();
 		}
 
 		ActiveScreen->Render();

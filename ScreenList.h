@@ -188,7 +188,11 @@ public:
 
 class EconomyScreen : public Screen {
 public:
-    EconomyScreen(SDL_Renderer* r, int Width, int Height, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+    EconomyScreen(SDL_Renderer* r, int Width, int Height, Country* Pl, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+
+    void Update();
+
+    Country* Player;
 };
 
 class OpenFactoryScreen : public Screen {

@@ -4,7 +4,8 @@ Country::Country(std::string tag, int r, int g, int b, int Res[31]){
 	countrytag = tag;
 	Country_Population = 0;
 	Country_State_Count = 0;
-	Color = { .red = r, .green = g, .blue = b};
+    Policy = {.TaxRate = 50};
+	Color = {.red = r, .green = g, .blue = b};
 	Technology = {  .FactoryInput = 1.0f, 
                     .FactoryThroughput = 1.0f, 
                     .FactoryOutput = 1.0f,
@@ -12,7 +13,7 @@ Country::Country(std::string tag, int r, int g, int b, int Res[31]){
                     .FarmOutput = 1.0f,
                     .WoodOutput = 1.0f};
 
-    Stock = {   .Coal = Res[0],
+    Stock = {       .Coal = Res[0],
                     .Oil = Res[1],
                     .Timber = Res[2],
                     .Rubber = Res[3],
@@ -63,6 +64,7 @@ void Country::RemoveState(State* state){
 
 void Country::Tick(){
 	for (int x = 0; x < OwnedStates.size(); x++) {
-        OwnedStates.at(x)->Tick();
+        OwnedStates.at(x)->Tick(Policy.TaxRate);
 	}
+    Stock.Money += int(Country_Population * 0.04 * Policy.TaxRate / 100);
 }

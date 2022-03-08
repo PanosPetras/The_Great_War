@@ -41,6 +41,10 @@ public:
         int blue;
     } Color;
 
+    struct {
+        int TaxRate;
+    } Policy;
+
     //A country's currently stockpiled resources
     Stockpile Stock;
 };
