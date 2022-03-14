@@ -98,6 +98,12 @@
     <ClCompile Include="OpenFactoryScreen.cpp">
       <Filter>Screen_Classes\Source_Files</Filter>
     </ClCompile>
+    <ClCompile Include="TradeScreen.cpp">
+      <Filter>Screen_Classes\Source_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Market.cpp">
+      <Filter>Game_Classes\Source_Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">
@@ -140,7 +146,7 @@
     <ClInclude Include="Stockpile.h">
       <Filter>Game_Classes\Header_Files</Filter>
     </ClInclude>
-    <ClInclude Include="market.h">
+    <ClInclude Include="Market.h">
       <Filter>Game_Classes\Header_Files</Filter>
     </ClInclude>
   </ItemGroup>

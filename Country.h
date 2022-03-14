@@ -43,6 +43,7 @@ public:
 
     struct {
         int TaxRate;
+        int Healthcare;
     } Policy;
 
     //A country's currently stockpiled resources

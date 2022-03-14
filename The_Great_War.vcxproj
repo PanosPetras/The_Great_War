@@ -26,6 +26,7 @@
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Market.cpp" />
     <ClCompile Include="OpenFactoryScreen.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="PlayerController.cpp" />
@@ -41,12 +42,13 @@
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StatePreview.cpp" />
+    <ClCompile Include="TradeScreen.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="Factory.h" />
-    <ClInclude Include="market.h" />
+    <ClInclude Include="Market.h" />
     <ClInclude Include="Stockpile.h" />
     <ClInclude Include="SDL_ColorDetection.h" />
     <ClInclude Include="Image.h" />
@@ -125,6 +127,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>N:\VS repositories\SDL2\SDL2_mixer-2.0.4\include;N:\VS repositories\SDL2\SDL2_ttf-2.0.18\include;N:\VS repositories\SDL2\SDL2_image-2.0.5\include;N:\VS repositories\SDL2\SDL2-2.0.20\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>N:\VS repositories\SDL2\SDL2_mixer-2.0.4\lib\x64;N:\VS repositories\SDL2\SDL2_ttf-2.0.18\lib\x64;N:\VS repositories\SDL2\SDL2_image-2.0.5\lib\x64;N:\VS repositories\SDL2\SDL2-2.0.20\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

@@ -135,11 +135,16 @@ void UI::OpenIndustryScreen(){
 					PCref->CountriesArr[PCref->player_index]->Stock.Paper,
 					PCref->CountriesArr[PCref->player_index]->Stock.Liquor,
 					PCref->CountriesArr[PCref->player_index]->Stock.Airship};
-	Screen* NS = new IndustryScreen(renderer, WindowSize[0], WindowSize[1], Res, NULL, NULL);
+	Screen* NS = new IndustryScreen(renderer, WindowSize[0], WindowSize[1], Res);
 	ChangeScreenFunc(NS, "IndustryScreen");
 }
 
 void UI::OpenEconomyScreen() {
-	Screen* NS = new EconomyScreen(renderer, WindowSize[0], WindowSize[1], PCref->CountriesArr[PCref->player_index], NULL, NULL);
+	Screen* NS = new EconomyScreen(renderer, WindowSize[0], WindowSize[1], PCref->CountriesArr[PCref->player_index]);
 	ChangeScreenFunc(NS, "EconomyScreen");
+}
+
+void UI::OpenTradeScreen() {
+	Screen* NS = new TradeScreen(renderer, WindowSize[0], WindowSize[1], PCref->CountriesArr[PCref->player_index]);
+	ChangeScreenFunc(NS, "TradeScreen");
 }

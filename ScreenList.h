@@ -49,8 +49,8 @@ public:
     void PauseDate();
 
     void OpenIndustryScreen();
-
     void OpenEconomyScreen();
+    void OpenTradeScreen();
 };
 
 class MainMenu : public Screen{
@@ -182,13 +182,21 @@ public:
 
 class IndustryScreen : public Screen {
 public:
-    IndustryScreen(SDL_Renderer* r, int Width, int Height, int Stockpile[30], std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+    IndustryScreen(SDL_Renderer* r, int Width, int Height, int Stockpile[30]);
     void UpdateText(int Stockpile[29]);
+};
+
+class TradeScreen : public Screen {
+public:
+    TradeScreen(SDL_Renderer* r, int Width, int Height, Country* Pl);
+    void Update();
+
+    Country* Player;
 };
 
 class EconomyScreen : public Screen {
 public:
-    EconomyScreen(SDL_Renderer* r, int Width, int Height, Country* Pl, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+    EconomyScreen(SDL_Renderer* r, int Width, int Height, Country* Pl);
 
     void Update();
 

@@ -109,24 +109,6 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 		StatesArr[x] = new State(Names->at(x), x + 1, owners->at(x), owners->at(x), 647428, Coords[x], colori[x], res, &CountriesArr[target]->Stock);
 		CountriesArr[target]->AddState(StatesArr[x]);
 	}
-	FC = new AutomobileFactory(&CountriesArr[0]->Stock);
-	StatesArr[556]->AddFactory(FC);
-	FC = new LumberMill(&CountriesArr[0]->Stock);
-	StatesArr[556]->AddFactory(FC);
-	FC = new GlassFactory(&CountriesArr[0]->Stock);
-	StatesArr[557]->AddFactory(FC);
-	FC = new LumberMill(&CountriesArr[0]->Stock);
-	StatesArr[557]->AddFactory(FC);
-	FC = new CanningFactory(&CountriesArr[0]->Stock);
-	StatesArr[555]->AddFactory(FC);
-	FC = new SmallArmsFactory(&CountriesArr[0]->Stock);
-	StatesArr[555]->AddFactory(FC);
-	FC = new AirshipFactory(&CountriesArr[0]->Stock);
-	StatesArr[558]->AddFactory(FC);
-	FC = new SmallArmsFactory(&CountriesArr[0]->Stock);
-	StatesArr[368]->AddFactory(FC);
-	FC = new CanningFactory(&CountriesArr[0]->Stock);
-	StatesArr[408]->AddFactory(FC);
 
 	//Initialize the date
 	Date = { .Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .bIsPaused = true, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31} };
