@@ -98,7 +98,6 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	//Create all the states
 	short int res[8] = { 50, 50, 50, 50, 50, 50, 50, 50 };
 	int target = 0;
-	Factory* FC;
 	for (x = 0; x < 2703; x++) {
 		for (int y = 0; y < 58; y++) {
 			if (owners->at(x) == CountriesArr[y]->countrytag) {

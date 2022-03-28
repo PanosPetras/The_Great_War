@@ -76,7 +76,6 @@
     <ClCompile Include="CountrySelection.cpp">
       <Filter>Screen_Classes\Source_Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScreenList.cpp" />
     <ClCompile Include="Factory.cpp">
       <Filter>Game_Classes\Source_Files</Filter>
     </ClCompile>

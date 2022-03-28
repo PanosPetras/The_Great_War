@@ -66,7 +66,7 @@ void Slider::ChangeValues(int minvalue, int maxvalue, int value){
 void Slider::ChangePosition(int x, int y){
 	bg_rect.x = x;
 	bg_rect.y = y;
-	marker_rect.x = bg_rect.x + int(bg_rect.w * Values.Value / Values.Maximum * 0.77) + bg_rect.w * 0.08;
+	marker_rect.x = bg_rect.x + int(bg_rect.w * Values.Value / Values.Maximum * 0.77) + int(bg_rect.w * 0.08);
 	marker_rect.y = bg_rect.y;
 }
 
