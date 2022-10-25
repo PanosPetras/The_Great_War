@@ -34,7 +34,7 @@ public:
     void button_process_event(const SDL_Event* ev);
 
     //Constructor
-    Button(SDL_Renderer* r, int x, int y, int Height, int Width, const char* image, std::function<void()> f = NULL, int keybind = NULL);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, const char* image, std::function<void()> f = NULL, int keybind = NULL);
 
     //Destructor
     ~Button();
