@@ -1,7 +1,7 @@
 # The Great War
 A ww1 themed strategy game in progress. Built using C++ and SDL2.0.
 
-Created with Visual Studio 2019
+Created with Visual Studio 2019/2022
 
 C++ version: C++/11
 
@@ -44,10 +44,10 @@ The game is stable at it's current state and there are
 no bugs that will cause a crash as far as I'm aware of.
 
 This project requires the following libraries:
-- SDL 2.0.20(Link: https://www.libsdl.org/download-2.0.php)
-- SDL Mixer 2.0.4(Link: https://www.libsdl.org/projects/SDL_mixer/)
-- SDL Image 2.0.5(Link: https://www.libsdl.org/projects/SDL_image/)
-- SDL ttf 2.0.18(Link: https://github.com/libsdl-org/SDL_ttf)
+- SDL 2.24.1(Link: https://github.com/libsdl-org/SDL)
+- SDL Mixer 2.6.2(Link: https://github.com/libsdl-org/SDL_mixer)
+- SDL Image 2.6.2(Link: https://github.com/libsdl-org/SDL_image)
+- SDL ttf 2.20.1(Link: https://github.com/libsdl-org/SDL_ttf)
 
 Download the Visual C++ 32/64-bit Development Library
 
