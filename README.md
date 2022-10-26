@@ -3,7 +3,7 @@ A ww1 themed strategy game in progress. Built using C++ and SDL2.0.
 
 Created with Visual Studio 2019/2022
 
-C++ version: C++/11
+C++ version: C++/20
 
 Starting date: January 1st 1910
 
