@@ -11,7 +11,7 @@ EconomyScreen::EconomyScreen(SDL_Renderer* r, int Width, int Height, Country* Pl
 	LabelArr[1] = new Label(r, l1.c_str(), 32, int(0.1 * Width), int(0.2 * Height));
 	l1 = "Healthcare: "+ std::to_string(Pl->Policy.Healthcare) + "%";
 	LabelArr[2] = new Label(r, l1.c_str(), 32, int(0.4 * Width), int(0.2 * Height));
-	l1 = "Eduaction: ", std::to_string(Pl->Policy.TaxRate), "%";
+	l1 = "Education: ", std::to_string(Pl->Policy.TaxRate), "%";
 	LabelArr[3] = new Label(r, l1.c_str(), 32, int(0.4 * Width), int(0.4 * Height));
 	l1 = "Research: ", std::to_string(Pl->Policy.TaxRate), "%";
 	LabelArr[4] = new Label(r, l1.c_str(), 32, int(0.4 * Width), int(0.6 * Height));

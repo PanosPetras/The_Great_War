@@ -286,18 +286,19 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 			}
 
 			//Moves the camera to the left
-			lim1 = int(((ImgSize[0] * factor) - WindowSize[1]) / factor);
 			if (x > 0 && Cam_Width > 0) {
 				Cam_Width -= int((MouseSensitivity * x) / factor);
 				if (Cam_Width < 5384) {
-					Cam_Width = 5384 + 5616;
+					Cam_Width += 5616;
 				}
 			}
 			//Moves the camera to the right
 			else if (x < 0 && Cam_Width) {
+				lim1 = 11000 - WindowSize[0] / 2 / factor;
+				
 				Cam_Width += int((MouseSensitivity * x * -1) / factor);
 				if (Cam_Width > lim1) {
-					Cam_Width = lim1 - 5616;
+					Cam_Width -= 5616;
 				}
 			}
 		}
@@ -306,7 +307,7 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 		if (ev->type == SDL_MOUSEWHEEL) {
 
 			//Zoom in
-			if (ev->wheel.y > 0 && factor < trunc(ImgSize[1] / WindowSize[0] * 2)) {
+			if (ev->wheel.y > 0 && factor < 4) {
 				factor += float(ZoomingSpeed * factor);
 				Cam_Width += int(WindowSize[0] / factor * 0.04);
 				Cam_Height += int(WindowSize[1] / factor * 0.04);

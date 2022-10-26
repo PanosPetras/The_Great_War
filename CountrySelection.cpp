@@ -47,7 +47,7 @@ CountrySelection::CountrySelection(SDL_Renderer* r, int Width, int Height, std::
 	ImageArr[8] = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.631), int(Height * 0.395), int(Width * 0.069), int(Height * 0.072));
 	ImageArr[9] = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.631), int(Height * 0.495), int(Width * 0.069), int(Height * 0.072));
 
-	ImageArr[10] = new Image(r, "Icons/right.png", int(Width), int(Height), int(64 * Width / 1920), int(64 * Height / 1080));
+	ImageArr[10] = new Image(r, "Icons/right.png", -Width, -Height, 64 * Width / 1920, 64 * Height / 1080);
 
 	ButtonArrtop = 10;
 	LabelArrtop = 10;
