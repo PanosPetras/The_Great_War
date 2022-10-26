@@ -3,14 +3,11 @@
 
 #include "Country.h"
 #include "State.h"
-#include <string>
 #include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_thread.h>
-#include <future>
-#include <fstream>
-#include <vector>
-#include "SDL_ColorDetection.h"
+#include <unordered_map>
+#include <memory>
+
+typedef std::unique_ptr<std::vector<std::string>, std::default_delete<std::vector<std::string>>> VectorSmartPointer;
 
 class PlayerController {
 public:
@@ -20,9 +17,36 @@ public:
 
 	//Constructor
 	PlayerController(SDL_Renderer* r, const char* tag);
+
+	void InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& Names, short(*coords)[2], short(*colors)[3]);
+
+private:
+	//Loading data functions
+	void LoadMap(SDL_Renderer*);
+	VectorSmartPointer LoadCountryTags(std::ifstream&);
+	VectorSmartPointer LoadStateNames(std::ifstream&);
+	VectorSmartPointer LoadStateOwnerTags(std::ifstream&);
+	short (*LoadStateColors(std::ifstream&))[3];
+	short (*LoadStateCoordinates(std::ifstream&))[2];
+	void InitializeCountries(VectorSmartPointer& tags, const char* tag);
 	
+public:
 	//Destructor
 	~PlayerController();
+
+	//Some info about the player
+	std::string player_tag;
+	int player_index;
+
+	//The in-game date
+	struct {
+		int Year;
+		int Month;
+		int Day;
+		int Speed;
+		bool bIsPaused;
+		int MonthDays[12];
+	} Date;
 
 	//Advances the date by one day
 	static int AdvanceDate(void* ref);
@@ -39,26 +63,15 @@ public:
 	//Reference to every country
 	Country* CountriesArr[59];
 
-	SDL_Texture* txt;
-	SDL_Texture* overlay;
-	SDL_Surface* ormap;
-	SDL_Surface* map;
+	//Some SDL assets needed
 	SDL_Renderer* RendererReference;
+	SDL_Texture* txt;
 
+	SDL_Texture* overlay;
+	SDL_Surface* map;
 	SDL_Surface* provinces;
 
+	//Used to run the time-functionality of the game
 	SDL_Thread* thread;
-
-	std::string player_tag;
-	int player_index;
-
-	struct {
-		int Year;
-		int Month;
-		int Day;
-		int Speed;
-		bool bIsPaused;
-		int MonthDays[12];
-	} Date;
 };
 #endif

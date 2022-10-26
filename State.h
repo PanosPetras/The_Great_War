@@ -5,6 +5,12 @@
 #include "Factory.h"
 #include "Stockpile.h"
 
+typedef struct Color {
+    short int r;
+    short int g;
+    short int b;
+} Color;
+
 class State {
 public:
     //Constructor
@@ -43,12 +49,7 @@ public:
     Stockpile* TargetStockpile;
 
     //This is the state's unique color
-    struct{
-    public:
-        short int r;
-        short int g;
-        short int b;
-    } Color;
+    Color color;
 
     //This is the resources contained within one state
     struct {

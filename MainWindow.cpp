@@ -24,7 +24,7 @@ MainWindow::MainWindow() {
     );
 
     //Set the window to fullscreen mode
-    SDL_SetWindowFullscreen(window, 1); 
+    //SDL_SetWindowFullscreen(window, 1); 
 
     //Initializing the window renderer
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);

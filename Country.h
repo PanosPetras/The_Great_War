@@ -1,7 +1,7 @@
 #ifndef COUNTRY_H
 #define COUNTRY_H
 
-#include <vector>
+#include <unordered_map>
 #include <string>
 #include "State.h"
 #include "Stockpile.h"
@@ -13,16 +13,19 @@ public:
     //Constructor
     Country(std::string tag, int r, int g, int b, int Res[31]);
 
+    //Destructor
+    ~Country();
+
     void AddState(State* state);
 
     void RemoveState(State* state);
 
     //This is the representing the pass of a single day
     void Tick();
-public:
+
     //Variables
     std::string countrytag;
-    std::vector<State*> OwnedStates;
+    std::unordered_map<std::string, State*>* OwnedStates;
     int Country_State_Count;
     int Country_Population;
 

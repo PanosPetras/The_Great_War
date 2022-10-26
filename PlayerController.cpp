@@ -1,6 +1,14 @@
 #include "PlayerController.h"
+#include "SDL_ColorDetection.h"
+#include <vector>
+#include <future>
+#include <fstream>
+#include <string>
+#include <SDL_image.h>
+#include <SDL_thread.h>
 
 PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
+	//Save a reference to the window's renderer
 	RendererReference = r;
 
 	//Save the player's country tag
@@ -11,129 +19,178 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	std::ifstream myfile("map/Countries/CountryTags.txt");
 
 	//Load the country tags
-	std::vector<std::string>* tags = new std::vector<std::string>;
-	int x = 0;
-	if (myfile.is_open())
-	{
-		while (getline(myfile, line))
-		{
-			tags->push_back(line);
-		}
-		myfile.close();
-	}
+	auto tags = LoadCountryTags(myfile);
 
 	//Load all state names
 	myfile.open("map/States/StateNames.txt");
-	std::vector<std::string>* Names = new std::vector<std::string>;
-	if (myfile.is_open())
-	{
-		while (getline(myfile, line))
-		{
-			Names->push_back(line);
-		}
-		myfile.close();
-	}
+	auto Names = LoadStateNames(myfile);
 
 	//Load all state owner tags
 	myfile.open("map/States/StateOwners.txt");
-	std::vector<std::string>* owners = new std::vector<std::string>;
-	x = 0;
-	if (myfile.is_open())
-	{
-		while (getline(myfile, line))
-		{
-			owners->push_back(line);
-			x++;
-		}
-		myfile.close();
-	}
+	auto owners = LoadStateOwnerTags(myfile);
 
 	//Load all the states' unique color IDs
 	myfile.open("map/States/StateColors.txt");
-	short int colori[2703][3];
-	x = 0;
-	if (myfile.is_open())
-	{
-		while (getline(myfile, line))
-		{
-			colori[x][0] = stoi(line.substr(0, 3));
-			colori[x][1] = stoi(line.substr(4, 3));
-			colori[x][2] = stoi(line.substr(8, 8));
-			x++;
-		}
-		myfile.close();
-	}
+	auto colors = LoadStateColors(myfile);
 
 	//Load all the state's coordinates
 	myfile.open("map/States/StateCoordinates.txt");
-	short int Coords[2703][2];
-	x = 0;
-	if (myfile.is_open())
-	{
-		while (getline(myfile, line))
-		{
-			if (line == "---") {
-				Coords[x][0] = -1;
-				Coords[x][1] = -1;
-			}
-			else {
-				Coords[x][0] = stoi(line.substr(0, 4));
-				Coords[x][1] = stoi(line.substr(7, 11));
-			}
-			x++;
-		}
-		myfile.close();
-	}
-
-	int Res[31] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000 };
+	auto coords = LoadStateCoordinates(myfile);
 
 	//Create all countries
-	for (x = 0; x < 58; x++) {
-		CountriesArr[x] = new Country(tags->at(x), 0, 0, 0, Res);
-		if (tag == tags->at(x)) {
-			player_index = x;
-		}
-	}
+	InitializeCountries(tags, tag);
 
 	//Create all the states
-	short int res[8] = { 50, 50, 50, 50, 50, 50, 50, 50 };
-	int target = 0;
-	for (x = 0; x < 2703; x++) {
-		for (int y = 0; y < 58; y++) {
-			if (owners->at(x) == CountriesArr[y]->countrytag) {
-				target = y;
-				break;
-			}
-		}
-		StatesArr[x] = new State(Names->at(x), x + 1, owners->at(x), owners->at(x), 647428, Coords[x], colori[x], res, &CountriesArr[target]->Stock);
-		CountriesArr[target]->AddState(StatesArr[x]);
-	}
+	InitializeStates(owners, Names, coords, colors);
+
+	//Free allocated memory
+	delete[] colors, coords;
 
 	//Initialize the date
 	Date = { .Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .bIsPaused = true, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31} };
 
 	//Create the map
-	map = IMG_Load("map/1910.png");
+	LoadMap(r);
+}
 
-	SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0, 0, 0, 0 );
+void PlayerController::LoadMap(SDL_Renderer* r){
+	map = IMG_Load("map/1910.png");
+	provinces = IMG_Load("map/provinces.bmp");
+
+	SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0, 0, 0, 0);
 
 	SDL_Rect strect = { .x = 232, .y = 0, .w = 5616 , .h = 2160 };
 	SDL_BlitSurface(map, &strect, base, NULL);
-	strect = { .x = -5616 + 232, .y = 0, .w = 5616* 2 , .h = 2160 };
+	strect = { .x = -5616 + 232, .y = 0, .w = 5616 * 2 , .h = 2160 };
 	SDL_BlitSurface(map, &strect, base, NULL);
 	strect = { .x = -5616 * 2 + 232, .y = 0, .w = 5616 * 3 , .h = 2160 };
 	SDL_BlitSurface(map, &strect, base, NULL);
 	txt = SDL_CreateTextureFromSurface(r, base);
 	SDL_FreeSurface(base);
 
-	provinces = IMG_Load("map/provinces.bmp");
-	ormap = IMG_Load("map/1910.png");
-
 	base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
 	overlay = SDL_CreateTextureFromSurface(r, base);
 	SDL_FreeSurface(base);
+}
 
-	delete tags, Names, owners;
+VectorSmartPointer PlayerController::LoadCountryTags(std::ifstream& file) {
+	auto tags = std::make_unique<std::vector<std::string>>();
+	std::string line;
+
+	if (file.is_open())
+	{
+		while (getline(file, line))
+		{
+			tags->push_back(line);
+		}
+		file.close();
+	}
+
+	return tags;
+}
+
+VectorSmartPointer PlayerController::LoadStateNames(std::ifstream& file) {
+	auto names = std::make_unique<std::vector<std::string>>();
+	std::string line;
+
+	if (file.is_open())
+	{
+		while (getline(file, line))
+		{
+			names->push_back(line);
+		}
+		file.close();
+	}
+
+	return names;
+}
+
+VectorSmartPointer PlayerController::LoadStateOwnerTags(std::ifstream& file) {
+	auto owners = std::make_unique<std::vector<std::string>>();
+	std::string line;
+
+	if (file.is_open())
+	{
+		while (getline(file, line))
+		{
+			owners->push_back(line);
+		}
+		file.close();
+	}
+
+	return owners;
+}
+
+short (*PlayerController::LoadStateColors(std::ifstream& file))[3] {
+	auto colors = new short[2703][3]; //std::make_unique<short(*)[3]>(2703);
+	std::string line;
+	int x = 0;
+
+	if (file.is_open())
+	{
+		while (getline(file, line))
+		{
+			colors[x][0] = stoi(line.substr(0, 3));
+			colors[x][1] = stoi(line.substr(4, 3));
+			colors[x][2] = stoi(line.substr(8, 8));
+			x++;
+		}
+		file.close();
+	}
+
+	return colors;
+}
+
+short (*PlayerController::LoadStateCoordinates(std::ifstream& file))[2] {
+	auto coords = new short[2703][2];
+	std::string line;
+	int x = 0;
+
+	if (file.is_open())
+	{
+		while (getline(file, line))
+		{
+			if (line == "---") {
+				coords[x][0] = -1;
+				coords[x][1] = -1;
+			}
+			else {
+				coords[x][0] = std::stoi(line.substr(0, 4));
+				coords[x][1] = std::stoi(line.substr(7, 11));
+			}
+			x++;
+		}
+		file.close();
+	}
+
+	return coords;
+}
+
+void PlayerController::InitializeCountries(VectorSmartPointer& tags, const char* tag){
+	int Res[31] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000 };
+
+	for (int x = 0; x < 58; x++) {
+		CountriesArr[x] = new Country(tags->at(x), 0, 0, 0, Res);
+		if (tag == tags->at(x)) {
+			player_index = x;
+		}
+	}
+}
+
+void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], short(*colors)[3]){
+	short int res[8] = { 50, 50, 50, 50, 50, 50, 50, 50 };
+	int target = 0;
+
+	for (int x = 0; x < 2703; x++) {
+		for (int y = 0; y < 58; y++) {
+			if (owners->at(x) == CountriesArr[y]->countrytag) {
+				target = y;
+				break;
+			}
+		}
+		StatesArr[x] = new State(names->at(x), x + 1, owners->at(x), owners->at(x), 647428, coords[x], colors[x], res, &CountriesArr[target]->Stock);
+		CountriesArr[target]->AddState(StatesArr[x]);
+	}
 }
 
 PlayerController::~PlayerController(){
@@ -147,12 +204,11 @@ PlayerController::~PlayerController(){
 
 	//Stop the date thread if the game is not paused
 	if (Date.bIsPaused == false) {
-		Date.bIsPaused = true;
-		SDL_WaitThread(thread, nullptr);
+		Pause();
 	}
 
 	//Remove the map surface and texture from memory
-	SDL_DestroyTexture(txt);
+	//SDL_DestroyTexture(txt);
 	SDL_DestroyTexture(overlay);
 	SDL_FreeSurface(map);
 	SDL_FreeSurface(provinces);
@@ -160,14 +216,19 @@ PlayerController::~PlayerController(){
 
 int PlayerController::AdvanceDate(void* ref){
 	PlayerController* reference = static_cast<PlayerController*>(ref);
-	int x = 0;
-	while (x < 10 && reference->Date.bIsPaused == false) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(2 * 100 / reference->Date.Speed));
-		x++;
-	}
 
-	//Advance by one day
-	if (reference->Date.bIsPaused == false) {
+	while (true)
+	{
+		for (int i = 0; i < 10 && reference->Date.bIsPaused == false; i++) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(2 * 100 / reference->Date.Speed));
+		}
+
+		//Stop if the game is paused
+		if (reference->Date.bIsPaused) {
+			return 0;
+		}
+
+		//Advance by one day
 		reference->Date.Day++;
 
 		//Execute the tick function
@@ -184,23 +245,21 @@ int PlayerController::AdvanceDate(void* ref){
 				reference->Date.Month = 1;
 
 				//Check whether the current year is a leap year
-				if (reference->Date.Year % 4 == 0.0) {
+				if (reference->Date.Year % 4 == 0) {
 					reference->Date.MonthDays[1] = 29;
 				} else {
 					reference->Date.MonthDays[1] = 28;
 				}
 			}
 		}
-		reference->AdvanceDate(reference);
 	}
-	return 0;
 }
 
 void PlayerController::Pause(){
 	/*Pause or unpause the game when this function is executed.
 	It will always change the state of the Date.bIsPaused and
 	set it to the opposite value.*/
-	if (Date.bIsPaused == true) {
+	if (Date.bIsPaused) {
 		Date.bIsPaused = false;
 		//Create a new thread that will be running the AdvanceDate function in parallel with everything else
 		thread = SDL_CreateThread(&PlayerController::AdvanceDate, NULL, this);
@@ -214,9 +273,9 @@ void PlayerController::Pause(){
 void PlayerController::ChangeSpeed(bool change){
 	//If change is true then we increase the speed and
 	//if it is false it decreases the speed
-	if (change == true && Date.Speed < 4) {
+	if (change && Date.Speed < 4) {
 		Date.Speed++;
-	} else if (change == false && Date.Speed > 1) {
+	} else if (!change && Date.Speed > 1) {
 		Date.Speed--;
 	}
 }

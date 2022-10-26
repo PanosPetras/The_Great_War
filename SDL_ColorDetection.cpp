@@ -1,4 +1,5 @@
 #include "SDL_ColorDetection.h"
+
 Uint32 CD::getpixel(SDL_Surface* surface, int x, int y)
 {
 	int bpp = surface->format->BytesPerPixel;

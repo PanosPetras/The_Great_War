@@ -1,4 +1,5 @@
 #include "ScreenList.h"
+#include "SDL_ColorDetection.h"
 
 GameScreen::GameScreen(SDL_Renderer* r, int Width, int Height, const char* tag,  std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r, Width, Height) {
 	bHasBackground = true;
@@ -184,33 +185,33 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 			SDL_Color rgb = CD::getcolor(PC->provinces, x, y);
 
 			for (int u = 0; u < 2703; u++) {
-				if (PC->StatesArr[u]->Color.r == rgb.r) {
-					if (PC->StatesArr[u]->Color.g == rgb.g) {
-						if (PC->StatesArr[u]->Color.b == rgb.b) {
-							//Access the state's factories
-							std::string fcs[4];
-							for (int i = 0; i < 4; i++) {
+				if (PC->StatesArr[u]->color.r == rgb.r) {
+					if (PC->StatesArr[u]->color.g == rgb.g) {
+						if (PC->StatesArr[u]->color.b == rgb.b) {
+				//Access the state's factories
+				std::string fcs[4];
+				for (int i = 0; i < 4; i++) {
 								if (PC->StatesArr[u]->State_Factories[i] != nullptr) {
 									fcs[i] = PC->StatesArr[u]->State_Factories[i]->Type;
-								}
-								else {
-									fcs[i] = "";
-								}
-							}
+					}
+					else {
+						fcs[i] = "";
+					}
+				}
 
-							//Access the state's resources
+				//Access the state's resources
 							int res[8] = { PC->StatesArr[u]->Resources.Coal, PC->StatesArr[u]->Resources.Cotton, PC->StatesArr[u]->Resources.Fruit, PC->StatesArr[u]->Resources.Grain, PC->StatesArr[u]->Resources.Iron, PC->StatesArr[u]->Resources.Oil, PC->StatesArr[u]->Resources.Rubber, PC->StatesArr[u]->Resources.Timber };
-							auto close = std::bind(&GameScreen::Pause, this);
+				auto close = std::bind(&GameScreen::Pause, this);
 
-							//Create the StatePreview screen
-							if (bHasStatePreview == false) {
+				//Create the StatePreview screen
+				if (bHasStatePreview == false) {
 								StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], u, PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
-								bHasStatePreview = true;
-							}
-							else {
-								delete StateViewingScreen;
+					bHasStatePreview = true;
+				}
+				else {
+					delete StateViewingScreen;
 								StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], u, PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
-							}
+				}
 							break;
 						}
 					}
@@ -294,7 +295,7 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 			}
 			//Moves the camera to the right
 			else if (x < 0 && Cam_Width) {
-				lim1 = 11000 - WindowSize[0] / 2 / factor;
+				lim1 = int(11000 - WindowSize[0] / 2 / factor);
 				
 				Cam_Width += int((MouseSensitivity * x * -1) / factor);
 				if (Cam_Width > lim1) {

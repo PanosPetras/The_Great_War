@@ -6,7 +6,7 @@ State::State(std::string name, int ID, std::string owner, std::string controller
 	State_ID = ID;
 	State_Coords[0] = Coords[0];
 	State_Coords[1] = Coords[1];
-	Color = { .r = C[0], .g = C[1], .b = C[2]};
+	color = { .r = C[0], .g = C[1], .b = C[2]};
 
 	//These variables might change during the game's flow
 	State_Controller = owner;
@@ -80,6 +80,8 @@ int State::AddFactory(Factory* NewFactory){
 int State::RemoveFactory(int index){
 	if (State_Factories[index]) {
 		delete State_Factories[index];
+		State_Factories[index] = nullptr;
+
 		return 0;
 	}
 	return -1;
