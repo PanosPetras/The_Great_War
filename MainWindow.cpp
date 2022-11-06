@@ -20,11 +20,8 @@ MainWindow::MainWindow() {
         SDL_WINDOWPOS_UNDEFINED,           // initial y position
         1920,                               // width, in pixels
         1080,                               // height, in pixels
-        SDL_WINDOW_OPENGL                  // flags - see below
+        SDL_WINDOW_OPENGL //| SDL_WINDOW_FULLSCREEN                  // flags - see below
     );
-
-    //Set the window to fullscreen mode
-    //SDL_SetWindowFullscreen(window, 1); 
 
     //Initializing the window renderer
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -76,6 +73,8 @@ MainWindow::~MainWindow() {
     TTF_Quit();
     IMG_Quit();
     Mix_Quit();
+
+    //Destroy the renderer
     SDL_DestroyRenderer(renderer);
 
     // Close and destroy the window
@@ -110,10 +109,6 @@ void MainWindow::Keyboard() {
     while (SDL_PollEvent(&event)) {
         // check for messages
         switch (event.type) {
-            // exit if the window is closed
-        case SDL_QUIT:
-            KEYS[SDLK_ESCAPE] = true;
-            break;
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym) {
             case SDLK_ESCAPE:
@@ -131,6 +126,15 @@ void MainWindow::Keyboard() {
             default:
                 break;
             }
+            break;
+        case SDL_WINDOWEVENT:
+            if (event.window.event == SDL_WINDOWEVENT_CLOSE) {
+                Quit();
+            }
+            break;
+        // exit if the window is closed
+        case SDL_QUIT:
+            KEYS[SDLK_ESCAPE] = true;
             break;
         default:
             break;

@@ -59,6 +59,7 @@ public:
 
 	//Reference to every single state on the map
 	State* StatesArr[2703];
+	std::unordered_map<std::string, State*> b;
 
 	//Reference to every country
 	Country* CountriesArr[59];

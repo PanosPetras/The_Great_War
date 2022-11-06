@@ -2,8 +2,6 @@
 #define Slider_H
 
 #include <SDL.h>
-#include <SDL_image.h>
-#include <iostream>
 
 class Slider {
 public:
@@ -29,7 +27,6 @@ public:
 	void ChangeSize(int Width, int Height);
 
 	//The Slider's graphical components
-	SDL_Texture* Background;
 	SDL_Texture* Marker;
 
 	SDL_Rect bg_rect;

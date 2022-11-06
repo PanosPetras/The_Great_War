@@ -188,30 +188,30 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 				if (PC->StatesArr[u]->color.r == rgb.r) {
 					if (PC->StatesArr[u]->color.g == rgb.g) {
 						if (PC->StatesArr[u]->color.b == rgb.b) {
-				//Access the state's factories
-				std::string fcs[4];
-				for (int i = 0; i < 4; i++) {
-								if (PC->StatesArr[u]->State_Factories[i] != nullptr) {
-									fcs[i] = PC->StatesArr[u]->State_Factories[i]->Type;
-					}
-					else {
-						fcs[i] = "";
-					}
-				}
+						//Access the state's factories
+						std::string fcs[4];
+						for (int i = 0; i < 4; i++) {
+							if (PC->StatesArr[u]->State_Factories[i] != nullptr) {
+								fcs[i] = PC->StatesArr[u]->State_Factories[i]->Type;
+							}
+							else {
+								fcs[i] = "";
+							}
+						}
 
-				//Access the state's resources
-							int res[8] = { PC->StatesArr[u]->Resources.Coal, PC->StatesArr[u]->Resources.Cotton, PC->StatesArr[u]->Resources.Fruit, PC->StatesArr[u]->Resources.Grain, PC->StatesArr[u]->Resources.Iron, PC->StatesArr[u]->Resources.Oil, PC->StatesArr[u]->Resources.Rubber, PC->StatesArr[u]->Resources.Timber };
-				auto close = std::bind(&GameScreen::Pause, this);
+						//Access the state's resources
+						int res[8] = { PC->StatesArr[u]->Resources.Coal, PC->StatesArr[u]->Resources.Cotton, PC->StatesArr[u]->Resources.Fruit, PC->StatesArr[u]->Resources.Grain, PC->StatesArr[u]->Resources.Iron, PC->StatesArr[u]->Resources.Oil, PC->StatesArr[u]->Resources.Rubber, PC->StatesArr[u]->Resources.Timber };
+						auto close = std::bind(&GameScreen::Pause, this);
 
-				//Create the StatePreview screen
-				if (bHasStatePreview == false) {
-								StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], u, PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
-					bHasStatePreview = true;
-				}
-				else {
-					delete StateViewingScreen;
-								StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], u, PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
-				}
+						//Create the StatePreview screen
+						if (bHasStatePreview == false) {
+							StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], u, PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
+							bHasStatePreview = true;
+						}
+						else {
+							delete StateViewingScreen;
+							StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], u, PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
+						}
 							break;
 						}
 					}

@@ -148,6 +148,9 @@
     <ClInclude Include="Market.h">
       <Filter>Game_Classes\Header_Files</Filter>
     </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Screen_Classes\Header_Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="The_Great_War.rc" />
