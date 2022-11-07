@@ -16,6 +16,7 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 
 	//Create the map on a separate thread
 	SDL_Thread* MapThread = SDL_CreateThread(&PlayerController::LoadMap, NULL, this);
+	SDL_Thread* AssetsThread = SDL_CreateThread(&PlayerController::LoadUtilityAssets, NULL, this);
 
 	//Allocate space for some members
 	StatesArr = new State* [2703];
@@ -57,6 +58,7 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	Date = { .Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .bIsPaused = true, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31} };
 
 	//Wait for the map to be loaded
+	SDL_WaitThread(AssetsThread, nullptr);
 	SDL_WaitThread(MapThread, nullptr);
 }
 
@@ -88,7 +90,6 @@ PlayerController::~PlayerController() {
 int PlayerController::LoadMap(void* pc){
 	PlayerController* PC = (PlayerController*)pc;
 	PC->map = IMG_Load("map/1910.png");
-	PC->provinces = IMG_Load("map/provinces.bmp");
 
 	SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0, 0, 0, 0);
 
@@ -101,7 +102,14 @@ int PlayerController::LoadMap(void* pc){
 	PC->txt = SDL_CreateTextureFromSurface(PC->RendererReference, base);
 	SDL_FreeSurface(base);
 
-	base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
+	return 0;
+}
+
+int PlayerController::LoadUtilityAssets(void* pc){
+	PlayerController* PC = (PlayerController*)pc;
+	PC->provinces = IMG_Load("map/provinces.bmp");
+
+	SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
 	PC->overlay = SDL_CreateTextureFromSurface(PC->RendererReference, base);
 	SDL_FreeSurface(base);
 

@@ -11,13 +11,11 @@ class Demand {
 
 class Market {
 public:
-	struct Stockpile D;
+	Stockpile Demand;
 
-	struct Stockpile S;
+	Stockpile Supply;
 
-	void GetSupply(Stockpile Stock);
-
-	void CalculateDemand();
+	Stockpile Price;
 };
 
 #endif

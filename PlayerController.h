@@ -29,6 +29,7 @@ private:
 	void InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], unsigned char(*colors)[3]);
 
 	static int LoadMap(void*);
+	static int LoadUtilityAssets(void*);
 	
 public:
 	//Destructor
