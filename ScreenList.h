@@ -154,6 +154,10 @@ public:
 
     void Update();
 
+    void OnTaxRateChanged();
+
+    void OnHealthcareChanged();
+
     Country* Player;
 };
 

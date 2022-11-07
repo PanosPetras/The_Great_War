@@ -1,7 +1,7 @@
 #include "Slider.h"
 #include <SDL_image.h>
 
-Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value){
+Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged){
 	//Saving a reference to the renderer
 	renderer = r;
 	
@@ -14,6 +14,8 @@ Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalu
 	SDL_Surface* temp = IMG_Load("Slider/Circle.png");
 	Marker = SDL_CreateTextureFromSurface(renderer, temp);
 	SDL_FreeSurface(temp);
+
+	this->onSliderValueChanged = onSliderValueChanged;
 }
 
 Slider::~Slider(){
@@ -45,17 +47,18 @@ int Slider::HandleInput(SDL_Event* ev){
 	//If the user is handling the slider....
 	if (bmousepressed == true && marker_rect.x != ev->button.x) {
 		//Move the slider's marker to the appropriate position
-		if (ev->button.x > bg_rect.x + bg_rect.w - marker_rect.h) {
+		if (ev->button.x > bg_rect.x + bg_rect.w - marker_rect.h + marker_rect.w / 2) {
 			marker_rect.x = bg_rect.x + bg_rect.w - marker_rect.h;
-		} else if (ev->button.x < bg_rect.x) {
+		} else if (ev->button.x < bg_rect.x + marker_rect.w / 2) {
 			marker_rect.x = bg_rect.x;
 		} else {
-			marker_rect.x = ev->button.x;
+			marker_rect.x = ev->button.x - marker_rect.w / 2;
 		}
 
 		//Calculate the value of the slider
 		if (bg_rect.w != 0) {
 			Values.Value = int((marker_rect.x - bg_rect.x + 0.0) / (bg_rect.w - marker_rect.w) * Values.Maximum);
+			callOnValueChanged();
 		}
 	}
 
@@ -64,6 +67,7 @@ int Slider::HandleInput(SDL_Event* ev){
 
 void Slider::ChangeValues(int minvalue, int maxvalue, int value){
 	Values = { .Value = value != -1 ? value : (minvalue + maxvalue) / 2, .Minimum = minvalue, .Maximum = maxvalue };
+	callOnValueChanged();
 }
 
 void Slider::ChangePosition(int x, int y){
@@ -78,4 +82,10 @@ void Slider::ChangeSize(int Width, int Height){
 	bg_rect.h = Height / 5;
 
 	marker_rect.w = marker_rect.h = Height;
+}
+
+void Slider::callOnValueChanged(){
+	if (onSliderValueChanged != NULL) {
+		onSliderValueChanged();
+	}
 }

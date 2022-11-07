@@ -2,11 +2,12 @@
 #define Slider_H
 
 #include <SDL.h>
+#include <functional>
 
 class Slider {
 public:
 	//Constructor, initializes the values
-	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1);
+	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = NULL);
 
 	//Destructor, frees up the memory
 	~Slider();
@@ -44,5 +45,11 @@ public:
 		int Minimum;
 		int Maximum;
 	} Values;
+
+	//Called when the value of the slider changes
+	std::function<void()> onSliderValueChanged;
+
+private:
+	void callOnValueChanged();
 };
 #endif
