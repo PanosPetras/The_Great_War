@@ -58,6 +58,8 @@ public:
 	//Changes the game speed
 	void ChangeSpeed(bool change);
 
+	Market WorldMarket;
+
 	//Reference to every single state on the map
 	State** StatesArr;
 	std::unordered_map<std::string, State*> StatesMap;

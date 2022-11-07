@@ -1,231 +1,274 @@
 #include "Factory.h"
 
-void Factory::Tick(){
+void Factory::Tick() {
+	*(TargetStockpile) += materialsProduced + materialsNeeded;
 }
 
-Factory::Factory(Stockpile* Target, std::string arg, int c = 500){
+Factory::Factory(Stockpile* Target, Market* market, std::string arg, int c = 500) {
+	Type = arg;
 	cost = c;
 	size = 1;
 	ChangeOwner(Target);
-	Type = arg;
+	TargetMarket = market;
 }
 
-void Factory::ChangeOwner(Stockpile* NewStockpile){
+Factory::~Factory() {
+	if (TargetMarket == nullptr) return;
+	(*TargetMarket).Demand += materialsNeeded;
+	(*TargetMarket).Supply -= materialsProduced;
+}
+
+void Factory::ChangeOwner(Stockpile* NewStockpile) {
 	TargetStockpile = NewStockpile;
 }
 
-CanningFactory::CanningFactory(Stockpile* Target) : Factory(Target, "canned food") {
+void Factory::confirmMaterials() {
+	if (TargetMarket == nullptr) return;
+	(*TargetMarket).Demand -= materialsNeeded;
+	(*TargetMarket).Supply += materialsProduced;
 }
 
-void CanningFactory::Tick(){
-	TargetStockpile->Canned_food += 10 * size;
-	TargetStockpile->Iron -= 2;
-	TargetStockpile->Grain -= 3;
-	TargetStockpile->Coal -= 2;
+CanningFactory::CanningFactory(Stockpile* Target) : Factory(Target, nullptr, "canned food") {
+	materialsProduced.Canned_food += 10 * size;
+
+	materialsNeeded.Iron -= 2;
+	materialsNeeded.Grain -= 3;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
 }
 
-LiquorDistillery::LiquorDistillery(Stockpile* Target) : Factory(Target, "liquor") {
+LiquorDistillery::LiquorDistillery(Stockpile* Target) : Factory(Target, nullptr, "liquor") {
+	materialsProduced.Liquor += 10 * size;
+
+	materialsNeeded.Glass -= 2;
+	materialsNeeded.Fruit -= 4;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
 }
 
-void LiquorDistillery::Tick(){
-	TargetStockpile->Liquor += 10 * size;
-	TargetStockpile->Glass -= 2;
-	TargetStockpile->Fruit -= 4;
-	TargetStockpile->Coal -= 2;
+AutomobileFactory::AutomobileFactory(Stockpile* Target) : Factory(Target, nullptr, "automobile") {
+	materialsProduced.Automobiles += 3 * size;
+
+	materialsNeeded.Lumber -= 4;
+	materialsNeeded.Iron -= 4;
+	materialsNeeded.Rubber -= 1;
+	materialsNeeded.Glass -= 1;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
 }
 
-AutomobileFactory::AutomobileFactory(Stockpile* Target) : Factory(Target, "automobile") {
-}
-
-void AutomobileFactory::Tick(){
-	TargetStockpile->Automobiles += 3 * size;
-	TargetStockpile->Lumber -= 4;
-	TargetStockpile->Iron -= 4;
-	TargetStockpile->Rubber -= 1;
-	TargetStockpile->Glass -= 1;
-	TargetStockpile->Coal -= 2;
-}
-
-Shipyard::Shipyard(Stockpile* Target) : Factory(Target, "merchant ship") {
-}
-
-void Shipyard::Tick(){
-}
-
-LumberMill::LumberMill(Stockpile* Target) : Factory(Target, "lumber") {
-}
-
-void LumberMill::Tick(){
-	TargetStockpile->Lumber += 15 * size;
-	TargetStockpile->Timber -= 10;
-	TargetStockpile->Coal -= 2;
-}
-
-CementFactory::CementFactory(Stockpile* Target) : Factory(Target, "cement") {
-}
-
-void CementFactory::Tick(){
-	TargetStockpile->Cement += 10 * size;
-	TargetStockpile->Coal -= 4;
-}
-
-ClothesFactory::ClothesFactory(Stockpile* Target) : Factory(Target, "clothes") {
-}
-
-void ClothesFactory::Tick(){
-	TargetStockpile->Clothes += 10 * size;
-	TargetStockpile->Cotton -= 8;
-	TargetStockpile->Coal -= 2;
-}
-
-RadioFactory::RadioFactory(Stockpile* Target) : Factory(Target, "radio") {
-}
-
-void RadioFactory::Tick(){
-	TargetStockpile->Radios += 5 * size;
-	TargetStockpile->Electric_gear -= 2;
-	TargetStockpile->Coal -= 2;
-}
-
-TelephoneFactory::TelephoneFactory(Stockpile* Target) : Factory(Target, "telephone") {
-}
-
-void TelephoneFactory::Tick(){
-	TargetStockpile->Telephones += 5 * size;
-	TargetStockpile->Electric_gear -= 2;
-	TargetStockpile->Coal -= 2;
-}
-
-GlassFactory::GlassFactory(Stockpile* Target) : Factory(Target, "glass") {
-}
-
-void GlassFactory::Tick(){
-	TargetStockpile->Glass += 8 * size;
-	TargetStockpile->Coal -= 4;
-}
-
-PaperMill::PaperMill(Stockpile* Target) : Factory(Target, "paper") {
-}
-
-void PaperMill::Tick(){
-	TargetStockpile->Paper += 20 * size;
-	TargetStockpile->Lumber -= 8;
-	TargetStockpile->Coal -= 2;
-}
-
-FurnitureFactory::FurnitureFactory(Stockpile* Target) : Factory(Target, "furniture") {
-}
-
-void FurnitureFactory::Tick(){
-	TargetStockpile->Furniture += 7 * size;
-	TargetStockpile->Lumber -= 10;
-	TargetStockpile->Coal -= 2;
-}
-
-FuelRefinery::FuelRefinery(Stockpile* Target) : Factory(Target, "fuel") {
-}
-
-void FuelRefinery::Tick(){
-	TargetStockpile->Fuel += 8 * size;
-	TargetStockpile->Oil -= 4;
-	TargetStockpile->Coal -= 2;
-}
-
-AmmunitionFactory::AmmunitionFactory(Stockpile* Target) : Factory(Target, "ammunition") {
-}
-
-void AmmunitionFactory::Tick(){
-	TargetStockpile->Ammunition += 5 * size;
-	TargetStockpile->Iron -= 3;
-	TargetStockpile->Coal -= 2;
-}
-
-PlaneFactory::PlaneFactory(Stockpile* Target) : Factory(Target, "plane") {
-}
-
-void PlaneFactory::Tick(){
-	TargetStockpile->Planes += 2 * size;
-	TargetStockpile->Lumber -= 4;
-	TargetStockpile->Iron -= 1;
-	TargetStockpile->Rubber -= 2;
-	TargetStockpile->Coal -= 2;
-}
-
-ExplosivesFactory::ExplosivesFactory(Stockpile* Target) : Factory(Target, "explosives") {
-}
-
-void ExplosivesFactory::Tick(){
-	TargetStockpile->Explosives += 6 * size;
-	TargetStockpile->Coal -= 2;
-}
-
-SmallArmsFactory::SmallArmsFactory(Stockpile* Target) : Factory(Target, "small arms") {
-}
-
-void SmallArmsFactory::Tick(){
-	TargetStockpile->Small_arms += 15 * size;
-	TargetStockpile->Iron -= 8;
-	TargetStockpile->Lumber -= 8;
-	TargetStockpile->Coal -= 2;
-}
-
-ArtilleryFactory::ArtilleryFactory(Stockpile* Target) : Factory(Target, "artillery") {
-}
-
-void ArtilleryFactory::Tick(){
-	TargetStockpile->Artillery += 3 * size;
-	TargetStockpile->Iron -= 3;
-	TargetStockpile->Coal -= 2;
-}
-
-TankFactory::TankFactory(Stockpile* Target) : Factory(Target, "tank") {
-}
-
-void TankFactory::Tick(){
-	TargetStockpile->Tanks += 1 * size;
-	TargetStockpile->Iron -= 4;
-	TargetStockpile->Artillery -= 1;
-	TargetStockpile->Small_arms -= 2;
-	TargetStockpile->Coal -= 2;
-}
-
-AirshipFactory::AirshipFactory(Stockpile* Target) : Factory(Target, "airship") {
+Shipyard::Shipyard(Stockpile* Target) : Factory(Target, nullptr, "merchant ship") {
+	daysToProduce = 120;
 	days = 0;
+
+	materialsProduced.Merchant_ships += 1 * size;
+
+	materialsNeeded.Lumber -= 4;
+	materialsNeeded.Iron -= 4;
+	materialsNeeded.Rubber -= 1;
+	materialsNeeded.Glass -= 1;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
 }
 
-void AirshipFactory::Tick(){
-	if (days < 153) {
-		days++;
-		return;
+void Shipyard::Tick() {
+	*(TargetStockpile) += materialsNeeded;
+	days++;
+
+	if (days == daysToProduce) {
+		days = 0;
+		*(TargetStockpile) += materialsProduced;
 	}
-	TargetStockpile->Iron -= 10;
-	TargetStockpile->Electric_gear -= 2;
-	TargetStockpile->Cotton -= 12;
-	TargetStockpile->Coal -= 2;
 }
 
-MachinePartFactory::MachinePartFactory(Stockpile* Target) : Factory(Target, "machine parts") {
+LumberMill::LumberMill(Stockpile* Target) : Factory(Target, nullptr, "lumber") {
+	materialsProduced.Lumber += 15 * size;
+
+	materialsNeeded.Timber -= 10;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
 }
 
-void MachinePartFactory::Tick(){
-	TargetStockpile->Machine_parts += 6 * size;
-	TargetStockpile->Iron -= 12;
-	TargetStockpile->Coal -= 2;
+CementFactory::CementFactory(Stockpile* Target) : Factory(Target, nullptr, "cement") {
+	materialsProduced.Cement += 10 * size;
+
+	materialsNeeded.Coal -= 4;
+
+	confirmMaterials();
 }
 
-ElectricGearFactory::ElectricGearFactory(Stockpile* Target) : Factory(Target, "electric gear") {
+ClothesFactory::ClothesFactory(Stockpile* Target) : Factory(Target, nullptr, "clothes") {
+	materialsProduced.Clothes += 10 * size;
+
+	materialsNeeded.Cotton -= 8;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
 }
 
-void ElectricGearFactory::Tick(){
-	TargetStockpile->Electric_gear += 8 * size;
-	TargetStockpile->Iron -= 4;
-	TargetStockpile->Coal -= 2;
+RadioFactory::RadioFactory(Stockpile* Target) : Factory(Target, nullptr, "radio") {
+	materialsProduced.Radios += 5 * size;
+
+	materialsNeeded.Electric_gear -= 2;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
 }
 
-SyntheticRubberRefinery::SyntheticRubberRefinery(Stockpile* Target) : Factory(Target, "rubber") {
+TelephoneFactory::TelephoneFactory(Stockpile* Target) : Factory(Target, nullptr, "telephone") {
+	materialsProduced.Telephones += 5 * size;
+
+	materialsNeeded.Electric_gear -= 2;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
 }
 
-void SyntheticRubberRefinery::Tick(){
-	TargetStockpile->Rubber += 6 * size;
-	TargetStockpile->Coal -= 5;
+GlassFactory::GlassFactory(Stockpile* Target) : Factory(Target, nullptr, "glass") {
+	materialsProduced.Glass += 8 * size;
+
+	materialsNeeded.Coal -= 4;
+
+	confirmMaterials();
+}
+
+PaperMill::PaperMill(Stockpile* Target) : Factory(Target, nullptr, "paper") {
+	materialsProduced.Paper += 20 * size;
+
+	materialsNeeded.Lumber -= 8;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
+}
+
+FurnitureFactory::FurnitureFactory(Stockpile* Target) : Factory(Target, nullptr, "furniture") {
+	materialsProduced.Furniture += 7 * size;
+
+	materialsNeeded.Lumber -= 10;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
+}
+
+FuelRefinery::FuelRefinery(Stockpile* Target) : Factory(Target, nullptr, "fuel") {
+	materialsProduced.Fuel += 8 * size;
+
+	materialsNeeded.Oil -= 4;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
+}
+
+AmmunitionFactory::AmmunitionFactory(Stockpile* Target) : Factory(Target, nullptr, "ammunition") {
+	materialsProduced.Ammunition += 5 * size;
+
+	materialsNeeded.Iron -= 3;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
+}
+
+PlaneFactory::PlaneFactory(Stockpile* Target) : Factory(Target, nullptr, "plane") {
+	materialsProduced.Planes += 2 * size;
+
+	materialsNeeded.Lumber -= 4;
+	materialsNeeded.Iron -= 1;
+	materialsNeeded.Rubber -= 2;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
+}
+
+ExplosivesFactory::ExplosivesFactory(Stockpile* Target) : Factory(Target, nullptr, "explosives") {
+	materialsProduced.Explosives += 6 * size;
+
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
+}
+
+SmallArmsFactory::SmallArmsFactory(Stockpile* Target) : Factory(Target, nullptr, "small arms") {
+	materialsProduced.Small_arms += 15 * size;
+
+	materialsNeeded.Iron -= 8;
+	materialsNeeded.Lumber -= 8;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
+}
+
+ArtilleryFactory::ArtilleryFactory(Stockpile* Target) : Factory(Target, nullptr, "artillery") {
+	materialsProduced.Artillery += 3 * size;
+
+	materialsNeeded.Iron -= 3;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
+}
+
+TankFactory::TankFactory(Stockpile* Target) : Factory(Target, nullptr, "tank") {
+	materialsProduced.Tanks += 1 * size;
+
+	materialsNeeded.Iron -= 4;
+	materialsNeeded.Artillery -= 1;
+	materialsNeeded.Small_arms -= 2;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
+}
+
+AirshipFactory::AirshipFactory(Stockpile* Target) : Factory(Target, nullptr, "airship") {
+	daysToProduce = 200;
+	days = 0;
+
+	materialsProduced.Airship += 1 * size;
+
+	materialsNeeded.Iron -= 10;
+	materialsNeeded.Electric_gear -= 2;
+	materialsNeeded.Cotton -= 12;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
+}
+
+void AirshipFactory::Tick() {
+	*(TargetStockpile) += materialsNeeded;
+	days++;
+
+	if (days == daysToProduce) {
+		days = 0;
+
+		*(TargetStockpile) += materialsProduced;
+	}
+}
+
+MachinePartFactory::MachinePartFactory(Stockpile* Target) : Factory(Target, nullptr, "machine parts") {
+	materialsProduced.Machine_parts += 6 * size;
+
+	materialsNeeded.Iron -= 12;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
+}
+
+ElectricGearFactory::ElectricGearFactory(Stockpile* Target) : Factory(Target, nullptr, "electric gear") {
+	materialsProduced.Electric_gear += 8 * size;
+
+	materialsNeeded.Iron -= 4;
+	materialsNeeded.Coal -= 2;
+
+	confirmMaterials();
+}
+
+SyntheticRubberRefinery::SyntheticRubberRefinery(Stockpile* Target) : Factory(Target, nullptr, "rubber") {
+	materialsProduced.Rubber += 6 * size;
+
+	materialsNeeded.Coal -= 5;
+
+	confirmMaterials();
 }
