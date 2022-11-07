@@ -10,19 +10,21 @@ Image::Image(SDL_Renderer* r, const char* img, int x, int y, int Width, int Heig
     imagepath = img;
 
     //Loading the image texture
-    image = IMG_Load(imagepath.c_str());
+    SDL_Surface* image = IMG_Load(imagepath.c_str());
+
     texture = SDL_CreateTextureFromSurface(RendererReference, image);
+
+    SDL_FreeSurface(image);
 }
 
 Image::~Image(){
     //Free up the memory
     SDL_DestroyTexture(texture);
-    SDL_FreeSurface(image);
 }
 
 void Image::RenderImage(){
     //Drawing the Image
-    SDL_RenderCopy(RendererReference, texture, NULL, &this->draw_rect);
+    SDL_RenderCopy(RendererReference, texture, NULL, &draw_rect);
 }
 
 void Image::ChangeImage(const char* img){
@@ -33,19 +35,19 @@ void Image::ChangeImage(const char* img){
 
 void Image::ChangePosition(int p, int d, int Height, int Width){
     //Saving the image's new coordinates
-    this->draw_rect.x = p;
-    this->draw_rect.y = d;
-    this->draw_rect.w = Height;
-    this->draw_rect.h = Width;
+    draw_rect.x = p;
+    draw_rect.y = d;
+    draw_rect.w = Height;
+    draw_rect.h = Width;
 }
 
 void Image::Update(){
     //Free up the memory
     SDL_DestroyTexture(texture);
-    SDL_FreeSurface(image);
 
     //Loading the image texture
-    image = IMG_Load(imagepath.c_str());
+    SDL_Surface* image = IMG_Load(imagepath.c_str());
     texture = SDL_CreateTextureFromSurface(RendererReference, image);
+    SDL_FreeSurface(image);
     //SDL_SetTextureColorMod(texture, 255, 255, 255); //in order to change color of the state
 }

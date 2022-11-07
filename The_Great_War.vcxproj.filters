@@ -103,6 +103,12 @@
     <ClCompile Include="Market.cpp">
       <Filter>Game_Classes\Source_Files</Filter>
     </ClCompile>
+    <ClCompile Include="MenuSettingsScreen.cpp">
+      <Filter>Screen_Classes\Source_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>General purpose code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">
@@ -150,6 +156,9 @@
     </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>Screen_Classes\Header_Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>General purpose code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

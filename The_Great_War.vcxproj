@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="CountrySelection.cpp" />
     <ClCompile Include="CreditScreen.cpp" />
     <ClCompile Include="EconomyScreen.cpp" />
@@ -27,6 +28,7 @@
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Market.cpp" />
+    <ClCompile Include="MenuSettingsScreen.cpp" />
     <ClCompile Include="OpenFactoryScreen.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="PlayerController.cpp" />
@@ -46,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Color.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Market.h" />
     <ClInclude Include="Stockpile.h" />

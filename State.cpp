@@ -1,6 +1,6 @@
 #include "State.h"
 
-State::State(std::string name, int ID, std::string owner, std::string controller, int pop, short int Coords[2], short int C[3], short int Res[8], Stockpile* stock){
+State::State(std::string name, int ID, std::string owner, std::string controller, int pop, short int Coords[2], unsigned char C[3], short int Res[8], Stockpile* stock){
 	//These variables MUST not change during the game's flow
 	State_Name = name;
 	State_ID = ID;

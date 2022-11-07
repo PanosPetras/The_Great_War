@@ -11,7 +11,9 @@ class MainMenu : public Screen{
 public:
     //Constructor, sets default values and creates all needed assets
     MainMenu(SDL_Renderer* r, int Width, int Height, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+
     void ShowCredits();
+    void ShowSettings();
     void StartGame();
 };
 
@@ -25,11 +27,25 @@ public:
     void Back();
 };
 
+class MenuSettingsScreen : public Screen {
+public:
+    //Constructor, sets default values and creates all needed assets
+    MenuSettingsScreen(SDL_Renderer* r, int Width, int Height, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+
+    std::function<void(Screen*)> ChangeScreenFunc;
+    std::function<void()> QuitFunc;
+    void Back();
+};
+
+class InGameSettingsScreen : public Screen {
+public:
+};
+
 class GameScreen : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
     GameScreen(SDL_Renderer* r, int Width, int Height, const char* tag, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
-    ~GameScreen() override;
+    ~GameScreen();
 
     PlayerController* PC;
 
@@ -63,22 +79,9 @@ public:
     //Stores the dimensions of the image displayed
     int ImgSize[2];
 
-    /*Stores the state in which the camera is along the y axis:
-    0: Not moving
-    1: Moving to the left
-    2: Moving to the right*/
-    int YState;
-
-    /*Stores the state in which the camera is along the x axis:
-    0: Not moving
-    1: Moving to the left
-    2: Moving to the right*/
-    int XState;
-
     //This is the camera's zooming speed
     float ZoomingSpeed;
     bool mousepressed;
-    bool once;
     int MouseSensitivity;
 
     Screen *StateViewingScreen;
@@ -109,8 +112,6 @@ public:
     CountrySelection(SDL_Renderer* r, int Width, int Height, std::function<void()> UnpauseF = NULL, std::function<void(Screen*)> fpl = NULL);
 
     bool mousepressed;
-
-    SDL_Texture* texture;
 
     const char* tags[8];
 

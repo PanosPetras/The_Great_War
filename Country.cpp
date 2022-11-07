@@ -51,6 +51,7 @@ Country::Country(std::string tag, int r, int g, int b, int Res[31]){
 }
 
 Country::~Country(){
+    delete OwnedStates;
 }
 
 void Country::AddState(State* state){
@@ -66,10 +67,8 @@ void Country::RemoveState(State* state){
     }
 }
 
-void Country::Tick(){
-    std::unordered_map<std::string, State*>::iterator it;
-
-    for (it = OwnedStates->begin(); it != OwnedStates->end(); it++) {
+void Country::Tick(){  
+    for (auto it = OwnedStates->begin(); it != OwnedStates->end(); it++) {
         it->second->Tick(Policy.TaxRate, Policy.Healthcare);
     }
 

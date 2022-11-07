@@ -16,7 +16,6 @@ GameScreen::GameScreen(SDL_Renderer* r, int Width, int Height, const char* tag, 
 	ImgSize[1] = 2160;
 	ZoomingSpeed = 0.1f;
 	mousepressed = false;
-	once = true;
 	MouseSensitivity = 3;
 	ChangeScreenFunc = fpl;
 	QuitFunc = fp;
@@ -46,6 +45,7 @@ GameScreen::~GameScreen(){
 	for (int x = 0; x < ImageArrtop; x++) {
 		delete ImageArr[x];
 	}
+
 	if (bIsPaused == true) {
 		delete PM;
 	}
@@ -182,41 +182,36 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 			bIsPaused == false && bHasStatePreview == false) {
 			int x = Cam_Width + int(ev->button.x / factor) - 5384;
 			int y = Cam_Height + int(ev->button.y / factor);
-			SDL_Color rgb = CD::getcolor(PC->provinces, x, y);
+			Color rgb = CD::getcolor(PC->provinces, x, y);
 
-			for (int u = 0; u < 2703; u++) {
-				if (PC->StatesArr[u]->color.r == rgb.r) {
-					if (PC->StatesArr[u]->color.g == rgb.g) {
-						if (PC->StatesArr[u]->color.b == rgb.b) {
-						//Access the state's factories
-						std::string fcs[4];
-						for (int i = 0; i < 4; i++) {
-							if (PC->StatesArr[u]->State_Factories[i] != nullptr) {
-								fcs[i] = PC->StatesArr[u]->State_Factories[i]->Type;
-							}
-							else {
-								fcs[i] = "";
-							}
-						}
+			if (PC->StatesMap.contains(rgb.toString())) {
+				State* state = PC->StatesMap.find(rgb.toString())->second;
 
-						//Access the state's resources
-						int res[8] = { PC->StatesArr[u]->Resources.Coal, PC->StatesArr[u]->Resources.Cotton, PC->StatesArr[u]->Resources.Fruit, PC->StatesArr[u]->Resources.Grain, PC->StatesArr[u]->Resources.Iron, PC->StatesArr[u]->Resources.Oil, PC->StatesArr[u]->Resources.Rubber, PC->StatesArr[u]->Resources.Timber };
-						auto close = std::bind(&GameScreen::Pause, this);
-
-						//Create the StatePreview screen
-						if (bHasStatePreview == false) {
-							StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], u, PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
-							bHasStatePreview = true;
-						}
-						else {
-							delete StateViewingScreen;
-							StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], u, PC->StatesArr[u]->State_Name, PC->StatesArr[u]->State_Controller, PC, res, PC->StatesArr[u]->State_Population, fcs, close);
-						}
-							break;
-						}
+				std::string fcs[4];
+				for (int i = 0; i < 4; i++) {
+					if (state->State_Factories[i] != nullptr) {
+						fcs[i] = state->State_Factories[i]->Type;
+					}
+					else {
+						fcs[i] = "";
 					}
 				}
+
+				//Access the state's resources
+				int res[8] = { state->Resources.Coal, state->Resources.Cotton, state->Resources.Fruit, state->Resources.Grain, state->Resources.Iron, state->Resources.Oil, state->Resources.Rubber, state->Resources.Timber };
+				auto close = std::bind(&GameScreen::Pause, this);
+
+				//Create the StatePreview screen
+				if (bHasStatePreview == false) {
+					StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, state->State_Population, fcs, close);
+					bHasStatePreview = true;
+				}
+				else {
+					delete StateViewingScreen;
+					StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, state->State_Population, fcs, close);
+				}
 			}
+
 			SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
 
 			SDL_Surface* Marker = IMG_Load("Icons/pin1.png");

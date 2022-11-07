@@ -4,17 +4,12 @@
 #include <string>
 #include "Factory.h"
 #include "Stockpile.h"
-
-typedef struct Color {
-    short int r;
-    short int g;
-    short int b;
-} Color;
+#include "Color.h"
 
 class State {
 public:
     //Constructor
-    State(std::string name, int ID, std::string owner, std::string controller, int pop, short int Coords[2], short int C[3], short int Res[8], Stockpile* stock);
+    State(std::string name, int ID, std::string owner, std::string controller, int pop, short int Coords[2], unsigned char C[3], short int Res[8], Stockpile* stock);
 
     //This is the representing the pass of a single day
     void Tick(int TaxRate, int HealthCare);

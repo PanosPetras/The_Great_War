@@ -16,9 +16,6 @@ public:
 	//Reference the the screen's renderer
 	SDL_Renderer* RendererReference;
 
-	//The surface that will be created out of the image
-	SDL_Surface* image;
-
 	//The texture containing the image surface
 	SDL_Texture* texture;
 

@@ -14,6 +14,13 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	//Save the player's country tag
 	player_tag = tag;
 
+	//Create the map on a separate thread
+	SDL_Thread* MapThread = SDL_CreateThread(&PlayerController::LoadMap, NULL, this);
+
+	//Allocate space for some members
+	StatesArr = new State* [2703];
+	//StatesMap = new std::unordered_map<std::string, State*>;
+
 	//Create the variables needed to load all the needed data
 	std::string line;
 	std::ifstream myfile("map/Countries/CountryTags.txt");
@@ -49,28 +56,56 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	//Initialize the date
 	Date = { .Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .bIsPaused = true, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31} };
 
-	//Create the map
-	LoadMap(r);
+	//Wait for the map to be loaded
+	SDL_WaitThread(MapThread, nullptr);
 }
 
-void PlayerController::LoadMap(SDL_Renderer* r){
-	map = IMG_Load("map/1910.png");
-	provinces = IMG_Load("map/provinces.bmp");
+PlayerController::~PlayerController() {
+	//Delete all objects created by the player Controller
+	for (int x = 0; x < 2703; x++) {
+		delete StatesArr[x];
+	}
+	for (int x = 0; x < 58; x++) {
+		delete CountriesArr[x];
+	}
+
+	//Free all allocated Memory
+	delete StatesArr;
+	//delete StatesMap;
+
+	//Stop the date thread if the game is not paused
+	if (Date.bIsPaused == false) {
+		Pause();
+	}
+
+	//Remove the map surface and texture from memory
+	SDL_DestroyTexture(txt);
+	SDL_DestroyTexture(overlay);
+	SDL_FreeSurface(map);
+	SDL_FreeSurface(provinces);
+}
+
+int PlayerController::LoadMap(void* pc){
+	PlayerController* PC = (PlayerController*)pc;
+	PC->map = IMG_Load("map/1910.png");
+	PC->provinces = IMG_Load("map/provinces.bmp");
 
 	SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0, 0, 0, 0);
 
 	SDL_Rect strect = { .x = 232, .y = 0, .w = 5616 , .h = 2160 };
-	SDL_BlitSurface(map, &strect, base, NULL);
+	SDL_BlitSurface(PC->map, &strect, base, NULL);
 	strect = { .x = -5616 + 232, .y = 0, .w = 5616 * 2 , .h = 2160 };
-	SDL_BlitSurface(map, &strect, base, NULL);
+	SDL_BlitSurface(PC->map, &strect, base, NULL);
 	strect = { .x = -5616 * 2 + 232, .y = 0, .w = 5616 * 3 , .h = 2160 };
-	SDL_BlitSurface(map, &strect, base, NULL);
-	txt = SDL_CreateTextureFromSurface(r, base);
+	SDL_BlitSurface(PC->map, &strect, base, NULL);
+	PC->txt = SDL_CreateTextureFromSurface(PC->RendererReference, base);
 	SDL_FreeSurface(base);
 
 	base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
-	overlay = SDL_CreateTextureFromSurface(r, base);
+	PC->overlay = SDL_CreateTextureFromSurface(PC->RendererReference, base);
 	SDL_FreeSurface(base);
+
+	return 0;
 }
 
 VectorSmartPointer PlayerController::LoadCountryTags(std::ifstream& file) {
@@ -121,8 +156,8 @@ VectorSmartPointer PlayerController::LoadStateOwnerTags(std::ifstream& file) {
 	return owners;
 }
 
-short (*PlayerController::LoadStateColors(std::ifstream& file))[3] {
-	auto colors = new short[2703][3]; //std::make_unique<short(*)[3]>(2703);
+unsigned char (*PlayerController::LoadStateColors(std::ifstream& file))[3] {
+	auto colors = new unsigned char[2703][3]; //std::make_unique<short(*)[3]>(2703);
 	std::string line;
 	int x = 0;
 
@@ -177,9 +212,10 @@ void PlayerController::InitializeCountries(VectorSmartPointer& tags, const char*
 	}
 }
 
-void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], short(*colors)[3]){
+void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], unsigned char(*colors)[3]){
 	short int res[8] = { 50, 50, 50, 50, 50, 50, 50, 50 };
 	int target = 0;
+	State* state;
 
 	for (int x = 0; x < 2703; x++) {
 		for (int y = 0; y < 58; y++) {
@@ -188,30 +224,14 @@ void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartP
 				break;
 			}
 		}
-		StatesArr[x] = new State(names->at(x), x + 1, owners->at(x), owners->at(x), 647428, coords[x], colors[x], res, &CountriesArr[target]->Stock);
-		CountriesArr[target]->AddState(StatesArr[x]);
-	}
-}
 
-PlayerController::~PlayerController(){
-	//Delete all objects created by the player Controller
-	for (int x = 0; x < 2703; x++) {
-		delete StatesArr[x];
-	}
-	for (int x = 0; x < 58; x++) {
-		delete CountriesArr[x];
-	}
+		state = new State(names->at(x), x + 1, owners->at(x), owners->at(x), 647428, coords[x], colors[x], res, &CountriesArr[target]->Stock);
 
-	//Stop the date thread if the game is not paused
-	if (Date.bIsPaused == false) {
-		Pause();
-	}
+		StatesMap.insert(std::pair(state->color.toString(), state));
+		StatesArr[x] = state;
 
-	//Remove the map surface and texture from memory
-	//SDL_DestroyTexture(txt);
-	SDL_DestroyTexture(overlay);
-	SDL_FreeSurface(map);
-	SDL_FreeSurface(provinces);
+		CountriesArr[target]->AddState(state);
+	}
 }
 
 int PlayerController::AdvanceDate(void* ref){

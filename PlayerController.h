@@ -18,17 +18,17 @@ public:
 	//Constructor
 	PlayerController(SDL_Renderer* r, const char* tag);
 
-	void InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& Names, short(*coords)[2], short(*colors)[3]);
-
 private:
 	//Loading data functions
-	void LoadMap(SDL_Renderer*);
 	VectorSmartPointer LoadCountryTags(std::ifstream&);
 	VectorSmartPointer LoadStateNames(std::ifstream&);
 	VectorSmartPointer LoadStateOwnerTags(std::ifstream&);
-	short (*LoadStateColors(std::ifstream&))[3];
+	unsigned char(*LoadStateColors(std::ifstream&))[3];
 	short (*LoadStateCoordinates(std::ifstream&))[2];
 	void InitializeCountries(VectorSmartPointer& tags, const char* tag);
+	void InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], unsigned char(*colors)[3]);
+
+	static int LoadMap(void*);
 	
 public:
 	//Destructor
@@ -58,8 +58,8 @@ public:
 	void ChangeSpeed(bool change);
 
 	//Reference to every single state on the map
-	State* StatesArr[2703];
-	std::unordered_map<std::string, State*> b;
+	State** StatesArr;
+	std::unordered_map<std::string, State*> StatesMap;
 
 	//Reference to every country
 	Country* CountriesArr[59];

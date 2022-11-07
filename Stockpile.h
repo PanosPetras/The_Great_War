@@ -33,7 +33,7 @@ public:
     int Paper;
     int Liquor;
     int Airship;
-    int Money;
+    long long Money;
 };
 
 #endif

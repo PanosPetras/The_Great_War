@@ -25,6 +25,8 @@ Label::Label(SDL_Renderer* r, const char* Text, int size, int x, int y, Uint8 re
 
     //Create the texture out of the surface that we just generated
     texture = SDL_CreateTextureFromSurface(RendererReference, surface);
+
+    //Free the surface
     SDL_FreeSurface(surface);
 
     //Delete the font

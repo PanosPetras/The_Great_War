@@ -41,13 +41,13 @@ UI::UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController
 
 UI::~UI(){
 	//Delete all objects from memory before we destroy this object
-	delete flag, flagbg, Balance;
-	for (int x = 0; x < 5; x++) {
-		delete Buttons[x];
+	delete flag, flagbg;
+	for (auto btn : Buttons) {
+		delete btn;
 	}
 
-	for (int x = 0; x < 3; x++) {
-		delete DateButtons[x];
+	for (auto btn : DateButtons) {
+		delete btn;
 	}
 	delete Date, SpeedBg, SpeedImg;
 }
