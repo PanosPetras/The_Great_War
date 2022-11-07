@@ -33,7 +33,7 @@ public:
     std::string State_Controller;
     
     //This is the state's population
-    int State_Population;
+    double State_Population;
     
     //This is the state's coorditates on the map expressed in pixels
     int State_Coords[2];

@@ -31,22 +31,22 @@ protected:
 
 struct CanningFactory : public Factory {
 public:
-	CanningFactory(Stockpile* Target);
+	CanningFactory(Stockpile* Target, Market* market);
 };
 
 struct LiquorDistillery : public Factory {
 public:
-	LiquorDistillery(Stockpile* Target);
+	LiquorDistillery(Stockpile* Target, Market* market);
 };
 
 struct AutomobileFactory : public Factory {
 public:
-	AutomobileFactory(Stockpile* Target);
+	AutomobileFactory(Stockpile* Target, Market* market);
 };
 
 struct Shipyard : public Factory {
 public:
-	Shipyard(Stockpile* Target);
+	Shipyard(Stockpile* Target, Market* market);
 
 	void Tick() override;
 
@@ -57,82 +57,82 @@ private:
 
 struct LumberMill : public Factory {
 public:
-	LumberMill(Stockpile* Target);
+	LumberMill(Stockpile* Target, Market* market);
 };
 
 struct CementFactory : public Factory {
 public:
-	CementFactory(Stockpile* Target);
+	CementFactory(Stockpile* Target, Market* market);
 };
 
 struct ClothesFactory : public Factory {
 public:
-	ClothesFactory(Stockpile* Target);
+	ClothesFactory(Stockpile* Target, Market* market);
 };
 
 struct RadioFactory : public Factory {
 public:
-	RadioFactory(Stockpile* Target);
+	RadioFactory(Stockpile* Target, Market* market);
 };
 
 struct TelephoneFactory : public Factory {
 public:
-	TelephoneFactory(Stockpile* Target);
+	TelephoneFactory(Stockpile* Target, Market* market);
 };
 
 struct GlassFactory : public Factory {
 public:
-	GlassFactory(Stockpile* Target);
+	GlassFactory(Stockpile* Target, Market* market);
 };
 
 struct PaperMill : public Factory {
 public:
-	PaperMill(Stockpile* Target);
+	PaperMill(Stockpile* Target, Market* market);
 };
 
 struct FurnitureFactory : public Factory {
 public:
-	FurnitureFactory(Stockpile* Target);
+	FurnitureFactory(Stockpile* Target, Market* market);
 };
 
 struct FuelRefinery : public Factory {
 public:
-	FuelRefinery(Stockpile* Target);
+	FuelRefinery(Stockpile* Target, Market* market);
 };
 
 struct AmmunitionFactory : public Factory {
 public:
-	AmmunitionFactory(Stockpile* Target);
+	AmmunitionFactory(Stockpile* Target, Market* market);
 };
 
 struct PlaneFactory : public Factory {
 public:
-	PlaneFactory(Stockpile* Target);
+	PlaneFactory(Stockpile* Target, Market* market);
 };
 
 struct ExplosivesFactory : public Factory {
 public:
-	ExplosivesFactory(Stockpile* Target);
+	ExplosivesFactory(Stockpile* Target, Market* market);
 };
 
 struct SmallArmsFactory : public Factory {
 public:
-	SmallArmsFactory(Stockpile* Target);
+	SmallArmsFactory(Stockpile* Target, Market* market);
 };
 
 struct ArtilleryFactory : public Factory {
 public:
-	ArtilleryFactory(Stockpile* Target);
+	ArtilleryFactory(Stockpile* Target, Market* market);
 };
 
 struct TankFactory : public Factory {
 public:
-	TankFactory(Stockpile* Target);
+	TankFactory(Stockpile* Target, Market* market);
 };
 
 struct AirshipFactory : public Factory {
 public:
-	AirshipFactory(Stockpile* Target);
+	AirshipFactory(Stockpile* Target, Market* market);
 
 	void Tick() override;
 
@@ -143,16 +143,16 @@ private:
 
 struct MachinePartFactory : public Factory {
 public:
-	MachinePartFactory(Stockpile* Target);
+	MachinePartFactory(Stockpile* Target, Market* market);
 };
 
 struct ElectricGearFactory : public Factory {
 public:
-	ElectricGearFactory(Stockpile* Target);
+	ElectricGearFactory(Stockpile* Target, Market* market);
 };
 
 struct SyntheticRubberRefinery : public Factory {
 public:
-	SyntheticRubberRefinery(Stockpile* Target);
+	SyntheticRubberRefinery(Stockpile* Target, Market* market);
 };
 #endif

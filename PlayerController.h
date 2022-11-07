@@ -21,11 +21,12 @@ public:
 private:
 	//Loading data functions
 	VectorSmartPointer LoadCountryTags(std::ifstream&);
+	int* LoadCountriesBalance(std::ifstream&);
 	VectorSmartPointer LoadStateNames(std::ifstream&);
 	VectorSmartPointer LoadStateOwnerTags(std::ifstream&);
 	unsigned char(*LoadStateColors(std::ifstream&))[3];
 	short (*LoadStateCoordinates(std::ifstream&))[2];
-	void InitializeCountries(VectorSmartPointer& tags, const char* tag);
+	void InitializeCountries(VectorSmartPointer& tags, const char* tag, int* balance);
 	void InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], unsigned char(*colors)[3]);
 
 	static int LoadMap(void*);

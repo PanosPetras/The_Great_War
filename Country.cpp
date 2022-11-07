@@ -56,7 +56,7 @@ Country::~Country(){
 
 void Country::AddState(State* state){
 	(*OwnedStates)[state->State_Name] = state;
-    Country_Population += state->State_Population;
+    Country_Population += int(state->State_Population);
 	Country_State_Count++;
 }
 
@@ -72,6 +72,6 @@ void Country::Tick(){
         it->second->Tick(Policy.TaxRate, Policy.Healthcare);
     }
 
-    Stock.Money += int(Country_Population * 0.0004 * Policy.TaxRate / 100);
-    Stock.Money -= int(Country_Population * 0.0001 * Policy.Healthcare / 100);
+    Stock.Money += int(Country_Population * 0.004 * Policy.TaxRate / 100);
+    Stock.Money -= int(Country_Population * 0.001 * Policy.Healthcare / 100);
 }

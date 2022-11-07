@@ -69,112 +69,112 @@ OpenFactoryScreen::OpenFactoryScreen(SDL_Renderer* r, int Width, int Height, int
 }
 
 void OpenFactoryScreen::FactoryTypeLumber(){
-	LumberMill F(nullptr);
+	LumberMill F(nullptr, nullptr);
 	FactoryType('a', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeGlass(){
-	GlassFactory F(nullptr);
+	GlassFactory F(nullptr, nullptr);
 	FactoryType('b', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeFood(){
-	CanningFactory F(nullptr);
+	CanningFactory F(nullptr, nullptr);
 	FactoryType('c', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeClothes(){
-	ClothesFactory F(nullptr);
+	ClothesFactory F(nullptr, nullptr);
 	FactoryType('d', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeLiquor(){
-	LiquorDistillery F(nullptr);
+	LiquorDistillery F(nullptr, nullptr);
 	FactoryType('e', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeFurniture(){
-	FurnitureFactory F(nullptr);
+	FurnitureFactory F(nullptr, nullptr);
 	FactoryType('f', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeAutomobile(){
-	AutomobileFactory F(nullptr);
+	AutomobileFactory F(nullptr, nullptr);
 	FactoryType('g', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypePaper(){
-	PaperMill F(nullptr);
+	PaperMill F(nullptr, nullptr);
 	FactoryType('h', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeTelephone(){
-	TelephoneFactory F(nullptr);
+	TelephoneFactory F(nullptr, nullptr);
 	FactoryType('i', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeRadio(){
-	RadioFactory F(nullptr);
+	RadioFactory F(nullptr, nullptr);
 	FactoryType('j', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeMachineParts(){
-	MachinePartFactory F(nullptr);
+	MachinePartFactory F(nullptr, nullptr);
 	FactoryType('k', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeElectricGear(){
-	ElectricGearFactory F(nullptr);
+	ElectricGearFactory F(nullptr, nullptr);
 	FactoryType('l', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeFuel(){
-	FuelRefinery F(nullptr);
+	FuelRefinery F(nullptr, nullptr);
 	FactoryType('m', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeCement(){
-	CementFactory F(nullptr);
+	CementFactory F(nullptr, nullptr);
 	FactoryType('n', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeMerchantShip(){
-	Shipyard F(nullptr);
+	Shipyard F(nullptr, nullptr);
 	FactoryType('o', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeSmallArms(){
-	SmallArmsFactory F(nullptr);
+	SmallArmsFactory F(nullptr, nullptr);
 	FactoryType('p', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeAmmunition(){
-	AmmunitionFactory F(nullptr);
+	AmmunitionFactory F(nullptr, nullptr);
 	FactoryType('q', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeArtillery(){
-	ArtilleryFactory F(nullptr);
+	ArtilleryFactory F(nullptr, nullptr);
 	FactoryType('r', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeExplosives(){
-	ExplosivesFactory F(nullptr);
+	ExplosivesFactory F(nullptr, nullptr);
 	FactoryType('s', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeTank(){
-	TankFactory F(nullptr);
+	TankFactory F(nullptr, nullptr);
 	FactoryType('t', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypeAirship(){
-	AirshipFactory F(nullptr);
+	AirshipFactory F(nullptr, nullptr);
 	FactoryType('u', F.cost);
 }
 
 void OpenFactoryScreen::FactoryTypePlane(){
-	PlaneFactory F(nullptr);
+	PlaneFactory F(nullptr, nullptr);
 	FactoryType('v', F.cost);
 }
 
@@ -188,70 +188,70 @@ void OpenFactoryScreen::BuildFactory(){
 	Factory* NF;
 	switch (type){
 		case 'a':
-			NF = new LumberMill(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new LumberMill(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'b':
-			NF = new GlassFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new GlassFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'c':
-			NF = new CanningFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new CanningFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'd':
-			NF = new ClothesFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new ClothesFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'e':
-			NF = new LiquorDistillery(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new LiquorDistillery(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'f':
-			NF = new FurnitureFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new FurnitureFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'g':
-			NF = new AutomobileFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new AutomobileFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'h':
-			NF = new PaperMill(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new PaperMill(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'i':
-			NF = new TelephoneFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new TelephoneFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'j':
-			NF = new RadioFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new RadioFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'k':
-			NF = new MachinePartFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new MachinePartFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'l':
-			NF = new ElectricGearFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new ElectricGearFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'm':
-			NF = new FuelRefinery(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new FuelRefinery(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'n':
-			NF = new CementFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new CementFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'o':
-			NF = new Shipyard(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new Shipyard(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'p':
-			NF = new SmallArmsFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new SmallArmsFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'q':
-			NF = new AmmunitionFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new AmmunitionFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'r':
-			NF = new ArtilleryFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new ArtilleryFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 's':
-			NF = new ExplosivesFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new ExplosivesFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 't':
-			NF = new TankFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new TankFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'u':
-			NF = new AirshipFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new AirshipFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		case 'v':
-			NF = new PlaneFactory(&PCref->CountriesArr[PCref->player_index]->Stock);
+			NF = new PlaneFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
 			break;
 		default:
 			return;

@@ -19,9 +19,9 @@ EconomyScreen::EconomyScreen(SDL_Renderer* r, int Width, int Height, Country* Pl
 	ImageArrtop = 0;
 	ButtonArrtop = 0;
 	auto change = std::bind(&EconomyScreen::OnTaxRateChanged, this);
-	SliderArr[0] = new Slider(r, int(0.12 * Width), int(0.3 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->Policy.TaxRate, change);
+	SliderArr[0] = new Slider(r, int(0.11 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->Policy.TaxRate, change);
 	change = std::bind(&EconomyScreen::OnHealthcareChanged, this);
-	SliderArr[1] = new Slider(r, int(0.42 * Width), int(0.3 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->Policy.Healthcare, change);
+	SliderArr[1] = new Slider(r, int(0.41 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->Policy.Healthcare, change);
 	SliderArrtop = 2;
 }
 

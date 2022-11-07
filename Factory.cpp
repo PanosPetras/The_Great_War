@@ -28,7 +28,7 @@ void Factory::confirmMaterials() {
 	(*TargetMarket).Supply += materialsProduced;
 }
 
-CanningFactory::CanningFactory(Stockpile* Target) : Factory(Target, nullptr, "canned food") {
+CanningFactory::CanningFactory(Stockpile* Target, Market* market) : Factory(Target, market, "canned food") {
 	materialsProduced.Canned_food += 10 * size;
 
 	materialsNeeded.Iron -= 2;
@@ -38,7 +38,7 @@ CanningFactory::CanningFactory(Stockpile* Target) : Factory(Target, nullptr, "ca
 	confirmMaterials();
 }
 
-LiquorDistillery::LiquorDistillery(Stockpile* Target) : Factory(Target, nullptr, "liquor") {
+LiquorDistillery::LiquorDistillery(Stockpile* Target, Market* market) : Factory(Target, market, "liquor") {
 	materialsProduced.Liquor += 10 * size;
 
 	materialsNeeded.Glass -= 2;
@@ -48,7 +48,7 @@ LiquorDistillery::LiquorDistillery(Stockpile* Target) : Factory(Target, nullptr,
 	confirmMaterials();
 }
 
-AutomobileFactory::AutomobileFactory(Stockpile* Target) : Factory(Target, nullptr, "automobile") {
+AutomobileFactory::AutomobileFactory(Stockpile* Target, Market* market) : Factory(Target, market, "automobile") {
 	materialsProduced.Automobiles += 3 * size;
 
 	materialsNeeded.Lumber -= 4;
@@ -60,7 +60,7 @@ AutomobileFactory::AutomobileFactory(Stockpile* Target) : Factory(Target, nullpt
 	confirmMaterials();
 }
 
-Shipyard::Shipyard(Stockpile* Target) : Factory(Target, nullptr, "merchant ship") {
+Shipyard::Shipyard(Stockpile* Target, Market* market) : Factory(Target, market, "merchant ship") {
 	daysToProduce = 120;
 	days = 0;
 
@@ -85,7 +85,7 @@ void Shipyard::Tick() {
 	}
 }
 
-LumberMill::LumberMill(Stockpile* Target) : Factory(Target, nullptr, "lumber") {
+LumberMill::LumberMill(Stockpile* Target, Market* market) : Factory(Target, market, "lumber") {
 	materialsProduced.Lumber += 15 * size;
 
 	materialsNeeded.Timber -= 10;
@@ -94,7 +94,7 @@ LumberMill::LumberMill(Stockpile* Target) : Factory(Target, nullptr, "lumber") {
 	confirmMaterials();
 }
 
-CementFactory::CementFactory(Stockpile* Target) : Factory(Target, nullptr, "cement") {
+CementFactory::CementFactory(Stockpile* Target, Market* market) : Factory(Target, market, "cement") {
 	materialsProduced.Cement += 10 * size;
 
 	materialsNeeded.Coal -= 4;
@@ -102,7 +102,7 @@ CementFactory::CementFactory(Stockpile* Target) : Factory(Target, nullptr, "ceme
 	confirmMaterials();
 }
 
-ClothesFactory::ClothesFactory(Stockpile* Target) : Factory(Target, nullptr, "clothes") {
+ClothesFactory::ClothesFactory(Stockpile* Target, Market* market) : Factory(Target, market, "clothes") {
 	materialsProduced.Clothes += 10 * size;
 
 	materialsNeeded.Cotton -= 8;
@@ -111,7 +111,7 @@ ClothesFactory::ClothesFactory(Stockpile* Target) : Factory(Target, nullptr, "cl
 	confirmMaterials();
 }
 
-RadioFactory::RadioFactory(Stockpile* Target) : Factory(Target, nullptr, "radio") {
+RadioFactory::RadioFactory(Stockpile* Target, Market* market) : Factory(Target, market, "radio") {
 	materialsProduced.Radios += 5 * size;
 
 	materialsNeeded.Electric_gear -= 2;
@@ -120,7 +120,7 @@ RadioFactory::RadioFactory(Stockpile* Target) : Factory(Target, nullptr, "radio"
 	confirmMaterials();
 }
 
-TelephoneFactory::TelephoneFactory(Stockpile* Target) : Factory(Target, nullptr, "telephone") {
+TelephoneFactory::TelephoneFactory(Stockpile* Target, Market* market) : Factory(Target, market, "telephone") {
 	materialsProduced.Telephones += 5 * size;
 
 	materialsNeeded.Electric_gear -= 2;
@@ -129,7 +129,7 @@ TelephoneFactory::TelephoneFactory(Stockpile* Target) : Factory(Target, nullptr,
 	confirmMaterials();
 }
 
-GlassFactory::GlassFactory(Stockpile* Target) : Factory(Target, nullptr, "glass") {
+GlassFactory::GlassFactory(Stockpile* Target, Market* market) : Factory(Target, market, "glass") {
 	materialsProduced.Glass += 8 * size;
 
 	materialsNeeded.Coal -= 4;
@@ -137,7 +137,7 @@ GlassFactory::GlassFactory(Stockpile* Target) : Factory(Target, nullptr, "glass"
 	confirmMaterials();
 }
 
-PaperMill::PaperMill(Stockpile* Target) : Factory(Target, nullptr, "paper") {
+PaperMill::PaperMill(Stockpile* Target, Market* market) : Factory(Target, market, "paper") {
 	materialsProduced.Paper += 20 * size;
 
 	materialsNeeded.Lumber -= 8;
@@ -146,7 +146,7 @@ PaperMill::PaperMill(Stockpile* Target) : Factory(Target, nullptr, "paper") {
 	confirmMaterials();
 }
 
-FurnitureFactory::FurnitureFactory(Stockpile* Target) : Factory(Target, nullptr, "furniture") {
+FurnitureFactory::FurnitureFactory(Stockpile* Target, Market* market) : Factory(Target, market, "furniture") {
 	materialsProduced.Furniture += 7 * size;
 
 	materialsNeeded.Lumber -= 10;
@@ -155,7 +155,7 @@ FurnitureFactory::FurnitureFactory(Stockpile* Target) : Factory(Target, nullptr,
 	confirmMaterials();
 }
 
-FuelRefinery::FuelRefinery(Stockpile* Target) : Factory(Target, nullptr, "fuel") {
+FuelRefinery::FuelRefinery(Stockpile* Target, Market* market) : Factory(Target, market, "fuel") {
 	materialsProduced.Fuel += 8 * size;
 
 	materialsNeeded.Oil -= 4;
@@ -164,7 +164,7 @@ FuelRefinery::FuelRefinery(Stockpile* Target) : Factory(Target, nullptr, "fuel")
 	confirmMaterials();
 }
 
-AmmunitionFactory::AmmunitionFactory(Stockpile* Target) : Factory(Target, nullptr, "ammunition") {
+AmmunitionFactory::AmmunitionFactory(Stockpile* Target, Market* market) : Factory(Target, market, "ammunition") {
 	materialsProduced.Ammunition += 5 * size;
 
 	materialsNeeded.Iron -= 3;
@@ -173,7 +173,7 @@ AmmunitionFactory::AmmunitionFactory(Stockpile* Target) : Factory(Target, nullpt
 	confirmMaterials();
 }
 
-PlaneFactory::PlaneFactory(Stockpile* Target) : Factory(Target, nullptr, "plane") {
+PlaneFactory::PlaneFactory(Stockpile* Target, Market* market) : Factory(Target, market, "plane") {
 	materialsProduced.Planes += 2 * size;
 
 	materialsNeeded.Lumber -= 4;
@@ -184,7 +184,7 @@ PlaneFactory::PlaneFactory(Stockpile* Target) : Factory(Target, nullptr, "plane"
 	confirmMaterials();
 }
 
-ExplosivesFactory::ExplosivesFactory(Stockpile* Target) : Factory(Target, nullptr, "explosives") {
+ExplosivesFactory::ExplosivesFactory(Stockpile* Target, Market* market) : Factory(Target, market, "explosives") {
 	materialsProduced.Explosives += 6 * size;
 
 	materialsNeeded.Coal -= 2;
@@ -192,7 +192,7 @@ ExplosivesFactory::ExplosivesFactory(Stockpile* Target) : Factory(Target, nullpt
 	confirmMaterials();
 }
 
-SmallArmsFactory::SmallArmsFactory(Stockpile* Target) : Factory(Target, nullptr, "small arms") {
+SmallArmsFactory::SmallArmsFactory(Stockpile* Target, Market* market) : Factory(Target, market, "small arms") {
 	materialsProduced.Small_arms += 15 * size;
 
 	materialsNeeded.Iron -= 8;
@@ -202,7 +202,7 @@ SmallArmsFactory::SmallArmsFactory(Stockpile* Target) : Factory(Target, nullptr,
 	confirmMaterials();
 }
 
-ArtilleryFactory::ArtilleryFactory(Stockpile* Target) : Factory(Target, nullptr, "artillery") {
+ArtilleryFactory::ArtilleryFactory(Stockpile* Target, Market* market) : Factory(Target, market, "artillery") {
 	materialsProduced.Artillery += 3 * size;
 
 	materialsNeeded.Iron -= 3;
@@ -211,7 +211,7 @@ ArtilleryFactory::ArtilleryFactory(Stockpile* Target) : Factory(Target, nullptr,
 	confirmMaterials();
 }
 
-TankFactory::TankFactory(Stockpile* Target) : Factory(Target, nullptr, "tank") {
+TankFactory::TankFactory(Stockpile* Target, Market* market) : Factory(Target, market, "tank") {
 	materialsProduced.Tanks += 1 * size;
 
 	materialsNeeded.Iron -= 4;
@@ -222,7 +222,7 @@ TankFactory::TankFactory(Stockpile* Target) : Factory(Target, nullptr, "tank") {
 	confirmMaterials();
 }
 
-AirshipFactory::AirshipFactory(Stockpile* Target) : Factory(Target, nullptr, "airship") {
+AirshipFactory::AirshipFactory(Stockpile* Target, Market* market) : Factory(Target, market, "airship") {
 	daysToProduce = 200;
 	days = 0;
 
@@ -247,7 +247,7 @@ void AirshipFactory::Tick() {
 	}
 }
 
-MachinePartFactory::MachinePartFactory(Stockpile* Target) : Factory(Target, nullptr, "machine parts") {
+MachinePartFactory::MachinePartFactory(Stockpile* Target, Market* market) : Factory(Target, market, "machine parts") {
 	materialsProduced.Machine_parts += 6 * size;
 
 	materialsNeeded.Iron -= 12;
@@ -256,7 +256,7 @@ MachinePartFactory::MachinePartFactory(Stockpile* Target) : Factory(Target, null
 	confirmMaterials();
 }
 
-ElectricGearFactory::ElectricGearFactory(Stockpile* Target) : Factory(Target, nullptr, "electric gear") {
+ElectricGearFactory::ElectricGearFactory(Stockpile* Target, Market* market) : Factory(Target, market, "electric gear") {
 	materialsProduced.Electric_gear += 8 * size;
 
 	materialsNeeded.Iron -= 4;
@@ -265,7 +265,7 @@ ElectricGearFactory::ElectricGearFactory(Stockpile* Target) : Factory(Target, nu
 	confirmMaterials();
 }
 
-SyntheticRubberRefinery::SyntheticRubberRefinery(Stockpile* Target) : Factory(Target, nullptr, "rubber") {
+SyntheticRubberRefinery::SyntheticRubberRefinery(Stockpile* Target, Market* market) : Factory(Target, market, "rubber") {
 	materialsProduced.Rubber += 6 * size;
 
 	materialsNeeded.Coal -= 5;

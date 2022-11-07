@@ -29,6 +29,10 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	//Load the country tags
 	auto tags = LoadCountryTags(myfile);
 
+	//Load the countries' budget at the start of the game
+	myfile.open("map/Countries/CountryBalances.txt");
+	auto balance = LoadCountriesBalance(myfile);
+
 	//Load all state names
 	myfile.open("map/States/StateNames.txt");
 	auto Names = LoadStateNames(myfile);
@@ -46,7 +50,7 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	auto coords = LoadStateCoordinates(myfile);
 
 	//Create all countries
-	InitializeCountries(tags, tag);
+	InitializeCountries(tags, tag, balance);
 
 	//Create all the states
 	InitializeStates(owners, Names, coords, colors);
@@ -132,6 +136,23 @@ VectorSmartPointer PlayerController::LoadCountryTags(std::ifstream& file) {
 	return tags;
 }
 
+int* PlayerController::LoadCountriesBalance(std::ifstream& file){
+	int* balance = new int[58];
+	std::string line;
+	int i = 0;
+
+	if (file.is_open())
+	{
+		while (getline(file, line))
+		{
+			balance[i++] = stoi(line);
+		}
+		file.close();
+	}
+
+	return balance;
+}
+
 VectorSmartPointer PlayerController::LoadStateNames(std::ifstream& file) {
 	auto names = std::make_unique<std::vector<std::string>>();
 	std::string line;
@@ -165,7 +186,7 @@ VectorSmartPointer PlayerController::LoadStateOwnerTags(std::ifstream& file) {
 }
 
 unsigned char (*PlayerController::LoadStateColors(std::ifstream& file))[3] {
-	auto colors = new unsigned char[2703][3]; //std::make_unique<short(*)[3]>(2703);
+	auto colors = new unsigned char[2703][3];
 	std::string line;
 	int x = 0;
 
@@ -209,10 +230,11 @@ short (*PlayerController::LoadStateCoordinates(std::ifstream& file))[2] {
 	return coords;
 }
 
-void PlayerController::InitializeCountries(VectorSmartPointer& tags, const char* tag){
+void PlayerController::InitializeCountries(VectorSmartPointer& tags, const char* tag, int* balance){
 	int Res[31] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000 };
 
 	for (int x = 0; x < 58; x++) {
+		Res[30] = balance[x];
 		CountriesArr[x] = new Country(tags->at(x), 0, 0, 0, Res);
 		if (tag == tags->at(x)) {
 			player_index = x;
@@ -233,7 +255,7 @@ void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartP
 			}
 		}
 
-		state = new State(names->at(x), x + 1, owners->at(x), owners->at(x), 647428, coords[x], colors[x], res, &CountriesArr[target]->Stock);
+		state = new State(names->at(x), x + 1, owners->at(x), owners->at(x), 591, coords[x], colors[x], res, &CountriesArr[target]->Stock);
 
 		StatesMap.insert(std::pair(state->color.toString(), state));
 		StatesArr[x] = state;
@@ -248,7 +270,7 @@ int PlayerController::AdvanceDate(void* ref){
 	while (true)
 	{
 		for (int i = 0; i < 10 && reference->Date.bIsPaused == false; i++) {
-			std::this_thread::sleep_for(std::chrono::milliseconds(2 * 100 / reference->Date.Speed));
+			std::this_thread::sleep_for(std::chrono::milliseconds(260 - reference->Date.Speed * 60));
 		}
 
 		//Stop if the game is paused

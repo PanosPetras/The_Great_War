@@ -203,12 +203,12 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 
 				//Create the StatePreview screen
 				if (bHasStatePreview == false) {
-					StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, state->State_Population, fcs, close);
+					StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, int(state->State_Population), fcs, close);
 					bHasStatePreview = true;
 				}
 				else {
 					delete StateViewingScreen;
-					StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, state->State_Population, fcs, close);
+					StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, int(state->State_Population), fcs, close);
 				}
 			}
 

@@ -39,7 +39,7 @@ State::State(std::string name, int ID, std::string owner, std::string controller
 }
 
 void State::Tick(int TaxRate, int HealthCare){
-	State_Population = State_Population + int(State_Population * (0.00002 / (1.0 + TaxRate / 100.0)) * (1 + HealthCare / 160.0));
+	State_Population += State_Population * (0.00005479452 / (1.0 + TaxRate / 200.0)) * (1 + HealthCare / 160.0);
 
 	TargetStockpile->Coal += Resources.Coal;
 	TargetStockpile->Oil += Resources.Oil;
