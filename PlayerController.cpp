@@ -49,11 +49,15 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	myfile.open("map/States/StateCoordinates.txt");
 	auto coords = LoadStateCoordinates(myfile);
 
+	//Load all the state's populations
+	myfile.open("map/States/StatePopulations.txt");
+	auto populations = LoadStatePops(myfile);
+
 	//Create all countries
 	InitializeCountries(tags, tag, balance);
 
 	//Create all the states
-	InitializeStates(owners, Names, coords, colors);
+	InitializeStates(owners, Names, coords, populations, colors);
 
 	//Free allocated memory
 	delete[] colors, coords;
@@ -230,6 +234,23 @@ short (*PlayerController::LoadStateCoordinates(std::ifstream& file))[2] {
 	return coords;
 }
 
+int* PlayerController::LoadStatePops(std::ifstream& file){
+	int* pops = new int[2703];
+	std::string line;
+	int i = 0;
+
+	if (file.is_open())
+	{
+		while (getline(file, line))
+		{
+			pops[i++] = stoi(line);
+		}
+		file.close();
+	}
+
+	return pops;
+}
+
 void PlayerController::InitializeCountries(VectorSmartPointer& tags, const char* tag, int* balance){
 	int Res[31] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000 };
 
@@ -242,7 +263,7 @@ void PlayerController::InitializeCountries(VectorSmartPointer& tags, const char*
 	}
 }
 
-void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], unsigned char(*colors)[3]){
+void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], int* populations, unsigned char(*colors)[3]){
 	short int res[8] = { 50, 50, 50, 50, 50, 50, 50, 50 };
 	int target = 0;
 	State* state;
@@ -255,7 +276,7 @@ void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartP
 			}
 		}
 
-		state = new State(names->at(x), x + 1, owners->at(x), owners->at(x), 591, coords[x], colors[x], res, &CountriesArr[target]->Stock);
+		state = new State(names->at(x), x + 1, owners->at(x), owners->at(x), populations[x], coords[x], colors[x], res, &CountriesArr[target]->Stock);
 
 		StatesMap.insert(std::pair(state->color.toString(), state));
 		StatesArr[x] = state;

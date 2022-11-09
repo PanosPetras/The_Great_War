@@ -178,7 +178,7 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 	if (ev->type == SDL_MOUSEBUTTONDOWN && ev->button.button == SDL_BUTTON_LEFT) {
 		if (bHasActiveScreen == false &&
 			flag == false &&
-			ev->button.y > WindowSize[0] * 0.06 &&
+			ev->button.y > WindowSize[1] * 0.07 &&
 			bIsPaused == false && bHasStatePreview == false) {
 			int x = Cam_Width + int(ev->button.x / factor) - 5384;
 			int y = Cam_Height + int(ev->button.y / factor);

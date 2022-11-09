@@ -1,7 +1,5 @@
 #include "MainWindow.h"
 
-using namespace std;
-
 void MainWindow::MainLoop() {
     while (!quit) {            
         this->Render();

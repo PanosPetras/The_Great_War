@@ -26,8 +26,9 @@ private:
 	VectorSmartPointer LoadStateOwnerTags(std::ifstream&);
 	unsigned char(*LoadStateColors(std::ifstream&))[3];
 	short (*LoadStateCoordinates(std::ifstream&))[2];
+	int* LoadStatePops(std::ifstream&);
 	void InitializeCountries(VectorSmartPointer& tags, const char* tag, int* balance);
-	void InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], unsigned char(*colors)[3]);
+	void InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], int* populations, unsigned char(*colors)[3]);
 
 	static int LoadMap(void*);
 	static int LoadUtilityAssets(void*);
