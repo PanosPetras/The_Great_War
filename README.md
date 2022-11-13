@@ -44,7 +44,7 @@ The game is stable at it's current state and there are
 no bugs that will cause a crash as far as I'm aware of.
 
 This project requires the following libraries:
-- SDL 2.24.1(Link: https://github.com/libsdl-org/SDL)
+- SDL 2.24.2(Link: https://github.com/libsdl-org/SDL)
 - SDL Mixer 2.6.2(Link: https://github.com/libsdl-org/SDL_mixer)
 - SDL Image 2.6.2(Link: https://github.com/libsdl-org/SDL_image)
 - SDL ttf 2.20.1(Link: https://github.com/libsdl-org/SDL_ttf)
