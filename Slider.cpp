@@ -11,7 +11,7 @@ Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalu
 	ChangePosition(x, y);
 
 	//Load the slider's textures
-	SDL_Surface* temp = IMG_Load("Slider/Circle.png");
+	SDL_Surface* temp = IMG_Load("Drawable/Slider/Circle.png");
 	Marker = SDL_CreateTextureFromSurface(renderer, temp);
 	SDL_FreeSurface(temp);
 

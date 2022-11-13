@@ -14,21 +14,21 @@ UI::UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController
 	std::string flg = "Flags/" + str;
 	flag = new Button(r, int(Width * 0.005), int(Height * 0.005), int(Width * 0.05), int(Height * 0.05), flg.c_str(), NULL, SDLK_q);
 
-	Buttons[0] = new Button(r, int(Width * 0.1), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Technology", NULL, SDLK_w);
+	Buttons[0] = new Button(r, int(Width * 0.1), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Technology", NULL, SDLK_w);
 
 	auto change = std::bind(&UI::OpenEconomyScreen, this);
-	Buttons[1] = new Button(r, int(Width * 0.15), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Economy", change, SDLK_e);
+	Buttons[1] = new Button(r, int(Width * 0.15), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Economy", change, SDLK_e);
 
 	change = std::bind(&UI::OpenIndustryScreen, this);
-	Buttons[3] = new Button(r, int(Width * 0.2), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Industry", change, SDLK_r);
+	Buttons[3] = new Button(r, int(Width * 0.2), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Industry", change, SDLK_r);
 
 	change = std::bind(&UI::OpenTradeScreen, this);
-	Buttons[2] = new Button(r, int(Width * 0.25), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Trade", change, SDLK_t);
+	Buttons[2] = new Button(r, int(Width * 0.25), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Trade", change, SDLK_t);
 
 	change = std::bind(&UI::OpenDiplomacyScreen, this);
-	Buttons[4] = new Button(r, int(Width * 0.3), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Diplomacy", change, SDLK_y);
+	Buttons[4] = new Button(r, int(Width * 0.3), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Diplomacy", change, SDLK_y);
 
-	Buttons[5] = new Button(r, int(Width * 0.35), 0, int(Width * 0.035), int(Height * 0.05), "Buttons/UI/Military", NULL, SDLK_u);
+	Buttons[5] = new Button(r, int(Width * 0.35), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Military", NULL, SDLK_u);
 
 	flagbg = new Image(r, "Backgrounds/FlagBg.png", 0, 0, int(Width * 0.06), int(Height * 0.06));
 

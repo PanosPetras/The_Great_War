@@ -25,6 +25,10 @@ ToggleButton::ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height,
     music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
+ToggleButton::ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f, int keybind) : ToggleButton(r, x, y, Width, Height, activeImage, inactiveImage, f, keybind) {
+    value = val;
+}
+
 ToggleButton::~ToggleButton(){
     //Free up the memory
     SDL_DestroyTexture(activeTexture);
@@ -121,6 +125,10 @@ void ToggleButton::ChangeFunctionBinding(std::function<void(bool)> f){
 
 void ToggleButton::ChangeKeybind(int keybind){
     key = keybind;
+}
+
+void ToggleButton::ChangeValue(bool val){
+    value = val;
 }
 
 void ToggleButton::Playsound(){

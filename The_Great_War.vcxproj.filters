@@ -115,6 +115,9 @@
     <ClCompile Include="ToggleButton.cpp">
       <Filter>UI_Elements\Source_Files</Filter>
     </ClCompile>
+    <ClCompile Include="Checkbox.cpp">
+      <Filter>UI_Elements\Source_Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">
@@ -170,6 +173,9 @@
       <Filter>UI_Elements\Header_Files</Filter>
     </ClInclude>
     <ClInclude Include="Drawable.h">
+      <Filter>UI_Elements\Header_Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Checkbox.h">
       <Filter>UI_Elements\Header_Files</Filter>
     </ClInclude>
   </ItemGroup>

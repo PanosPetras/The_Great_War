@@ -13,6 +13,7 @@ class ToggleButton : public Drawable {
 public:
     //Constructor
 	ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f = NULL, int keybind = NULL);
+    ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f = NULL, int keybind = NULL);
 
     //Destructor
 	~ToggleButton();
@@ -34,6 +35,9 @@ public:
 
     //Change the keyboard key that is bound to this button
     void ChangeKeybind(int keybind);
+
+    //Change the current value of the button
+    void ChangeValue(bool val);
 
     //Get the value of the toggle button
     bool GetValue();

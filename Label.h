@@ -24,6 +24,9 @@ public:
     //Change the label's text
     void ChangeText(std::string Text);
 
+    ///Change the size of the label's text
+    void ChangeTextSize(int size);
+
     //Change the label's color
     void ChangeColor(Uint8 red, Uint8 green, Uint8 blue);
 

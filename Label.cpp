@@ -57,6 +57,11 @@ void Label::ChangeText(std::string Text) {
     UpdateLabel();
 }
 
+void Label::ChangeTextSize(int size){
+    FontSize = size;
+    UpdateLabel();
+}
+
 void Label::ChangeColor(Uint8 red, Uint8 green, Uint8 blue) {
     //Assign the new color to the label
     Color = { red, green, blue };

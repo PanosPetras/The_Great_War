@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Checkbox.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="CountrySelection.cpp" />
     <ClCompile Include="CreditScreen.cpp" />
@@ -50,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Checkbox.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="Factory.h" />
