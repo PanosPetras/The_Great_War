@@ -44,28 +44,28 @@ void Screen::Render(){
 
 	//Calls the render method for every active image
 	for (int x = 0; x < ImageArrtop; x++) {
-		ImageArr[x]->RenderImage();
+		ImageArr[x]->Draw();
 	}
 
 	//Calls the render method for every active slider
 	for (int x = 0; x < SliderArrtop; x++) {
-		SliderArr[x]->RenderSlider();
+		SliderArr[x]->Draw();
 	}
 
 	//Calls the render method for every active button
 	for (int x = 0; x < ButtonArrtop; x++) {
-		ButtonArr[x]->RenderButton();
+		ButtonArr[x]->Draw();
 	}
 
 	//Calls the render method for every active label
 	for (int x = 0; x < LabelArrtop; x++) {
-		LabelArr[x]->RenderLabel();
+		LabelArr[x]->Draw();
 	}
 }
 
 void Screen::Handle_Input(SDL_Event* ev){
 	for (int x = 0; x < ButtonArrtop; x++) {
-		ButtonArr[x]->button_process_event(ev);
+		ButtonArr[x]->HandleInput(ev);
 	}
 
 	for (int x = 0; x < SliderArrtop; x++) {

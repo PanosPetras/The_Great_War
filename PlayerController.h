@@ -67,7 +67,7 @@ public:
 	std::unordered_map<std::string, State*> StatesMap;
 
 	//Reference to every country
-	Country* CountriesArr[59];
+	std::vector<Country*> CountriesArr;
 
 	//Some SDL assets needed
 	SDL_Renderer* RendererReference;

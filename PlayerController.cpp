@@ -75,8 +75,8 @@ PlayerController::~PlayerController() {
 	for (int x = 0; x < 2703; x++) {
 		delete StatesArr[x];
 	}
-	for (int x = 0; x < 58; x++) {
-		delete CountriesArr[x];
+	for (auto i : CountriesArr) {
+		delete i;
 	}
 
 	//Free all allocated Memory
@@ -256,7 +256,7 @@ void PlayerController::InitializeCountries(VectorSmartPointer& tags, const char*
 
 	for (int x = 0; x < 58; x++) {
 		Res[30] = balance[x];
-		CountriesArr[x] = new Country(tags->at(x), 0, 0, 0, Res);
+		CountriesArr.push_back(new Country(tags->at(x), 0, 0, 0, Res));
 		if (tag == tags->at(x)) {
 			player_index = x;
 		}
@@ -270,18 +270,18 @@ void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartP
 
 	for (int x = 0; x < 2703; x++) {
 		for (int y = 0; y < 58; y++) {
-			if (owners->at(x) == CountriesArr[y]->countrytag) {
+			if (owners->at(x) == CountriesArr.at(y)->countrytag) {
 				target = y;
 				break;
 			}
 		}
 
-		state = new State(names->at(x), x + 1, owners->at(x), owners->at(x), populations[x], coords[x], colors[x], res, &CountriesArr[target]->Stock);
+		state = new State(names->at(x), x + 1, owners->at(x), owners->at(x), populations[x], coords[x], colors[x], res, &CountriesArr.at(target)->Stock);
 
 		StatesMap.insert(std::pair(state->color.toString(), state));
 		StatesArr[x] = state;
 
-		CountriesArr[target]->AddState(state);
+		CountriesArr.at(target)->AddState(state);
 	}
 }
 
@@ -353,7 +353,7 @@ void PlayerController::ChangeSpeed(bool change){
 
 void PlayerController::Tick(){
 	//Execute the tick function for all countries (and all states)
-	for (int x = 0; x < 58; x++) {
-		CountriesArr[x]->Tick();
+	for (auto i : CountriesArr) {
+		i->Tick();
 	}
 }

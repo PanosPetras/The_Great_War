@@ -1,5 +1,5 @@
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef TOGGLEBUTTON_H
+#define TOGGLEBUTTON_H
 
 #pragma once
 #include <SDL.h>
@@ -9,14 +9,13 @@
 #include <SDL_mixer.h>
 #include "Drawable.h"
 
-class Button : Drawable {
+class ToggleButton : public Drawable {
 public:
     //Constructor
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f = NULL, int keybind = NULL);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind = NULL);
+	ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f = NULL, int keybind = NULL);
 
     //Destructor
-    ~Button();
+	~ToggleButton();
 
     //Render the button on the screen
     void Draw();
@@ -25,17 +24,19 @@ public:
     void HandleInput(const SDL_Event* ev);
 
     //Change the image assigned to the button
-    void ChangeImage(std::string image);
+    void ChangeImage(std::string image, std::string inactiveImage);
 
     //Change the button's position
     void ChangePosition(int x, int y, int Width, int Height);
 
     //Change the function bound to this button
-    void ChangeFunctionBinding(std::function<void()> f);
-    void ChangeFunctionBinding(std::function<void(void*)> f, void* arg);
+    void ChangeFunctionBinding(std::function<void(bool)> f);
 
     //Change the keyboard key that is bound to this button
     void ChangeKeybind(int keybind);
+
+    //Get the value of the toggle button
+    bool GetValue();
 
     //Play the button's onClick sound
     void Playsound();
@@ -47,13 +48,14 @@ protected:
     //Executed when the button is clicked
     void Click();
 
+    //The state of the button
+    bool value;
+
     //The visual state of the button
     bool bHovered;
 
     //Stores the bound function
-    std::function<void()> func;
-    std::function<void(void*)> funcWArg;
-    void* arg = nullptr;
+    std::function<void(bool)> func;
 
     //Saves the index of the keyboard key this button is bound to
     int key;
@@ -65,9 +67,11 @@ protected:
     SDL_Renderer* RendererReference;
 
     //Reference to the button's texture
-    SDL_Texture* texture = nullptr;
+    SDL_Texture* activeTexture = nullptr;
+    SDL_Texture* inactiveTexture = nullptr;
 
     //The button's onClick sound
     Mix_Chunk* music = NULL;
 };
+
 #endif

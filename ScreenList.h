@@ -6,8 +6,10 @@
 #include <string>
 #include <vector>
 #include "UI.h"
+#include "Screen.h"
+#include "PlayerController.h"
 
-class MainMenu : public Screen{
+class MainMenu : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
     MainMenu(SDL_Renderer* r, int Width, int Height, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
@@ -133,6 +135,14 @@ public:
     void StartGame();
 
     void Back();
+};
+
+class DiplomacyScreen : public Screen {
+public:
+    DiplomacyScreen(SDL_Renderer* r, int Width, int Height, PlayerController* PC);
+    PlayerController* PCref;
+
+    int CreateCountryButtons(PlayerController* PC);
 };
 
 class IndustryScreen : public Screen {

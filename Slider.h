@@ -1,10 +1,12 @@
 #ifndef Slider_H
 #define Slider_H
 
+#pragma once
 #include <SDL.h>
 #include <functional>
+#include "Drawable.h"
 
-class Slider {
+class Slider : public Drawable {
 public:
 	//Constructor, initializes the values
 	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = NULL);
@@ -13,7 +15,7 @@ public:
 	~Slider();
 
 	//Render the slider on the screen
-	void RenderSlider();
+	void Draw();
 
 	//Handle input events
 	int HandleInput(SDL_Event* ev);
@@ -27,17 +29,8 @@ public:
 	//Change the slider's size
 	void ChangeSize(int Width, int Height);
 
-	//The Slider's graphical components
-	SDL_Texture* Marker;
-
-	SDL_Rect bg_rect;
-	SDL_Rect marker_rect;
-
-	//A reference to the window's renderer
-	SDL_Renderer* renderer;
-
-	//Whether the mouse has been pressed over the Marker
-	bool bmousepressed;
+	//Called when the value of the slider changes
+	std::function<void()> onSliderValueChanged;
 
 	//Holds the slider's values
 	struct {
@@ -46,10 +39,21 @@ public:
 		int Maximum;
 	} Values;
 
-	//Called when the value of the slider changes
-	std::function<void()> onSliderValueChanged;
-
-private:
+protected:
+	//Calls the function bound to this slider, when the Value changes
 	void callOnValueChanged();
+
+	//A reference to the window's renderer
+	SDL_Renderer* renderer;
+
+	//The Slider's graphical components
+	SDL_Texture* Marker;
+
+	//The rectangles of the marker and the slider
+	SDL_Rect bg_rect;
+	SDL_Rect marker_rect;
+
+	//Whether the mouse has been pressed over the Marker
+	bool bmousepressed;
 };
 #endif

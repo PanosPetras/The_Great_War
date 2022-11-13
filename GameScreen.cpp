@@ -71,7 +71,7 @@ void GameScreen::Pause() {
 			PM = new PauseMenu(renderer, WindowSize[0], WindowSize[1], QuitFunc, unpause, ChangeScreenFunc);
 			bIsPaused = true;
 			if (PC->Date.bIsPaused == false) {
-				overlay->PauseDate();
+				overlay->PauseDate(true);
 			}
 			overlay->Buttons[0]->Playsound();
 		}
@@ -97,36 +97,36 @@ void GameScreen::Render() {
 		this->RenderBackground();
 	} else {
 		if (/*overlay->bDateUpdated == true && */ScreenID == "IndustryScreen") {
-			int Res[30] = { PC->CountriesArr[PC->player_index]->Stock.Coal,
-				PC->CountriesArr[PC->player_index]->Stock.Oil,
-				PC->CountriesArr[PC->player_index]->Stock.Timber,
-				PC->CountriesArr[PC->player_index]->Stock.Rubber,
-				PC->CountriesArr[PC->player_index]->Stock.Cotton,
-				PC->CountriesArr[PC->player_index]->Stock.Iron,
-				PC->CountriesArr[PC->player_index]->Stock.Grain,
-				PC->CountriesArr[PC->player_index]->Stock.Fruit,
-				PC->CountriesArr[PC->player_index]->Stock.Electric_gear,
-				PC->CountriesArr[PC->player_index]->Stock.Machine_parts,
-				PC->CountriesArr[PC->player_index]->Stock.Glass,
-				PC->CountriesArr[PC->player_index]->Stock.Lumber,
-				PC->CountriesArr[PC->player_index]->Stock.Cement,
-				PC->CountriesArr[PC->player_index]->Stock.Ammunition,
-				PC->CountriesArr[PC->player_index]->Stock.Planes,
-				PC->CountriesArr[PC->player_index]->Stock.Explosives,
-				PC->CountriesArr[PC->player_index]->Stock.Small_arms,
-				PC->CountriesArr[PC->player_index]->Stock.Artillery,
-				PC->CountriesArr[PC->player_index]->Stock.Tanks,
-				PC->CountriesArr[PC->player_index]->Stock.Canned_food,
-				PC->CountriesArr[PC->player_index]->Stock.Furniture,
-				PC->CountriesArr[PC->player_index]->Stock.Clothes,
-				PC->CountriesArr[PC->player_index]->Stock.Automobiles,
-				PC->CountriesArr[PC->player_index]->Stock.Merchant_ships,
-				PC->CountriesArr[PC->player_index]->Stock.Radios,
-				PC->CountriesArr[PC->player_index]->Stock.Telephones,
-				PC->CountriesArr[PC->player_index]->Stock.Fuel,
-				PC->CountriesArr[PC->player_index]->Stock.Paper,
-				PC->CountriesArr[PC->player_index]->Stock.Liquor,
-				PC->CountriesArr[PC->player_index]->Stock.Airship };
+			int Res[30] = { PC->CountriesArr.at(PC->player_index)->Stock.Coal,
+				PC->CountriesArr.at(PC->player_index)->Stock.Oil,
+				PC->CountriesArr.at(PC->player_index)->Stock.Timber,
+				PC->CountriesArr.at(PC->player_index)->Stock.Rubber,
+				PC->CountriesArr.at(PC->player_index)->Stock.Cotton,
+				PC->CountriesArr.at(PC->player_index)->Stock.Iron,
+				PC->CountriesArr.at(PC->player_index)->Stock.Grain,
+				PC->CountriesArr.at(PC->player_index)->Stock.Fruit,
+				PC->CountriesArr.at(PC->player_index)->Stock.Electric_gear,
+				PC->CountriesArr.at(PC->player_index)->Stock.Machine_parts,
+				PC->CountriesArr.at(PC->player_index)->Stock.Glass,
+				PC->CountriesArr.at(PC->player_index)->Stock.Lumber,
+				PC->CountriesArr.at(PC->player_index)->Stock.Cement,
+				PC->CountriesArr.at(PC->player_index)->Stock.Ammunition,
+				PC->CountriesArr.at(PC->player_index)->Stock.Planes,
+				PC->CountriesArr.at(PC->player_index)->Stock.Explosives,
+				PC->CountriesArr.at(PC->player_index)->Stock.Small_arms,
+				PC->CountriesArr.at(PC->player_index)->Stock.Artillery,
+				PC->CountriesArr.at(PC->player_index)->Stock.Tanks,
+				PC->CountriesArr.at(PC->player_index)->Stock.Canned_food,
+				PC->CountriesArr.at(PC->player_index)->Stock.Furniture,
+				PC->CountriesArr.at(PC->player_index)->Stock.Clothes,
+				PC->CountriesArr.at(PC->player_index)->Stock.Automobiles,
+				PC->CountriesArr.at(PC->player_index)->Stock.Merchant_ships,
+				PC->CountriesArr.at(PC->player_index)->Stock.Radios,
+				PC->CountriesArr.at(PC->player_index)->Stock.Telephones,
+				PC->CountriesArr.at(PC->player_index)->Stock.Fuel,
+				PC->CountriesArr.at(PC->player_index)->Stock.Paper,
+				PC->CountriesArr.at(PC->player_index)->Stock.Liquor,
+				PC->CountriesArr.at(PC->player_index)->Stock.Airship };
 			static_cast<IndustryScreen*>(ActiveScreen)->UpdateText(Res);
 		} else if (ScreenID == "EconomyScreen") {
 			static_cast<EconomyScreen*>(ActiveScreen)->Update();
@@ -137,17 +137,17 @@ void GameScreen::Render() {
 
 	//Calls the render method for every active image
 	for (int x = 0; x < ImageArrtop; x++) {
-		ImageArr[x]->RenderImage();
+		ImageArr[x]->Draw();
 	}
 
 	//Calls the render method for every active button
 	for (int x = 0; x < ButtonArrtop; x++) {
-		ButtonArr[x]->RenderButton();
+		ButtonArr[x]->Draw();
 	}
 
 	//Calls the render method for every active label
 	for (int x = 0; x < LabelArrtop; x++) {
-		LabelArr[x]->RenderLabel();
+		LabelArr[x]->Draw();
 	}
 
 	//Render the pause menu if the game is paused
@@ -236,7 +236,7 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 	//Handles inputs for buttons if the game is not paused
 	if (bIsPaused == false) {
 		for (int x = 0; x < ButtonArrtop; x++) {
-			ButtonArr[x]->button_process_event(ev);
+			ButtonArr[x]->HandleInput(ev);
 		}
 
 		//Handle input events as the ui

@@ -5,8 +5,13 @@
 
 #include <SDL.h>
 #include <functional>
-#include "Screen.h"
-#include "PlayerController.h"
+
+class Screen;
+class Image;
+class Label;
+class Button;
+class ToggleButton;
+class PlayerController;
 
 class UI {
 public:
@@ -36,7 +41,8 @@ public:
     Image* flagbg;
 
     Button* Buttons[6];
-    Button* DateButtons[3];
+    Button* DateButtons[2];
+    ToggleButton* PauseButton;
     Button* flag;
 
     PlayerController* PCref;
@@ -48,8 +54,9 @@ public:
     //Date related
     void IncreaseSpeed();
     void DecreaseSpeed();
-    void PauseDate();
+    void PauseDate(bool);
 
+    void OpenDiplomacyScreen();
     void OpenIndustryScreen();
     void OpenEconomyScreen();
     void OpenTradeScreen();

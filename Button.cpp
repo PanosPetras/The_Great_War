@@ -1,38 +1,31 @@
 #include "Button.h"
 
-Button::Button(SDL_Renderer* r, int x, int y, int Height, int Width, const char* image, std::function<void()> f, int keybind) {
-    //music = nullptr;
-    music = Mix_LoadWAV("Sounds/ButtonClick.wav");
-
-    //Saving the button's coordinates
-    this->draw_rect.x = x;
-    this->draw_rect.y = y;
-    this->draw_rect.w = Height;
-    this->draw_rect.h = Width;
-
+Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) {
     //Saving the renderer's reference
     RendererReference = r;
 
-    //Saving the image path
-    imagepath = image;
-    CurrentImage = imagepath + ".png";
-
-    //saving the binded function
-    func = f;
-
-    //Loading the button texture
-    SDL_Surface* img = IMG_Load(CurrentImage.c_str());
-    texture = SDL_CreateTextureFromSurface(RendererReference, img);
-    SDL_FreeSurface(img);
-
     //Sets the default value for the button's state
     bHovered = false;
-    
-    if (keybind) {
-        key = keybind;
-    } else {
-        key = NULL;
-    }
+
+    //Saving the button's coordinates
+    ChangePosition(x, y, Width, Height);
+
+    //Loading the button texture
+    ChangeImage(image);
+
+    //Saving the bound function
+    ChangeFunctionBinding(f);
+
+    //Save the button's bind to the keyboard
+    ChangeKeybind(keybind);
+
+    //Load the button's click sound
+    music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
+}
+
+Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, image, NULL, keybind) {
+    //Saving the bound function
+    ChangeFunctionBinding(f, arg);
 }
 
 Button::~Button() {
@@ -41,7 +34,12 @@ Button::~Button() {
     Mix_FreeChunk(music);
 }
 
-void Button::button_process_event(const SDL_Event* ev) {
+void Button::Draw() {
+    //Drawing the button
+    SDL_RenderCopy(RendererReference, texture, NULL, &draw_rect);
+}
+
+void Button::HandleInput(const SDL_Event* ev) {
     //Detect if the mouse is hovered
     if (ev->button.x >= this->draw_rect.x &&
         ev->button.x <= (this->draw_rect.x + this->draw_rect.w) &&
@@ -51,20 +49,12 @@ void Button::button_process_event(const SDL_Event* ev) {
         if (bHovered == false) {
             //If the button is hovered, change to the hovered button image
             SDL_SetTextureColorMod(texture, 170, 170, 170);
-            //CurrentImage = imagepath + "_Hovered.png";
             bHovered = true;
-            //Update();
         }
 
         //react on mouse click within button rectangle
         if (ev->type == SDL_MOUSEBUTTONDOWN) {
-            //Play the sound effect
-            Playsound();
-
-            //Execute the binded function, if it was assigned on the creation of the button
-            if (func) {
-                func();
-            }
+            Click();
         }
     }
     //If not hovered, return to the idle button image
@@ -74,52 +64,68 @@ void Button::button_process_event(const SDL_Event* ev) {
     }
     if (key) {
         if (ev->type == SDL_KEYDOWN && ev->key.keysym.sym == key) {
-            //Play the sound effect
-            Playsound();
-
-            //Execute the binded function, if it was assigned on the creation of the button
-            if (func) {
-                func();
-            }
+            Click();
         }
     }
 }
 
-void Button::RenderButton() {
-    //Drawing the button
-    SDL_RenderCopy(RendererReference, texture, NULL, &draw_rect);
+void Button::Click(){
+    //Play the sound effect
+    Playsound();
+
+    //Execute the bound function, if it was assigned on the creation of the button
+    CallBoundFunction();
 }
 
-void Button::ChangeImage(const char* image) {
+void Button::ChangeImage(std::string image) {
     //Saving the new image path
-    imagepath = image;
-    CurrentImage = imagepath + ".png";
-    Update();
-}
+    auto imagePath = image + ".png";
 
-void Button::ChangePosition(int x, int y, int Height, int Width) {
-    //Saving the new button's coordinates
-    this->draw_rect.x = x;
-    this->draw_rect.y = y;
-    this->draw_rect.w = Height;
-    this->draw_rect.h = Width;
-}
+    //Destroy the texture if it already exists
+    if (texture != nullptr) {
+        SDL_DestroyTexture(texture);
+    }
 
-void Button::ChangeFunctionBinding(std::function<void()> f) {
-    //saving the newly binded function
-    func = f;
-}
-
-void Button::Update(){
-    //Free up the memory
-    SDL_DestroyTexture(texture);
-
-    //Loading the button texture
-    SDL_Surface* img = IMG_Load(CurrentImage.c_str());
+    //Load the button texture
+    SDL_Surface* img = IMG_Load(imagePath.c_str());
     texture = SDL_CreateTextureFromSurface(RendererReference, img);
     SDL_FreeSurface(img);
 }
 
+void Button::ChangePosition(int x, int y, int Width, int Height) {
+    //Saving the new button's coordinates
+    this->draw_rect.x = x;
+    this->draw_rect.y = y;
+    this->draw_rect.w = Width;
+    this->draw_rect.h = Height;
+}
+
+void Button::ChangeFunctionBinding(std::function<void()> f) {
+    //saving the newly bound function
+    funcWArg = NULL;
+    this->arg = NULL;
+    func = f;
+}
+
+void Button::ChangeFunctionBinding(std::function<void(void*)> f, void* arg){
+    //saving the newly bound function
+    funcWArg = f;
+    this->arg = arg;
+    func = NULL;
+}
+
+void Button::ChangeKeybind(int keybind){
+    key = keybind;
+}
+
 void Button::Playsound() {
     Mix_PlayChannel(1, music, 0);
+}
+
+void Button::CallBoundFunction(){
+    if (func) {
+        func();
+    } else if (funcWArg) {
+        funcWArg(arg);
+    }
 }

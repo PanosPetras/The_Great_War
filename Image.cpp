@@ -1,6 +1,6 @@
 #include "Image.h"
 
-Image::Image(SDL_Renderer* r, const char* img, int x, int y, int Width, int Height){
+Image::Image(SDL_Renderer* r, std::string img, int x, int y, int Width, int Height){
     ChangePosition(x, y, Width, Height);
     
     //Saving the renderer's reference
@@ -22,12 +22,12 @@ Image::~Image(){
     SDL_DestroyTexture(texture);
 }
 
-void Image::RenderImage(){
+void Image::Draw(){
     //Drawing the Image
     SDL_RenderCopy(RendererReference, texture, NULL, &draw_rect);
 }
 
-void Image::ChangeImage(const char* img){
+void Image::ChangeImage(std::string img){
     //Saving the new image path
     imagepath = img;
     Update();

@@ -6,11 +6,11 @@ Country::Country(std::string tag, int r, int g, int b, int Res[31]){
 	Country_Population = 0;
 	Country_State_Count = 0;
 
-    Policy = {.TaxRate = 50, .Healthcare =  30};
+    policy = {.TaxRate = 50, .Healthcare =  30};
 
-	Color = {.red = r, .green = g, .blue = b};
+	color = {.r = (unsigned char)r, .g = (unsigned char)g, .b = (unsigned char)b};
 
-	Technology = {  .FactoryInput = 1.0f, 
+	technology = {  .FactoryInput = 1.0f, 
                     .FactoryThroughput = 1.0f, 
                     .FactoryOutput = 1.0f,
                     .MineralOutput = 1.0f,
@@ -69,9 +69,9 @@ void Country::RemoveState(State* state){
 
 void Country::Tick(){  
     for (auto it = OwnedStates->begin(); it != OwnedStates->end(); it++) {
-        it->second->Tick(Policy.TaxRate, Policy.Healthcare);
+        it->second->Tick(policy.TaxRate, policy.Healthcare);
     }
 
-    Stock.Money += int(Country_Population * 0.004 * Policy.TaxRate / 100);
-    Stock.Money -= int(Country_Population * 0.001 * Policy.Healthcare / 100);
+    Stock.Money += int(Country_Population * 0.004 * policy.TaxRate / 100);
+    Stock.Money -= int(Country_Population * 0.001 * policy.Healthcare / 100);
 }

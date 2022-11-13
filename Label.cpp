@@ -1,6 +1,6 @@
 #include "Label.h"
 
-Label::Label(SDL_Renderer* r, const char* Text, int size, int x, int y, Uint8 red, Uint8 green, Uint8 blue) {
+Label::Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Uint8 red, Uint8 green, Uint8 blue) {
     //Save the text assigned to the label in order to be used later
     text = Text;
 
@@ -46,12 +46,12 @@ Label::~Label(){
     SDL_DestroyTexture(texture);
 }
 
-void Label::RenderLabel() {
+void Label::Draw() {
     //Copy the text texture to the screen
     SDL_RenderCopy(RendererReference, texture, NULL, &draw_rect);
 }
 
-void Label::ChangeText(const char* Text) {
+void Label::ChangeText(std::string Text) {
     //Assign the new text to the label
     text = Text;
     UpdateLabel();
@@ -92,4 +92,8 @@ void Label::UpdateLabel() {
     //Create the rectangle that will express the size of the texture we created
     SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
     draw_rect = { Coords[0], Coords[1], texW, texH };
+}
+
+std::string Label::GetText(){
+    return text;
 }

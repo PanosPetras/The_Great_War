@@ -28,8 +28,8 @@ public:
 	//This is the count of the Images being displayed
 	int ImageArrtop;
 
-	//Allows the creation of up to 25 Buttons on the screen
-	Button* ButtonArr[25];
+	//Allows the creation of up to 60 Buttons on the screen
+	Button* ButtonArr[60];
 
 	//This is the count of the Buttons being displayed
 	int ButtonArrtop;

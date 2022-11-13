@@ -5,9 +5,35 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <SDL_image.h>
+#include "Drawable.h"
 
-class Label {
+class Label : public Drawable {
 public:
+    //Constructor
+    Label(SDL_Renderer* r, std::string Text, int size = 32, int x = 0, int y = 0, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
+
+    //Destructor
+    ~Label();
+
+    //Render the label on the screen
+    void Draw();
+
+    //Get the label's text
+    std::string GetText();
+
+    //Change the label's text
+    void ChangeText(std::string Text);
+
+    //Change the label's color
+    void ChangeColor(Uint8 red, Uint8 green, Uint8 blue);
+
+    //Change the label's position
+    void ChangePosition(int x, int y);
+
+    //Update the properties of the label once something is changed
+    void UpdateLabel();
+
+protected:
     //The image's font
     TTF_Font* font;
 
@@ -31,26 +57,5 @@ public:
 
     //The label's font size
     int FontSize;
-
-    //Constructor
-    Label(SDL_Renderer* r, const char* Text, int size = 32, int x = 0, int y = 0, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
-
-    //Destructor
-    ~Label();
-
-    //Render the label on the screen
-    void RenderLabel();
-
-    //Change the label's text
-    void ChangeText(const char* Text);
-
-    //Change the label's color
-    void ChangeColor(Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
-
-    //Change the label's position
-    void ChangePosition(int x, int y);
-
-    //Update the properties of the label once something is changed
-    void UpdateLabel();
 };
 #endif

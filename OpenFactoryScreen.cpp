@@ -5,7 +5,7 @@ OpenFactoryScreen::OpenFactoryScreen(SDL_Renderer* r, int Width, int Height, int
 	bHasBackground = false;
 	ImageArr[0] = new Image(renderer, "Backgrounds/factory1.png", int(Width * 0.25), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
 	LabelArr[0] = new Label(renderer, "Open Factory", 32, int(Width * 0.45), int(Height * 0.22), 0, 0, 0);
-	std::string lbl1txt = "Current Funds: " + std::to_string(PC->CountriesArr[PC->player_index]->Stock.Money);
+	std::string lbl1txt = "Current Funds: " + std::to_string(PC->CountriesArr.at(PC->player_index)->Stock.Money);
 	LabelArr[1] = new Label(renderer, lbl1txt.c_str(), 32, int(Width * 0.55), int(Height * 0.35), 0, 0, 0);
 	lbl1txt = "Factory cost: " + std::to_string(10);
 	LabelArr[2] = new Label(renderer, lbl1txt.c_str(), 32, int(Width * 0.55), int(Height * 0.41), 0, 0, 0);
@@ -188,79 +188,79 @@ void OpenFactoryScreen::BuildFactory(){
 	Factory* NF;
 	switch (type){
 		case 'a':
-			NF = new LumberMill(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new LumberMill(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'b':
-			NF = new GlassFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new GlassFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'c':
-			NF = new CanningFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new CanningFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'd':
-			NF = new ClothesFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new ClothesFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'e':
-			NF = new LiquorDistillery(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new LiquorDistillery(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'f':
-			NF = new FurnitureFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new FurnitureFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'g':
-			NF = new AutomobileFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new AutomobileFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'h':
-			NF = new PaperMill(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new PaperMill(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'i':
-			NF = new TelephoneFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new TelephoneFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'j':
-			NF = new RadioFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new RadioFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'k':
-			NF = new MachinePartFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new MachinePartFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'l':
-			NF = new ElectricGearFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new ElectricGearFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'm':
-			NF = new FuelRefinery(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new FuelRefinery(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'n':
-			NF = new CementFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new CementFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'o':
-			NF = new Shipyard(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new Shipyard(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'p':
-			NF = new SmallArmsFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new SmallArmsFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'q':
-			NF = new AmmunitionFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new AmmunitionFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'r':
-			NF = new ArtilleryFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new ArtilleryFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 's':
-			NF = new ExplosivesFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new ExplosivesFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 't':
-			NF = new TankFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new TankFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'u':
-			NF = new AirshipFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new AirshipFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'v':
-			NF = new PlaneFactory(&PCref->CountriesArr[PCref->player_index]->Stock, &PCref->WorldMarket);
+			NF = new PlaneFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		default:
 			return;
 			break;
 	}
 
-	if (PCref->CountriesArr[PCref->player_index]->Stock.Money >= NF->cost) {
+	if (PCref->CountriesArr.at(PCref->player_index)->Stock.Money >= NF->cost) {
 		PCref->StatesArr[index]->AddFactory(NF);
-		PCref->CountriesArr[PCref->player_index]->Stock.Money -= NF->cost;
+		PCref->CountriesArr.at(PCref->player_index)->Stock.Money -= NF->cost;
 		
 		QuitFunc();
 	}

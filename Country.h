@@ -6,6 +6,40 @@
 #include "State.h"
 #include "Stockpile.h"
 
+class Country;
+
+struct Technology {
+    float FactoryInput;
+    float FactoryThroughput;
+    float FactoryOutput;
+    float MineralOutput;
+    float FarmOutput;
+    float WoodOutput;
+};
+
+struct Policy {
+    int TaxRate;
+    int ExportRate;
+    int Healthcare;
+};
+
+struct War {
+    std::vector<Country*> Side1;
+    std::vector<Country*> Side2;
+    int Score;
+};
+
+struct TradeDeal {
+    float Offset;
+    Country* Signatories[2];
+};
+
+struct Diplomacy {
+    std::vector<War> Wars;
+    std::vector<Country*> Alliances;
+    std::vector<TradeDeal> TradeDeals;
+};
+
 class Country {
 public:
     //Functions
@@ -28,26 +62,12 @@ public:
     std::unordered_map<std::string, State*>* OwnedStates;
     int Country_State_Count;
     int Country_Population;
+    
+    Technology technology;
+    
+    Color color;
 
-    struct {
-        float FactoryInput;
-        float FactoryThroughput;
-        float FactoryOutput;
-        float MineralOutput;
-        float FarmOutput;
-        float WoodOutput;
-    } Technology;
-
-    struct {
-        int red;
-        int green;
-        int blue;
-    } Color;
-
-    struct {
-        int TaxRate;
-        int Healthcare;
-    } Policy;
+    Policy policy;
 
     //A country's currently stockpiled resources
     Stockpile Stock;

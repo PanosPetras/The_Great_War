@@ -109,6 +109,12 @@
     <ClCompile Include="Color.cpp">
       <Filter>General purpose code</Filter>
     </ClCompile>
+    <ClCompile Include="DiplomacyScreen.cpp">
+      <Filter>Screen_Classes\Source_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ToggleButton.cpp">
+      <Filter>UI_Elements\Source_Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">
@@ -159,6 +165,12 @@
     </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>General purpose code</Filter>
+    </ClInclude>
+    <ClInclude Include="ToggleButton.h">
+      <Filter>UI_Elements\Header_Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawable.h">
+      <Filter>UI_Elements\Header_Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
