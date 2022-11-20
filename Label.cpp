@@ -46,7 +46,7 @@ Label::~Label(){
     SDL_DestroyTexture(texture);
 }
 
-void Label::Draw() {
+void Label::pDraw() {
     //Copy the text texture to the screen
     SDL_RenderCopy(RendererReference, texture, NULL, &draw_rect);
 }

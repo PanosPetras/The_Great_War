@@ -24,6 +24,7 @@
     <ClCompile Include="CountrySelection.cpp" />
     <ClCompile Include="CreditScreen.cpp" />
     <ClCompile Include="DiplomacyScreen.cpp" />
+    <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="EconomyScreen.cpp" />
     <ClCompile Include="IndustryScreen.cpp" />
     <ClCompile Include="Factory.cpp" />
@@ -45,6 +46,7 @@
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StatePreview.cpp" />
+    <ClCompile Include="TextEntry.cpp" />
     <ClCompile Include="ToggleButton.cpp" />
     <ClCompile Include="TradeScreen.cpp" />
     <ClCompile Include="UI.cpp" />
@@ -68,6 +70,7 @@
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ScreenList.h" />
+    <ClInclude Include="TextEntry.h" />
     <ClInclude Include="ToggleButton.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>

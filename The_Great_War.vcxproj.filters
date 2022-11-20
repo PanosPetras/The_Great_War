@@ -118,6 +118,12 @@
     <ClCompile Include="Checkbox.cpp">
       <Filter>UI_Elements\Source_Files</Filter>
     </ClCompile>
+    <ClCompile Include="Drawable.cpp">
+      <Filter>UI_Elements\Source_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextEntry.cpp">
+      <Filter>UI_Elements\Source_Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">
@@ -176,6 +182,9 @@
       <Filter>UI_Elements\Header_Files</Filter>
     </ClInclude>
     <ClInclude Include="Checkbox.h">
+      <Filter>UI_Elements\Header_Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextEntry.h">
       <Filter>UI_Elements\Header_Files</Filter>
     </ClInclude>
   </ItemGroup>

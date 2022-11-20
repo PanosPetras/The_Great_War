@@ -9,7 +9,7 @@
 #include <SDL_mixer.h>
 #include "Drawable.h"
 
-class ToggleButton : public Drawable {
+class ToggleButton : public InputDrawable {
 public:
     //Constructor
 	ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f = NULL, int keybind = NULL);
@@ -17,9 +17,6 @@ public:
 
     //Destructor
 	~ToggleButton();
-
-    //Render the button on the screen
-    void Draw();
 
     //Called when received input, to check whether the click was in this button
     void HandleInput(const SDL_Event* ev);
@@ -49,6 +46,9 @@ public:
     void CallBoundFunction();
 
 protected:
+    //Render the button on the screen
+    void pDraw();
+
     //Executed when the button is clicked
     void Click();
 

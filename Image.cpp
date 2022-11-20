@@ -22,7 +22,7 @@ Image::~Image(){
     SDL_DestroyTexture(texture);
 }
 
-void Image::Draw(){
+void Image::pDraw(){
     //Drawing the Image
     SDL_RenderCopy(RendererReference, texture, NULL, &draw_rect);
 }
@@ -33,12 +33,12 @@ void Image::ChangeImage(std::string img){
     Update();
 }
 
-void Image::ChangePosition(int p, int d, int Height, int Width){
+void Image::ChangePosition(int x, int y, int Width, int Height){
     //Saving the image's new coordinates
-    draw_rect.x = p;
-    draw_rect.y = d;
-    draw_rect.w = Height;
-    draw_rect.h = Width;
+    draw_rect.x = x;
+    draw_rect.y = y;
+    draw_rect.w = Width;
+    draw_rect.h = Height;
 }
 
 void Image::Update(){

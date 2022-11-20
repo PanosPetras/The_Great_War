@@ -15,9 +15,6 @@ public:
     //Destructor
     ~Label();
 
-    //Render the label on the screen
-    void Draw();
-
     //Get the label's text
     std::string GetText();
 
@@ -37,6 +34,9 @@ public:
     void UpdateLabel();
 
 protected:
+    //Render the label on the screen
+    void pDraw();
+
     //The image's font
     TTF_Font* font;
 

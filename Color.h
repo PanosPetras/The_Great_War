@@ -1,10 +1,13 @@
 #pragma once
 #include <string>
 
+//8 bit unsigned integer
+typedef unsigned char uint8;
+
 typedef struct Color {
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
+    uint8 r;
+    uint8 g;
+    uint8 b;
 
     std::string toString();
 } Color;

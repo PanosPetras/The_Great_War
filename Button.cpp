@@ -34,7 +34,7 @@ Button::~Button() {
     Mix_FreeChunk(music);
 }
 
-void Button::Draw() {
+void Button::pDraw() {
     //Drawing the button
     SDL_RenderCopy(RendererReference, texture, NULL, &draw_rect);
 }

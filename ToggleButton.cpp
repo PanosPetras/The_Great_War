@@ -36,7 +36,7 @@ ToggleButton::~ToggleButton(){
     Mix_FreeChunk(music);
 }
 
-void ToggleButton::Draw(){
+void ToggleButton::pDraw(){
     //Drawing the toggle button
     if (!value) {
         SDL_RenderCopy(RendererReference, inactiveTexture, NULL, &draw_rect);

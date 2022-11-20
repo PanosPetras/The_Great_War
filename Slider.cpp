@@ -23,7 +23,7 @@ Slider::~Slider(){
 	SDL_DestroyTexture(Marker);
 }
 
-void Slider::Draw(){
+void Slider::pDraw(){
 	//Drawing the slider
 	//Draw the slider's background
 	SDL_SetRenderDrawColor(renderer, 48, 48, 48, 255);

@@ -6,16 +6,13 @@
 #include <functional>
 #include "Drawable.h"
 
-class Slider : public Drawable {
+class Slider : public InputDrawable {
 public:
 	//Constructor, initializes the values
 	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = NULL);
 
 	//Destructor, frees up the memory
 	~Slider();
-
-	//Render the slider on the screen
-	void Draw();
 
 	//Handle input events
 	int HandleInput(SDL_Event* ev);
@@ -40,6 +37,9 @@ public:
 	} Values;
 
 protected:
+	//Render the slider on the screen
+	void pDraw();
+
 	//Calls the function bound to this slider, when the Value changes
 	void callOnValueChanged();
 

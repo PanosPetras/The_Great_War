@@ -9,7 +9,7 @@
 #include <SDL_mixer.h>
 #include "Drawable.h"
 
-class Button : Drawable {
+class Button : public InputDrawable {
 public:
     //Constructor
     Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f = NULL, int keybind = NULL);
@@ -17,9 +17,6 @@ public:
 
     //Destructor
     ~Button();
-
-    //Render the button on the screen
-    void Draw();
 
     //Called when received input, to check whether the click was in this button
     void HandleInput(const SDL_Event* ev);
@@ -44,6 +41,9 @@ public:
     void CallBoundFunction();
 
 protected:
+    //Render the button on the screen
+    void pDraw();
+
     //Executed when the button is clicked
     void Click();
 

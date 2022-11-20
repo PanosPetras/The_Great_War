@@ -14,19 +14,19 @@ public:
 	//Destructor
 	~Image();
 
-	//Render the image on the screen
-	void Draw();
-
 	//Change the image assigned to the button
 	void ChangeImage(std::string img);
 
 	//Change the image's position
-	void ChangePosition(int p, int d, int Height, int Width);
+	void ChangePosition(int x, int y, int Height, int Width);
 
 	//Update the image's properties once something's been modified
 	void Update();
 
 protected:
+	//Render the image on the screen
+	void pDraw();
+
 	//Reference to the path of the image assigned to the button
 	std::string imagepath;
 
@@ -38,5 +38,7 @@ protected:
 
 	//The texture containing the image surface
 	SDL_Texture* texture;
+
+	friend class TextEntry;
 };
 #endif

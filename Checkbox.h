@@ -16,9 +16,6 @@ public:
 	//Destructor
 	~Checkbox();
 
-	//Render the Checkbox on the screen
-	void Draw();
-
 	//Called when received input, to check whether the click was in this button
 	void HandleInput(const SDL_Event* ev);
 
@@ -50,6 +47,9 @@ public:
 	void CallBoundFunction();
 
 protected:
+	//Render the Checkbox on the screen
+	void pDraw();
+
 	//The Drawables that make up this Drawable
 	ToggleButton* toggleButton;
 	Label* label;
