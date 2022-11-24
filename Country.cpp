@@ -1,10 +1,11 @@
 #include "Country.h"
 
-Country::Country(std::string tag, int r, int g, int b, int Res[31]){
-    OwnedStates = new std::unordered_map<std::string, State*>();
-	countrytag = tag;
-	Country_Population = 0;
-	Country_State_Count = 0;
+Country::Country(std::string tag, std::string name, int r, int g, int b, int Res[31]){
+    ownedStates = new std::unordered_map<std::string, State*>();
+	this->tag = tag;
+    this->name = name;
+	population = 0;
+	stateCount = 0;
 
     policy = {.TaxRate = 50, .Healthcare =  30};
 
@@ -51,27 +52,27 @@ Country::Country(std::string tag, int r, int g, int b, int Res[31]){
 }
 
 Country::~Country(){
-    delete OwnedStates;
+    delete ownedStates;
 }
 
 void Country::AddState(State* state){
-	(*OwnedStates)[state->State_Name] = state;
-    Country_Population += int(state->State_Population);
-	Country_State_Count++;
+	(*ownedStates)[state->State_Name] = state;
+    population += int(state->State_Population);
+	stateCount++;
 }
 
 void Country::RemoveState(State* state){
-    if (OwnedStates->contains(state->State_Name)) {
-        OwnedStates->erase(state->State_Name);
-        Country_State_Count--;
+    if (ownedStates->contains(state->State_Name)) {
+        ownedStates->erase(state->State_Name);
+        stateCount--;
     }
 }
 
 void Country::Tick(){  
-    for (auto it = OwnedStates->begin(); it != OwnedStates->end(); it++) {
+    for (auto it = ownedStates->begin(); it != ownedStates->end(); it++) {
         it->second->Tick(policy.TaxRate, policy.Healthcare);
     }
 
-    Stock.Money += int(Country_Population * 0.004 * policy.TaxRate / 100);
-    Stock.Money -= int(Country_Population * 0.001 * policy.Healthcare / 100);
+    Stock.Money += int(population * 0.004 * policy.TaxRate / 100);
+    Stock.Money -= int(population * 0.001 * policy.Healthcare / 100);
 }

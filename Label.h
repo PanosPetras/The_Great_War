@@ -37,7 +37,7 @@ protected:
     //Render the label on the screen
     void pDraw();
 
-    //The image's font
+    //The label's font
     TTF_Font* font;
 
     //The color of the text displayed by the label

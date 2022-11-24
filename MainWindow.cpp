@@ -20,6 +20,7 @@ MainWindow::MainWindow() {
         1080,                               // height, in pixels
         SDL_WINDOW_OPENGL //| SDL_WINDOW_FULLSCREEN                  // flags - see below
     );
+    //2560x1440, 1920x1080, 1280x720
 
     //Initializing the window renderer
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);

@@ -34,7 +34,7 @@ void Slider::pDraw(){
 	SDL_RenderCopy(renderer, Marker, NULL, &marker_rect);
 }
 
-int Slider::HandleInput(SDL_Event* ev){
+void Slider::HandleInput(const SDL_Event* ev){
 	//Check if the user is handling the slider
 	if (ev->button.button == SDL_BUTTON_LEFT && ev->type == SDL_MOUSEBUTTONDOWN && bmousepressed == false) {
 		if (ev->button.x >= marker_rect.x && ev->button.x <= marker_rect.x + marker_rect.w && ev->button.y > marker_rect.y && ev->button.y < marker_rect.h + marker_rect.y) {
@@ -61,8 +61,6 @@ int Slider::HandleInput(SDL_Event* ev){
 			callOnValueChanged();
 		}
 	}
-
-	return Values.Value;
 }
 
 void Slider::ChangeValues(int minvalue, int maxvalue, int value){

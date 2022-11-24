@@ -31,6 +31,12 @@
     <Filter Include="General purpose code">
       <UniqueIdentifier>{4cb3c65a-5272-4d0c-afaf-67a1b6a36aeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="General purpose code\Header_Files">
+      <UniqueIdentifier>{526da801-f82b-4b96-8d3a-f0a86c1aede2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="General purpose code\Source_Files">
+      <UniqueIdentifier>{2fa456bb-7c8e-4549-82c5-ccaf93ab185c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainMenu.cpp">
@@ -82,9 +88,6 @@
     <ClCompile Include="IndustryScreen.cpp">
       <Filter>Screen_Classes\Source_Files</Filter>
     </ClCompile>
-    <ClCompile Include="SDL_ColorDetection.cpp">
-      <Filter>General purpose code</Filter>
-    </ClCompile>
     <ClCompile Include="StatePreview.cpp">
       <Filter>Screen_Classes\Source_Files</Filter>
     </ClCompile>
@@ -106,9 +109,6 @@
     <ClCompile Include="MenuSettingsScreen.cpp">
       <Filter>Screen_Classes\Source_Files</Filter>
     </ClCompile>
-    <ClCompile Include="Color.cpp">
-      <Filter>General purpose code</Filter>
-    </ClCompile>
     <ClCompile Include="DiplomacyScreen.cpp">
       <Filter>Screen_Classes\Source_Files</Filter>
     </ClCompile>
@@ -123,6 +123,12 @@
     </ClCompile>
     <ClCompile Include="TextEntry.cpp">
       <Filter>UI_Elements\Source_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>General purpose code\Source_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL_ColorDetection.cpp">
+      <Filter>General purpose code\Source_Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -157,9 +163,6 @@
     <ClInclude Include="Factory.h">
       <Filter>Game_Classes\Header_Files</Filter>
     </ClInclude>
-    <ClInclude Include="SDL_ColorDetection.h">
-      <Filter>General purpose code</Filter>
-    </ClInclude>
     <ClInclude Include="Slider.h">
       <Filter>UI_Elements\Header_Files</Filter>
     </ClInclude>
@@ -172,9 +175,6 @@
     <ClInclude Include="UI.h">
       <Filter>Screen_Classes\Header_Files</Filter>
     </ClInclude>
-    <ClInclude Include="Color.h">
-      <Filter>General purpose code</Filter>
-    </ClInclude>
     <ClInclude Include="ToggleButton.h">
       <Filter>UI_Elements\Header_Files</Filter>
     </ClInclude>
@@ -186,6 +186,15 @@
     </ClInclude>
     <ClInclude Include="TextEntry.h">
       <Filter>UI_Elements\Header_Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>General purpose code\Header_Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL_ColorDetection.h">
+      <Filter>General purpose code\Header_Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Diplomacy.h">
+      <Filter>Game_Classes\Header_Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

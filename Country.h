@@ -5,6 +5,7 @@
 #include <string>
 #include "State.h"
 #include "Stockpile.h"
+#include "Diplomacy.h"
 
 class Country;
 
@@ -19,25 +20,7 @@ struct Technology {
 
 struct Policy {
     int TaxRate;
-    int ExportRate;
     int Healthcare;
-};
-
-struct War {
-    std::vector<Country*> Side1;
-    std::vector<Country*> Side2;
-    int Score;
-};
-
-struct TradeDeal {
-    float Offset;
-    Country* Signatories[2];
-};
-
-struct Diplomacy {
-    std::vector<War> Wars;
-    std::vector<Country*> Alliances;
-    std::vector<TradeDeal> TradeDeals;
 };
 
 class Country {
@@ -45,7 +28,7 @@ public:
     //Functions
 
     //Constructor
-    Country(std::string tag, int r, int g, int b, int Res[31]);
+    Country(std::string tag, std::string name, int r, int g, int b, int Res[31]);
 
     //Destructor
     ~Country();
@@ -58,10 +41,11 @@ public:
     void Tick();
 
     //Variables
-    std::string countrytag;
-    std::unordered_map<std::string, State*>* OwnedStates;
-    int Country_State_Count;
-    int Country_Population;
+    std::string name;
+    std::string tag;
+    std::unordered_map<std::string, State*>* ownedStates;
+    int stateCount;
+    int population;
     
     Technology technology;
     

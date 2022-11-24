@@ -24,9 +24,13 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 
 	//Create the variables needed to load all the needed data
 	std::string line;
-	std::ifstream myfile("map/Countries/CountryTags.txt");
+	std::ifstream myfile("map/Countries/CountryNames.txt");
+
+	//Load the Countries' Names
+	auto names = LoadCountryNames(myfile);
 
 	//Load the country tags
+	myfile.open("map/Countries/CountryTags.txt");
 	auto tags = LoadCountryTags(myfile);
 
 	//Load the countries' budget at the start of the game
@@ -54,7 +58,7 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	auto populations = LoadStatePops(myfile);
 
 	//Create all countries
-	InitializeCountries(tags, tag, balance);
+	InitializeCountries(names, tags, tag, balance);
 
 	//Create all the states
 	InitializeStates(owners, Names, coords, populations, colors);
@@ -122,6 +126,22 @@ int PlayerController::LoadUtilityAssets(void* pc){
 	SDL_FreeSurface(base);
 
 	return 0;
+}
+
+VectorSmartPointer PlayerController::LoadCountryNames(std::ifstream& file){
+	auto names = std::make_unique<std::vector<std::string>>();
+	std::string line;
+
+	if (file.is_open())
+	{
+		while (getline(file, line))
+		{
+			names->push_back(line);
+		}
+		file.close();
+	}
+
+	return names;
 }
 
 VectorSmartPointer PlayerController::LoadCountryTags(std::ifstream& file) {
@@ -251,12 +271,12 @@ int* PlayerController::LoadStatePops(std::ifstream& file){
 	return pops;
 }
 
-void PlayerController::InitializeCountries(VectorSmartPointer& tags, const char* tag, int* balance){
+void PlayerController::InitializeCountries(VectorSmartPointer& names, VectorSmartPointer& tags, const char* tag, int* balance){
 	int Res[31] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000 };
 
 	for (int x = 0; x < 58; x++) {
 		Res[30] = balance[x];
-		CountriesArr.push_back(new Country(tags->at(x), 0, 0, 0, Res));
+		CountriesArr.push_back(new Country(tags->at(x), names->at(x), 0, 0, 0, Res));
 		if (tag == tags->at(x)) {
 			player_index = x;
 		}
@@ -270,7 +290,7 @@ void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartP
 
 	for (int x = 0; x < 2703; x++) {
 		for (int y = 0; y < 58; y++) {
-			if (owners->at(x) == CountriesArr.at(y)->countrytag) {
+			if (owners->at(x) == CountriesArr.at(y)->tag) {
 				target = y;
 				break;
 			}

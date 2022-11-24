@@ -6,7 +6,7 @@ TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::
 
 TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters){
     background = new Image(r, "Backgrounds/FlagBg.png", x, y, Width, Height);
-    textLabel = new Label(r, defaultText, 20, x * 1.08, y * 1.08);
+    textLabel = new Label(r, defaultText, 20, int(x * 1.08), int(y * 1.08));
     hintLabel = NULL;
 
     text = defaultText;
@@ -67,10 +67,10 @@ void TextEntry::HandleInput(const SDL_Event* ev){
 
 void TextEntry::ChangePosition(int x, int y, int Width, int Height){
     background->ChangePosition(x, y, Width, Height);
-    textLabel->ChangePosition(x * 1.08, y * 1.08);
+    textLabel->ChangePosition(int(x * 1.08), int(y * 1.08));
 
     if (hintLabel != NULL) {
-        hintLabel->ChangePosition(x * 1.08, y * 1.08);
+        hintLabel->ChangePosition(int(x * 1.08), int(y * 1.08));
     }
 }
 
@@ -97,7 +97,7 @@ void TextEntry::ChangeHint(std::string hint){
             hintLabel->ChangeText(hint);
         }
         else {
-            hintLabel = new Label(RendererReference, hint, 20, x * 1.08, y * 1.08);
+            hintLabel = new Label(RendererReference, hint, 20, int(x * 1.08), int(y * 1.08));
         }
 
         this->hint = hint;

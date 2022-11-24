@@ -2,7 +2,7 @@
 
 MainMenu::MainMenu(SDL_Renderer* r, int Width, int Height, std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r, Width, Height) {
 	bHasBackground = true;
-	SetupBg("Backgrounds/test.png");
+	SetupBg("Backgrounds/OldMenu.png");
 	auto change = std::bind(&MainMenu::StartGame, this);
 	ButtonArr[0] = new Button(r, int(Width * 0.22), int(Height * 0.2), int(Width * 0.12), int(Height * 0.06), "Buttons/Menus/New_Game", change);
 	ButtonArr[1] = new Button(r, int(Width * 0.22), int(Height * 0.3), int(Width * 0.12), int(Height * 0.06), "Buttons/Menus/Load_Game", fp);
@@ -31,6 +31,5 @@ void MainMenu::ShowSettings() {
 
 void MainMenu::StartGame() {
 	CountrySelection* GS = new CountrySelection(renderer, WindowSize[0], WindowSize[1], QuitFunc, ChangeScreenFunc);
-	//GameScreen* GS = new GameScreen(renderer, WindowSize[1], WindowSize[0], "kuk", QuitFunc, ChangeScreenFunc);
 	ChangeScreenFunc(GS);
 }

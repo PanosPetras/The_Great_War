@@ -140,9 +140,14 @@ public:
 class DiplomacyScreen : public Screen {
 public:
     DiplomacyScreen(SDL_Renderer* r, int Width, int Height, PlayerController* PC);
+    DiplomacyScreen(SDL_Renderer* r, int Width, int Height, int index, PlayerController* PC);
+
     PlayerController* PCref;
 
+private:
     int CreateCountryButtons(PlayerController* PC);
+
+    void SelectCountry(void*);
 };
 
 class IndustryScreen : public Screen {
@@ -156,6 +161,7 @@ public:
     TradeScreen(SDL_Renderer* r, int Width, int Height, Country* Pl);
     void Update();
 
+private:
     Country* Player;
 };
 

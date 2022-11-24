@@ -1,6 +1,8 @@
 #ifndef DRAWABLE_H
 #define DRAWABLE_H
 
+#define GLOBAL_FONT "Fonts/segoeui.ttf"
+
 typedef union SDL_Event SDL_Event;
 
 class Drawable {

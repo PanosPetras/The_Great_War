@@ -1,4 +1,5 @@
 #include "Button.h"
+#include <SDL_ttf.h>
 
 Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) {
     //Saving the renderer's reference
@@ -28,15 +29,48 @@ Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string
     ChangeFunctionBinding(f, arg);
 }
 
+Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f, int keybind){
+    //Saving the renderer's reference
+    RendererReference = r;
+
+    //Sets the default value for the button's state
+    bHovered = false;
+
+    //Saving the button's coordinates
+    ChangePosition(x, y, Width, Height);
+
+    //Load the Button's Texture and add text on top of it
+    ChangeText(text, textSize);
+
+    //Saving the bound function
+    ChangeFunctionBinding(f);
+
+    //Save the button's bind to the keyboard
+    ChangeKeybind(keybind);
+
+    //Load the button's click sound
+    music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
+}
+
 Button::~Button() {
     //Free up the memory
     SDL_DestroyTexture(texture);
+    if (text != nullptr) {
+        SDL_DestroyTexture(text);
+    }
+
     Mix_FreeChunk(music);
 }
 
 void Button::pDraw() {
     //Drawing the button
     SDL_RenderCopy(RendererReference, texture, NULL, &draw_rect);
+
+    if (text != nullptr) {
+        //Add text on top of Button background
+
+        SDL_RenderCopy(RendererReference, text, NULL, &text_draw_rect);
+    }
 }
 
 void Button::HandleInput(const SDL_Event* ev) {
@@ -49,6 +83,7 @@ void Button::HandleInput(const SDL_Event* ev) {
         if (bHovered == false) {
             //If the button is hovered, change to the hovered button image
             SDL_SetTextureColorMod(texture, 170, 170, 170);
+            SDL_SetTextureColorMod(text, 170, 170, 170);
             bHovered = true;
         }
 
@@ -61,6 +96,7 @@ void Button::HandleInput(const SDL_Event* ev) {
     else if (bHovered == true) {
         bHovered = false;
         SDL_SetTextureColorMod(texture, 255, 255, 255);
+        SDL_SetTextureColorMod(text, 255, 255, 255);
     }
     if (key) {
         if (ev->type == SDL_KEYDOWN && ev->key.keysym.sym == key) {
@@ -85,11 +121,52 @@ void Button::ChangeImage(std::string image) {
     if (texture != nullptr) {
         SDL_DestroyTexture(texture);
     }
+    if (this->text != nullptr) {
+        SDL_DestroyTexture(this->text);
+    }
 
     //Load the button texture
     SDL_Surface* img = IMG_Load(imagePath.c_str());
     texture = SDL_CreateTextureFromSurface(RendererReference, img);
     SDL_FreeSurface(img);
+}
+
+void Button::ChangeText(std::string text, int textSize){
+    //Destroy the texture if it already exists
+    if (texture != nullptr) {
+        SDL_DestroyTexture(texture);
+    }
+    if (this->text != nullptr) {
+        SDL_DestroyTexture(this->text);
+        this->text = nullptr;
+    }
+
+    //Load the button background
+    SDL_Surface* bg = IMG_Load("Drawable/Button/Button.png");
+    texture = SDL_CreateTextureFromSurface(RendererReference, bg);
+
+    //Free the background surface
+    SDL_FreeSurface(bg);
+
+    //Loading the font from the file
+    TTF_Font* font = TTF_OpenFont(GLOBAL_FONT, textSize);
+
+    //Convert the text to a surface
+    SDL_Surface* textSur = TTF_RenderText_Blended(font, text.c_str(), SDL_Color{.r = 255, .g = 255, .b = 255});
+    this->text = SDL_CreateTextureFromSurface(RendererReference, textSur);
+
+    int text_x = (draw_rect.w - textSur->w) / 2;
+    int text_y = (draw_rect.h - textSur->h) / 3;
+    text_draw_rect = {  .x = draw_rect.x + (text_x > 0 ? text_x : int(draw_rect.w * 0.1)),
+                        .y = draw_rect.y + text_y,
+                        .w = (text_x > 0 ? textSur->w : int(draw_rect.w * 0.8)),
+                        .h = textSur->h };
+
+    //Free the surface
+    SDL_FreeSurface(textSur);
+
+    //Delete the font
+    TTF_CloseFont(font);
 }
 
 void Button::ChangePosition(int x, int y, int Width, int Height) {

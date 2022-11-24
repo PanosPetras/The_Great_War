@@ -14,6 +14,7 @@ public:
     //Constructor
     Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f = NULL, int keybind = NULL);
     Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind = NULL);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f = NULL, int keybind = NULL);
 
     //Destructor
     ~Button();
@@ -23,6 +24,9 @@ public:
 
     //Change the image assigned to the button
     void ChangeImage(std::string image);
+
+    //Change the text assigned to the button
+    void ChangeText(std::string text, int textSize);
 
     //Change the button's position
     void ChangePosition(int x, int y, int Width, int Height);
@@ -60,12 +64,14 @@ protected:
 
     //Dimensions of the button
     SDL_Rect draw_rect;
+    SDL_Rect text_draw_rect;
 
     //Reference the the screen's renderer
     SDL_Renderer* RendererReference;
 
     //Reference to the button's texture
     SDL_Texture* texture = nullptr;
+    SDL_Texture* text = nullptr;
 
     //The button's onClick sound
     Mix_Chunk* music = NULL;

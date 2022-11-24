@@ -18,10 +18,10 @@ Label::Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Uint8 re
     FontSize = size;
 
     //Loading the font from the file
-    TTF_Font* font = TTF_OpenFont("Fonts/segoeui.ttf", FontSize);
+    TTF_Font* font = TTF_OpenFont(GLOBAL_FONT, FontSize);
 
     //Convert the text to a surface
-    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), Color);
+    SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), Color);
 
     //Create the texture out of the surface that we just generated
     texture = SDL_CreateTextureFromSurface(RendererReference, surface);
@@ -80,10 +80,10 @@ void Label::UpdateLabel() {
     SDL_DestroyTexture(texture);
 
     //Loading the font from the file
-    TTF_Font* font = TTF_OpenFont("Fonts/segoeui.ttf", FontSize);
+    TTF_Font* font = TTF_OpenFont(GLOBAL_FONT, FontSize);
 
     //Convert the text to a surface and then assign the surface to a texture
-    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), Color);
+    SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), Color);
     texture = SDL_CreateTextureFromSurface(RendererReference, surface);
     SDL_FreeSurface(surface);
 

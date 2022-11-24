@@ -15,7 +15,7 @@ public:
 	~Slider();
 
 	//Handle input events
-	int HandleInput(SDL_Event* ev);
+	void HandleInput(const SDL_Event* ev);
 
 	//Change the slider's maximum and minimum values
 	void ChangeValues(int minvalue, int maxvalue, int value = -1);

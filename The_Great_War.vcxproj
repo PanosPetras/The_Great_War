@@ -55,6 +55,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Checkbox.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Diplomacy.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Market.h" />
@@ -137,8 +138,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.2\include;$(SolutionDir)\SDL2\SDL2_ttf-2.20.1\include;$(SolutionDir)\SDL2\SDL2_image-2.6.2\include;$(SolutionDir)\SDL2\SDL2-2.24.2\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.2\lib\x64;$(SolutionDir)\SDL2\SDL2_ttf-2.20.1\lib\x64;$(SolutionDir)\SDL2\SDL2_image-2.6.2\lib\x64;$(SolutionDir)\SDL2\SDL2-2.24.2\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.2\include;$(SolutionDir)\SDL2\SDL2_ttf-2.20.1\include;$(SolutionDir)\SDL2\SDL2_image-2.6.2\include;$(SolutionDir)\SDL2\SDL2-2.26.0\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.2\lib\x64;$(SolutionDir)\SDL2\SDL2_ttf-2.20.1\lib\x64;$(SolutionDir)\SDL2\SDL2_image-2.6.2\lib\x64;$(SolutionDir)\SDL2\SDL2-2.26.0\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
     <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

@@ -2,7 +2,7 @@
 
 MenuSettingsScreen::MenuSettingsScreen(SDL_Renderer* r, int Width, int Height, std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r, Width, Height) {
 	bHasBackground = true;
-	SetupBg("Backgrounds/main_menu.png");
+	SetupBg("Backgrounds/OldMenu.png");
 	auto change = std::bind(&MenuSettingsScreen::Back, this);
 	ButtonArr[0] = new Button(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Buttons/Menus/Back", change, SDLK_ESCAPE);
 	ButtonArrtop = 1;
