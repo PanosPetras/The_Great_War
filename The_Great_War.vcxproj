@@ -184,6 +184,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/analyze:stacksize30388. %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\SDL2\SDL2_mixer-2.6.2\include;$(SolutionDir)\SDL2\SDL2_ttf-2.20.1\include;$(SolutionDir)\SDL2\SDL2_image-2.6.2\include;$(SolutionDir)\SDL2\SDL2-2.26.0\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
