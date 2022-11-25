@@ -12,10 +12,18 @@ Relations::Relations(Country* country1, Country* country2, int relations, bool a
 
 void Relations::ImproveRelations(){
 	relationsValue += 15;
+
+	if (relationsValue > limit) {
+		relationsValue = limit;
+	}
 }
 
 void Relations::WorsenRelations(){
 	relationsValue -= 15;
+
+	if (relationsValue < -limit) {
+		relationsValue = -limit;
+	}
 }
 
 int Relations::GetRelationsValue(){
@@ -44,7 +52,7 @@ std::vector<std::string> Relations::toString(){
 }
 
 Diplomacy::Diplomacy(){
-	relations = new std::unordered_map<std::string, Relations>();
+	relations = new std::unordered_map<std::string, Relations*>();
 }
 
 Diplomacy::~Diplomacy(){
@@ -53,10 +61,9 @@ Diplomacy::~Diplomacy(){
 
 Relations* Diplomacy::findRelation(std::vector<std::string> ids){
 	if (relations->find(ids[0]) != relations->end()) {
-		return &relations->at(ids[0]);
-	}
-	if (relations->find(ids[1]) != relations->end()) {
-		return &relations->at(ids[1]);
+		return relations->at(ids[0]);
+	} else if (relations->find(ids[1]) != relations->end()) {
+		return relations->at(ids[1]);
 	}
 	return nullptr;
 }

@@ -57,7 +57,7 @@ GameScreen::~GameScreen(){
 void GameScreen::Pause() {
 	if (bHasStatePreview == true) {
 		CloseScreenPreview();
-		overlay->Buttons[0]->Playsound();
+		//overlay->Buttons[0]->Playsound();
 	} else if (bHasActiveScreen == true){
 		CloseActiveScreen();
 		overlay->Buttons[0]->Playsound();
@@ -180,8 +180,10 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 			flag == false &&
 			ev->button.y > WindowSize[1] * 0.07 &&
 			bIsPaused == false && bHasStatePreview == false) {
+
 			int x = Cam_Width + int(ev->button.x / factor) - 5384;
 			int y = Cam_Height + int(ev->button.y / factor);
+
 			Color rgb = CD::getcolor(PC->provinces, x, y);
 
 			if (PC->StatesMap.contains(rgb.toString())) {

@@ -42,6 +42,7 @@ public:
     std::vector<std::string> toString();
 
 private:
+    const int limit = 300;
     std::vector<Embargo> Embargoes;
 
     int relationsValue;
@@ -53,7 +54,7 @@ public:
     Diplomacy();
     ~Diplomacy();
 
-    std::unordered_map<std::string, Relations>* relations;
+    std::unordered_map<std::string, Relations*>* relations;
     std::vector<War> wars;
 
     Relations* findRelation(std::vector<std::string> ids);

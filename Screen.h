@@ -28,8 +28,8 @@ public:
 	//This is the count of the Images being displayed
 	int ImageArrtop;
 
-	//Allows the creation of up to 60 Buttons on the screen
-	InputDrawable* ButtonArr[60];
+	//Allows the creation of up to 70 Buttons on the screen
+	InputDrawable* ButtonArr[70];
 
 	//This is the count of the Buttons being displayed
 	int ButtonArrtop;

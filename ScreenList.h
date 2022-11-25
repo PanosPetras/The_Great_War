@@ -148,6 +148,12 @@ private:
     int CreateCountryButtons(PlayerController* PC);
 
     void SelectCountry(void*);
+    void ImproveRelations();
+    void WorsenRelations();
+
+    void UpdateRelationValue();
+
+    int selectedCountryIndex;
 };
 
 class IndustryScreen : public Screen {
