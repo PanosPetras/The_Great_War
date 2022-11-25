@@ -130,6 +130,9 @@
     <ClCompile Include="SDL_ColorDetection.cpp">
       <Filter>General purpose code\Source_Files</Filter>
     </ClCompile>
+    <ClCompile Include="Diplomacy.cpp">
+      <Filter>Game_Classes\Source_Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">

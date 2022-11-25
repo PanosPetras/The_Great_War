@@ -23,6 +23,7 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="CountrySelection.cpp" />
     <ClCompile Include="CreditScreen.cpp" />
+    <ClCompile Include="Diplomacy.cpp" />
     <ClCompile Include="DiplomacyScreen.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="EconomyScreen.cpp" />

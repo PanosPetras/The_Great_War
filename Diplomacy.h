@@ -4,6 +4,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 class Country;
 
@@ -15,31 +16,47 @@ struct War {
 
 struct TradeDeal {
     float offset;
-    Country* sides[2];
 
     void End();
 };
 
 struct Embargo {
-    Country* sides[2];
-
-    void End();
+    Country* Instigator;
 };
 
 struct Relations {
+public:
     Country* sides[2];
-    int value;
 
-    void improveRelations();
-    void worsenRelations();
+    Relations();
+    Relations(Country* country1, Country* country2, int relations, bool allied = false);
+
+    void ImproveRelations();
+    void WorsenRelations();
+    int GetRelationsValue();
+
+    void CreateAlliance();
+    void BreakAlliance();
+    bool GetIfAllied();
+
+    std::vector<std::string> toString();
+
+private:
+    std::vector<Embargo> Embargoes;
+
+    int relationsValue;
+    bool allied;
 };
 
 struct Diplomacy {
-    std::vector<Relations> relations;
-    std::vector<TradeDeal> tradeDeals;
-    std::vector<Embargo> embargoes;
-    std::vector<std::string> alliances;
+public:
+    Diplomacy();
+    ~Diplomacy();
+
+    std::unordered_map<std::string, Relations>* relations;
     std::vector<War> wars;
+
+    Relations* findRelation(std::vector<std::string> ids);
 };
 
 #endif

@@ -40,18 +40,21 @@ public:
     //This is the representing the pass of a single day
     void Tick();
 
+    Color color;
+
     //Variables
     std::string name;
     std::string tag;
-    std::unordered_map<std::string, State*>* ownedStates;
-    int stateCount;
     int population;
+
+    int stateCount;
+    std::unordered_map<std::string, State*>* ownedStates;
     
     Technology technology;
-    
-    Color color;
 
     Policy policy;
+
+    Diplomacy diplomacy;
 
     //A country's currently stockpiled resources
     Stockpile Stock;
