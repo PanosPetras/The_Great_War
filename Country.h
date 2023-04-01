@@ -5,7 +5,6 @@
 #include <string>
 #include "State.h"
 #include "Stockpile.h"
-#include "Diplomacy.h"
 
 class Country;
 
@@ -53,8 +52,6 @@ public:
     Technology technology;
 
     Policy policy;
-
-    Diplomacy diplomacy;
 
     //A country's currently stockpiled resources
     Stockpile Stock;

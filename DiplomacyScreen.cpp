@@ -66,43 +66,41 @@ void DiplomacyScreen::SelectCountry(void* country){
 }
 
 void DiplomacyScreen::ImproveRelations(){
-	if (PCref->player_index != selectedCountryIndex) {
-		std::vector<std::string> tags;
+	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
+	auto rel = PCref->diplo.relations->find(CountryPair(c1, c2));
 
-		tags.push_back(PCref->CountriesArr[selectedCountryIndex]->tag + "-" + PCref->CountriesArr[PCref->player_index]->tag);
-		tags.push_back(PCref->CountriesArr[PCref->player_index]->tag + "-" + PCref->CountriesArr[selectedCountryIndex]->tag);
-
-		Diplomacy* dp = &PCref->CountriesArr[PCref->player_index]->diplomacy;
-		dp->findRelation(tags)->ImproveRelations();
-
-		UpdateRelationValue();
+	if (rel != PCref->diplo.relations->end()) {
+		rel->second.ImproveRelations();
 	}
+
+	UpdateRelationValue();
 }
 
 void DiplomacyScreen::WorsenRelations(){
-	if (PCref->player_index != selectedCountryIndex) {
-		std::vector<std::string> tags;
+	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
+	auto rel = PCref->diplo.relations->find(CountryPair(c1, c2));
 
-		tags.push_back(PCref->CountriesArr[selectedCountryIndex]->tag + "-" + PCref->CountriesArr[PCref->player_index]->tag);
-		tags.push_back(PCref->CountriesArr[PCref->player_index]->tag + "-" + PCref->CountriesArr[selectedCountryIndex]->tag);
-
-		Diplomacy* dp = &PCref->CountriesArr[PCref->player_index]->diplomacy;
-		dp->findRelation(tags)->WorsenRelations();
-
-		UpdateRelationValue();
+	if (rel != PCref->diplo.relations->end()) {
+		rel->second.WorsenRelations();
 	}
+
+	UpdateRelationValue();
 }
 
 void DiplomacyScreen::UpdateRelationValue(){
-	int index = selectedCountryIndex;
 
-	if (PCref->player_index != index) {
-		std::vector<std::string> tags;
+	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
 
-		tags.push_back(PCref->CountriesArr[index]->tag + "-" + PCref->CountriesArr[PCref->player_index]->tag);
-		tags.push_back(PCref->CountriesArr[PCref->player_index]->tag + "-" + PCref->CountriesArr[index]->tag);
+	auto rel = PCref->diplo.relations->find(CountryPair(c1, c2));
 
-		LabelArr[2]->ChangeText(std::to_string(PCref->CountriesArr[PCref->player_index]->diplomacy.findRelation(tags)->GetRelationsValue()));
+	if (rel != PCref->diplo.relations->end()) {
+		LabelArr[2]->ChangeText(std::to_string(rel->second.GetRelationsValue()));
+
+		printf("%s - %s - %d\n", c1->name.c_str(), c2->name.c_str(), rel->second.GetRelationsValue());
+
+		rel = PCref->diplo.relations->find(CountryPair(c2, c1));
+
+		printf("%s - %s - %d\n", c2->name.c_str(), c1->name.c_str(), rel->second.GetRelationsValue());
 	} else {
 		LabelArr[2]->ChangeText("N/A");
 	}

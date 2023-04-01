@@ -1,22 +1,22 @@
 #ifndef PLAYERCONTROLLER_H
 #define PLAYERCONTROLLER_H
 
-#include "Country.h"
-#include "State.h"
 #include <SDL.h>
 #include <unordered_map>
 #include <memory>
+#include "Country.h"
+#include "State.h"
+#include "Diplomacy.h"
 
 typedef std::unique_ptr<std::vector<std::string>, std::default_delete<std::vector<std::string>>> VectorSmartPointer;
 
 class PlayerController {
 public:
-
-	//This is the representing the pass of a single day
-	void Tick();
-
 	//Constructor
 	PlayerController(SDL_Renderer* r, const char* tag);
+
+	//Destructor
+	~PlayerController();
 
 private:
 	//Loading data functions
@@ -35,8 +35,6 @@ private:
 	static int LoadUtilityAssets(void*);
 	
 public:
-	//Destructor
-	~PlayerController();
 
 	//Some info about the player
 	std::string player_tag;
@@ -51,6 +49,9 @@ public:
 		bool bIsPaused;
 		int MonthDays[12];
 	} Date;
+
+	//This is the representing the pass of a single day
+	void Tick();
 
 	//Advances the date by one day
 	static int AdvanceDate(void* ref);
@@ -69,6 +70,9 @@ public:
 
 	//Reference to every country
 	std::vector<Country*> CountriesArr;
+
+	//The state of the diplomatic relations between every country
+	Diplomacy diplo;
 
 	//Some SDL assets needed
 	SDL_Renderer* RendererReference;

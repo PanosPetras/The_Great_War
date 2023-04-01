@@ -282,18 +282,10 @@ void PlayerController::InitializeCountries(VectorSmartPointer& names, VectorSmar
 		}
 	}
 
-	Relations* rel;
-	for (auto i : CountriesArr) {
-		for (auto j : CountriesArr) {
-			if (i != j) {
-				rel = new Relations(i, j, 100);
-				if (i->diplomacy.findRelation(rel->toString()) == nullptr) {
-					i->diplomacy.relations->insert(std::pair(rel->toString().at(0), rel));
-				}
-				if (j->diplomacy.findRelation(rel->toString()) == nullptr) {
-					j->diplomacy.relations->insert(std::pair(rel->toString().at(0), rel));
-				}
-			}
+	for (int c1 = 0; c1 < 58; c1++) {
+		for (int c2 = c1 + 1; c2 < 58; c2++) {
+			std::pair<CountryPair, Relations> cp(CountryPair(CountriesArr[c1], CountriesArr[c2]), Relations(100));
+			diplo.relations->insert(cp);
 		}
 	}
 }

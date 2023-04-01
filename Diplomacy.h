@@ -5,19 +5,39 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <set>
+#include "Country.h"
 
-class Country;
+#define RELATIONS_LIMIT 300
+
+struct CountryPair {
+public:
+    CountryPair(Country* C1, Country* C2);
+
+    bool operator == (const CountryPair& c) const;
+
+    Country* GetC1() const;
+    Country* GetC2() const;
+
+private:
+    Country *c1, *c2;
+};
+
+template<>
+struct std::hash<CountryPair> {
+    std::size_t operator()(const CountryPair& k) const {
+        std::hash<std::string> hasher;
+
+        std::string str1 = k.GetC1()->tag, str2 = k.GetC2()->tag;
+
+        return hasher(str1 > str2 ? str1 + str2 : str2 + str1);
+    }
+};
 
 struct War {
     std::vector<Country*> Side1;
     std::vector<Country*> Side2;
     int Score;
-};
-
-struct TradeDeal {
-    float offset;
-
-    void End();
 };
 
 struct Embargo {
@@ -26,23 +46,17 @@ struct Embargo {
 
 struct Relations {
 public:
-    Country* sides[2];
-
-    Relations();
-    Relations(Country* country1, Country* country2, int relations, bool allied = false);
+    Relations(int relations, bool allied = false);
 
     void ImproveRelations();
     void WorsenRelations();
-    int GetRelationsValue();
+    int GetRelationsValue() const;
 
     void CreateAlliance();
     void BreakAlliance();
-    bool GetIfAllied();
-
-    std::vector<std::string> toString();
+    bool GetIfAllied() const;
 
 private:
-    const int limit = 300;
     std::vector<Embargo> Embargoes;
 
     int relationsValue;
@@ -54,10 +68,8 @@ public:
     Diplomacy();
     ~Diplomacy();
 
-    std::unordered_map<std::string, Relations*>* relations;
+    std::unordered_map<CountryPair, Relations>* relations;
     std::vector<War> wars;
-
-    Relations* findRelation(std::vector<std::string> ids);
 };
 
 #endif

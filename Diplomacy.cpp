@@ -1,69 +1,83 @@
 #include "Diplomacy.h"
-#include "Country.h"
 
-Relations::Relations(){
+CountryPair::CountryPair(Country* C1, Country* C2) {
+	if (C1 == nullptr || C2 == nullptr) {
+		throw new _exception();
+	}
+
+	c1 = C1;
+	c2 = C2;
 }
 
-Relations::Relations(Country* country1, Country* country2, int relations, bool allied){
-	sides[0] = country1, sides[1] = country2;
+bool CountryPair::operator==(const CountryPair& c) const {
+	if (this->c1 != c.c1) {
+		if (this->c1 == c.c2) {
+			if (this->c2 == c.c1) {
+				return true;
+			}
+		} 
+	} else {
+		if (this->c2 == c.c2) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+Country* CountryPair::GetC1() const {
+	return c1;
+}
+
+Country* CountryPair::GetC2() const {
+	return c2;
+}
+
+Relations::Relations(int relations, bool allied) {
 	relationsValue = relations;
 	this->allied = allied;
 }
 
-void Relations::ImproveRelations(){
-	relationsValue += 15;
+void Relations::ImproveRelations() {
+	if (relationsValue < RELATIONS_LIMIT) {
+		relationsValue += 15;
+	}
 
-	if (relationsValue > limit) {
-		relationsValue = limit;
+	if (relationsValue > RELATIONS_LIMIT) {
+		relationsValue = RELATIONS_LIMIT;
 	}
 }
 
-void Relations::WorsenRelations(){
-	relationsValue -= 15;
+void Relations::WorsenRelations() {
+	if (relationsValue > -RELATIONS_LIMIT) {
+		relationsValue -= 15;
+	}
 
-	if (relationsValue < -limit) {
-		relationsValue = -limit;
+	if (relationsValue < -RELATIONS_LIMIT) {
+		relationsValue = -RELATIONS_LIMIT;
 	}
 }
 
-int Relations::GetRelationsValue(){
+int Relations::GetRelationsValue() const {
 	return relationsValue;
 }
 
-void Relations::CreateAlliance(){
+void Relations::CreateAlliance() {
 	allied = true;
 }
 
-void Relations::BreakAlliance(){
+void Relations::BreakAlliance() {
 	allied = false;
 }
 
-bool Relations::GetIfAllied(){
+bool Relations::GetIfAllied() const {
 	return allied;
 }
 
-std::vector<std::string> Relations::toString(){
-	std::vector<std::string> vec;
-
-	vec.push_back(sides[0]->tag + "-" + sides[1]->tag);
-	vec.push_back(sides[1]->tag + "-" + sides[0]->tag);
-
-	return vec;
+Diplomacy::Diplomacy() {
+	relations = new std::unordered_map<CountryPair, Relations>();
 }
 
-Diplomacy::Diplomacy(){
-	relations = new std::unordered_map<std::string, Relations*>();
-}
-
-Diplomacy::~Diplomacy(){
+Diplomacy::~Diplomacy() {
 	delete relations;
-}
-
-Relations* Diplomacy::findRelation(std::vector<std::string> ids){
-	if (relations->find(ids[0]) != relations->end()) {
-		return relations->at(ids[0]);
-	} else if (relations->find(ids[1]) != relations->end()) {
-		return relations->at(ids[1]);
-	}
-	return nullptr;
 }
