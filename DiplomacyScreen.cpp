@@ -95,12 +95,6 @@ void DiplomacyScreen::UpdateRelationValue(){
 
 	if (rel != PCref->diplo.relations->end()) {
 		LabelArr[2]->ChangeText(std::to_string(rel->second.GetRelationsValue()));
-
-		printf("%s - %s - %d\n", c1->name.c_str(), c2->name.c_str(), rel->second.GetRelationsValue());
-
-		rel = PCref->diplo.relations->find(CountryPair(c2, c1));
-
-		printf("%s - %s - %d\n", c2->name.c_str(), c1->name.c_str(), rel->second.GetRelationsValue());
 	} else {
 		LabelArr[2]->ChangeText("N/A");
 	}
