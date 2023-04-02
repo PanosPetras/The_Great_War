@@ -139,8 +139,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.2\include;$(SolutionDir)\SDL2\SDL2_ttf-2.20.1\include;$(SolutionDir)\SDL2\SDL2_image-2.6.2\include;$(SolutionDir)\SDL2\SDL2-2.26.0\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.2\lib\x64;$(SolutionDir)\SDL2\SDL2_ttf-2.20.1\lib\x64;$(SolutionDir)\SDL2\SDL2_image-2.6.2\lib\x64;$(SolutionDir)\SDL2\SDL2-2.26.0\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.3\include;$(SolutionDir)\SDL2\SDL2_ttf-2.20.2\include;$(SolutionDir)\SDL2\SDL2_image-2.6.3\include;$(SolutionDir)\SDL2\SDL2-2.26.4\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.3\lib\x64;$(SolutionDir)\SDL2\SDL2_ttf-2.20.2\lib\x64;$(SolutionDir)\SDL2\SDL2_image-2.6.3\lib\x64;$(SolutionDir)\SDL2\SDL2-2.26.4\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
     <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
