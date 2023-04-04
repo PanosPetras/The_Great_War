@@ -11,9 +11,9 @@ OpenFactoryScreen::OpenFactoryScreen(SDL_Renderer* r, int Width, int Height, int
 	LabelArr[2] = new Label(renderer, lbl1txt.c_str(), 32, int(Width * 0.55), int(Height * 0.41), 0, 0, 0);
 
 	auto conf = std::bind(&OpenFactoryScreen::Close, this);
-	ButtonArr[0] = new Button(r, int(Width * 0.32), int(Height * 0.7), int(Width * 0.08), int(Height * 0.06), "Buttons/Menus/Back", conf);
+	ButtonArr[0] = new Button(r, int(Width * 0.32), int(Height * 0.7), int(Width * 0.08), int(Height * 0.06), "Back", 32, conf);
 	conf = std::bind(&OpenFactoryScreen::BuildFactory, this);
-	ButtonArr[1] = new Button(r, int(Width * 0.59), int(Height * 0.7), int(Width * 0.1), int(Height * 0.06), "Buttons/Menus/Confirm", conf);
+	ButtonArr[1] = new Button(r, int(Width * 0.59), int(Height * 0.7), int(Width * 0.1), int(Height * 0.06), "Confirm", 32, conf);
 	conf = std::bind(&OpenFactoryScreen::FactoryTypeLumber, this);
 	ButtonArr[2] = new Button(r, int(Width * 0.3), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/lumber", conf);
 	conf = std::bind(&OpenFactoryScreen::FactoryTypeGlass, this);

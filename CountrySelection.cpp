@@ -4,9 +4,9 @@ CountrySelection::CountrySelection(SDL_Renderer* r, int Width, int Height, std::
 	bHasBackground = true;
 	SetupBg("Backgrounds/CountrySelection.png");
 	auto change = std::bind(&CountrySelection::StartGame, this);
-	ButtonArr[0] = new Button(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Buttons/Menus/Confirm", change, SDLK_KP_ENTER);
+	ButtonArr[0] = new Button(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", 32, change, SDLK_KP_ENTER);
 	change = std::bind(&CountrySelection::Back, this);
-	ButtonArr[1] = new Button(r, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Buttons/Menus/Back", change, SDLK_ESCAPE);
+	ButtonArr[1] = new Button(r, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", 32, change, SDLK_ESCAPE);
 
 	change = std::bind(&CountrySelection::SelectGER, this);
 	ButtonArr[2] = new Button(r, int(Width * 0.3), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/ger", change);

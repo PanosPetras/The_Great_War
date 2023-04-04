@@ -1,5 +1,9 @@
 #include "Country.h"
 
+Country::Country(std::string tag, std::string name, int r, int g, int b, int Res[31], bool isPlayerControlled) : Country(tag, name, r, g, b, Res) {
+    isPlayer = isPlayerControlled;
+}
+
 Country::Country(std::string tag, std::string name, int r, int g, int b, int Res[31]){
     ownedStates = new std::unordered_map<std::string, State*>();
 	this->tag = tag;
@@ -75,4 +79,16 @@ void Country::Tick(){
 
     Stock.Money += int(population * 0.004 * policy.TaxRate / 100);
     Stock.Money -= int(population * 0.001 * policy.Healthcare / 100);
+}
+
+std::string Country::GetName() const {
+    return name;
+}
+
+std::string Country::GetTag() const {
+    return tag;
+}
+
+int Country::GetPopulation() const {
+    return population;
 }

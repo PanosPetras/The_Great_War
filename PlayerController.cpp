@@ -297,7 +297,7 @@ void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartP
 
 	for (int x = 0; x < 2703; x++) {
 		for (int y = 0; y < 58; y++) {
-			if (owners->at(x) == CountriesArr.at(y)->tag) {
+			if (owners->at(x) == CountriesArr.at(y)->GetTag()) {
 				target = y;
 				break;
 			}

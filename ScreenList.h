@@ -152,6 +152,7 @@ private:
     void WorsenRelations();
 
     void UpdateRelationValue();
+    void UpdateAllianceState();
 
     int selectedCountryIndex;
 };

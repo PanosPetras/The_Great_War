@@ -28,7 +28,7 @@ struct std::hash<CountryPair> {
     std::size_t operator()(const CountryPair& k) const {
         std::hash<std::string> hasher;
 
-        std::string str1 = k.GetC1()->tag, str2 = k.GetC2()->tag;
+        std::string str1 = k.GetC1()->GetTag(), str2 = k.GetC2()->GetTag();
 
         return hasher(str1 > str2 ? str1 + str2 : str2 + str1);
     }

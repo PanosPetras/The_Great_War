@@ -27,6 +27,7 @@ public:
     //Functions
 
     //Constructor
+    Country(std::string tag, std::string name, int r, int g, int b, int Res[31], bool isPlayerControlled);
     Country(std::string tag, std::string name, int r, int g, int b, int Res[31]);
 
     //Destructor
@@ -39,9 +40,16 @@ public:
     //This is the representing the pass of a single day
     void Tick();
 
+    //Accessor Functions
+    std::string GetName() const;
+    std::string GetTag() const;
+    int GetPopulation() const;
+
+private:
     Color color;
 
-    //Variables
+    //Basic Properties
+    bool isPlayer;
     std::string name;
     std::string tag;
     int population;
@@ -51,6 +59,7 @@ public:
     
     Technology technology;
 
+public:
     Policy policy;
 
     //A country's currently stockpiled resources

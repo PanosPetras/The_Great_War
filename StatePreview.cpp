@@ -32,7 +32,7 @@ StatePreview::StatePreview(SDL_Renderer* r, int Width, int Height, int id, std::
 	ButtonArrtop = 1;
 	if (Controller == PC->player_tag && Factories[3] == "") {
 		auto change = std::bind(&StatePreview::OpenOFS, this);
-		ButtonArr[1] = new Button(r, int(Width * .058), int(Height * 0.95), int(160 * WindowSize[0] / 1920), int(38 * WindowSize[1] / 1080), "Buttons/UI/Open_Factory", change);
+		ButtonArr[1] = new Button(r, int(Width * .058), int(Height * 0.95), int(160 * WindowSize[0] / 1920), int(38 * WindowSize[1] / 1080), "Open Factory", 24, change);
 		ButtonArrtop++;
 	}
 	SliderArrtop = 0;

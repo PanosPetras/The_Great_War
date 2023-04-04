@@ -11,8 +11,8 @@ DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, int Width, int Height, PlayerC
 	ImageArr[2] = new Image(r, "Icons/population.png", int(Width * 0.43), int(Height * 0.3), int(Width * 0.027), int(Height * 0.048));
 	ImageArr[3] = new Image(r, "Icons/flags.png", int(Width * 0.77), int(Height * 0.225), int(Width * 0.027), int(Height * 0.048));
 
-	LabelArr[0] = new Label(r, PC->CountriesArr[PC->player_index]->name, 32, int(Width * 0.48), int(Height * 0.218));
-	LabelArr[1] = new Label(r, std::to_string(PC->CountriesArr[PC->player_index]->population), 24, int(Width * 0.465), int(Height * 0.31));
+	LabelArr[0] = new Label(r, PC->CountriesArr[PC->player_index]->GetName(), 32, int(Width * 0.48), int(Height * 0.218));
+	LabelArr[1] = new Label(r, std::to_string(PC->CountriesArr[PC->player_index]->GetPopulation()), 24, int(Width * 0.465), int(Height * 0.31));
 	LabelArr[2] = new Label(r, "N/A", 28, int(Width * 0.8), int(Height * 0.225));
 
 	ButtonArrtop = CreateCountryButtons(PC);
@@ -24,9 +24,8 @@ DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, int Width, int Height, PlayerC
 	change = std::bind(&DiplomacyScreen::WorsenRelations, this);
 	ButtonArr[ButtonArrtop++] = new Button(r, int(Width * 0.431), int(Height * 0.66), int(Width * 0.138), int(Height * 0.04), "Worsen Relations", fontSize, change);
 
-	ButtonArr[ButtonArrtop++] = new Button(r, int(Width * 0.635), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Propose Alliance", fontSize);
+	ButtonArr[ButtonArrtop++] = new Button(r, int(Width * 0.635), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Form Alliance", fontSize);
 	ButtonArr[ButtonArrtop++] = new Button(r, int(Width * 0.645), int(Height * 0.58), int(Width * 0.11), int(Height * 0.04), "Embargo", fontSize);
-	ButtonArr[ButtonArrtop++] = new Button(r, int(Width * 0.63), int(Height * 0.66), int(Width * 0.14), int(Height * 0.04), "Propose Trade Deal", fontSize);
 
 	LabelArrtop = 3;
 	ImageArrtop = 4;
@@ -46,7 +45,7 @@ int DiplomacyScreen::CreateCountryButtons(PlayerController* PC) {
 
 	for (auto country : PC->CountriesArr) {
 		std::function<void(void*)> func = std::bind(&DiplomacyScreen::SelectCountry, this, std::placeholders::_1);
-		ButtonArr[i] = new Button(renderer, int(WindowSize[0] * (0.1 + (i / flagsPerLine) * 0.05)), int(WindowSize[1] * (0.17 + (i % flagsPerLine) * 0.06)), 60, 40, ("Flags/" + country->tag).c_str(), func, (void*)((Uint64)i));
+		ButtonArr[i] = new Button(renderer, int(WindowSize[0] * (0.1 + (i / flagsPerLine) * 0.05)), int(WindowSize[1] * (0.17 + (i % flagsPerLine) * 0.06)), 60, 40, ("Flags/" + country->GetTag()).c_str(), func, (void*)((Uint64)i));
 		i++;
 	}
 
@@ -56,13 +55,14 @@ int DiplomacyScreen::CreateCountryButtons(PlayerController* PC) {
 void DiplomacyScreen::SelectCountry(void* country){
 	int index = (int)(Uint64)(country);
 
-	ImageArr[1]->ChangeImage(std::string("Flags/") + PCref->CountriesArr[index]->tag + ".png");
-	LabelArr[0]->ChangeText(PCref->CountriesArr[index]->name);
-	LabelArr[1]->ChangeText(std::to_string(PCref->CountriesArr[index]->population));
+	ImageArr[1]->ChangeImage(std::string("Flags/") + PCref->CountriesArr[index]->GetTag() + ".png");
+	LabelArr[0]->ChangeText(PCref->CountriesArr[index]->GetName());
+	LabelArr[1]->ChangeText(std::to_string(PCref->CountriesArr[index]->GetPopulation()));
 
 	selectedCountryIndex = index;
 
 	UpdateRelationValue();
+	UpdateAllianceState();
 }
 
 void DiplomacyScreen::ImproveRelations(){
@@ -88,7 +88,6 @@ void DiplomacyScreen::WorsenRelations(){
 }
 
 void DiplomacyScreen::UpdateRelationValue(){
-
 	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
 
 	auto rel = PCref->diplo.relations->find(CountryPair(c1, c2));
@@ -97,5 +96,19 @@ void DiplomacyScreen::UpdateRelationValue(){
 		LabelArr[2]->ChangeText(std::to_string(rel->second.GetRelationsValue()));
 	} else {
 		LabelArr[2]->ChangeText("N/A");
+	}
+}
+
+void DiplomacyScreen::UpdateAllianceState() {
+	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
+
+	auto rel = PCref->diplo.relations->find(CountryPair(c1, c2));
+
+	if (rel != PCref->diplo.relations->end()) {
+		if (rel->second.GetIfAllied()) {
+			LabelArr[2]->ChangeText("Break Alliance");
+		} else {
+			LabelArr[2]->ChangeText("Form Alliance");
+		}
 	}
 }

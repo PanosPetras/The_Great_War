@@ -2,12 +2,16 @@
 
 PauseMenu::PauseMenu(SDL_Renderer* r, int Width, int Height, std::function<void()> fp, std::function<void()> UnpauseF, std::function<void(Screen*)> fpl) : Screen(r, Width, Height) {
 	bHasBackground = false;
+
+	int fontSize = 32;
 	auto change = std::bind(&PauseMenu::ReturnToMainMenu, this);
+
 	ImageArr[0] = new Image(renderer, "Backgrounds/Pause_Menu.png", int(Width * 0.25), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
-	ButtonArr[0] = new Button(r, int(Width * 0.36), int(Height * 0.35), int(Width * 0.08), int(Height * 0.06), "Buttons/Menus/Back", UnpauseF);
-	ButtonArr[1] = new Button(r, int(Width * 0.342), int(Height * 0.45), int(Width * 0.12), int(Height * 0.06), "Buttons/Menus/Save_Game");
-	ButtonArr[2] = new Button(r, int(Width * 0.355), int(Height * 0.55), int(Width * 0.09), int(Height * 0.06), "Buttons/Menus/Resign", change);
-	ButtonArr[3] = new Button(r, int(Width * 0.36), int(Height * 0.65), int(Width * 0.08), int(Height * 0.06), "Buttons/Menus/Quit", fp);
+	ButtonArr[0] = new Button(r, int(Width * 0.36), int(Height * 0.35), int(Width * 0.08), int(Height * 0.06), "Back", fontSize, UnpauseF);
+	ButtonArr[1] = new Button(r, int(Width * 0.342), int(Height * 0.45), int(Width * 0.12), int(Height * 0.06), "Save Game", fontSize);
+	ButtonArr[2] = new Button(r, int(Width * 0.355), int(Height * 0.55), int(Width * 0.09), int(Height * 0.06), "Resign", fontSize, change);
+	ButtonArr[3] = new Button(r, int(Width * 0.36), int(Height * 0.65), int(Width * 0.08), int(Height * 0.06), "Quit", fontSize, fp);
+
 	ButtonArrtop = 4;
 	LabelArrtop = 0;
 	ImageArrtop = 1;
