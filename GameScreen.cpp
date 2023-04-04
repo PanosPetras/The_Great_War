@@ -303,19 +303,23 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 
 		//Change the screen's magnification, albeit the zoom factor
 		if (ev->type == SDL_MOUSEWHEEL) {
-
 			//Zoom in
 			if (ev->wheel.y > 0 && factor < WindowSize[0] / 480.0) {
 				factor += ZoomingSpeed * factor;
-				Cam_Width += int(WindowSize[0] / factor * 0.05);
-				Cam_Height += int(WindowSize[1] / factor * 0.045);
+				Cam_Width += int(WindowSize[0] / factor * ZoomingSpeed / 2);
+				Cam_Height += int(WindowSize[1] / factor * ZoomingSpeed / 2);
 			}
 			//Zoom out
 			else if (factor > WindowSize[0] / 3840.0 && ev->wheel.y < 0) {
 				factor -= ZoomingSpeed * factor;
 
-				Cam_Width -= int(WindowSize[0] / factor * 0.035);
-				Cam_Height -= int(WindowSize[1] / factor * 0.035);
+				//Make sure we are not off the limits
+				if (factor < WindowSize[0] / 3840.0) {
+					factor = float(WindowSize[0] / 3840.0);
+				}
+
+				Cam_Width -= int(WindowSize[0] / factor * ZoomingSpeed / 2);
+				Cam_Height -= int(WindowSize[1] / factor * ZoomingSpeed / 2);
 
 				/*If the zoomed out image extends out of the rendered image's bounds,
 				then we move the camera towards the center of the rendered image*/
@@ -330,12 +334,6 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 					Cam_Width = 0;
 				} else if (Cam_Width > lim) {
 					Cam_Width = lim;
-				}
-
-				//Make sure we are not off the limits
-				if (factor < WindowSize[0] / 3840.0) {
-					factor = float(WindowSize[0] / 3840.0);
-					return;
 				}
 			}
 		}
