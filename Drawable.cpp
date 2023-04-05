@@ -33,5 +33,21 @@ void ApplyAnchor(SDL_Rect &rect, Anchor anchor) {
             rect.x -= rect.w / 2;
             rect.y -= rect.h / 2;
             break;
+        case center_top:
+            rect.x -= rect.w / 2;
+            break;
+        case center_bottom:
+            rect.x -= rect.w / 2;
+            rect.y -= rect.h;
+            break;
+        case center_left:
+            rect.y -= rect.h / 2;
+            break;
+        case center_right:
+            rect.x -= rect.w;
+            rect.y -= rect.h / 2;
+            break;
+        default:
+            break;
     }
 }

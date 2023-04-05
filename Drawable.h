@@ -7,7 +7,7 @@ typedef union SDL_Event SDL_Event;
 typedef struct SDL_Rect SDL_Rect;
 
 typedef enum Anchor {
-	top_left, top_right, bottom_left, bottom_right, center
+	top_left, top_right, bottom_left, bottom_right, center, center_top, center_bottom, center_left, center_right
 } Anchor;
 
 class Drawable {
