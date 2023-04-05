@@ -6,6 +6,7 @@
 #include <string>
 #include "Drawable.h"
 #include "Button.h"
+#include "Label.h"
 #include "Image.h"
 
 class MessageBox : InputDrawable {
@@ -24,6 +25,7 @@ private:
 	void pDraw();
 
 	Image* background;
+	Label* text;
 	Button* okButton;
 };
 

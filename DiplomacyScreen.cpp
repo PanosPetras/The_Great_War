@@ -17,20 +17,19 @@ DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, PlayerController* PC) : Screen
 	LabelArr[1] = new Label(r, std::to_string(PC->CountriesArr[PC->player_index]->GetPopulation()), 24, int(Width * 0.465), int(Height * 0.31));
 	LabelArr[2] = new Label(r, "N/A", 28, int(Width * 0.8), int(Height * 0.225));
 
-	ButtonArrtop = CreateCountryButtons(PC);
+	InputDrawableArrtop = CreateCountryButtons(PC);
 
-	ButtonArr[ButtonArrtop++] = new Button(r, int(Width * 0.445), int(Height * 0.5), int(Width * 0.11), int(Height * 0.04), "Declare War", fontSize);
+	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.445), int(Height * 0.5), int(Width * 0.11), int(Height * 0.04), "Declare War", fontSize);
 	auto change = std::bind(&DiplomacyScreen::ImproveRelations, this);
-	ButtonArr[ButtonArrtop++] = new Button(r, int(Width * 0.43), int(Height * 0.58), int(Width * 0.14), int(Height * 0.04), "Improve Relations", fontSize, change);
+	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.43), int(Height * 0.58), int(Width * 0.14), int(Height * 0.04), "Improve Relations", fontSize, change);
 	change = std::bind(&DiplomacyScreen::WorsenRelations, this);
-	ButtonArr[ButtonArrtop++] = new Button(r, int(Width * 0.431), int(Height * 0.66), int(Width * 0.138), int(Height * 0.04), "Worsen Relations", fontSize, change);
+	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.431), int(Height * 0.66), int(Width * 0.138), int(Height * 0.04), "Worsen Relations", fontSize, change);
 
-	ButtonArr[ButtonArrtop++] = new Button(r, int(Width * 0.635), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Form Alliance", fontSize);
-	ButtonArr[ButtonArrtop++] = new Button(r, int(Width * 0.645), int(Height * 0.58), int(Width * 0.11), int(Height * 0.04), "Embargo", fontSize);
+	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.635), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Form Alliance", fontSize);
+	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.645), int(Height * 0.58), int(Width * 0.11), int(Height * 0.04), "Embargo", fontSize);
 
 	LabelArrtop = 3;
 	ImageArrtop = 4;
-	SliderArrtop = 0;
 
 	PCref = PC;
 
@@ -46,7 +45,7 @@ int DiplomacyScreen::CreateCountryButtons(PlayerController* PC) {
 
 	for (auto country : PC->CountriesArr) {
 		std::function<void(void*)> func = std::bind(&DiplomacyScreen::SelectCountry, this, std::placeholders::_1);
-		ButtonArr[i] = new Button(renderer, int(Width * (0.1 + (i / flagsPerLine) * 0.05)), int(Height * (0.17 + (i % flagsPerLine) * 0.06)), 60, 40, ("Flags/" + country->GetTag()).c_str(), func, (void*)((Uint64)i));
+		InputDrawableArr[i] = new Button(renderer, int(Width * (0.1 + (i / flagsPerLine) * 0.05)), int(Height * (0.17 + (i % flagsPerLine) * 0.06)), 60, 40, ("Flags/" + country->GetTag()).c_str(), func, (void*)((Uint64)i));
 		i++;
 	}
 
@@ -107,9 +106,9 @@ void DiplomacyScreen::UpdateAllianceState() {
 
 	if (rel != PCref->diplo.relations->end()) {
 		if (rel->second.GetIfAllied()) {
-			((Button*)ButtonArr[ButtonArrtop - 2])->ChangeText("Break Alliance", 26);
+			((Button*)InputDrawableArr[InputDrawableArrtop - 2])->ChangeText("Break Alliance", 26);
 		} else {
-			((Button*)ButtonArr[ButtonArrtop - 2])->ChangeText("Form Alliance", 26);
+			((Button*)InputDrawableArr[InputDrawableArrtop - 2])->ChangeText("Form Alliance", 26);
 		}
 	}
 }

@@ -7,8 +7,7 @@ TradeScreen::TradeScreen(SDL_Renderer* r, Country* Pl) : Screen(r) {
 
 	LabelArrtop = 0;
 	ImageArrtop = 0;
-	ButtonArrtop = 0;
-	SliderArrtop = 0;
+	InputDrawableArrtop = 0;
 }
 
 void TradeScreen::Update() {

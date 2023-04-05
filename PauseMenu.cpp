@@ -8,15 +8,14 @@ PauseMenu::PauseMenu(SDL_Renderer* r, std::function<void()> fp, std::function<vo
 	auto change = std::bind(&PauseMenu::ReturnToMainMenu, this);
 
 	ImageArr[0] = new Image(renderer, "Backgrounds/Pause_Menu.png", int(Width * 0.25), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
-	ButtonArr[0] = new Button(r, int(Width * 0.34), int(Height * 0.35), int(Width * 0.12), int(Height * 0.06), "Back", fontSize, UnpauseF);
-	ButtonArr[1] = new Button(r, int(Width * 0.34), int(Height * 0.45), int(Width * 0.12), int(Height * 0.06), "Save Game", fontSize);
-	ButtonArr[2] = new Button(r, int(Width * 0.34), int(Height * 0.55), int(Width * 0.12), int(Height * 0.06), "Resign", fontSize, change);
-	ButtonArr[3] = new Button(r, int(Width * 0.34), int(Height * 0.65), int(Width * 0.12), int(Height * 0.06), "Quit", fontSize, fp);
+	InputDrawableArr[0] = new Button(r, int(Width * 0.34), int(Height * 0.35), int(Width * 0.12), int(Height * 0.06), "Back", fontSize, UnpauseF);
+	InputDrawableArr[1] = new Button(r, int(Width * 0.34), int(Height * 0.45), int(Width * 0.12), int(Height * 0.06), "Save Game", fontSize);
+	InputDrawableArr[2] = new Button(r, int(Width * 0.34), int(Height * 0.55), int(Width * 0.12), int(Height * 0.06), "Resign", fontSize, change);
+	InputDrawableArr[3] = new Button(r, int(Width * 0.34), int(Height * 0.65), int(Width * 0.12), int(Height * 0.06), "Quit", fontSize, fp);
 
-	ButtonArrtop = 4;
+	InputDrawableArrtop = 4;
 	LabelArrtop = 0;
 	ImageArrtop = 1;
-	SliderArrtop = 0;
 	bHasBackground = false;
 	ChangeScreenFunc = fpl;
 	QuitFunc = fp;

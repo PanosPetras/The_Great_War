@@ -28,23 +28,17 @@ public:
 	//This is the count of the Images being displayed
 	int ImageArrtop;
 
-	//Allows the creation of up to 70 Buttons on the screen
-	InputDrawable* ButtonArr[70];
+	//Allows the creation of up to 70 Drawable elements on the screen
+	InputDrawable* InputDrawableArr[70];
 
 	//This is the count of the Buttons being displayed
-	int ButtonArrtop;
+	int InputDrawableArrtop;
 
 	//Allows the creation of up to 35 Labels on the screen
 	Label* LabelArr[35];
 
 	//This is the count of the Labels being displayed
 	int LabelArrtop;
-
-	//Allows the creation of up to 35 Labels on the screen
-	Slider* SliderArr[5];
-
-	//This is the count of the Labels being displayed
-	int SliderArrtop;
 	
 	bool bHasBackground;
 

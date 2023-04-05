@@ -21,8 +21,7 @@ StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::
 
 	ImageArrtop = 2;
 	LabelArrtop = 10;
-	ButtonArrtop = 1;
-	SliderArrtop = 0;
+	InputDrawableArrtop = 1;
 
 	for (int x = 0; x < 4; x++) {
 		if (Factories[x] != "") {
@@ -34,11 +33,11 @@ StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::
 		}
 	}
 
-	ButtonArr[0] = new Button(r, int(Width*.2) - int((32 * Width / 1920) / 2), int(Height * .55) - int((32 * Height / 1080) / 2), int(32 * Width /1920), int(32 * Height / 1080), "Buttons/UI/Close", CloseFunc);
+	InputDrawableArr[0] = new Button(r, int(Width*.2) - int((32 * Width / 1920) / 2), int(Height * .55) - int((32 * Height / 1080) / 2), int(32 * Width /1920), int(32 * Height / 1080), "Buttons/UI/Close", CloseFunc);
 	if (Controller == PC->player_tag && Factories[3] == "") {
 		auto change = std::bind(&StatePreview::OpenOFS, this);
-		ButtonArr[1] = new Button(r, int(Width * .058), int(Height * 0.95), int(160 * Width / 1920), int(38 * Height / 1080), "Open Factory", 24, change);
-		ButtonArrtop++;
+		InputDrawableArr[1] = new Button(r, int(Width * .058), int(Height * 0.95), int(160 * Width / 1920), int(38 * Height / 1080), "Open Factory", 24, change);
+		InputDrawableArrtop++;
 	}
 
 	PCref = PC;
@@ -62,14 +61,9 @@ void StatePreview::Render(){
 		ImageArr[x]->Draw();
 	}
 
-	//Calls the render method for every active slider
-	for (int x = 0; x < SliderArrtop; x++) {
-		SliderArr[x]->Draw();
-	}
-
 	//Calls the render method for every active button
-	for (int x = 0; x < ButtonArrtop; x++) {
-		ButtonArr[x]->Draw();
+	for (int x = 0; x < InputDrawableArrtop; x++) {
+		InputDrawableArr[x]->Draw();
 	}
 
 	//Calls the render method for every active label
@@ -86,8 +80,8 @@ void StatePreview::Handle_Input(SDL_Event* ev){
 	if (OFS != nullptr) {
 		OFS->Handle_Input(ev);
 	}
-	for (int x = 0; x < ButtonArrtop; x++) {
-		ButtonArr[x]->HandleInput(ev);
+	for (int x = 0; x < InputDrawableArrtop; x++) {
+		InputDrawableArr[x]->HandleInput(ev);
 	}
 }
 
@@ -105,8 +99,8 @@ void StatePreview::DeleteOFS(){
 	int Width = GetWindowWidth(), Height = GetWindowHeight();
 
 	if (PCref->StatesArr[Id]->State_Factories[3] != nullptr) {
-		delete ButtonArr[1];
-		ButtonArrtop = 1;
+		delete InputDrawableArr[1];
+		InputDrawableArrtop = 1;
 	}
 	for (int x = ImageArrtop - 2; x < 4; x++) {
 		if (PCref->StatesArr[Id]->State_Factories[x] != nullptr) {

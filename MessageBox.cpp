@@ -1,12 +1,16 @@
 #include "MessageBox.h"
+#include "WindowInfo.h"
 
 MessageBox::MessageBox(SDL_Renderer* r, std::string message) {
-	background = new Image(r, "bg", 0, 0, 0, 0);
+	int Width = GetWindowWidth(), Height = GetWindowHeight();
+
+	background = new Image(r, "bg", int(Width * 0.4), int(Height * 0.4), int(Width * 0.2), int(Height * 0.2));
+	text = new Label(r, message, 32, 0, 0);
 	okButton = new Button(r, 0, 0, 0, 0, "Ok", 32);
 }
 
 MessageBox::~MessageBox() {
-	delete background, okButton;
+	delete background, okButton, text;
 }
 
 void MessageBox::HandleInput(const SDL_Event* ev) {

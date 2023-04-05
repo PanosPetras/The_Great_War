@@ -4,10 +4,9 @@
 
 GameScreen::GameScreen(SDL_Renderer* r, const char* tag,  std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r) {
 	bHasBackground = true;
-	ButtonArrtop = 0;
+	InputDrawableArrtop = 0;
 	LabelArrtop = 0;
 	ImageArrtop = 0;
-	SliderArrtop = 0;
 	bIsPaused = false;
 	bZoom = true;
 	factor = 1.0f;
@@ -35,8 +34,8 @@ GameScreen::~GameScreen(){
 	delete PC, overlay;
 
 	//Delete all items created by the screen in order to avoid memory leaks
-	for (int x = 0; x < ButtonArrtop; x++) {
-		delete ButtonArr[x];
+	for (int x = 0; x < InputDrawableArrtop; x++) {
+		delete InputDrawableArr[x];
 	}
 
 	for (int x = 0; x < LabelArrtop; x++) {
@@ -142,8 +141,8 @@ void GameScreen::Render() {
 	}
 
 	//Calls the render method for every active button
-	for (int x = 0; x < ButtonArrtop; x++) {
-		ButtonArr[x]->Draw();
+	for (int x = 0; x < InputDrawableArrtop; x++) {
+		InputDrawableArr[x]->Draw();
 	}
 
 	//Calls the render method for every active label
@@ -238,8 +237,8 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 
 	//Handles inputs for buttons if the game is not paused
 	if (bIsPaused == false) {
-		for (int x = 0; x < ButtonArrtop; x++) {
-			ButtonArr[x]->HandleInput(ev);
+		for (int x = 0; x < InputDrawableArrtop; x++) {
+			InputDrawableArr[x]->HandleInput(ev);
 		}
 
 		//Handle input events as the ui

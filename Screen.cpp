@@ -6,8 +6,8 @@ Screen::Screen(SDL_Renderer* r){
 
 Screen::~Screen(){
 	//Delete all items created by the screen in order to avoid memory leaks
-	for (int x = 0; x < ButtonArrtop; x++) {
-		delete ButtonArr[x];
+	for (int x = 0; x < InputDrawableArrtop; x++) {
+		delete InputDrawableArr[x];
 	}
 
 	for (int x = 0; x < LabelArrtop; x++) {
@@ -18,9 +18,6 @@ Screen::~Screen(){
 		delete ImageArr[x];
 	}
 
-	for (int x = 0; x < SliderArrtop; x++) {
-		delete SliderArr[x];
-	}
 	//Free all the allocated memory
 	SDL_DestroyTexture(texture);
 }
@@ -45,14 +42,9 @@ void Screen::Render(){
 		ImageArr[x]->Draw();
 	}
 
-	//Calls the render method for every active slider
-	for (int x = 0; x < SliderArrtop; x++) {
-		SliderArr[x]->Draw();
-	}
-
 	//Calls the render method for every active button
-	for (int x = 0; x < ButtonArrtop; x++) {
-		ButtonArr[x]->Draw();
+	for (int x = 0; x < InputDrawableArrtop; x++) {
+		InputDrawableArr[x]->Draw();
 	}
 
 	//Calls the render method for every active label
@@ -62,12 +54,8 @@ void Screen::Render(){
 }
 
 void Screen::Handle_Input(SDL_Event* ev){
-	for (int x = 0; x < ButtonArrtop; x++) {
-		ButtonArr[x]->HandleInput(ev);
-	}
-
-	for (int x = 0; x < SliderArrtop; x++) {
-		SliderArr[x]->HandleInput(ev);
+	for (int x = 0; x < InputDrawableArrtop; x++) {
+		InputDrawableArr[x]->HandleInput(ev);
 	}
 }
 

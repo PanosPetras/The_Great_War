@@ -8,26 +8,26 @@ CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> Unpaus
 	int fontSize = 32, Width = GetWindowWidth(), Height = GetWindowHeight();
 	auto change = std::bind(&CountrySelection::StartGame, this);
 
-	ButtonArr[0] = new Button(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", 32, change, SDLK_KP_ENTER);
+	InputDrawableArr[0] = new Button(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", 32, change, SDLK_KP_ENTER);
 	change = std::bind(&CountrySelection::Back, this);
-	ButtonArr[1] = new Button(r, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", 32, change, SDLK_ESCAPE);
+	InputDrawableArr[1] = new Button(r, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", 32, change, SDLK_ESCAPE);
 
 	change = std::bind(&CountrySelection::SelectGER, this);
-	ButtonArr[2] = new Button(r, int(Width * 0.3), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/ger", change);
+	InputDrawableArr[2] = new Button(r, int(Width * 0.3), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/ger", change);
 	change = std::bind(&CountrySelection::SelectFRA, this);
-	ButtonArr[3] = new Button(r, int(Width * 0.3), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/fra", change);
+	InputDrawableArr[3] = new Button(r, int(Width * 0.3), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/fra", change);
 	change = std::bind(&CountrySelection::SelectENG, this);
-	ButtonArr[4] = new Button(r, int(Width * 0.3), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/eng", change);
+	InputDrawableArr[4] = new Button(r, int(Width * 0.3), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/eng", change);
 	change = std::bind(&CountrySelection::SelectKUK, this);
-	ButtonArr[5] = new Button(r, int(Width * 0.3), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/kuk", change);
+	InputDrawableArr[5] = new Button(r, int(Width * 0.3), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/kuk", change);
 	change = std::bind(&CountrySelection::SelectITA, this);
-	ButtonArr[6] = new Button(r, int(Width * 0.635), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/ita", change);
+	InputDrawableArr[6] = new Button(r, int(Width * 0.635), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/ita", change);
 	change = std::bind(&CountrySelection::SelectRUS, this);
-	ButtonArr[7] = new Button(r, int(Width * 0.635), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/rus", change);
+	InputDrawableArr[7] = new Button(r, int(Width * 0.635), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/rus", change);
 	change = std::bind(&CountrySelection::SelectOTT, this);
-	ButtonArr[8] = new Button(r, int(Width * 0.635), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/ott", change);
+	InputDrawableArr[8] = new Button(r, int(Width * 0.635), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/ott", change);
 	change = std::bind(&CountrySelection::SelectUSA, this);
-	ButtonArr[9] = new Button(r, int(Width * 0.635), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/usa", change);
+	InputDrawableArr[9] = new Button(r, int(Width * 0.635), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/usa", change);
 
 	LabelArr[0] = new Label(r, "The World in 1910", int(Height * 0.03), int(Width * 0.43), int(Height * 0.07));
 	LabelArr[1] = new Label(r, "Choose your nation", int(Height * 0.03), int(Width * 0.427), int(Height * 0.13));
@@ -53,11 +53,10 @@ CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> Unpaus
 
 	ImageArr[10] = new Image(r, "Icons/right.png", -Width, -Height, 64 * Width / 1920, 64 * Height / 1080);
 
-	ButtonArrtop = 10;
+	InputDrawableArrtop = 10;
 	LabelArrtop = 10;
 	ImageArrtop = 11;
 
-	SliderArrtop = 0;
 	ChangeScreenFunc = fpl;
 	mousepressed = false;
 	ChangeScreenFunc = fpl;

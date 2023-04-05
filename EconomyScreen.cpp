@@ -19,18 +19,16 @@ EconomyScreen::EconomyScreen(SDL_Renderer* r, Country* Pl) : Screen(r) {
 	l1 = "Research: ", std::to_string(Pl->policy.TaxRate), "%";
 	LabelArr[4] = new Label(r, l1.c_str(), 32, int(0.4 * Width), int(0.6 * Height));
 
-	LabelArrtop = 5;
-	ImageArrtop = 0;
-	ButtonArrtop = 0;
-
 	auto change = std::bind(&EconomyScreen::OnTaxRateChanged, this);
 
-	SliderArr[0] = new Slider(r, int(0.11 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.TaxRate, change);
+	InputDrawableArr[0] = new Slider(r, int(0.11 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.TaxRate, change);
 
 	change = std::bind(&EconomyScreen::OnHealthcareChanged, this);
-	SliderArr[1] = new Slider(r, int(0.41 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.Healthcare, change);
+	InputDrawableArr[1] = new Slider(r, int(0.41 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.Healthcare, change);
 
-	SliderArrtop = 2;
+	LabelArrtop = 5;
+	ImageArrtop = 0;
+	InputDrawableArrtop = 2;
 }
 
 void EconomyScreen::Update(){
@@ -39,14 +37,16 @@ void EconomyScreen::Update(){
 }
 
 void EconomyScreen::OnTaxRateChanged() {
-	std::string l1 = "Tax Rate: " + std::to_string(SliderArr[0]->Values.Value) + "%";
+	Slider* slider = (Slider*)InputDrawableArr[0];
+	std::string l1 = "Tax Rate: " + std::to_string(slider->Values.Value) + "%";
 	LabelArr[1]->ChangeText(l1.c_str());
-	Player->policy.TaxRate = SliderArr[0]->Values.Value;
+	Player->policy.TaxRate = slider->Values.Value;
 }
 
 void EconomyScreen::OnHealthcareChanged() {
-	std::string l1 = "Healthcare: " + std::to_string(SliderArr[1]->Values.Value) + "%";
+	Slider* slider = (Slider*)InputDrawableArr[1];
+	std::string l1 = "Healthcare: " + std::to_string(slider->Values.Value) + "%";
 	LabelArr[2]->ChangeText(l1.c_str());
 
-	Player->policy.Healthcare = SliderArr[1]->Values.Value;
+	Player->policy.Healthcare = slider->Values.Value;
 }
