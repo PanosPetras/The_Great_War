@@ -12,7 +12,7 @@
 class MessageBox : InputDrawable {
 public:
 	//Constructor
-	MessageBox(SDL_Renderer* r, std::string message);
+	MessageBox(SDL_Renderer* r, std::string title, std::string message);
 
 	//Destructor
 	~MessageBox();
@@ -25,6 +25,7 @@ private:
 	void pDraw();
 
 	Image* background;
+	Label* title;
 	Label* text;
 	Button* okButton;
 };

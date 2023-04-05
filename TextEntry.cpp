@@ -1,12 +1,15 @@
 #include <SDL.h>
 #include "TextEntry.h"
 
-TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText) : TextEntry(r, x, y, Width, Height, defaultText, -1){
+TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters) : TextEntry(r, x, y, Width, Height, top_left, defaultText, maxCharacters) {
 }
 
-TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters){
-    background = new Image(r, "Backgrounds/FlagBg.png", x, y, Width, Height);
-    textLabel = new Label(r, defaultText, 20, int(x * 1.08), int(y * 1.08));
+TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, std::string hint, int maxCharacters) : TextEntry(r, x, y, Width, Height, top_left, defaultText, hint, maxCharacters) {
+}
+
+TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters) {
+    background = new Image(r, "Backgrounds/FlagBg.png", x, y, Width, Height, anchor);
+    textLabel = new Label(r, defaultText, 20, int(x * 1.08), int(y * 1.08), anchor);
     hintLabel = NULL;
 
     text = defaultText;
@@ -17,11 +20,7 @@ TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::
     this->y = y;
 }
 
-TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, std::string hint) : TextEntry(r, x, y, Width, Height, defaultText, -1){
-    ChangeHint(hint);
-}
-
-TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, std::string hint, int maxCharacters) : TextEntry(r, x, y, Width, Height, defaultText, maxCharacters){
+TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint, int maxCharacters) : TextEntry(r, x, y, Width, Height, anchor, defaultText, maxCharacters) {
     ChangeHint(hint);
 }
 

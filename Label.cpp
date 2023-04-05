@@ -1,6 +1,9 @@
 #include "Label.h"
 
-Label::Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Uint8 red, Uint8 green, Uint8 blue) {
+Label::Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Uint8 red, Uint8 green, Uint8 blue) : Label(r, Text, size, x, y, top_left, red, green, blue) {
+}
+
+Label::Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Anchor anchor, Uint8 red, Uint8 green, Uint8 blue) : Drawable(anchor) {
     //Save the text assigned to the label in order to be used later
     text = Text;
 
@@ -97,6 +100,25 @@ void Label::UpdateLabel() {
     //Create the rectangle that will express the size of the texture we created
     SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
     draw_rect = { Coords[0], Coords[1], texW, texH };
+
+    switch (dAnchor) {
+    case top_left:
+        break;
+    case top_right:
+        draw_rect.x -= texW;
+        break;
+    case bottom_left:
+        draw_rect.y -= texH;
+        break;
+    case bottom_right:
+        draw_rect.x -= texW;
+        draw_rect.y -= texH;
+        break;
+    case center:
+        draw_rect.x -= texW / 2;
+        draw_rect.y -= texH / 2;
+        break;
+    }
 }
 
 std::string Label::GetText(){

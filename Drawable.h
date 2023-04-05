@@ -5,20 +5,28 @@
 
 typedef union SDL_Event SDL_Event;
 
+typedef enum Anchor {
+	top_left, top_right, bottom_left, bottom_right, center
+} Anchor;
+
 class Drawable {
 public:
-	Drawable();
+	Drawable(Anchor anchor = top_left);
 
 	void Draw();
 
 	bool Visibility;
 
 protected:
+	Anchor dAnchor;
+
 	virtual void pDraw() = 0;
 };
 
 class InputDrawable : public Drawable {
 public:
+	InputDrawable(Anchor anchor = top_left);
+
 	virtual void HandleInput(const SDL_Event*) = 0;
 };
 

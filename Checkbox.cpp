@@ -1,6 +1,9 @@
 #include "Checkbox.h"
 
-Checkbox::Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, std::function<void(bool)> f, int keybind){
+Checkbox::Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, std::function<void(bool)> f, int keybind) : Checkbox(r, x, y, Height, text, textSize, top_left, f, keybind) {
+}
+
+Checkbox::Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, Anchor anchor, std::function<void(bool)> f, int keybind) {
 	toggleButton = new ToggleButton(r, x, y, Height, Height, "Drawable/Checkbox/Ticked Checkbox", "Drawable/Checkbox/Empty Checkbox", f, keybind);
 	label = new Label(r, text, textSize, x + int(Height * (1 + 0.1)), y);
 }

@@ -10,6 +10,7 @@ class Slider : public InputDrawable {
 public:
 	//Constructor, initializes the values
 	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = NULL);
+	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = NULL);
 
 	//Destructor, frees up the memory
 	~Slider();
@@ -21,10 +22,7 @@ public:
 	void ChangeValues(int minvalue, int maxvalue, int value = -1);
 
 	//Change the slider's position on the screen
-	void ChangePosition(int x, int y);
-
-	//Change the slider's size
-	void ChangeSize(int Width, int Height);
+	void ChangePosition(int x, int y, int Width, int Height);
 
 	//Called when the value of the slider changes
 	std::function<void()> onSliderValueChanged;

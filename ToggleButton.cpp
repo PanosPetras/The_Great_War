@@ -1,7 +1,13 @@
 #include "ToggleButton.h"
 #include <iostream>
 
-ToggleButton::ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f, int keybind){
+ToggleButton::ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f, int keybind) : ToggleButton(r, x, y, Width, Height, activeImage, inactiveImage, top_left, f, keybind) {
+}
+
+ToggleButton::ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f, int keybind) : ToggleButton(r, x, y, Width, Height, activeImage, inactiveImage, top_left, val, f, keybind) {
+}
+
+ToggleButton::ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, std::function<void(bool)> f, int keybind) : InputDrawable(anchor) {
     //Saving the renderer's reference
     RendererReference = r;
 
@@ -25,7 +31,7 @@ ToggleButton::ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height,
     music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
-ToggleButton::ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f, int keybind) : ToggleButton(r, x, y, Width, Height, activeImage, inactiveImage, f, keybind) {
+ToggleButton::ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, bool val, std::function<void(bool)> f, int keybind) {
     value = val;
 }
 
@@ -117,6 +123,25 @@ void ToggleButton::ChangePosition(int x, int y, int Height, int Width){
     this->draw_rect.y = y;
     this->draw_rect.w = Width;
     this->draw_rect.h = Height;
+
+    switch (dAnchor) {
+    case top_left:
+        break;
+    case top_right:
+        draw_rect.x -= Width;
+        break;
+    case bottom_left:
+        draw_rect.y -= Height;
+        break;
+    case bottom_right:
+        draw_rect.x -= Width;
+        draw_rect.y -= Height;
+        break;
+    case center:
+        draw_rect.x -= Width / 2;
+        draw_rect.y -= Height / 2;
+        break;
+    }
 }
 
 void ToggleButton::ChangeFunctionBinding(std::function<void(bool)> f){

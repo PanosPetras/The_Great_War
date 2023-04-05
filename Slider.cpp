@@ -1,14 +1,16 @@
 #include "Slider.h"
 #include <SDL_image.h>
 
-Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged){
+Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged) : Slider(r, x, y, Width, Height, top_left, minvalue, maxvalue, value, onSliderValueChanged) {
+}
+
+Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged) : InputDrawable(anchor) {
 	//Saving a reference to the renderer
 	renderer = r;
-	
+
 	//Initialize all variables
 	ChangeValues(minvalue, maxvalue, value);
-	ChangeSize(Width, Height);
-	ChangePosition(x, y);
+	ChangePosition(x, y, Width, Height);
 
 	//Load the slider's textures
 	SDL_Surface* temp = IMG_Load("Drawable/Slider/Circle.png");
@@ -68,18 +70,40 @@ void Slider::ChangeValues(int minvalue, int maxvalue, int value){
 	callOnValueChanged();
 }
 
-void Slider::ChangePosition(int x, int y){
-	bg_rect.x = x;
-	bg_rect.y = y + (marker_rect.h - bg_rect.h) / 2;
-	marker_rect.x = x + (bg_rect.w - marker_rect.w) * Values.Value / Values.Maximum;
+void Slider::ChangePosition(int x, int y, int Width, int Height){
+	marker_rect.w = marker_rect.h = Height;
+	marker_rect.x = x + (Width - Height) * Values.Value / Values.Maximum;
 	marker_rect.y = y;
-}
 
-void Slider::ChangeSize(int Width, int Height){
 	bg_rect.w = Width;
 	bg_rect.h = Height / 5;
+	bg_rect.x = x;
+	bg_rect.y = y + (Height - bg_rect.h) / 2;
 
-	marker_rect.w = marker_rect.h = Height;
+	switch (dAnchor) {
+		case top_left:
+			break;
+		case top_right:
+			bg_rect.x -= Width;
+			marker_rect.x -= Width;
+			break;
+		case bottom_left:
+			bg_rect.y -= Height;
+			marker_rect.y -= Height;
+			break;
+		case bottom_right:
+			bg_rect.x -= Width;
+			bg_rect.y -= Height;
+			marker_rect.x -= Width;
+			marker_rect.y -= Height;
+			break;
+		case center:
+			bg_rect.x -= Width / 2;
+			bg_rect.y -= Height / 2;
+			marker_rect.x -= Width / 2;
+			marker_rect.y -= Height / 2;
+			break;
+	}
 }
 
 void Slider::callOnValueChanged(){

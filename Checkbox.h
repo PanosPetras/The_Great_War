@@ -12,6 +12,7 @@ class Checkbox : public Drawable {
 public:
 	//Constructor
 	Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, std::function<void(bool)> f = NULL, int keybind = NULL);
+	Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, Anchor anchor, std::function<void(bool)> f = NULL, int keybind = NULL);
 
 	//Destructor
 	~Checkbox();

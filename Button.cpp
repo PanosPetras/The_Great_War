@@ -1,7 +1,13 @@
 #include "Button.h"
 #include <SDL_ttf.h>
 
-Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) {
+Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) : Button(r, x, y, Width, Height, image, top_left, f, keybind) {
+}
+
+Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, image, top_left, f, arg, keybind) {
+}
+
+Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f, int keybind) : InputDrawable(anchor) {
     //Saving the renderer's reference
     RendererReference = r;
 
@@ -24,12 +30,18 @@ Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string
     music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
-Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, image, NULL, keybind) {
+Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, image, anchor, NULL, keybind) {
     //Saving the bound function
     ChangeFunctionBinding(f, arg);
 }
 
-Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f, int keybind){
+Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f, int keybind) : Button(r, x, y, Width, Height, text, textSize, top_left, f, keybind) {
+}
+
+Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, text, textSize, top_left, f, arg, keybind) {
+}
+
+Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f, int keybind) : InputDrawable(anchor) {
     //Saving the renderer's reference
     RendererReference = r;
 
@@ -52,9 +64,15 @@ Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string
     music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
+Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, text, textSize, anchor) {
+    //Saving the bound function
+    ChangeFunctionBinding(f, arg);
+}
+
 Button::~Button() {
     //Free up the memory
     SDL_DestroyTexture(texture);
+
     if (text != nullptr) {
         SDL_DestroyTexture(text);
     }
@@ -162,6 +180,8 @@ void Button::ChangeText(std::string text, int textSize){
                         .w = (text_x > 0 ? textSur->w : int(draw_rect.w * 0.8)),
                         .h = textSur->h };
 
+    ChangePosition(draw_rect.x, draw_rect.y, draw_rect.w, draw_rect.h);
+
     //Free the surface
     SDL_FreeSurface(textSur);
 
@@ -171,10 +191,29 @@ void Button::ChangeText(std::string text, int textSize){
 
 void Button::ChangePosition(int x, int y, int Width, int Height) {
     //Saving the new button's coordinates
-    this->draw_rect.x = x;
-    this->draw_rect.y = y;
-    this->draw_rect.w = Width;
-    this->draw_rect.h = Height;
+    draw_rect.x = x;
+    draw_rect.y = y;
+    draw_rect.w = Width;
+    draw_rect.h = Height;
+
+    switch (dAnchor) {
+        case top_left:
+            break;
+        case top_right:
+            draw_rect.x -= Width;
+            break;
+        case bottom_left:
+            draw_rect.y -= Height;
+            break;
+        case bottom_right:
+            draw_rect.x -= Width;
+            draw_rect.y -= Height;
+            break;
+        case center:
+            draw_rect.x -= Width / 2;
+            draw_rect.y -= Height / 2;
+            break;
+    }
 }
 
 void Button::ChangeFunctionBinding(std::function<void()> f) {

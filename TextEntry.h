@@ -13,10 +13,10 @@ typedef struct SDL_Renderer SDL_Renderer;
 class TextEntry : public InputDrawable {
 public:
     //Constructor
-    TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText = "");
-    TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters);
-    TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, std::string hint = "");
-    TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, std::string hint, int maxCharacters);
+    TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters = 30);
+    TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, std::string hint = "", int maxCharacters = 30);
+    TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters = 30);
+    TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint = "", int maxCharacters = 30);
 
     //Destructor
     ~TextEntry();

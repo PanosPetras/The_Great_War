@@ -11,10 +11,15 @@
 
 class Button : public InputDrawable {
 public:
-    //Constructor
+    //Constructors
     Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f = NULL, int keybind = NULL);
     Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind = NULL);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f = NULL, int keybind = NULL);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = NULL);
     Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f = NULL, int keybind = NULL);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind = NULL);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f = NULL, int keybind = NULL);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = NULL);
 
     //Destructor
     ~Button();

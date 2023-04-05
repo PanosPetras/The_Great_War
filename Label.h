@@ -10,7 +10,8 @@
 class Label : public Drawable {
 public:
     //Constructor
-    Label(SDL_Renderer* r, std::string Text, int size = 32, int x = 0, int y = 0, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
+    Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
+    Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Anchor anchor, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
 
     //Destructor
     ~Label();

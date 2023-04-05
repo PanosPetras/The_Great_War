@@ -8,8 +8,8 @@
 
 class Image : public Drawable {
 public:
-	//Constructor
-	Image(SDL_Renderer* r, std::string img, int x, int y, int Width, int Height);
+	//Constructors
+	Image(SDL_Renderer* r, std::string img, int x, int y, int Width, int Height, Anchor anchor = top_left);
 
 	//Destructor
 	~Image();
