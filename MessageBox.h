@@ -9,7 +9,7 @@
 #include "Label.h"
 #include "Image.h"
 
-class MessageBox : InputDrawable {
+class MessageBox : public InputDrawable {
 public:
 	//Constructor
 	MessageBox(SDL_Renderer* r, std::string title, std::string message);

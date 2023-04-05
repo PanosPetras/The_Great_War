@@ -80,30 +80,8 @@ void Slider::ChangePosition(int x, int y, int Width, int Height){
 	bg_rect.x = x;
 	bg_rect.y = y + (Height - bg_rect.h) / 2;
 
-	switch (dAnchor) {
-		case top_left:
-			break;
-		case top_right:
-			bg_rect.x -= Width;
-			marker_rect.x -= Width;
-			break;
-		case bottom_left:
-			bg_rect.y -= Height;
-			marker_rect.y -= Height;
-			break;
-		case bottom_right:
-			bg_rect.x -= Width;
-			bg_rect.y -= Height;
-			marker_rect.x -= Width;
-			marker_rect.y -= Height;
-			break;
-		case center:
-			bg_rect.x -= Width / 2;
-			bg_rect.y -= Height / 2;
-			marker_rect.x -= Width / 2;
-			marker_rect.y -= Height / 2;
-			break;
-	}
+	ApplyAnchor(bg_rect, dAnchor);
+	ApplyAnchor(marker_rect, dAnchor);
 }
 
 void Slider::callOnValueChanged(){

@@ -56,6 +56,9 @@ protected:
     //Executed when the button is clicked
     void Click();
 
+    //Check if the mouse is within the limits of an SDL_Rect
+    bool CheckIfMouseInRect(const SDL_Rect rect, const SDL_MouseButtonEvent ev) const;
+
     //The visual state of the button
     bool bHovered;
 

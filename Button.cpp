@@ -93,11 +93,7 @@ void Button::pDraw() {
 
 void Button::HandleInput(const SDL_Event* ev) {
     //Detect if the mouse is hovered
-    if (ev->button.x >= this->draw_rect.x &&
-        ev->button.x <= (this->draw_rect.x + this->draw_rect.w) &&
-        ev->button.y >= this->draw_rect.y &&
-        ev->button.y <= (this->draw_rect.y + this->draw_rect.h)) {
-
+    if (CheckIfMouseInRect(draw_rect, ev->button)) {
         if (bHovered == false) {
             //If the button is hovered, change to the hovered button image
             SDL_SetTextureColorMod(texture, 170, 170, 170);
@@ -116,6 +112,7 @@ void Button::HandleInput(const SDL_Event* ev) {
         SDL_SetTextureColorMod(texture, 255, 255, 255);
         SDL_SetTextureColorMod(text, 255, 255, 255);
     }
+
     if (key) {
         if (ev->type == SDL_KEYDOWN && ev->key.keysym.sym == key) {
             Click();
@@ -129,6 +126,20 @@ void Button::Click(){
 
     //Execute the bound function, if it was assigned on the creation of the button
     CallBoundFunction();
+}
+
+bool Button::CheckIfMouseInRect(const SDL_Rect rect, const SDL_MouseButtonEvent ev) const {
+    if (ev.x >= rect.x) {
+        if (ev.x <= rect.x + rect.w) {
+            if (ev.y >= rect.y) {
+                if (ev.y <= rect.y + rect.h) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
 }
 
 void Button::ChangeImage(std::string image) {
@@ -180,8 +191,6 @@ void Button::ChangeText(std::string text, int textSize){
                         .w = (text_x > 0 ? textSur->w : int(draw_rect.w * 0.8)),
                         .h = textSur->h };
 
-    ChangePosition(draw_rect.x, draw_rect.y, draw_rect.w, draw_rect.h);
-
     //Free the surface
     SDL_FreeSurface(textSur);
 
@@ -191,35 +200,15 @@ void Button::ChangeText(std::string text, int textSize){
 
 void Button::ChangePosition(int x, int y, int Width, int Height) {
     //Saving the new button's coordinates
-    draw_rect.x = x;
-    draw_rect.y = y;
-    draw_rect.w = Width;
-    draw_rect.h = Height;
+    draw_rect = { .x = x, .y = y, .w = Width, .h = Height };
 
-    switch (dAnchor) {
-        case top_left:
-            break;
-        case top_right:
-            draw_rect.x -= Width;
-            break;
-        case bottom_left:
-            draw_rect.y -= Height;
-            break;
-        case bottom_right:
-            draw_rect.x -= Width;
-            draw_rect.y -= Height;
-            break;
-        case center:
-            draw_rect.x -= Width / 2;
-            draw_rect.y -= Height / 2;
-            break;
-    }
+    ApplyAnchor(draw_rect, dAnchor);
 }
 
 void Button::ChangeFunctionBinding(std::function<void()> f) {
     //saving the newly bound function
     funcWArg = NULL;
-    this->arg = NULL;
+    arg = NULL;
     func = f;
 }
 

@@ -35,29 +35,9 @@ void Image::ChangeImage(std::string img){
 
 void Image::ChangePosition(int x, int y, int Width, int Height){
     //Saving the image's new coordinates
-    draw_rect.x = x;
-    draw_rect.y = y;
-    draw_rect.w = Width;
-    draw_rect.h = Height;
+    draw_rect = { .x = x, .y = y, .w = Width, .h = Height };
 
-    switch (dAnchor) {
-    case top_left:
-        break;
-    case top_right:
-        draw_rect.x -= Width;
-        break;
-    case bottom_left:
-        draw_rect.y -= Height;
-        break;
-    case bottom_right:
-        draw_rect.x -= Width;
-        draw_rect.y -= Height;
-        break;
-    case center:
-        draw_rect.x -= Width / 2;
-        draw_rect.y -= Height / 2;
-        break;
-    }
+    ApplyAnchor(draw_rect, dAnchor);
 }
 
 void Image::Update(){

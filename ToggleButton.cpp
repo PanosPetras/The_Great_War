@@ -117,31 +117,11 @@ void ToggleButton::ChangeImage(std::string activeImage, std::string inactiveImag
     SDL_FreeSurface(img);
 }
 
-void ToggleButton::ChangePosition(int x, int y, int Height, int Width){
+void ToggleButton::ChangePosition(int x, int y, int Width, int Height){
     //Saving the new button's coordinates
-    this->draw_rect.x = x;
-    this->draw_rect.y = y;
-    this->draw_rect.w = Width;
-    this->draw_rect.h = Height;
+    draw_rect = { .x = x, .y = y, .w = Width, .h = Height };
 
-    switch (dAnchor) {
-    case top_left:
-        break;
-    case top_right:
-        draw_rect.x -= Width;
-        break;
-    case bottom_left:
-        draw_rect.y -= Height;
-        break;
-    case bottom_right:
-        draw_rect.x -= Width;
-        draw_rect.y -= Height;
-        break;
-    case center:
-        draw_rect.x -= Width / 2;
-        draw_rect.y -= Height / 2;
-        break;
-    }
+    ApplyAnchor(draw_rect, dAnchor);
 }
 
 void ToggleButton::ChangeFunctionBinding(std::function<void(bool)> f){

@@ -12,6 +12,8 @@ public:
     //Constructor
     Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
     Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Anchor anchor, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
+    Label(SDL_Renderer* r, std::string Text, int size, int x, int y, int xLim, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
+    Label(SDL_Renderer* r, std::string Text, int size, int x, int y, int xLim, Anchor anchor, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
 
     //Destructor
     ~Label();
@@ -30,6 +32,9 @@ public:
 
     //Change the label's position
     void ChangePosition(int x, int y);
+
+    //Change the label's x limit
+    void ChangeXLimit(int xLim);
 
     //Update the properties of the label once something is changed
     void UpdateLabel();
@@ -57,9 +62,12 @@ protected:
     SDL_Renderer* RendererReference;
 
     //The label's position
-    int Coords[2];
+    int x, y;
 
     //The label's font size
     int FontSize;
+
+    //The label's pixel limit in width before it enters a new line
+    int xLim;
 };
 #endif

@@ -4,6 +4,7 @@
 #define GLOBAL_FONT "Fonts/segoeui.ttf"
 
 typedef union SDL_Event SDL_Event;
+typedef struct SDL_Rect SDL_Rect;
 
 typedef enum Anchor {
 	top_left, top_right, bottom_left, bottom_right, center
@@ -29,5 +30,7 @@ public:
 
 	virtual void HandleInput(const SDL_Event*) = 0;
 };
+
+void ApplyAnchor(SDL_Rect &rect, Anchor anchor);
 
 #endif
