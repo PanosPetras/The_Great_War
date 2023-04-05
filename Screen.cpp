@@ -1,9 +1,7 @@
 #include "Screen.h"
 
-Screen::Screen(SDL_Renderer* r, int Width, int Height){
+Screen::Screen(SDL_Renderer* r){
 	this->renderer = r;
-	WindowSize[0] = Width;
-	WindowSize[1] = Height; 
 }
 
 Screen::~Screen(){

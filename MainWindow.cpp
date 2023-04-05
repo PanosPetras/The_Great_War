@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include "WindowInfo.h"
 
 void MainWindow::MainLoop() {
     while (!quit) {            
@@ -37,9 +38,7 @@ MainWindow::MainWindow() {
     //Mix_Init(0);
 
     //Get dimensions of the screen
-    int* w = &Width;
-    int* h = &Height;
-    SDL_GetWindowSize(window, w, h);
+    SDL_GetWindowSize(window, &WindowInfo::width, &WindowInfo::height);
 
     //Initializing the input array
     for (int i = 0; i < 322; i++) {
@@ -58,7 +57,7 @@ MainWindow::MainWindow() {
     //Creating a pointer to the active screen
     auto fp = std::bind(&MainWindow::Quit, this);
     auto fpl = std::bind(&MainWindow::ChangeScreen, this, std::placeholders::_1);
-    scr = new MainMenu(renderer, Width, Height, fp, fpl);
+    scr = new MainMenu(renderer, fp, fpl);
 }
 
 MainWindow::~MainWindow() {

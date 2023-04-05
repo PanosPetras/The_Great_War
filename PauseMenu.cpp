@@ -1,16 +1,17 @@
 #include "ScreenList.h"
+#include "WindowInfo.h"
 
-PauseMenu::PauseMenu(SDL_Renderer* r, int Width, int Height, std::function<void()> fp, std::function<void()> UnpauseF, std::function<void(Screen*)> fpl) : Screen(r, Width, Height) {
+PauseMenu::PauseMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void()> UnpauseF, std::function<void(Screen*)> fpl) : Screen(r) {
 	bHasBackground = false;
 
-	int fontSize = 32;
+	int fontSize = 32, Width = GetWindowWidth(), Height = GetWindowHeight();
 	auto change = std::bind(&PauseMenu::ReturnToMainMenu, this);
 
 	ImageArr[0] = new Image(renderer, "Backgrounds/Pause_Menu.png", int(Width * 0.25), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
-	ButtonArr[0] = new Button(r, int(Width * 0.36), int(Height * 0.35), int(Width * 0.08), int(Height * 0.06), "Back", fontSize, UnpauseF);
-	ButtonArr[1] = new Button(r, int(Width * 0.342), int(Height * 0.45), int(Width * 0.12), int(Height * 0.06), "Save Game", fontSize);
-	ButtonArr[2] = new Button(r, int(Width * 0.355), int(Height * 0.55), int(Width * 0.09), int(Height * 0.06), "Resign", fontSize, change);
-	ButtonArr[3] = new Button(r, int(Width * 0.36), int(Height * 0.65), int(Width * 0.08), int(Height * 0.06), "Quit", fontSize, fp);
+	ButtonArr[0] = new Button(r, int(Width * 0.34), int(Height * 0.35), int(Width * 0.12), int(Height * 0.06), "Back", fontSize, UnpauseF);
+	ButtonArr[1] = new Button(r, int(Width * 0.34), int(Height * 0.45), int(Width * 0.12), int(Height * 0.06), "Save Game", fontSize);
+	ButtonArr[2] = new Button(r, int(Width * 0.34), int(Height * 0.55), int(Width * 0.12), int(Height * 0.06), "Resign", fontSize, change);
+	ButtonArr[3] = new Button(r, int(Width * 0.34), int(Height * 0.65), int(Width * 0.12), int(Height * 0.06), "Quit", fontSize, fp);
 
 	ButtonArrtop = 4;
 	LabelArrtop = 0;
@@ -22,6 +23,6 @@ PauseMenu::PauseMenu(SDL_Renderer* r, int Width, int Height, std::function<void(
 }
 
 void PauseMenu::ReturnToMainMenu(){
-	MainMenu* MM = new MainMenu(renderer, WindowSize[0], WindowSize[1], QuitFunc, ChangeScreenFunc);
+	MainMenu* MM = new MainMenu(renderer, QuitFunc, ChangeScreenFunc);
 	ChangeScreenFunc(MM);
 }

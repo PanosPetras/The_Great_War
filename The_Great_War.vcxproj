@@ -33,6 +33,7 @@
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Market.cpp" />
     <ClCompile Include="MenuSettingsScreen.cpp" />
+    <ClCompile Include="MessageBox.cpp" />
     <ClCompile Include="OpenFactoryScreen.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="PlayerController.cpp" />
@@ -51,6 +52,7 @@
     <ClCompile Include="ToggleButton.cpp" />
     <ClCompile Include="TradeScreen.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="WindowInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
@@ -60,6 +62,7 @@
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Market.h" />
+    <ClInclude Include="MessageBox.h" />
     <ClInclude Include="Stockpile.h" />
     <ClInclude Include="SDL_ColorDetection.h" />
     <ClInclude Include="Image.h" />
@@ -75,6 +78,7 @@
     <ClInclude Include="TextEntry.h" />
     <ClInclude Include="ToggleButton.h" />
     <ClInclude Include="UI.h" />
+    <ClInclude Include="WindowInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="The_Great_War.rc" />

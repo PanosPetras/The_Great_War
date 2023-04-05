@@ -12,7 +12,7 @@
 class MainMenu : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    MainMenu(SDL_Renderer* r, int Width, int Height, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+    MainMenu(SDL_Renderer* r, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
 
     void ShowCredits();
     void ShowSettings();
@@ -22,7 +22,7 @@ public:
 class CreditScreen : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    CreditScreen(SDL_Renderer* r, int Width, int Height, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+    CreditScreen(SDL_Renderer* r, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
 
     std::function<void(Screen*)> ChangeScreenFunc;
     std::function<void()> QuitFunc;
@@ -32,7 +32,7 @@ public:
 class MenuSettingsScreen : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    MenuSettingsScreen(SDL_Renderer* r, int Width, int Height, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+    MenuSettingsScreen(SDL_Renderer* r, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
 
     std::function<void(Screen*)> ChangeScreenFunc;
     std::function<void()> QuitFunc;
@@ -46,7 +46,7 @@ public:
 class GameScreen : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    GameScreen(SDL_Renderer* r, int Width, int Height, const char* tag, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+    GameScreen(SDL_Renderer* r, const char* tag, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
     ~GameScreen();
 
     PlayerController* PC;
@@ -104,14 +104,14 @@ public:
 class PauseMenu : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    PauseMenu(SDL_Renderer* r, int Width, int Height, std::function<void()> fp = NULL, std::function<void()> UnpauseF = NULL, std::function<void(Screen*)> fpl = NULL);
+    PauseMenu(SDL_Renderer* r, std::function<void()> fp = NULL, std::function<void()> UnpauseF = NULL, std::function<void(Screen*)> fpl = NULL);
 
     void ReturnToMainMenu();
 };
 
 class CountrySelection : public Screen {
 public:
-    CountrySelection(SDL_Renderer* r, int Width, int Height, std::function<void()> UnpauseF = NULL, std::function<void(Screen*)> fpl = NULL);
+    CountrySelection(SDL_Renderer* r, std::function<void()> UnpauseF = NULL, std::function<void(Screen*)> fpl = NULL);
 
     bool mousepressed;
 
@@ -139,8 +139,8 @@ public:
 
 class DiplomacyScreen : public Screen {
 public:
-    DiplomacyScreen(SDL_Renderer* r, int Width, int Height, PlayerController* PC);
-    DiplomacyScreen(SDL_Renderer* r, int Width, int Height, int index, PlayerController* PC);
+    DiplomacyScreen(SDL_Renderer* r, PlayerController* PC);
+    DiplomacyScreen(SDL_Renderer* r, int index, PlayerController* PC);
 
     PlayerController* PCref;
 
@@ -159,13 +159,13 @@ private:
 
 class IndustryScreen : public Screen {
 public:
-    IndustryScreen(SDL_Renderer* r, int Width, int Height, int Stockpile[30]);
+    IndustryScreen(SDL_Renderer* r, int Stockpile[30]);
     void UpdateText(int Stockpile[29]);
 };
 
 class TradeScreen : public Screen {
 public:
-    TradeScreen(SDL_Renderer* r, int Width, int Height, Country* Pl);
+    TradeScreen(SDL_Renderer* r, Country* Pl);
     void Update();
 
 private:
@@ -174,7 +174,7 @@ private:
 
 class EconomyScreen : public Screen {
 public:
-    EconomyScreen(SDL_Renderer* r, int Width, int Height, Country* Pl);
+    EconomyScreen(SDL_Renderer* r, Country* Pl);
 
     void Update();
 
@@ -187,7 +187,7 @@ public:
 
 class OpenFactoryScreen : public Screen {
 public:
-    OpenFactoryScreen(SDL_Renderer* r, int Width, int Height, int id, PlayerController* PC, std::function<void()> fp);
+    OpenFactoryScreen(SDL_Renderer* r, int id, PlayerController* PC, std::function<void()> fp);
 
     void FactoryTypeLumber();
     void FactoryTypeGlass();
@@ -231,7 +231,7 @@ public:
 
     int Id;
 
-    StatePreview(SDL_Renderer* r, int Width, int Height, int id, std::string StateName, std::string Controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc);
+    StatePreview(SDL_Renderer* r, int id, std::string StateName, std::string Controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc);
 
     ~StatePreview();
 

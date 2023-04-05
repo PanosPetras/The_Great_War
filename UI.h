@@ -16,7 +16,7 @@ class PlayerController;
 class UI {
 public:
     //Constructor
-    UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController* PC, std::function<void(Screen*, std::string)> fpl = NULL);
+    UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<void(Screen*, std::string)> fpl = NULL);
 
     //Destructor
     ~UI();

@@ -133,6 +133,12 @@
     <ClCompile Include="Diplomacy.cpp">
       <Filter>Game_Classes\Source_Files</Filter>
     </ClCompile>
+    <ClCompile Include="MessageBox.cpp">
+      <Filter>UI_Elements\Source_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowInfo.cpp">
+      <Filter>Screen_Classes\Source_Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">
@@ -198,6 +204,12 @@
     </ClInclude>
     <ClInclude Include="Diplomacy.h">
       <Filter>Game_Classes\Header_Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowInfo.h">
+      <Filter>Screen_Classes\Header_Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageBox.h">
+      <Filter>UI_Elements\Header_Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

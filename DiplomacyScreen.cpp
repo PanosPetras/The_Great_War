@@ -1,9 +1,11 @@
 #include "ScreenList.h"
-#include <iostream>
+#include "WindowInfo.h"
 
-DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, int Width, int Height, PlayerController* PC) : Screen(r, Width, Height){
+DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, PlayerController* PC) : Screen(r){
 	bHasBackground = true;
 	SetupBg("Backgrounds/Industry.png");
+
+	int fontSize = 26, Width = GetWindowWidth(), Height = GetWindowHeight();
 
 	ImageArr[0] = new Image(r, "Backgrounds/old_paper.png", int(Width * 0.4), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
 
@@ -17,7 +19,6 @@ DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, int Width, int Height, PlayerC
 
 	ButtonArrtop = CreateCountryButtons(PC);
 
-	int fontSize = 26;
 	ButtonArr[ButtonArrtop++] = new Button(r, int(Width * 0.445), int(Height * 0.5), int(Width * 0.11), int(Height * 0.04), "Declare War", fontSize);
 	auto change = std::bind(&DiplomacyScreen::ImproveRelations, this);
 	ButtonArr[ButtonArrtop++] = new Button(r, int(Width * 0.43), int(Height * 0.58), int(Width * 0.14), int(Height * 0.04), "Improve Relations", fontSize, change);
@@ -36,16 +37,16 @@ DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, int Width, int Height, PlayerC
 	selectedCountryIndex = PC->player_index;
 }
 
-DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, int Width, int Height, int index, PlayerController* PC) : DiplomacyScreen(r, Width, Height, PC){
+DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, int index, PlayerController* PC) : DiplomacyScreen(r, PC){
 	SelectCountry((void*)((Uint64)index));
 }
 
 int DiplomacyScreen::CreateCountryButtons(PlayerController* PC) {
-	int i = 0, flagsPerLine = 12;
+	int i = 0, flagsPerLine = 12, Width = GetWindowWidth(), Height = GetWindowHeight();
 
 	for (auto country : PC->CountriesArr) {
 		std::function<void(void*)> func = std::bind(&DiplomacyScreen::SelectCountry, this, std::placeholders::_1);
-		ButtonArr[i] = new Button(renderer, int(WindowSize[0] * (0.1 + (i / flagsPerLine) * 0.05)), int(WindowSize[1] * (0.17 + (i % flagsPerLine) * 0.06)), 60, 40, ("Flags/" + country->GetTag()).c_str(), func, (void*)((Uint64)i));
+		ButtonArr[i] = new Button(renderer, int(Width * (0.1 + (i / flagsPerLine) * 0.05)), int(Height * (0.17 + (i % flagsPerLine) * 0.06)), 60, 40, ("Flags/" + country->GetTag()).c_str(), func, (void*)((Uint64)i));
 		i++;
 	}
 
@@ -106,9 +107,9 @@ void DiplomacyScreen::UpdateAllianceState() {
 
 	if (rel != PCref->diplo.relations->end()) {
 		if (rel->second.GetIfAllied()) {
-			LabelArr[2]->ChangeText("Break Alliance");
+			((Button*)ButtonArr[ButtonArrtop - 2])->ChangeText("Break Alliance", 26);
 		} else {
-			LabelArr[2]->ChangeText("Form Alliance");
+			((Button*)ButtonArr[ButtonArrtop - 2])->ChangeText("Form Alliance", 26);
 		}
 	}
 }

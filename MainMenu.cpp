@@ -1,10 +1,11 @@
 #include "ScreenList.h"
+#include "WindowInfo.h"
 
-MainMenu::MainMenu(SDL_Renderer* r, int Width, int Height, std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r, Width, Height) {
+MainMenu::MainMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r) {
 	bHasBackground = true;
 	SetupBg("Backgrounds/OldMenu.png");
 
-	int fontSize = 32;
+	int fontSize = 32, Width = GetWindowWidth(), Height = GetWindowHeight();
 	auto change = std::bind(&MainMenu::StartGame, this);
 
 	ButtonArr[0] = new Button(r, int(Width * 0.22), int(Height * 0.2), int(Width * 0.12), int(Height * 0.06), "New Game", fontSize, change);
@@ -12,12 +13,12 @@ MainMenu::MainMenu(SDL_Renderer* r, int Width, int Height, std::function<void()>
 
 	change = std::bind(&MainMenu::ShowSettings, this);
 
-	ButtonArr[2] = new Button(r, int(Width * 0.23), int(Height * 0.4), int(Width * 0.10), int(Height * 0.06), "Settings", fontSize, change);
+	ButtonArr[2] = new Button(r, int(Width * 0.22), int(Height * 0.4), int(Width * 0.12), int(Height * 0.06), "Settings", fontSize, change);
 
 	change = std::bind(&MainMenu::ShowCredits, this);
 
-	ButtonArr[3] = new Button(r, int(Width * 0.235), int(Height * 0.5), int(Width * 0.09), int(Height * 0.06), "Credits", fontSize, change);
-	ButtonArr[4] = new Button(r, int(Width * 0.24), int(Height * 0.6), int(Width * 0.08), int(Height * 0.06), "Quit", fontSize, fp);
+	ButtonArr[3] = new Button(r, int(Width * 0.22), int(Height * 0.5), int(Width * 0.12), int(Height * 0.06), "Credits", fontSize, change);
+	ButtonArr[4] = new Button(r, int(Width * 0.22), int(Height * 0.6), int(Width * 0.12), int(Height * 0.06), "Quit", fontSize, fp);
 
 	ButtonArrtop = 5;
 	LabelArrtop = 0;
@@ -28,16 +29,16 @@ MainMenu::MainMenu(SDL_Renderer* r, int Width, int Height, std::function<void()>
 }
 
 void MainMenu::ShowCredits(){
-	CreditScreen* CS = new CreditScreen(renderer, WindowSize[0], WindowSize[1], QuitFunc, ChangeScreenFunc);
+	CreditScreen* CS = new CreditScreen(renderer, QuitFunc, ChangeScreenFunc);
 	ChangeScreenFunc(CS);
 }
 
 void MainMenu::ShowSettings() {
-	MenuSettingsScreen* CS = new MenuSettingsScreen(renderer, WindowSize[0], WindowSize[1], QuitFunc, ChangeScreenFunc);
+	MenuSettingsScreen* CS = new MenuSettingsScreen(renderer, QuitFunc, ChangeScreenFunc);
 	ChangeScreenFunc(CS);
 }
 
 void MainMenu::StartGame() {
-	CountrySelection* GS = new CountrySelection(renderer, WindowSize[0], WindowSize[1], QuitFunc, ChangeScreenFunc);
+	CountrySelection* GS = new CountrySelection(renderer, QuitFunc, ChangeScreenFunc);
 	ChangeScreenFunc(GS);
 }

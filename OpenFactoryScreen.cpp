@@ -1,8 +1,12 @@
 #include "ScreenList.h"
+#include "WindowInfo.h"
 
 
-OpenFactoryScreen::OpenFactoryScreen(SDL_Renderer* r, int Width, int Height, int id, PlayerController* PC, std::function<void()> fp = NULL) : Screen(r, Width, Height){
+OpenFactoryScreen::OpenFactoryScreen(SDL_Renderer* r, int id, PlayerController* PC, std::function<void()> fp = NULL) : Screen(r){
 	bHasBackground = false;
+
+	int Width = GetWindowWidth(), Height = GetWindowHeight();
+
 	ImageArr[0] = new Image(renderer, "Backgrounds/factory1.png", int(Width * 0.25), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
 	LabelArr[0] = new Label(renderer, "Open Factory", 32, int(Width * 0.45), int(Height * 0.22), 0, 0, 0);
 	std::string lbl1txt = "Current Funds: " + std::to_string(PC->CountriesArr.at(PC->player_index)->Stock.Money);
@@ -58,6 +62,7 @@ OpenFactoryScreen::OpenFactoryScreen(SDL_Renderer* r, int Width, int Height, int
 	ButtonArr[22] = new Button(r, int(Width * 0.3), int(Height * 0.6), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/airship", conf);
 	conf = std::bind(&OpenFactoryScreen::FactoryTypePlane, this);
 	ButtonArr[23] = new Button(r, int(Width * 0.35), int(Height * 0.6), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/plane", conf);
+
 	ButtonArrtop = 24;
 	LabelArrtop = 3;
 	ImageArrtop = 1;

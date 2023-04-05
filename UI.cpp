@@ -2,13 +2,13 @@
 #include "Screen.h"
 #include "PlayerController.h"
 #include "ToggleButton.h"
+#include "WindowInfo.h"
 
-UI::UI(SDL_Renderer* r, int Width, int Height, const char* tag, PlayerController* PC, std::function<void(Screen*, std::string)> fpl){
+UI::UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<void(Screen*, std::string)> fpl) {
 	renderer = r;
-	WindowSize[0] = Width;
-	WindowSize[1] = Height;
 
 	std::string str = tag;
+	int Width = GetWindowWidth(), Height = GetWindowHeight();
 
 	//The country management tabs
 	std::string flg = "Flags/" + str;
@@ -119,7 +119,7 @@ void UI::PauseDate(bool _){
 }
 
 void UI::OpenDiplomacyScreen() {
-	Screen* NS = new DiplomacyScreen(renderer, WindowSize[0], WindowSize[1], PCref);
+	Screen* NS = new DiplomacyScreen(renderer, PCref);
 	ChangeScreenFunc(NS, "DiplomacyScreen");
 }
 
@@ -154,16 +154,16 @@ void UI::OpenIndustryScreen(){
 					PCref->CountriesArr.at(PCref->player_index)->Stock.Paper,
 					PCref->CountriesArr.at(PCref->player_index)->Stock.Liquor,
 					PCref->CountriesArr.at(PCref->player_index)->Stock.Airship};
-	Screen* NS = new IndustryScreen(renderer, WindowSize[0], WindowSize[1], Res);
+	Screen* NS = new IndustryScreen(renderer, Res);
 	ChangeScreenFunc(NS, "IndustryScreen");
 }
 
 void UI::OpenEconomyScreen() {
-	Screen* NS = new EconomyScreen(renderer, WindowSize[0], WindowSize[1], PCref->CountriesArr.at(PCref->player_index));
+	Screen* NS = new EconomyScreen(renderer, PCref->CountriesArr.at(PCref->player_index));
 	ChangeScreenFunc(NS, "EconomyScreen");
 }
 
 void UI::OpenTradeScreen() {
-	Screen* NS = new TradeScreen(renderer, WindowSize[0], WindowSize[1], PCref->CountriesArr.at(PCref->player_index));
+	Screen* NS = new TradeScreen(renderer, PCref->CountriesArr.at(PCref->player_index));
 	ChangeScreenFunc(NS, "TradeScreen");
 }

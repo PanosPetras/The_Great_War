@@ -1,7 +1,8 @@
 #include "ScreenList.h"
 #include "SDL_ColorDetection.h"
+#include "WindowInfo.h"
 
-GameScreen::GameScreen(SDL_Renderer* r, int Width, int Height, const char* tag,  std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r, Width, Height) {
+GameScreen::GameScreen(SDL_Renderer* r, const char* tag,  std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r) {
 	bHasBackground = true;
 	ButtonArrtop = 0;
 	LabelArrtop = 0;
@@ -22,7 +23,7 @@ GameScreen::GameScreen(SDL_Renderer* r, int Width, int Height, const char* tag, 
 
 	PC = new PlayerController(renderer, tag);
 	auto change = std::bind(&GameScreen::ChangeActiveScreen, this, std::placeholders::_1, std::placeholders::_2);
-	overlay = new UI(r, Width, Height, tag, PC, change);
+	overlay = new UI(r, tag, PC, change);
 
 	StateViewingScreen = nullptr;
 	bHasStatePreview = false;
@@ -68,7 +69,7 @@ void GameScreen::Pause() {
 		}
 		else {
 			auto unpause = std::bind(&GameScreen::Pause, this);
-			PM = new PauseMenu(renderer, WindowSize[0], WindowSize[1], QuitFunc, unpause, ChangeScreenFunc);
+			PM = new PauseMenu(renderer, QuitFunc, unpause, ChangeScreenFunc);
 			bIsPaused = true;
 			if (PC->Date.bIsPaused == false) {
 				overlay->PauseDate(true);
@@ -178,7 +179,7 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 	if (ev->type == SDL_MOUSEBUTTONDOWN && ev->button.button == SDL_BUTTON_LEFT) {
 		if (bHasActiveScreen == false &&
 			flag == false &&
-			ev->button.y > WindowSize[1] * 0.07 &&
+			ev->button.y > GetWindowHeight() * 0.07 &&
 			bIsPaused == false && bHasStatePreview == false) {
 
 			int x = Cam_Width + int(ev->button.x / factor) - 5384;
@@ -205,12 +206,12 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 
 				//Create the StatePreview screen
 				if (bHasStatePreview == false) {
-					StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, int(state->State_Population), fcs, close);
+					StateViewingScreen = new StatePreview(renderer, state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, int(state->State_Population), fcs, close);
 					bHasStatePreview = true;
 				}
 				else {
 					delete StateViewingScreen;
-					StateViewingScreen = new StatePreview(renderer, WindowSize[0], WindowSize[1], state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, int(state->State_Population), fcs, close);
+					StateViewingScreen = new StatePreview(renderer, state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, int(state->State_Population), fcs, close);
 				}
 			}
 
@@ -266,7 +267,7 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 		SDL_GetRelativeMouseState(&x, &y);
 
 		//Moves the camera upwards
-		int lim1 = int((int(ImgSize[1] * factor) - WindowSize[1]) / factor);
+		int lim1 = int((int(ImgSize[1] * factor) - GetWindowHeight()) / factor);
 
 		if (mousepressed) {
 			if (y > 0 && Cam_Height > 0) {
@@ -292,7 +293,7 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 			}
 			//Moves the camera to the right
 			else if (x < 0 && Cam_Width) {
-				lim1 = int(11000 - WindowSize[0] / 2 / factor);
+				lim1 = int(11000 - GetWindowWidth() / 2 / factor);
 				
 				Cam_Width += int((MouseSensitivity * x * -1) / factor);
 				if (Cam_Width > lim1) {
@@ -304,32 +305,32 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 		//Change the screen's magnification, albeit the zoom factor
 		if (ev->type == SDL_MOUSEWHEEL) {
 			//Zoom in
-			if (ev->wheel.y > 0 && factor < WindowSize[0] / 480.0) {
+			if (ev->wheel.y > 0 && factor < GetWindowWidth() / 480.0) {
 				factor += ZoomingSpeed * factor;
-				Cam_Width += int(WindowSize[0] / factor * ZoomingSpeed / 2);
-				Cam_Height += int(WindowSize[1] / factor * ZoomingSpeed / 2);
+				Cam_Width += int(GetWindowWidth() / factor * ZoomingSpeed / 2);
+				Cam_Height += int(GetWindowHeight() / factor * ZoomingSpeed / 2);
 			}
 			//Zoom out
-			else if (factor > WindowSize[0] / 3840.0 && ev->wheel.y < 0) {
+			else if (factor > GetWindowWidth() / 3840.0 && ev->wheel.y < 0) {
 				factor -= ZoomingSpeed * factor;
 
 				//Make sure we are not off the limits
-				if (factor < WindowSize[0] / 3840.0) {
-					factor = float(WindowSize[0] / 3840.0);
+				if (factor < GetWindowWidth() / 3840.0) {
+					factor = float(GetWindowWidth() / 3840.0);
 				}
 
-				Cam_Width -= int(WindowSize[0] / factor * ZoomingSpeed / 2);
-				Cam_Height -= int(WindowSize[1] / factor * ZoomingSpeed / 2);
+				Cam_Width -= int(GetWindowWidth() / factor * ZoomingSpeed / 2);
+				Cam_Height -= int(GetWindowHeight() / factor * ZoomingSpeed / 2);
 
 				/*If the zoomed out image extends out of the rendered image's bounds,
 				then we move the camera towards the center of the rendered image*/
-				int lim = int((trunc(ImgSize[1] * factor) - WindowSize[1]) / factor);
+				int lim = int((trunc(ImgSize[1] * factor) - GetWindowHeight()) / factor);
 				if (Cam_Height < 0) {
 					Cam_Height = 0;
 				} else if (Cam_Height > lim) {
 					Cam_Height = lim;
 				}
-				lim = int((trunc(ImgSize[0] * factor) - WindowSize[0]) / factor);
+				lim = int((trunc(ImgSize[0] * factor) - GetWindowWidth()) / factor);
 				if (Cam_Width < 0) {
 					Cam_Width = 0;
 				} else if (Cam_Width > lim) {

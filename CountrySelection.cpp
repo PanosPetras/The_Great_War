@@ -1,9 +1,13 @@
 #include "ScreenList.h"
+#include "WindowInfo.h"
 
-CountrySelection::CountrySelection(SDL_Renderer* r, int Width, int Height, std::function<void()> UnpauseF, std::function<void(Screen*)> fpl) : Screen(r, Width, Height) {
+CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> UnpauseF, std::function<void(Screen*)> fpl) : Screen(r) {
 	bHasBackground = true;
 	SetupBg("Backgrounds/CountrySelection.png");
+
+	int fontSize = 32, Width = GetWindowWidth(), Height = GetWindowHeight();
 	auto change = std::bind(&CountrySelection::StartGame, this);
+
 	ButtonArr[0] = new Button(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", 32, change, SDLK_KP_ENTER);
 	change = std::bind(&CountrySelection::Back, this);
 	ButtonArr[1] = new Button(r, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", 32, change, SDLK_ESCAPE);
@@ -81,52 +85,52 @@ CountrySelection::CountrySelection(SDL_Renderer* r, int Width, int Height, std::
 }
 
 void CountrySelection::Back(){
-	MainMenu* MM = new MainMenu(renderer, WindowSize[0], WindowSize[1], QuitFunc, ChangeScreenFunc);
+	MainMenu* MM = new MainMenu(renderer, QuitFunc, ChangeScreenFunc);
 	ChangeScreenFunc(MM);
 }
 
 void CountrySelection::SelectGER() {
 	CountryIndex = 0;
-	ChangeArrow(int(WindowSize[0] * 0.262), int(WindowSize[1] * 0.202), 1);
+	ChangeArrow(int(GetWindowWidth() * 0.262), int(GetWindowHeight() * 0.202), 1);
 }
 
 void CountrySelection::SelectENG() {
 	CountryIndex = 2;
-	ChangeArrow(int(WindowSize[0] * 0.262), int(WindowSize[1] * 0.402), 1);
+	ChangeArrow(int(GetWindowWidth() * 0.262), int(GetWindowHeight() * 0.402), 1);
 }
 
 void CountrySelection::SelectFRA() {
 	CountryIndex = 1;
-	ChangeArrow(int(WindowSize[0] * 0.262), int(WindowSize[1] * 0.302), 1);
+	ChangeArrow(int(GetWindowWidth() * 0.262), int(GetWindowHeight() * 0.302), 1);
 }
 
 void CountrySelection::SelectKUK() {
 	CountryIndex = 3;
-	ChangeArrow(int(WindowSize[0] * 0.262), int(WindowSize[1] * 0.502), 1);
+	ChangeArrow(int(GetWindowWidth() * 0.262), int(GetWindowHeight() * 0.502), 1);
 }
 
 void CountrySelection::SelectITA() {
 	CountryIndex = 4;
-	ChangeArrow(int(WindowSize[0] * 0.7), int(WindowSize[1] * 0.302), 2);
+	ChangeArrow(int(GetWindowWidth() * 0.7), int(GetWindowHeight() * 0.302), 2);
 }
 
 void CountrySelection::SelectRUS() {
 	CountryIndex = 5;
-	ChangeArrow(int(WindowSize[0] * 0.7), int(WindowSize[1] * 0.402), 2);
+	ChangeArrow(int(GetWindowWidth() * 0.7), int(GetWindowHeight() * 0.402), 2);
 }
 
 void CountrySelection::SelectOTT() {
 	CountryIndex = 6;
-	ChangeArrow(int(WindowSize[0] * 0.7), int(WindowSize[1] * 0.502), 2);
+	ChangeArrow(int(GetWindowWidth() * 0.7), int(GetWindowHeight() * 0.502), 2);
 }
 
 void CountrySelection::SelectUSA() {
 	CountryIndex = 7;
-	ChangeArrow(int(WindowSize[0] * 0.7), int(WindowSize[1] * 0.202), 2);
+	ChangeArrow(int(GetWindowWidth() * 0.7), int(GetWindowHeight() * 0.202), 2);
 }
 
 void CountrySelection::ChangeArrow(int x, int y, int img) {
-	ImageArr[10]->ChangePosition(x, y, int(64 * WindowSize[0] / 1920), int(64 * WindowSize[1] / 1080));
+	ImageArr[10]->ChangePosition(x, y, int(64 * GetWindowWidth() / 1920), int(64 * GetWindowHeight() / 1080));
 	if (img == 1) {
 		ImageArr[10]->ChangeImage("Icons/right.png");
 	} else if (img == 2) {
@@ -136,7 +140,7 @@ void CountrySelection::ChangeArrow(int x, int y, int img) {
 
 void CountrySelection::StartGame() {
 	if (CountryIndex != -1) {
-		GameScreen* GS = new GameScreen(renderer, WindowSize[0], WindowSize[1], tags[CountryIndex], QuitFunc, ChangeScreenFunc);
+		GameScreen* GS = new GameScreen(renderer, tags[CountryIndex], QuitFunc, ChangeScreenFunc);
 		ChangeScreenFunc(GS);
 	}
 }

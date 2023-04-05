@@ -1,9 +1,12 @@
 #include "ScreenList.h"
+#include "WindowInfo.h"
 
-IndustryScreen::IndustryScreen(SDL_Renderer* r, int Width, int Height, int Stockpile[30]) : Screen(r, Width, Height) {
+IndustryScreen::IndustryScreen(SDL_Renderer* r, int Stockpile[30]) : Screen(r) {
 	bHasBackground = true;
 	SetupBg("Backgrounds/Industry1.png");
-	ButtonArrtop = 0;
+
+	int Width = GetWindowWidth(), Height = GetWindowHeight();
+
 	LabelArr[0] = new Label(r, std::to_string(Stockpile[0]), 32, int(Width * 0.24), int(Height * 0.165));
 	LabelArr[1] = new Label(r, std::to_string(Stockpile[5]), 32, int(Width * 0.365), int(Height * 0.165));
 	LabelArr[2] = new Label(r, std::to_string(Stockpile[2]), 32, int(Width * 0.49), int(Height * 0.165));
@@ -34,6 +37,8 @@ IndustryScreen::IndustryScreen(SDL_Renderer* r, int Width, int Height, int Stock
 	LabelArr[27] = new Label(r, std::to_string(Stockpile[18]), 32, int(Width * 0.74), int(Height * 0.765));
 	LabelArr[28] = new Label(r, std::to_string(Stockpile[14]), 32, int(Width * 0.49), int(Height * 0.86));
 	LabelArr[29] = new Label(r, std::to_string(Stockpile[29]), 32, int(Width * 0.365), int(Height * 0.86));
+
+	ButtonArrtop = 0;
 	LabelArrtop = 30;
 	ImageArrtop = 0;
 	SliderArrtop = 0;

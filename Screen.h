@@ -14,7 +14,7 @@
 class Screen{
 public:
 	//Constructor
-	Screen(SDL_Renderer* r, int Width, int Height);
+	Screen(SDL_Renderer* r);
 
 	//Destructor
 	virtual ~Screen();
@@ -45,9 +45,6 @@ public:
 
 	//This is the count of the Labels being displayed
 	int SliderArrtop;
-
-	//Stores the main window's dimensions
-	int WindowSize[2];
 	
 	bool bHasBackground;
 
