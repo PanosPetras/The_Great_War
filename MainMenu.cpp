@@ -21,7 +21,7 @@ MainMenu::MainMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void
 	InputDrawableArr[3] = new Button(r, int(Width * 0.22), int(Height * 0.5), int(Width * 0.12), int(Height * 0.06), "Credits", fontSize, change);
 	InputDrawableArr[4] = new Button(r, int(Width * 0.22), int(Height * 0.6), int(Width * 0.12), int(Height * 0.06), "Quit", fontSize, fp);
 
-	InputDrawableArrtop = 6;
+	InputDrawableArrtop = 5;
 	LabelArrtop = 0;
 	ImageArrtop = 0;
 	ChangeScreenFunc = fpl;

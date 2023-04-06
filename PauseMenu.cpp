@@ -1,5 +1,6 @@
 #include "ScreenList.h"
 #include "WindowInfo.h"
+#include "Button.h"
 
 PauseMenu::PauseMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void()> UnpauseF, std::function<void(Screen*)> fpl) : Screen(r) {
 	bHasBackground = false;

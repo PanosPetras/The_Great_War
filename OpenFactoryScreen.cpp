@@ -1,5 +1,6 @@
 #include "ScreenList.h"
 #include "WindowInfo.h"
+#include "Button.h"
 
 
 OpenFactoryScreen::OpenFactoryScreen(SDL_Renderer* r, int id, PlayerController* PC, std::function<void()> fp = NULL) : Screen(r){

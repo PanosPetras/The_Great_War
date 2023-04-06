@@ -6,10 +6,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
-#include "Button.h"
+#include <functional>
 #include "Label.h"
 #include "Image.h"
-#include "Slider.h"
 
 class Screen{
 public:
@@ -19,6 +18,13 @@ public:
 	//Destructor
 	virtual ~Screen();
 
+	//Renders all of the screen's components
+	virtual void Render();
+
+	//Handles input events
+	virtual void Handle_Input(SDL_Event* ev);
+
+protected:
 	//This is a reference to the main window's renderer
 	SDL_Renderer* renderer;
 
@@ -44,12 +50,6 @@ public:
 
 	//Sets the screen's background
 	virtual void RenderBackground();
-
-	//Renders all of the screen's components
-	virtual void Render();
-	
-	//Handles input events
-	virtual void Handle_Input(SDL_Event* ev);
 	
 	void SetupBg(const char* bg);
 

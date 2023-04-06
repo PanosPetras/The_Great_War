@@ -1,5 +1,6 @@
 #include "ScreenList.h"
 #include "WindowInfo.h"
+#include "Button.h"
 
 DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, PlayerController* PC) : DiplomacyScreen(r, PC, PC->player_tag) {
 }
