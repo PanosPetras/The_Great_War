@@ -156,6 +156,8 @@ private:
     void UpdateRelationValue();
     void UpdateAllianceState();
 
+    void ImposeEmbargo();
+
     int selectedCountryIndex;
 };
 

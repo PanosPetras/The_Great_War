@@ -196,6 +196,8 @@ void Button::ChangeText(std::string text, int textSize){
 
     //Delete the font
     TTF_CloseFont(font);
+
+    bHovered = false;
 }
 
 void Button::ChangePosition(int x, int y, int Width, int Height) {

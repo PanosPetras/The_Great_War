@@ -4,6 +4,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <set>
 #include <unordered_map>
 #include <set>
 #include "Country.h"
@@ -40,10 +41,6 @@ struct War {
     int Score;
 };
 
-struct Embargo {
-    Country* Instigator;
-};
-
 struct Relations {
 public:
     Relations(int relations, bool allied = false);
@@ -56,8 +53,13 @@ public:
     void BreakAlliance();
     bool GetIfAllied() const;
 
+    void ImposeEmbargo(std::string Instigator);
+    void LiftEmbargo(std::string Instigator);
+    bool GetIfEmbargoExists();
+    bool GetIfHasEmbargo(std::string Instigator);
+
 private:
-    std::vector<Embargo> Embargoes;
+    std::set<std::string> embargoes;
 
     int relationsValue;
     bool allied;

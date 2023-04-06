@@ -74,6 +74,26 @@ bool Relations::GetIfAllied() const {
 	return allied;
 }
 
+void Relations::ImposeEmbargo(std::string Instigator) {
+	embargoes.insert(Instigator);
+}
+
+void Relations::LiftEmbargo(std::string Instigator) {
+	embargoes.erase(Instigator);
+}
+
+bool Relations::GetIfEmbargoExists() {
+	return embargoes.size() != 0;
+}
+
+bool Relations::GetIfHasEmbargo(std::string Instigator) {
+	if (!GetIfEmbargoExists()) {
+		return false;
+	}
+
+	return embargoes.find(Instigator) != embargoes.end();
+}
+
 Diplomacy::Diplomacy() {
 	relations = new std::unordered_map<CountryPair, Relations>();
 }
