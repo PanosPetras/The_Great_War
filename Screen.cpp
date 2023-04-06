@@ -54,11 +54,19 @@ void Screen::Render(){
 	for (int x = 0; x < LabelArrtop; x++) {
 		LabelArr[x]->Draw();
 	}
+
+	for (auto msgb : messageBoxes) {
+		msgb->Draw();
+	}
 }
 
 void Screen::Handle_Input(SDL_Event* ev){
 	for (int x = 0; x < InputDrawableArrtop; x++) {
 		InputDrawableArr[x]->HandleInput(ev);
+	}
+
+	for (auto msgb : messageBoxes) {
+		msgb->HandleInput(ev);
 	}
 }
 
@@ -70,4 +78,9 @@ void Screen::SetupBg(const char* bg) {
 
 void Screen::DeleteMessageBox(void* p) {
 	MessageBox* msgb = (MessageBox*)p;
+
+	auto res = remove(messageBoxes.begin(), messageBoxes.end(), msgb);
+	messageBoxes.erase(res, messageBoxes.end());
+
+	delete msgb;
 }

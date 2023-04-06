@@ -4,9 +4,11 @@
 #pragma once
 #include <SDL.h>
 #include <string>
-#include "ToggleButton.h"
-#include "Label.h"
 #include <functional>
+#include "Drawable.h"
+
+class Label;
+class ToggleButton;
 
 class Checkbox : public InputDrawable {
 public:

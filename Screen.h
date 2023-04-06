@@ -28,6 +28,8 @@ public:
 	//Handles input events
 	virtual void Handle_Input(SDL_Event* ev);
 
+	void DeleteMessageBox(void* p);
+
 protected:
 	//This is a reference to the main window's renderer
 	SDL_Renderer* renderer;
@@ -54,17 +56,15 @@ protected:
 	
 	bool bHasBackground;
 
-	//Sets the screen's background
-	virtual void RenderBackground();
-	
-	void SetupBg(const char* bg);
-
-	void DeleteMessageBox(void* p);
-
 	//Stores the image's texture
 	SDL_Texture* texture;
 
 	std::function<void(Screen*)> ChangeScreenFunc;
 	std::function<void()> QuitFunc;
+
+	//Sets the screen's background
+	virtual void RenderBackground();
+	
+	void SetupBg(const char* bg);
 };
 #endif

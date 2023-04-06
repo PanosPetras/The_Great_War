@@ -5,8 +5,9 @@
 #include <string>
 #include <functional>
 #include "Drawable.h"
-#include "Image.h"
-#include "Label.h"
+
+class Image;
+class Label;
 
 typedef struct SDL_Renderer SDL_Renderer;
 

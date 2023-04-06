@@ -4,15 +4,17 @@
 #pragma once
 #include <SDL.h>
 #include <string>
+#include <functional>
 #include "Drawable.h"
-#include "Button.h"
-#include "Label.h"
-#include "Image.h"
+
+class Image;
+class Label;
+class Button;
 
 class MessageBox : public InputDrawable {
 public:
 	//Constructor
-	MessageBox(SDL_Renderer* r, std::string title, std::string message, std::function<void()> f = NULL);
+	MessageBox(SDL_Renderer* r, std::string title, std::string message, std::function<void(void*)> f = NULL);
 
 	//Destructor
 	~MessageBox();

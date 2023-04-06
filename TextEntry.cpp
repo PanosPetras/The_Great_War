@@ -1,5 +1,7 @@
 #include <SDL.h>
 #include "TextEntry.h"
+#include "Image.h"
+#include "Label.h"
 
 TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters) : TextEntry(r, x, y, Width, Height, top_left, defaultText, maxCharacters) {
 }
