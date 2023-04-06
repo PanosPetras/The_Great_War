@@ -1,6 +1,7 @@
 #include "ScreenList.h"
 #include "WindowInfo.h"
 #include "Button.h"
+#include "Label.h"
 
 CreditScreen::CreditScreen(SDL_Renderer* r, std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r) {
 	bHasBackground = true;

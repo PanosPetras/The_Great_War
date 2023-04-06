@@ -6,9 +6,13 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
+#include <vector>
 #include <functional>
-#include "Label.h"
-#include "Image.h"
+
+class MessageBox;
+class InputDrawable;
+class Image;
+class Label;
 
 class Screen{
 public:
@@ -45,6 +49,8 @@ protected:
 
 	//This is the count of the Labels being displayed
 	int LabelArrtop;
+
+	std::vector<MessageBox*> messageBoxes;
 	
 	bool bHasBackground;
 
@@ -52,6 +58,8 @@ protected:
 	virtual void RenderBackground();
 	
 	void SetupBg(const char* bg);
+
+	void DeleteMessageBox(void* p);
 
 	//Stores the image's texture
 	SDL_Texture* texture;

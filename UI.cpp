@@ -4,6 +4,8 @@
 #include "ToggleButton.h"
 #include "WindowInfo.h"
 #include "Button.h"
+#include "Label.h"
+#include "Image.h"
 
 UI::UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<void(Screen*, std::string)> fpl) {
 	renderer = r;

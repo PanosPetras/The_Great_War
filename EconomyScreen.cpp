@@ -2,6 +2,7 @@
 #include "WindowInfo.h"
 #include "Button.h"
 #include "Slider.h"
+#include "Label.h"
 
 EconomyScreen::EconomyScreen(SDL_Renderer* r, Country* Pl) : Screen(r) {
 	bHasBackground = true;

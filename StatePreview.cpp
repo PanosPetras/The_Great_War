@@ -1,6 +1,8 @@
 #include "ScreenList.h"
 #include "WindowInfo.h"
 #include "Button.h"
+#include "Label.h"
+#include "Image.h"
 
 StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(Screen*, std::string)> ChangeScreenFunc) : Screen(r) {
 	int Width = GetWindowWidth(), Height = GetWindowHeight();

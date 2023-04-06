@@ -1,4 +1,7 @@
 #include "Screen.h"
+#include "MessageBox.h"
+#include "Label.h"
+#include "Image.h"
 
 Screen::Screen(SDL_Renderer* r){
 	this->renderer = r;
@@ -63,4 +66,8 @@ void Screen::SetupBg(const char* bg) {
 	SDL_Surface* img = IMG_Load(bg);
 	texture = SDL_CreateTextureFromSurface(renderer, img);
 	SDL_FreeSurface(img);
+}
+
+void Screen::DeleteMessageBox(void* p) {
+	MessageBox* msgb = (MessageBox*)p;
 }

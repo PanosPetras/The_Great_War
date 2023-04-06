@@ -2,6 +2,8 @@
 #include "SDL_ColorDetection.h"
 #include "WindowInfo.h"
 #include "Button.h"
+#include "Label.h"
+#include "Image.h"
 
 GameScreen::GameScreen(SDL_Renderer* r, const char* tag,  std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r) {
 	bHasBackground = true;

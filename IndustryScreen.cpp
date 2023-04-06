@@ -1,5 +1,6 @@
 #include "ScreenList.h"
 #include "WindowInfo.h"
+#include "Label.h"
 
 IndustryScreen::IndustryScreen(SDL_Renderer* r, int Stockpile[30]) : Screen(r) {
 	bHasBackground = true;
