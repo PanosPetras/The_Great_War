@@ -783,7 +783,7 @@ kuk
 kuk
 kuk
 kuk
-kuk
+ku
 kuk
 kuk
 kuk
@@ -797,7 +797,7 @@ ser
 ser
 ser
 ser
-ott
+mon
 fra
 ott
 ott
@@ -2574,7 +2574,7 @@ fra
 eng
 eng
 nhl
-mon
+ott
 pru
 ger
 rus

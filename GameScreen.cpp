@@ -202,15 +202,16 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 				//Access the state's resources
 				int res[8] = { state->Resources.Coal, state->Resources.Cotton, state->Resources.Fruit, state->Resources.Grain, state->Resources.Iron, state->Resources.Oil, state->Resources.Rubber, state->Resources.Timber };
 				auto close = std::bind(&GameScreen::Pause, this);
+				auto change = std::bind(&GameScreen::ChangeActiveScreen, this, std::placeholders::_1, std::placeholders::_2);
 
 				//Create the StatePreview screen
 				if (bHasStatePreview == false) {
-					StateViewingScreen = new StatePreview(renderer, state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, int(state->State_Population), fcs, close);
+					StateViewingScreen = new StatePreview(renderer, state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, int(state->State_Population), fcs, close, change);
 					bHasStatePreview = true;
 				}
 				else {
 					delete StateViewingScreen;
-					StateViewingScreen = new StatePreview(renderer, state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, int(state->State_Population), fcs, close);
+					StateViewingScreen = new StatePreview(renderer, state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, int(state->State_Population), fcs, close, change);
 				}
 			}
 

@@ -140,12 +140,14 @@ public:
 class DiplomacyScreen : public Screen {
 public:
     DiplomacyScreen(SDL_Renderer* r, PlayerController* PC);
-    DiplomacyScreen(SDL_Renderer* r, int index, PlayerController* PC);
+    DiplomacyScreen(SDL_Renderer* r, PlayerController* PC, std::string targetTag);
+    DiplomacyScreen(SDL_Renderer* r, PlayerController* PC, int index);
 
     PlayerController* PCref;
 
 private:
     int CreateCountryButtons(PlayerController* PC);
+    int CreateCountryButtons(PlayerController* PC, std::string targetTag);
 
     void SelectCountry(void*);
     void ImproveRelations();
@@ -227,15 +229,9 @@ public:
 
 class StatePreview : public Screen {
 public:
-    OpenFactoryScreen* OFS = nullptr;
-
-    int Id;
-
-    StatePreview(SDL_Renderer* r, int id, std::string StateName, std::string Controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc);
+    StatePreview(SDL_Renderer* r, int id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(Screen*, std::string)> ChangeScreenFunc);
 
     ~StatePreview();
-
-    PlayerController* PCref;
 
     void Render() override;
 
@@ -244,4 +240,16 @@ public:
     void OpenOFS();
 
     void DeleteOFS();
+
+private:
+    std::string Controller;
+    std::function<void(Screen*, std::string)> ChangeScreenFunc2;
+
+    void OpenDiplomacyTab();
+
+    OpenFactoryScreen* OFS = nullptr;
+
+    int Id;
+
+    PlayerController* PCref;
 };
