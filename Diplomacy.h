@@ -11,6 +11,10 @@
 
 #define RELATIONS_LIMIT 300
 
+typedef enum RequestType {
+    alliance, tradeDeal, peaceTreaty
+} RequestType;
+
 struct CountryPair {
 public:
     CountryPair(Country* C1, Country* C2);
@@ -41,12 +45,13 @@ struct War {
     int Score;
 };
 
-struct Relations {
+class Relations {
 public:
+    Relations();
     Relations(int relations, bool allied = false);
 
-    void ImproveRelations();
-    void WorsenRelations();
+    void ImproveRelations(int value = 15);
+    void WorsenRelations(int value = 15);
     int GetRelationsValue() const;
 
     void CreateAlliance();
@@ -65,7 +70,26 @@ private:
     bool allied;
 };
 
-struct Diplomacy {
+class Request {
+public:
+    Request(RequestType id, int senderIndex, std::string senderTag, Relations& rel);
+
+    void Accept();
+    void Decline();
+
+    Relations GetRelations();
+    std::string GetSender();
+    int GetSenderIndex();
+
+private:
+    RequestType id;
+    int index;
+    Relations* rel;
+    std::string tag;
+
+};
+
+class Diplomacy {
 public:
     Diplomacy();
     ~Diplomacy();

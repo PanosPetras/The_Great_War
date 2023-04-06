@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
+    <ClCompile Include="AI.h" />
     <ClCompile Include="Checkbox.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="CountrySelection.cpp" />

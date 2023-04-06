@@ -3,10 +3,14 @@
 
 #include <unordered_map>
 #include <string>
+#include <vector>
 #include "State.h"
 #include "Stockpile.h"
 
-struct Technology {
+class Request;
+
+class Technology {
+public:
     float FactoryInput;
     float FactoryThroughput;
     float FactoryOutput;
@@ -15,7 +19,8 @@ struct Technology {
     float WoodOutput;
 };
 
-struct Policy {
+class Policy {
+public:
     int TaxRate;
     int Healthcare;
 };
@@ -31,17 +36,20 @@ public:
     //Destructor
     ~Country();
 
+    //Handle the states of the country
     void AddState(State* state);
-
     void RemoveState(State* state);
 
     //This is the representing the pass of a single day
     void Tick();
 
+    void AddRequest(Request request);
+
     //Accessor Functions
     std::string GetName() const;
     std::string GetTag() const;
     int GetPopulation() const;
+    bool GetIfIsPlayer() const;
 
 private:
     Color color;
@@ -56,6 +64,11 @@ private:
     std::unordered_map<std::string, State*>* ownedStates;
     
     Technology technology;
+
+    //The diplomatic requests that a country receives
+    std::vector<Request> requests;
+
+    void HandleDiplomaticRequests();
 
 public:
     Policy policy;

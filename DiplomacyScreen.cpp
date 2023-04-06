@@ -31,7 +31,8 @@ DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, PlayerController* PC, std::str
 	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.43), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Improve Relations", fontSize, action);
 	action = std::bind(&DiplomacyScreen::WorsenRelations, this);
 	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.43), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Worsen Relations", fontSize, action);
-	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.645), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Form Alliance", fontSize);
+	action = std::bind(&DiplomacyScreen::SendAllianceRequest, this);
+	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.645), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Form Alliance", fontSize, action);
 	action = std::bind(&DiplomacyScreen::ImposeEmbargo, this);
 	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.645), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Embargo", fontSize, action);
 
@@ -126,6 +127,24 @@ void DiplomacyScreen::ImposeEmbargo() {
 	}
 
 	UpdateEmbargoState();
+	UpdateRelationValue();
+}
+
+void DiplomacyScreen::SendAllianceRequest() {
+	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
+
+	auto rel = PCref->diplo.relations->find(CountryPair(c1, c2));
+
+	if (rel != PCref->diplo.relations->end()) {
+		if (!rel->second.GetIfAllied()) {
+			PCref->CountriesArr[selectedCountryIndex]->AddRequest(Request(alliance, PCref->player_index, PCref->CountriesArr[PCref->player_index]->GetTag(), rel->second));
+		} else {
+			rel->second.BreakAlliance();
+
+			UpdateAllianceState();
+			UpdateRelationValue();
+		}
+	}
 }
 
 

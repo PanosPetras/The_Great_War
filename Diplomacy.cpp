@@ -33,14 +33,19 @@ Country* CountryPair::GetC2() const {
 	return c2;
 }
 
+Relations::Relations() {
+	relationsValue = 0;
+	allied = false;
+}
+
 Relations::Relations(int relations, bool allied) {
 	relationsValue = relations;
 	this->allied = allied;
 }
 
-void Relations::ImproveRelations() {
+void Relations::ImproveRelations(int value) {
 	if (relationsValue < RELATIONS_LIMIT) {
-		relationsValue += 15;
+		relationsValue += value;
 	}
 
 	if (relationsValue > RELATIONS_LIMIT) {
@@ -48,9 +53,9 @@ void Relations::ImproveRelations() {
 	}
 }
 
-void Relations::WorsenRelations() {
+void Relations::WorsenRelations(int value) {
 	if (relationsValue > -RELATIONS_LIMIT) {
-		relationsValue -= 15;
+		relationsValue -= value;
 	}
 
 	if (relationsValue < -RELATIONS_LIMIT) {
@@ -64,10 +69,12 @@ int Relations::GetRelationsValue() const {
 
 void Relations::CreateAlliance() {
 	allied = true;
+	ImproveRelations(80);
 }
 
 void Relations::BreakAlliance() {
-	allied = false;
+	allied = false; 
+	WorsenRelations(100);
 }
 
 bool Relations::GetIfAllied() const {
@@ -76,10 +83,12 @@ bool Relations::GetIfAllied() const {
 
 void Relations::ImposeEmbargo(std::string Instigator) {
 	embargoes.insert(Instigator);
+	WorsenRelations(100);
 }
 
 void Relations::LiftEmbargo(std::string Instigator) {
 	embargoes.erase(Instigator);
+	ImproveRelations(20);
 }
 
 bool Relations::GetIfEmbargoExists() {
@@ -100,4 +109,51 @@ Diplomacy::Diplomacy() {
 
 Diplomacy::~Diplomacy() {
 	delete relations;
+}
+
+Request::Request(RequestType id, int senderIndex, std::string senderTag, Relations& relations) {
+	this->id = id;
+	index = senderIndex;
+	tag = senderTag;
+	rel = &relations;
+}
+
+void Request::Accept() {
+	switch (id) {
+		case alliance:
+			rel->CreateAlliance();
+			break;
+		case tradeDeal:
+			break;
+		case peaceTreaty:
+			break;
+		default:
+			break;
+	}
+}
+
+void Request::Decline() {
+	switch (id) {
+		case alliance:
+			rel->WorsenRelations();
+			break;
+		case tradeDeal:
+			break;
+		case peaceTreaty:
+			break;
+		default:
+			break;
+	}
+}
+
+Relations Request::GetRelations() {
+	return *rel;
+}
+
+std::string Request::GetSender() {
+	return tag;
+}
+
+int Request::GetSenderIndex() {
+	return index;
 }

@@ -139,6 +139,12 @@
     <ClCompile Include="WindowInfo.cpp">
       <Filter>Screen_Classes\Source_Files</Filter>
     </ClCompile>
+    <ClCompile Include="AI.h">
+      <Filter>Game_Classes\Header_Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Game_Classes\Source_Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">

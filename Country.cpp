@@ -1,4 +1,6 @@
 #include "Country.h"
+#include "Diplomacy.h"
+#include "AI.h"
 
 Country::Country(std::string tag, std::string name, int r, int g, int b, int Res[31], bool isPlayerControlled) : Country(tag, name, r, g, b, Res) {
     isPlayer = isPlayerControlled;
@@ -9,7 +11,8 @@ Country::Country(std::string tag, std::string name, int r, int g, int b, int Res
 	this->tag = tag;
     this->name = name;
 	population = 0;
-	stateCount = 0;
+	stateCount = 0; 
+    isPlayer = false;
 
     policy = {.TaxRate = 50, .Healthcare =  30};
 
@@ -79,6 +82,12 @@ void Country::Tick(){
 
     Stock.Money += int(population * 0.004 * policy.TaxRate / 100);
     Stock.Money -= int(population * 0.001 * policy.Healthcare / 100);
+
+    HandleDiplomaticRequests();
+}
+
+void Country::AddRequest(Request request) {
+    requests.push_back(request);
 }
 
 std::string Country::GetName() const {
@@ -91,4 +100,20 @@ std::string Country::GetTag() const {
 
 int Country::GetPopulation() const {
     return population;
+}
+
+bool Country::GetIfIsPlayer() const {
+    return isPlayer;
+}
+
+void Country::HandleDiplomaticRequests() {
+    if (isPlayer) {
+
+    } else {
+        for (auto req : requests) {
+            AI::HandleRequest(req);
+        }
+    }
+
+    requests.clear();
 }

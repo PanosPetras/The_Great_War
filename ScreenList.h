@@ -156,6 +156,8 @@ private:
     void WorsenRelations();
     void ImposeEmbargo();
 
+    void SendAllianceRequest();
+
     void UpdateRelationValue();
     void UpdateAllianceState();
     void UpdateEmbargoState();
