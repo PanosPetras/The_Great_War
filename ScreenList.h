@@ -152,11 +152,11 @@ private:
     void SelectCountry(void*);
     void ImproveRelations();
     void WorsenRelations();
+    void ImposeEmbargo();
 
     void UpdateRelationValue();
     void UpdateAllianceState();
-
-    void ImposeEmbargo();
+    void UpdateEmbargoState();
 
     int selectedCountryIndex;
 };

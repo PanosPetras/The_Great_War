@@ -12,7 +12,7 @@
 class MessageBox : public InputDrawable {
 public:
 	//Constructor
-	MessageBox(SDL_Renderer* r, std::string title, std::string message);
+	MessageBox(SDL_Renderer* r, std::string title, std::string message, std::function<void()> f = NULL);
 
 	//Destructor
 	~MessageBox();
@@ -21,6 +21,7 @@ public:
 	void HandleInput(const SDL_Event* ev);
 
 private:
+
 	//Render the message box on screen
 	void pDraw();
 

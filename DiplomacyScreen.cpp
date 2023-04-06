@@ -81,6 +81,7 @@ void DiplomacyScreen::SelectCountry(void* country){
 	selectedCountryIndex = index;
 
 	UpdateRelationValue();
+	UpdateEmbargoState();
 	UpdateAllianceState();
 }
 
@@ -106,6 +107,24 @@ void DiplomacyScreen::WorsenRelations(){
 	UpdateRelationValue();
 }
 
+void DiplomacyScreen::ImposeEmbargo() {
+	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
+
+	auto rel = PCref->diplo.relations->find(CountryPair(c1, c2));
+
+	if (rel != PCref->diplo.relations->end()) {
+		if (!rel->second.GetIfHasEmbargo(PCref->player_tag)) {
+			rel->second.ImposeEmbargo(PCref->player_tag);
+		}
+		else {
+			rel->second.LiftEmbargo(PCref->player_tag);
+		}
+	}
+
+	UpdateEmbargoState();
+}
+
+
 void DiplomacyScreen::UpdateRelationValue(){
 	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
 
@@ -126,24 +145,22 @@ void DiplomacyScreen::UpdateAllianceState() {
 	if (rel != PCref->diplo.relations->end()) {
 		if (rel->second.GetIfAllied()) {
 			((Button*)InputDrawableArr[InputDrawableArrtop - 2])->ChangeText("Break Alliance", 26);
-		} else {
-			((Button*)InputDrawableArr[InputDrawableArrtop - 2])->ChangeText("Form Alliance", 26);
+			return;
 		}
 	}
+	((Button*)InputDrawableArr[InputDrawableArrtop - 2])->ChangeText("Form Alliance", 26);
 }
 
-void DiplomacyScreen::ImposeEmbargo() {
+void DiplomacyScreen::UpdateEmbargoState() {
 	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
 
 	auto rel = PCref->diplo.relations->find(CountryPair(c1, c2));
 
 	if (rel != PCref->diplo.relations->end()) {
-		if (!rel->second.GetIfHasEmbargo(PCref->player_tag)) {
-			rel->second.ImposeEmbargo(PCref->player_tag);
+		if (rel->second.GetIfHasEmbargo(PCref->player_tag)) {
 			((Button*)InputDrawableArr[InputDrawableArrtop - 1])->ChangeText("Lift Embargo", 26);
-		} else {
-			rel->second.LiftEmbargo(PCref->player_tag);
-			((Button*)InputDrawableArr[InputDrawableArrtop - 1])->ChangeText("Embargo", 26);
+			return;
 		}
 	}
+	((Button*)InputDrawableArr[InputDrawableArrtop - 1])->ChangeText("Embargo", 26);
 }

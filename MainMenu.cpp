@@ -20,7 +20,6 @@ MainMenu::MainMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void
 
 	InputDrawableArr[3] = new Button(r, int(Width * 0.22), int(Height * 0.5), int(Width * 0.12), int(Height * 0.06), "Credits", fontSize, change);
 	InputDrawableArr[4] = new Button(r, int(Width * 0.22), int(Height * 0.6), int(Width * 0.12), int(Height * 0.06), "Quit", fontSize, fp);
-	InputDrawableArr[5] = new MessageBox(r, "Hello", "Lorem Ipsum is simply dummy text of the printing and typesetting industry.\r Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.");
 
 	InputDrawableArrtop = 6;
 	LabelArrtop = 0;
