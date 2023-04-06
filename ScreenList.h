@@ -5,9 +5,11 @@
 #include <functional>
 #include <string>
 #include <vector>
-#include "UI.h"
 #include "Screen.h"
-#include "PlayerController.h"
+
+class PlayerController;
+class UI;
+class Country;
 
 class MainMenu : public Screen {
 public:

@@ -8,7 +8,8 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 #include <stdio.h>
-#include "ScreenList.h"
+
+class Screen;
 
 class MainWindow {
 public:

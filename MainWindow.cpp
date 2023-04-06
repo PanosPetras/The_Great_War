@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "WindowInfo.h"
+#include "ScreenList.h"
 
 void MainWindow::MainLoop() {
     while (!quit) {            
