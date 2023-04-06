@@ -92,30 +92,32 @@ void Button::pDraw() {
 }
 
 void Button::HandleInput(const SDL_Event* ev) {
-    //Detect if the mouse is hovered
-    if (CheckIfMouseInRect(draw_rect, ev->button)) {
-        if (bHovered == false) {
-            //If the button is hovered, change to the hovered button image
-            SDL_SetTextureColorMod(texture, 170, 170, 170);
-            SDL_SetTextureColorMod(text, 170, 170, 170);
-            bHovered = true;
+    if (active) {
+        //Detect if the button is hovered
+        if (CheckIfMouseInRect(draw_rect, ev->button)) {
+            if (bHovered == false) {
+                //If the button is hovered, change to the hovered button image
+                SDL_SetTextureColorMod(texture, 170, 170, 170);
+                SDL_SetTextureColorMod(text, 170, 170, 170);
+                bHovered = true;
+            }
+
+            //react on mouse click within button rectangle
+            if (ev->type == SDL_MOUSEBUTTONDOWN) {
+                Click();
+            }
+        }
+        //If not hovered, return to the idle button image
+        else if (bHovered == true) {
+            bHovered = false;
+            SDL_SetTextureColorMod(texture, 255, 255, 255);
+            SDL_SetTextureColorMod(text, 255, 255, 255);
         }
 
-        //react on mouse click within button rectangle
-        if (ev->type == SDL_MOUSEBUTTONDOWN) {
-            Click();
-        }
-    }
-    //If not hovered, return to the idle button image
-    else if (bHovered == true) {
-        bHovered = false;
-        SDL_SetTextureColorMod(texture, 255, 255, 255);
-        SDL_SetTextureColorMod(text, 255, 255, 255);
-    }
-
-    if (key) {
-        if (ev->type == SDL_KEYDOWN && ev->key.keysym.sym == key) {
-            Click();
+        if (key) {
+            if (ev->type == SDL_KEYDOWN && ev->key.keysym.sym == key) {
+                Click();
+            }
         }
     }
 }
@@ -128,7 +130,7 @@ void Button::Click(){
     CallBoundFunction();
 }
 
-bool Button::CheckIfMouseInRect(const SDL_Rect rect, const SDL_MouseButtonEvent ev) const {
+bool Button::CheckIfMouseInRect(const SDL_Rect rect, const SDL_MouseButtonEvent ev) {
     if (ev.x >= rect.x) {
         if (ev.x <= rect.x + rect.w) {
             if (ev.y >= rect.y) {
@@ -234,5 +236,18 @@ void Button::CallBoundFunction(){
         func();
     } else if (funcWArg) {
         funcWArg(arg);
+    }
+}
+
+void Button::SetActive(bool state) {
+    InputDrawable::SetActive(state);
+
+    if (state) {
+        SDL_SetTextureColorMod(texture, 255, 255, 255);
+        SDL_SetTextureColorMod(text, 255, 255, 255);
+        bHovered = false;
+    } else {
+        SDL_SetTextureColorMod(texture, 100, 100, 100);
+        SDL_SetTextureColorMod(text, 100, 100, 100);
     }
 }

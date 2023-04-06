@@ -49,6 +49,9 @@ public:
     //Execute the function that was bound to this button
     void CallBoundFunction();
 
+    //Enable/Disable the button
+    void SetActive(bool state);
+
 protected:
     //Render the button on the screen
     void pDraw();
@@ -57,7 +60,7 @@ protected:
     void Click();
 
     //Check if the mouse is within the limits of an SDL_Rect
-    bool CheckIfMouseInRect(const SDL_Rect rect, const SDL_MouseButtonEvent ev) const;
+    static bool CheckIfMouseInRect(const SDL_Rect rect, const SDL_MouseButtonEvent ev);
 
     //The visual state of the button
     bool bHovered;
@@ -83,5 +86,7 @@ protected:
 
     //The button's onClick sound
     Mix_Chunk* music = NULL;
+
+    friend class ToggleButton;
 };
 #endif

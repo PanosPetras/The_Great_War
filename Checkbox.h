@@ -8,7 +8,7 @@
 #include "Label.h"
 #include <functional>
 
-class Checkbox : public Drawable {
+class Checkbox : public InputDrawable {
 public:
 	//Constructor
 	Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, std::function<void(bool)> f = NULL, int keybind = NULL);
@@ -46,6 +46,9 @@ public:
 
 	//Execute the function that was bound to this button
 	void CallBoundFunction();
+
+	//Enable/Disable the checkbox
+	void SetActive(bool state);
 
 protected:
 	//Render the Checkbox on the screen

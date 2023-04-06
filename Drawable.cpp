@@ -13,6 +13,15 @@ void Drawable::Draw(){
 }
 
 InputDrawable::InputDrawable(Anchor anchor) : Drawable(anchor) {
+    active = true;
+}
+
+void InputDrawable::SetActive(bool state) {
+    active = state;
+}
+
+bool InputDrawable::GetActive() {
+    return active;
 }
 
 void ApplyAnchor(SDL_Rect &rect, Anchor anchor) {

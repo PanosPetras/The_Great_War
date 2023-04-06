@@ -8,53 +8,57 @@ Checkbox::Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, 
 	label = new Label(r, text, textSize, x + int(Height * (1 + 0.1)), y);
 }
 
-Checkbox::~Checkbox(){
+Checkbox::~Checkbox() {
 	delete toggleButton, label;
 }
 
-void Checkbox::pDraw(){
+void Checkbox::pDraw() {
 	toggleButton->Draw();
 	label->Draw();
 }
 
-void Checkbox::HandleInput(const SDL_Event* ev){
+void Checkbox::HandleInput(const SDL_Event* ev) {
 	toggleButton->HandleInput(ev);
 }
 
-void Checkbox::ChangePosition(int x, int y, int Height){
+void Checkbox::ChangePosition(int x, int y, int Height) {
 	toggleButton->ChangePosition(x, y, Height, Height);
 	label->ChangePosition(x, y);
 }
 
-void Checkbox::ChangeFunctionBinding(std::function<void(bool)> f){
+void Checkbox::ChangeFunctionBinding(std::function<void(bool)> f) {
 	toggleButton->ChangeFunctionBinding(f);
 }
 
-void Checkbox::ChangeKeybind(int keybind){
+void Checkbox::ChangeKeybind(int keybind) {
 	toggleButton->ChangeKeybind(keybind);
 }
 
-void Checkbox::ChangeText(std::string text){
+void Checkbox::ChangeText(std::string text) {
 	label->ChangeText(text);
 }
 
-void Checkbox::ChangeTextSize(int size){
+void Checkbox::ChangeTextSize(int size) {
 	label->ChangeTextSize(size);
 }
 
-void Checkbox::ChangeValue(bool val){
+void Checkbox::ChangeValue(bool val) {
 	toggleButton->ChangeValue(val);
 }
 
-bool Checkbox::GetValue()
-{
+bool Checkbox::GetValue() {
 	return toggleButton->GetValue();
 }
 
-void Checkbox::Playsound(){
+void Checkbox::Playsound() {
 	toggleButton->Playsound();
 }
 
-void Checkbox::CallBoundFunction(){
+void Checkbox::CallBoundFunction() {
 	toggleButton->CallBoundFunction();
+}
+
+void Checkbox::SetActive(bool state) {
+	InputDrawable::SetActive(state);
+	toggleButton->SetActive(state);
 }

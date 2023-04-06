@@ -47,6 +47,9 @@ public:
     //Execute the function that was bound to this button
     void CallBoundFunction();
 
+    //Enable/Disable the button
+    void SetActive(bool state);
+
 protected:
     //Render the button on the screen
     void pDraw();

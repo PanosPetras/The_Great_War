@@ -1,5 +1,6 @@
 #include "ToggleButton.h"
 #include <iostream>
+#include "Button.h"
 
 ToggleButton::ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f, int keybind) : ToggleButton(r, x, y, Width, Height, activeImage, inactiveImage, top_left, f, keybind) {
 }
@@ -52,33 +53,32 @@ void ToggleButton::pDraw(){
 }
 
 void ToggleButton::HandleInput(const SDL_Event* ev){
-    //Detect if the mouse is hovered
-    if (ev->button.x >= this->draw_rect.x &&
-        ev->button.x <= (this->draw_rect.x + this->draw_rect.w) &&
-        ev->button.y >= this->draw_rect.y &&
-        ev->button.y <= (this->draw_rect.y + this->draw_rect.h)) {
+    if (active) {
+        //Detect if the button is hovered
+        if (Button::CheckIfMouseInRect(draw_rect, ev->button)) {
 
-        if (bHovered == false) {
-            //If the button is hovered, change to the hovered button image
-            SDL_SetTextureColorMod(inactiveTexture, 170, 170, 170);
-            SDL_SetTextureColorMod(activeTexture, 170, 170, 170);
-            bHovered = true;
-        }
+            if (bHovered == false) {
+                //If the button is hovered, change to the hovered button image
+                SDL_SetTextureColorMod(inactiveTexture, 170, 170, 170);
+                SDL_SetTextureColorMod(activeTexture, 170, 170, 170);
+                bHovered = true;
+            }
 
-        //react on mouse click within button rectangle
-        if (ev->type == SDL_MOUSEBUTTONDOWN) {
-            Click();
+            //react on mouse click within button rectangle
+            if (ev->type == SDL_MOUSEBUTTONDOWN) {
+                Click();
+            }
         }
-    }
-    //If not hovered, return to the idle button image
-    else if (bHovered == true) {
-        bHovered = false;
-        SDL_SetTextureColorMod(inactiveTexture, 255, 255, 255);
-        SDL_SetTextureColorMod(activeTexture, 255, 255, 255);
-    }
-    if (key) {
-        if (ev->type == SDL_KEYDOWN && ev->key.keysym.sym == key) {
-            Click();
+        //If not hovered, return to the idle button image
+        else if (bHovered == true) {
+            bHovered = false;
+            SDL_SetTextureColorMod(inactiveTexture, 255, 255, 255);
+            SDL_SetTextureColorMod(activeTexture, 255, 255, 255);
+        }
+        if (key) {
+            if (ev->type == SDL_KEYDOWN && ev->key.keysym.sym == key) {
+                Click();
+            }
         }
     }
 }
@@ -144,6 +144,21 @@ void ToggleButton::CallBoundFunction(){
 	if (func) {
 		func(value);
 	}
+}
+
+void ToggleButton::SetActive(bool state) {
+    InputDrawable::SetActive(state);
+
+    if (state) {
+        SDL_SetTextureColorMod(inactiveTexture, 255, 255, 255);
+        SDL_SetTextureColorMod(activeTexture, 255, 255, 255);
+        bHovered = false;
+    }
+    else {
+        SDL_SetTextureColorMod(inactiveTexture, 100, 100, 100);
+        SDL_SetTextureColorMod(activeTexture, 100, 100, 100);
+    }
+
 }
 
 bool ToggleButton::GetValue() {

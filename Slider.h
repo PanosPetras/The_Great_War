@@ -34,6 +34,9 @@ public:
 		int Maximum;
 	} Values;
 
+	//Enable/Disable the slider
+	void SetActive(bool state);
+
 protected:
 	//Render the slider on the screen
 	void pDraw();

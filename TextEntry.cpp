@@ -29,35 +29,37 @@ TextEntry::~TextEntry(){
 }
 
 void TextEntry::HandleInput(const SDL_Event* ev){
-    if (ev->type == SDL_MOUSEBUTTONDOWN) {
-        if (ev->button.x >= background->draw_rect.x &&
-            ev->button.x <= (background->draw_rect.x + background->draw_rect.w) &&
-            ev->button.y >= background->draw_rect.y &&
-            ev->button.y <= (background->draw_rect.y + background->draw_rect.h)) {
-            focused = true;
+    if (active) {
+        if (ev->type == SDL_MOUSEBUTTONDOWN) {
+            if (ev->button.x >= background->draw_rect.x &&
+                ev->button.x <= (background->draw_rect.x + background->draw_rect.w) &&
+                ev->button.y >= background->draw_rect.y &&
+                ev->button.y <= (background->draw_rect.y + background->draw_rect.h)) {
+                focused = true;
+            }
+            else {
+                focused = false;
+            }
         }
-        else {
-            focused = false;
-        }
-    }
 
-    if (focused) {
-        if (ev->type == SDL_KEYDOWN) {
-            if (ev->key.keysym.sym >= SDLK_a && ev->key.keysym.sym <= SDLK_z) {
-                text += char('a' + ev->key.keysym.sym - SDLK_a);
-
-                ChangeText(text);
-            } 
-            else if (ev->key.keysym.sym >= SDLK_0 && ev->key.keysym.sym <= SDLK_9) {
-                text += char('0' + ev->key.keysym.sym - SDLK_0);
-
-                ChangeText(text);
-            } 
-            else if (ev->key.keysym.sym == SDLK_BACKSPACE) {
-                if (text.size() > 0) {
-                    text.pop_back();
+        if (focused) {
+            if (ev->type == SDL_KEYDOWN) {
+                if (ev->key.keysym.sym >= SDLK_a && ev->key.keysym.sym <= SDLK_z) {
+                    text += char('a' + ev->key.keysym.sym - SDLK_a);
 
                     ChangeText(text);
+                }
+                else if (ev->key.keysym.sym >= SDLK_0 && ev->key.keysym.sym <= SDLK_9) {
+                    text += char('0' + ev->key.keysym.sym - SDLK_0);
+
+                    ChangeText(text);
+                }
+                else if (ev->key.keysym.sym == SDLK_BACKSPACE) {
+                    if (text.size() > 0) {
+                        text.pop_back();
+
+                        ChangeText(text);
+                    }
                 }
             }
         }

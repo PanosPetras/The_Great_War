@@ -25,6 +25,18 @@ Slider::~Slider(){
 	SDL_DestroyTexture(Marker);
 }
 
+void Slider::SetActive(bool state) {
+	InputDrawable::SetActive(state);
+
+	if (state) {
+		SDL_SetTextureColorMod(Marker, 255, 255, 255);
+	}
+	else {
+		bmousepressed = false;
+		SDL_SetTextureColorMod(Marker, 100, 100, 100);
+	}
+}
+
 void Slider::pDraw(){
 	//Drawing the slider
 	//Draw the slider's background
@@ -37,30 +49,35 @@ void Slider::pDraw(){
 }
 
 void Slider::HandleInput(const SDL_Event* ev){
-	//Check if the user is handling the slider
-	if (ev->button.button == SDL_BUTTON_LEFT && ev->type == SDL_MOUSEBUTTONDOWN && bmousepressed == false) {
-		if (ev->button.x >= marker_rect.x && ev->button.x <= marker_rect.x + marker_rect.w && ev->button.y > marker_rect.y && ev->button.y < marker_rect.h + marker_rect.y) {
-			bmousepressed = true;
+	if (active) {
+		//Check if the user is handling the slider
+		if (ev->button.button == SDL_BUTTON_LEFT && ev->type == SDL_MOUSEBUTTONDOWN && bmousepressed == false) {
+			if (ev->button.x >= marker_rect.x && ev->button.x <= marker_rect.x + marker_rect.w && ev->button.y > marker_rect.y && ev->button.y < marker_rect.h + marker_rect.y) {
+				bmousepressed = true;
+			}
 		}
-	} else if (ev->button.button == SDL_BUTTON_LEFT && ev->type == SDL_MOUSEBUTTONUP && bmousepressed == true) {
-		bmousepressed = false;
-	}
-
-	//If the user is handling the slider....
-	if (bmousepressed == true && marker_rect.x != ev->button.x) {
-		//Move the slider's marker to the appropriate position
-		if (ev->button.x > bg_rect.x + bg_rect.w - marker_rect.h + marker_rect.w / 2) {
-			marker_rect.x = bg_rect.x + bg_rect.w - marker_rect.h;
-		} else if (ev->button.x < bg_rect.x + marker_rect.w / 2) {
-			marker_rect.x = bg_rect.x;
-		} else {
-			marker_rect.x = ev->button.x - marker_rect.w / 2;
+		else if (ev->button.button == SDL_BUTTON_LEFT && ev->type == SDL_MOUSEBUTTONUP && bmousepressed == true) {
+			bmousepressed = false;
 		}
 
-		//Calculate the value of the slider
-		if (bg_rect.w != 0) {
-			Values.Value = int((marker_rect.x - bg_rect.x + 0.0) / (bg_rect.w - marker_rect.w) * Values.Maximum);
-			callOnValueChanged();
+		//If the user is handling the slider....
+		if (bmousepressed == true && marker_rect.x != ev->button.x) {
+			//Move the slider's marker to the appropriate position
+			if (ev->button.x > bg_rect.x + bg_rect.w - marker_rect.h + marker_rect.w / 2) {
+				marker_rect.x = bg_rect.x + bg_rect.w - marker_rect.h;
+			}
+			else if (ev->button.x < bg_rect.x + marker_rect.w / 2) {
+				marker_rect.x = bg_rect.x;
+			}
+			else {
+				marker_rect.x = ev->button.x - marker_rect.w / 2;
+			}
+
+			//Calculate the value of the slider
+			if (bg_rect.w != 0) {
+				Values.Value = int((marker_rect.x - bg_rect.x + 0.0) / (bg_rect.w - marker_rect.w) * Values.Maximum);
+				callOnValueChanged();
+			}
 		}
 	}
 }
