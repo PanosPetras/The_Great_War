@@ -10,7 +10,7 @@ StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::
 	Controller = controller;
 	std::string str = "Flags/" + Controller;
 
-	LabelArr[0] = new Label(r, StateName.c_str(), 32, 0, int(Height * .55), Width);
+	LabelArr[0] = new Label(r, StateName.c_str(), 32, int(0.04 * Width), int(Height * .55), Width);
 	LabelArr[1] = new Label(r, std::to_string(res[7]).c_str(), 32, int(Width * 0.03), int(Height * 0.6));
 	LabelArr[2] = new Label(r, std::to_string(res[1]).c_str(), 32, int(Width * 0.03), int(Height * 0.65));
 	LabelArr[3] = new Label(r, std::to_string(res[2]).c_str(), 32, int(Width * 0.03), int(Height * 0.7));
@@ -24,7 +24,7 @@ StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::
 	ImageArr[0] = new Image(r, "Backgrounds/StatePreview.png", 0, int(Height * .55), int(Width * 0.2), int(Height * 0.45));
 
 	auto change = std::bind(&StatePreview::OpenDiplomacyTab, this);
-	InputDrawableArr[0] = new Button(r, int(Width * 0.2 - 72 * Width / 1920), int(Height * .55), int(72 * Width / 1920), int(48 * Height / 1080), str, change);
+	InputDrawableArr[0] = new Button(r, 0, int(Height * .55), int(72 * Width / 1920), int(48 * Height / 1080), str, change);
 	InputDrawableArr[1] = new Button(r, int(Width * .2) - int((32 * Width / 1920) / 2), int(Height * .55) - int((32 * Height / 1080) / 2), int(32 * Width / 1920), int(32 * Height / 1080), "Buttons/UI/Close", CloseFunc);
 
 	ImageArrtop = 1;
@@ -34,7 +34,7 @@ StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::
 	for (int x = 0; x < 4; x++) {
 		if (Factories[x] != "") {
 			str = "Icons/Goods/" + Factories[x] + ".png";
-			ImageArr[x + 2] = new Image(r, str.c_str(), int(Width * (0.055 + 0.0288 * x)), int(Height * 0.8999), 48, 48);
+			ImageArr[x + 1] = new Image(r, str.c_str(), int(Width * (0.055 + 0.0288 * x)), int(Height * 0.8999), 48, 48);
 			ImageArrtop++;
 		} else {
 			break;
@@ -48,11 +48,11 @@ StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::
 	}
 
 	PCref = PC;
-	Id = id;
+	this->Id = id;
 	ChangeScreenFunc2 = ChangeScreenFunc;
 }
 
-StatePreview::~StatePreview(){
+StatePreview::~StatePreview() {
 	if (OFS != nullptr) {
 		delete OFS;
 	}
@@ -107,16 +107,15 @@ void StatePreview::DeleteOFS(){
 	int Width = GetWindowWidth(), Height = GetWindowHeight();
 
 	if (PCref->StatesArr[Id]->State_Factories[3] != nullptr) {
-		delete InputDrawableArr[1];
-		InputDrawableArrtop = 1;
+		delete InputDrawableArr[2];
+		InputDrawableArrtop = 2;
 	}
-	for (int x = ImageArrtop - 2; x < 4; x++) {
+	for (int x = ImageArrtop - 1; x < 4; x++) {
 		if (PCref->StatesArr[Id]->State_Factories[x] != nullptr) {
 			std::string str = "Icons/Goods/" + PCref->StatesArr[Id]->State_Factories[x]->Type + ".png";
-			ImageArr[x + 2] = new Image(renderer, str.c_str(), int(Width * (0.055 + 0.0288 * x)), int(Height * 0.8999), 48, 48);
+			ImageArr[x + 1] = new Image(renderer, str, int(Width * (0.055 + 0.0288 * x)), int(Height * 0.8999), 48, 48);
 			ImageArrtop++;
-		}
-		else {
+		} else {
 			break;
 		}
 	}

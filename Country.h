@@ -6,8 +6,6 @@
 #include "State.h"
 #include "Stockpile.h"
 
-class Country;
-
 struct Technology {
     float FactoryInput;
     float FactoryThroughput;
