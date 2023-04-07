@@ -4,7 +4,7 @@
 #include "Image.h"
 
 Screen::Screen(SDL_Renderer* r){
-	this->renderer = r;
+	renderer = r;
 }
 
 Screen::~Screen(){
@@ -21,8 +21,14 @@ Screen::~Screen(){
 		delete ImageArr[x];
 	}
 
+	for (auto msgb : messageBoxes) {
+		delete msgb;
+	}
+
 	//Free all the allocated memory
-	SDL_DestroyTexture(texture);
+	if (bHasBackground) {
+		SDL_DestroyTexture(texture);
+	}
 }
 
 void Screen::RenderBackground() {
