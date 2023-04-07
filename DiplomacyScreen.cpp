@@ -27,14 +27,10 @@ DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, PlayerController* PC, std::str
 	LabelArr[2] = new Label(r, "N/A", 28, int(Width * 0.8), int(Height * 0.225));
 
 	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.43), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Declare War", fontSize);
-	auto action = std::bind(&DiplomacyScreen::ImproveRelations, this);
-	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.43), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Improve Relations", fontSize, action);
-	action = std::bind(&DiplomacyScreen::WorsenRelations, this);
-	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.43), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Worsen Relations", fontSize, action);
-	action = std::bind(&DiplomacyScreen::SendAllianceRequest, this);
-	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.645), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Form Alliance", fontSize, action);
-	action = std::bind(&DiplomacyScreen::ImposeEmbargo, this);
-	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.645), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Embargo", fontSize, action);
+	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.43), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Improve Relations", fontSize, [this]{ ImproveRelations();});
+	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.43), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Worsen Relations", fontSize, [this]{ WorsenRelations();});
+	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.645), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Form Alliance", fontSize, [this]{ SendAllianceRequest();});
+	InputDrawableArr[InputDrawableArrtop++] = new Button(r, int(Width * 0.645), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Embargo", fontSize, [this]{ ImposeEmbargo();});
 
 	LabelArrtop = 3;
 	ImageArrtop = 4;

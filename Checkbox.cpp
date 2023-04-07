@@ -11,7 +11,8 @@ Checkbox::Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, 
 }
 
 Checkbox::~Checkbox() {
-	delete toggleButton, label;
+	delete toggleButton;
+        delete label;
 }
 
 void Checkbox::pDraw() {

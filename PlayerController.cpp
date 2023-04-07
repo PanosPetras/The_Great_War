@@ -4,6 +4,7 @@
 #include <future>
 #include <fstream>
 #include <string>
+#include <thread>
 #include <SDL_image.h>
 #include <SDL_thread.h>
 
@@ -15,8 +16,8 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	player_tag = tag;
 
 	//Create the map on a separate thread
-	SDL_Thread* MapThread = SDL_CreateThread(&PlayerController::LoadMap, NULL, this);
-	SDL_Thread* AssetsThread = SDL_CreateThread(&PlayerController::LoadUtilityAssets, NULL, this);
+	SDL_Thread* MapThread = SDL_CreateThread(&PlayerController::LoadMap, nullptr, this);
+	SDL_Thread* AssetsThread = SDL_CreateThread(&PlayerController::LoadUtilityAssets, nullptr, this);
 
 	//Allocate space for some members
 	StatesArr = new State* [2703];
@@ -64,7 +65,8 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	InitializeStates(owners, Names, coords, populations, colors);
 
 	//Free allocated memory
-	delete[] colors, coords;
+	delete[] colors;
+        delete[] coords;
 
 	//Initialize the date
 	Date = { .Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .bIsPaused = true, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31} };

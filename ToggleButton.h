@@ -12,13 +12,13 @@
 class ToggleButton : public InputDrawable {
 public:
     //Constructor
-	ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f = NULL, int keybind = NULL);
-    ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f = NULL, int keybind = NULL);
-    ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, std::function<void(bool)> f = NULL, int keybind = NULL);
-    ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, bool val, std::function<void(bool)> f = NULL, int keybind = NULL);
+    ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, bool val, std::function<void(bool)> f = {}, int keybind = 0);
 
     //Destructor
-	~ToggleButton();
+    ~ToggleButton();
 
     //Called when received input, to check whether the click was in this button
     void HandleInput(const SDL_Event* ev);
@@ -80,7 +80,7 @@ protected:
     SDL_Texture* inactiveTexture = nullptr;
 
     //The button's onClick sound
-    Mix_Chunk* music = NULL;
+    Mix_Chunk* music = nullptr;
 };
 
 #endif

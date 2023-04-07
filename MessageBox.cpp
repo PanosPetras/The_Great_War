@@ -14,7 +14,10 @@ MessageBox::MessageBox(SDL_Renderer* r, std::string title, std::string message, 
 }
 
 MessageBox::~MessageBox() {
-	delete background, okButton, text, title;
+	delete background;
+        delete okButton;
+        delete text;
+        delete title;
 }
 
 void MessageBox::HandleInput(const SDL_Event* ev) {

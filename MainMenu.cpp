@@ -8,22 +8,16 @@ MainMenu::MainMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void
 	SetupBg("Backgrounds/OldMenu.png");
 
 	int fontSize = 32, Width = GetWindowWidth(), Height = GetWindowHeight();
-	auto change = std::bind(&MainMenu::StartGame, this);
 
-	InputDrawableArr[0] = new Button(r, int(Width * 0.22), int(Height * 0.2), int(Width * 0.12), int(Height * 0.06), "New Game", fontSize, change);
+	InputDrawableArr[0] = new Button(r, int(Width * 0.22), int(Height * 0.2), int(Width * 0.12), int(Height * 0.06), "New Game", fontSize, [this]{StartGame();});
 	InputDrawableArr[1] = new Button(r, int(Width * 0.22), int(Height * 0.3), int(Width * 0.12), int(Height * 0.06), "Load Game", fontSize, fp);
 
-	change = std::bind(&MainMenu::ShowSettings, this);
+	InputDrawableArr[2] = new Button(r, int(Width * 0.22), int(Height * 0.4), int(Width * 0.12), int(Height * 0.06), "Settings", fontSize, [this]{ShowSettings();});
 
-	InputDrawableArr[2] = new Button(r, int(Width * 0.22), int(Height * 0.4), int(Width * 0.12), int(Height * 0.06), "Settings", fontSize, change);
-
-	change = std::bind(&MainMenu::ShowCredits, this);
-
-	InputDrawableArr[3] = new Button(r, int(Width * 0.22), int(Height * 0.5), int(Width * 0.12), int(Height * 0.06), "Credits", fontSize, change);
+	InputDrawableArr[3] = new Button(r, int(Width * 0.22), int(Height * 0.5), int(Width * 0.12), int(Height * 0.06), "Credits", fontSize, [this]{ShowCredits();});
 	InputDrawableArr[4] = new Button(r, int(Width * 0.22), int(Height * 0.6), int(Width * 0.12), int(Height * 0.06), "Quit", fontSize, fp);
 
-	auto del = std::bind(&Screen::DeleteMessageBox, this, std::placeholders::_1);
-	messageBoxes.push_back(new MessageBox(r, "Welcome to The Great War", "Hello dear player, \nWe just want to inform you that the game is still in a beta stage and will certainly have some bugs. Please be tolerant.\nKind regards, \nThe Great War devs.", del));
+	messageBoxes.push_back(new MessageBox(r, "Welcome to The Great War", "Hello dear player, \nWe just want to inform you that the game is still in a beta stage and will certainly have some bugs. Please be tolerant.\nKind regards, \nThe Great War devs.", [this](void* p) { DeleteMessageBox(p);} ));
 
 	InputDrawableArrtop = 5;
 	LabelArrtop = 0;

@@ -23,8 +23,7 @@ StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::
 
 	ImageArr[0] = new Image(r, "Backgrounds/StatePreview.png", 0, int(Height * .55), int(Width * 0.2), int(Height * 0.45));
 
-	auto change = std::bind(&StatePreview::OpenDiplomacyTab, this);
-	InputDrawableArr[0] = new Button(r, 0, int(Height * .55), int(72 * Width / 1920), int(48 * Height / 1080), str, change);
+	InputDrawableArr[0] = new Button(r, 0, int(Height * .55), int(72 * Width / 1920), int(48 * Height / 1080), str, [this]{ OpenDiplomacyTab();});
 	InputDrawableArr[1] = new Button(r, int(Width * .2) - int((32 * Width / 1920) / 2), int(Height * .55) - int((32 * Height / 1080) / 2), int(32 * Width / 1920), int(32 * Height / 1080), "Buttons/UI/Close", CloseFunc);
 
 	ImageArrtop = 1;
@@ -42,8 +41,7 @@ StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::
 	}
 
 	if (Controller == PC->player_tag && Factories[3] == "") {
-		change = std::bind(&StatePreview::OpenOFS, this);
-		InputDrawableArr[2] = new Button(r, int(Width * .058), int(Height * 0.95), int(160 * Width / 1920), int(38 * Height / 1080), "Open Factory", 24, change);
+		InputDrawableArr[2] = new Button(r, int(Width * .058), int(Height * 0.95), int(160 * Width / 1920), int(38 * Height / 1080), "Open Factory", 24, [this]{OpenOFS();});
 		InputDrawableArrtop++;
 	}
 

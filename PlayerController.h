@@ -1,12 +1,14 @@
 #ifndef PLAYERCONTROLLER_H
 #define PLAYERCONTROLLER_H
 
-#include <SDL.h>
-#include <unordered_map>
-#include <memory>
 #include "Country.h"
-#include "State.h"
 #include "Diplomacy.h"
+#include "State.h"
+
+#include <SDL.h>
+
+#include <memory>
+#include <unordered_map>
 
 typedef std::unique_ptr<std::vector<std::string>, std::default_delete<std::vector<std::string>>> VectorSmartPointer;
 

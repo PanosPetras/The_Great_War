@@ -12,14 +12,14 @@
 class Button : public InputDrawable {
 public:
     //Constructors
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f = NULL, int keybind = NULL);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind = NULL);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f = NULL, int keybind = NULL);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = NULL);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f = NULL, int keybind = NULL);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind = NULL);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f = NULL, int keybind = NULL);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = NULL);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f = nullptr, int keybind = 0);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f = nullptr, int keybind = 0);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
+    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
 
     //Destructor
     ~Button();
@@ -85,7 +85,7 @@ protected:
     SDL_Texture* text = nullptr;
 
     //The button's onClick sound
-    Mix_Chunk* music = NULL;
+    Mix_Chunk* music = nullptr;
 
     friend class ToggleButton;
 };

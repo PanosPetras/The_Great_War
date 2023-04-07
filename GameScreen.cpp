@@ -7,6 +7,8 @@
 #include "Label.h"
 #include "Image.h"
 
+#include <cmath>
+
 GameScreen::GameScreen(SDL_Renderer* r, const char* tag,  std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r) {
 	bHasBackground = true;
 	InputDrawableArrtop = 0;
@@ -36,7 +38,8 @@ GameScreen::GameScreen(SDL_Renderer* r, const char* tag,  std::function<void()> 
 }
 
 GameScreen::~GameScreen(){
-	delete PC, overlay;
+	delete PC;
+        delete overlay;
 
 	//Delete all items created by the screen in order to avoid memory leaks
 	for (int x = 0; x < InputDrawableArrtop; x++) {
@@ -329,7 +332,7 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 
 				/*If the zoomed out image extends out of the rendered image's bounds,
 				then we move the camera towards the center of the rendered image*/
-				int lim = int((trunc(ImgSize[1] * factor) - GetWindowHeight()) / factor);
+				int lim = int((std::trunc(ImgSize[1] * factor) - GetWindowHeight()) / factor);
 				if (Cam_Height < 0) {
 					Cam_Height = 0;
 				} else if (Cam_Height > lim) {

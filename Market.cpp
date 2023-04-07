@@ -1,4 +1,4 @@
-#include "market.h"
+#include "Market.h"
 
 double Demand::LinearDemand(double a, double b, int Quantity){
 	return (a - Quantity) / b;

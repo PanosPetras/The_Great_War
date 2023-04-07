@@ -359,3 +359,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Linux binaries
+The_Great_War
+asan
+tsan
