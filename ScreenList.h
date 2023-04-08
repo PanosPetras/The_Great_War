@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SDL.h>
-#include <SDL_Image.h>
+#include <SDL_image.h>
 #include <functional>
 #include <string>
 #include <vector>
@@ -14,7 +14,7 @@ class Country;
 class MainMenu : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    MainMenu(SDL_Renderer* r, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+    MainMenu(SDL_Renderer* r, std::function<void()> fp = nullptr, std::function<void(Screen*)> fpl = nullptr);
 
     void ShowCredits();
     void ShowSettings();
@@ -24,7 +24,7 @@ public:
 class CreditScreen : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    CreditScreen(SDL_Renderer* r, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+    CreditScreen(SDL_Renderer* r, std::function<void()> fp = nullptr, std::function<void(Screen*)> fpl = nullptr);
 
     std::function<void(Screen*)> ChangeScreenFunc;
     std::function<void()> QuitFunc;
@@ -34,7 +34,7 @@ public:
 class MenuSettingsScreen : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    MenuSettingsScreen(SDL_Renderer* r, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+    MenuSettingsScreen(SDL_Renderer* r, std::function<void()> fp = nullptr, std::function<void(Screen*)> fpl = nullptr);
 
     std::function<void(Screen*)> ChangeScreenFunc;
     std::function<void()> QuitFunc;
@@ -48,7 +48,7 @@ public:
 class GameScreen : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    GameScreen(SDL_Renderer* r, const char* tag, std::function<void()> fp = NULL, std::function<void(Screen*)> fpl = NULL);
+    GameScreen(SDL_Renderer* r, const char* tag, std::function<void()> fp = nullptr, std::function<void(Screen*)> fpl = nullptr);
     ~GameScreen();
 
     PlayerController* PC;
@@ -106,14 +106,14 @@ public:
 class PauseMenu : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    PauseMenu(SDL_Renderer* r, std::function<void()> fp = NULL, std::function<void()> UnpauseF = NULL, std::function<void(Screen*)> fpl = NULL);
+    PauseMenu(SDL_Renderer* r, std::function<void()> fp = nullptr, std::function<void()> UnpauseF = nullptr, std::function<void(Screen*)> fpl = nullptr);
 
     void ReturnToMainMenu();
 };
 
 class CountrySelection : public Screen {
 public:
-    CountrySelection(SDL_Renderer* r, std::function<void()> UnpauseF = NULL, std::function<void(Screen*)> fpl = NULL);
+    CountrySelection(SDL_Renderer* r, std::function<void()> UnpauseF = nullptr, std::function<void(Screen*)> fpl = nullptr);
 
     bool mousepressed;
 

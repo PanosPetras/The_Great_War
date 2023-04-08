@@ -3,9 +3,13 @@
 
 #pragma once
 
+#include "ToggleButton.h"
+
 #include <SDL.h>
-#include <string>
+#include <array>
 #include <functional>
+#include <memory>
+#include <string>
 
 class Screen;
 class Image;
@@ -17,10 +21,8 @@ class PlayerController;
 class UI {
 public:
     //Constructor
-    UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<void(Screen*, std::string)> fpl = NULL);
-
-    //Destructor
-    ~UI();
+    UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<void(Screen*, std::string)> fpl = nullptr);
+    ~UI() = default;
 
     //This is a reference to the main window's renderer
     SDL_Renderer* renderer;
@@ -34,17 +36,17 @@ public:
     //Handles input events
     void Handle_Input(SDL_Event* ev);
 
-    Label* Date;
-    Label* Balance;
+    std::unique_ptr<Label> Date;
+    std::unique_ptr<Label> Balance;
 
-    Image* SpeedBg;
-    Image* SpeedImg;
-    Image* flagbg;
+    std::unique_ptr<Image> SpeedBg;
+    std::unique_ptr<Image> SpeedImg;
+    std::unique_ptr<Image> flagbg;
 
-    Button* Buttons[6];
-    Button* DateButtons[2];
-    ToggleButton* PauseButton;
-    Button* flag;
+    std::array<std::unique_ptr<Button>, 6> Buttons;
+    std::array<std::unique_ptr<Button>, 2> DateButtons;
+    std::unique_ptr<ToggleButton> PauseButton;
+    std::unique_ptr<Button> flag;
 
     PlayerController* PCref;
 

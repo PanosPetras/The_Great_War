@@ -1,8 +1,11 @@
 #include "Color.h"
 
-std::string Color::toString() {
-	char buffer[12];
-	sprintf_s(buffer, "%3u-%3u-%3u", r, g, b);
+#include <iomanip>
+#include <sstream>
 
-	return buffer;
+std::string Color::toString() {
+        std::ostringstream os;
+        os << std::setw(3) << r << '-' <<std::setw(3) << g << '-' << std::setw(3) << b;
+
+	return os.str();
 }

@@ -9,28 +9,18 @@ CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> Unpaus
 	SetupBg("Backgrounds/CountrySelection.png");
 
 	int fontSize = 32, Width = GetWindowWidth(), Height = GetWindowHeight();
-	auto change = std::bind(&CountrySelection::StartGame, this);
 
-	InputDrawableArr[0] = new Button(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", 32, change, SDLK_KP_ENTER);
-	change = std::bind(&CountrySelection::Back, this);
-	InputDrawableArr[1] = new Button(r, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", 32, change, SDLK_ESCAPE);
+	InputDrawableArr[0] = new Button(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", 32, [this]{StartGame();}, SDLK_KP_ENTER);
+	InputDrawableArr[1] = new Button(r, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", 32, [this]{ Back();}, SDLK_ESCAPE);
 
-	change = std::bind(&CountrySelection::SelectGER, this);
-	InputDrawableArr[2] = new Button(r, int(Width * 0.3), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/ger", change);
-	change = std::bind(&CountrySelection::SelectFRA, this);
-	InputDrawableArr[3] = new Button(r, int(Width * 0.3), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/fra", change);
-	change = std::bind(&CountrySelection::SelectENG, this);
-	InputDrawableArr[4] = new Button(r, int(Width * 0.3), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/eng", change);
-	change = std::bind(&CountrySelection::SelectKUK, this);
-	InputDrawableArr[5] = new Button(r, int(Width * 0.3), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/kuk", change);
-	change = std::bind(&CountrySelection::SelectITA, this);
-	InputDrawableArr[6] = new Button(r, int(Width * 0.635), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/ita", change);
-	change = std::bind(&CountrySelection::SelectRUS, this);
-	InputDrawableArr[7] = new Button(r, int(Width * 0.635), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/rus", change);
-	change = std::bind(&CountrySelection::SelectOTT, this);
-	InputDrawableArr[8] = new Button(r, int(Width * 0.635), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/ott", change);
-	change = std::bind(&CountrySelection::SelectUSA, this);
-	InputDrawableArr[9] = new Button(r, int(Width * 0.635), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/usa", change);
+	InputDrawableArr[2] = new Button(r, int(Width * 0.3), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/ger", [this]{ SelectGER();});
+	InputDrawableArr[3] = new Button(r, int(Width * 0.3), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/fra", [this]{ SelectFRA();});
+	InputDrawableArr[4] = new Button(r, int(Width * 0.3), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/eng", [this]{ SelectENG();});
+	InputDrawableArr[5] = new Button(r, int(Width * 0.3), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/kuk", [this]{ SelectKUK();});
+	InputDrawableArr[6] = new Button(r, int(Width * 0.635), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/ita", [this]{ SelectITA();});
+	InputDrawableArr[7] = new Button(r, int(Width * 0.635), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/rus", [this]{ SelectRUS();});
+	InputDrawableArr[8] = new Button(r, int(Width * 0.635), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/ott", [this]{ SelectOTT();});
+	InputDrawableArr[9] = new Button(r, int(Width * 0.635), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/usa", [this]{ SelectUSA();});
 
 	LabelArr[0] = new Label(r, "The World in 1910", int(Height * 0.03), int(Width * 0.43), int(Height * 0.07));
 	LabelArr[1] = new Label(r, "Choose your nation", int(Height * 0.03), int(Width * 0.427), int(Height * 0.13));

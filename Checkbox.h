@@ -13,8 +13,8 @@ class ToggleButton;
 class Checkbox : public InputDrawable {
 public:
 	//Constructor
-	Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, std::function<void(bool)> f = NULL, int keybind = NULL);
-	Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, Anchor anchor, std::function<void(bool)> f = NULL, int keybind = NULL);
+	Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, std::function<void(bool)> f = nullptr, int keybind = 0);
+	Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, Anchor anchor, std::function<void(bool)> f = nullptr, int keybind = 0);
 
 	//Destructor
 	~Checkbox();

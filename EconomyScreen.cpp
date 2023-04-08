@@ -23,12 +23,8 @@ EconomyScreen::EconomyScreen(SDL_Renderer* r, Country* Pl) : Screen(r) {
 	l1 = "Research: ", std::to_string(Pl->policy.TaxRate), "%";
 	LabelArr[4] = new Label(r, l1.c_str(), 32, int(0.4 * Width), int(0.6 * Height));
 
-	auto change = std::bind(&EconomyScreen::OnTaxRateChanged, this);
-
-	InputDrawableArr[0] = new Slider(r, int(0.11 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.TaxRate, change);
-
-	change = std::bind(&EconomyScreen::OnHealthcareChanged, this);
-	InputDrawableArr[1] = new Slider(r, int(0.41 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.Healthcare, change);
+	InputDrawableArr[0] = new Slider(r, int(0.11 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.TaxRate, [this]{OnTaxRateChanged();});
+	InputDrawableArr[1] = new Slider(r, int(0.41 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.Healthcare, [this]{OnHealthcareChanged();});
 
 	LabelArrtop = 5;
 	ImageArrtop = 0;

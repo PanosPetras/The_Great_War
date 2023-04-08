@@ -14,7 +14,7 @@ class Button;
 class MessageBox : public InputDrawable {
 public:
 	//Constructor
-	MessageBox(SDL_Renderer* r, std::string title, std::string message, std::function<void(void*)> f = NULL);
+	MessageBox(SDL_Renderer* r, std::string title, std::string message, std::function<void(void*)> f = nullptr);
 
 	//Destructor
 	~MessageBox();

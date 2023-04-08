@@ -9,8 +9,8 @@
 class Slider : public InputDrawable {
 public:
 	//Constructor, initializes the values
-	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = NULL);
-	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = NULL);
+	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = nullptr);
+	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = nullptr);
 
 	//Destructor, frees up the memory
 	~Slider();

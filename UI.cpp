@@ -16,57 +16,37 @@ UI::UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<voi
 
 	//The country management tabs
 	std::string flg = "Flags/" + str;
-	flag = new Button(r, int(Width * 0.005), int(Height * 0.005), int(Width * 0.05), int(Height * 0.05), flg.c_str(), NULL, SDLK_q);
+	flag = std::make_unique<Button>(r, int(Width * 0.005), int(Height * 0.005), int(Width * 0.05), int(Height * 0.05), flg.c_str(), nullptr, SDLK_q);
 
-	Buttons[0] = new Button(r, int(Width * 0.1), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Technology", NULL, SDLK_w);
+	Buttons[0] = std::make_unique<Button>(r, int(Width * 0.1), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Technology", nullptr, SDLK_w);
 
-	auto change = std::bind(&UI::OpenEconomyScreen, this);
-	Buttons[1] = new Button(r, int(Width * 0.15), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Economy", change, SDLK_e);
+	Buttons[1] = std::make_unique<Button>(r, int(Width * 0.15), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Economy", [this]{OpenEconomyScreen();}, SDLK_e);
 
-	change = std::bind(&UI::OpenIndustryScreen, this);
-	Buttons[3] = new Button(r, int(Width * 0.2), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Industry", change, SDLK_r);
+	Buttons[3] = std::make_unique<Button>(r, int(Width * 0.2), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Industry", [this]{OpenIndustryScreen();}, SDLK_r);
 
-	change = std::bind(&UI::OpenTradeScreen, this);
-	Buttons[2] = new Button(r, int(Width * 0.25), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Trade", change, SDLK_t);
+	Buttons[2] = std::make_unique<Button>(r, int(Width * 0.25), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Trade", [this]{OpenTradeScreen();}, SDLK_t);
 
-	change = std::bind(&UI::OpenDiplomacyScreen, this);
-	Buttons[4] = new Button(r, int(Width * 0.3), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Diplomacy", change, SDLK_y);
+	Buttons[4] = std::make_unique<Button>(r, int(Width * 0.3), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Diplomacy", [this]{OpenDiplomacyScreen();}, SDLK_y);
 
-	Buttons[5] = new Button(r, int(Width * 0.35), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Military", NULL, SDLK_u);
+	Buttons[5] = std::make_unique<Button>(r, int(Width * 0.35), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Military", nullptr, SDLK_u);
 
-	flagbg = new Image(r, "Backgrounds/FlagBg.png", 0, 0, int(Width * 0.06), int(Height * 0.06));
+	flagbg = std::make_unique<Image>(r, "Backgrounds/FlagBg.png", 0, 0, int(Width * 0.06), int(Height * 0.06));
 
 	//The date tab
-	Date = new Label(r, "1/1/1910", 32, int(Width * 0.81), 0);
-	change = std::bind(&UI::DecreaseSpeed, this);
-	DateButtons[0] = new Button(r, int(Width * 0.7), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/Subtract", change, SDLK_KP_MINUS);
+	Date = std::make_unique<Label>(r, "1/1/1910", 32, int(Width * 0.81), 0);
+	DateButtons[0] = std::make_unique<Button>(r, int(Width * 0.7), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/Subtract", [this]{DecreaseSpeed();}, SDLK_KP_MINUS);
 
-	change = std::bind(&UI::IncreaseSpeed, this);
-	DateButtons[1] = new Button(r, int(Width * 0.9), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/Increment", change, SDLK_KP_PLUS);
+	DateButtons[1] = std::make_unique<Button>(r, int(Width * 0.9), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/Increment", [this]{IncreaseSpeed();}, SDLK_KP_PLUS);
 
-	auto change1 = std::bind(&UI::PauseDate, this, std::placeholders::_1);
-	PauseButton = new ToggleButton(r, int(Width * 0.77), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/pause", "Buttons/UI/play", change1, SDLK_SPACE);
+	PauseButton = std::make_unique<ToggleButton>(r, int(Width * 0.77), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/pause", "Buttons/UI/play", [this](bool p){ PauseDate(p); }, SDLK_SPACE);
 
-	SpeedBg = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.7), 0, int(Width * 0.222), int(Height * 0.04));
-	SpeedImg = new Image(r, "Icons/1-Speed.png", int(Width * 0.735), 0, int(Width * 0.022), int(Height * 0.04));
+	SpeedBg = std::make_unique<Image>(r, "Backgrounds/FlagBg.png", int(Width * 0.7), 0, int(Width * 0.222), int(Height * 0.04));
+	SpeedImg = std::make_unique<Image>(r, "Icons/1-Speed.png", int(Width * 0.735), 0, int(Width * 0.022), int(Height * 0.04));
 
 	//A reference to the player controller
 	PCref = PC;
 
 	ChangeScreenFunc = fpl;
-}
-
-UI::~UI(){
-	//Delete all objects from memory before we destroy this object
-	delete flag, flagbg;
-	for (auto btn : Buttons) {
-		delete btn;
-	}
-
-	for (auto btn : DateButtons) {
-		delete btn;
-	}
-	delete PauseButton, Date, SpeedBg, SpeedImg;
 }
 
 void UI::Render(){

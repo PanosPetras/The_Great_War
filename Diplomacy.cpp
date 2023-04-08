@@ -1,8 +1,10 @@
 #include "Diplomacy.h"
 
+#include <stdexcept>
+
 CountryPair::CountryPair(Country* C1, Country* C2) {
 	if (C1 == nullptr || C2 == nullptr) {
-		throw new _exception();
+		throw std::runtime_error("CountryPair got a nullptr");
 	}
 
 	c1 = C1;
