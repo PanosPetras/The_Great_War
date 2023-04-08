@@ -10,8 +10,8 @@ TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::
 }
 
 TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters) {
-    background = new Image(r, "Backgrounds/FlagBg.png", x, y, Width, Height, anchor);
-    textLabel = new Label(r, defaultText, 20, int(x * 1.08), int(y * 1.08), anchor);
+    background = std::make_unique<Image>(r, "Backgrounds/FlagBg.png", x, y, Width, Height, anchor);
+    textLabel = std::make_unique<Label>(r, defaultText, 20, int(x * 1.08), int(y * 1.08), anchor);
     hintLabel = NULL;
 
     text = defaultText;
@@ -24,10 +24,6 @@ TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Ancho
 
 TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint, int maxCharacters) : TextEntry(r, x, y, Width, Height, anchor, defaultText, maxCharacters) {
     ChangeHint(hint);
-}
-
-TextEntry::~TextEntry(){
-    delete background, textLabel, hintLabel;
 }
 
 void TextEntry::HandleInput(const SDL_Event* ev){
@@ -50,13 +46,11 @@ void TextEntry::HandleInput(const SDL_Event* ev){
                     text += char('a' + ev->key.keysym.sym - SDLK_a);
 
                     ChangeText(text);
-                }
-                else if (ev->key.keysym.sym >= SDLK_0 && ev->key.keysym.sym <= SDLK_9) {
+                } else if (ev->key.keysym.sym >= SDLK_0 && ev->key.keysym.sym <= SDLK_9) {
                     text += char('0' + ev->key.keysym.sym - SDLK_0);
 
                     ChangeText(text);
-                }
-                else if (ev->key.keysym.sym == SDLK_BACKSPACE) {
+                } else if (ev->key.keysym.sym == SDLK_BACKSPACE) {
                     if (text.size() > 0) {
                         text.pop_back();
 
@@ -98,9 +92,8 @@ void TextEntry::ChangeHint(std::string hint){
     if (hint != this->hint) {
         if (hintLabel != NULL) {
             hintLabel->ChangeText(hint);
-        }
-        else {
-            hintLabel = new Label(RendererReference, hint, 20, int(x * 1.08), int(y * 1.08));
+        } else {
+            hintLabel = std::make_unique<Label>(RendererReference, hint, 20, int(x * 1.08), int(y * 1.08));
         }
 
         this->hint = hint;

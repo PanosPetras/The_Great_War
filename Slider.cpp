@@ -30,8 +30,7 @@ void Slider::SetActive(bool state) {
 
 	if (state) {
 		SDL_SetTextureColorMod(Marker, 255, 255, 255);
-	}
-	else {
+	} else {
 		bmousepressed = false;
 		SDL_SetTextureColorMod(Marker, 100, 100, 100);
 	}
@@ -65,11 +64,9 @@ void Slider::HandleInput(const SDL_Event* ev){
 			//Move the slider's marker to the appropriate position
 			if (ev->button.x > bg_rect.x + bg_rect.w - marker_rect.h + marker_rect.w / 2) {
 				marker_rect.x = bg_rect.x + bg_rect.w - marker_rect.h;
-			}
-			else if (ev->button.x < bg_rect.x + marker_rect.w / 2) {
+			} else if (ev->button.x < bg_rect.x + marker_rect.w / 2) {
 				marker_rect.x = bg_rect.x;
-			}
-			else {
+			} else {
 				marker_rect.x = ev->button.x - marker_rect.w / 2;
 			}
 

@@ -17,7 +17,7 @@ MainMenu::MainMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void
 	InputDrawableArr[3] = new Button(r, int(Width * 0.22), int(Height * 0.5), int(Width * 0.12), int(Height * 0.06), "Credits", fontSize, [this]{ShowCredits();});
 	InputDrawableArr[4] = new Button(r, int(Width * 0.22), int(Height * 0.6), int(Width * 0.12), int(Height * 0.06), "Quit", fontSize, fp);
 
-	messageBoxes.push_back(new MessageBox(r, "Welcome to The Great War", "Hello dear player, \nWe just want to inform you that the game is still in a beta stage and will certainly have some bugs. Please be tolerant.\nKind regards, \nThe Great War devs.", [this](void* p) { DeleteMessageBox(p);} ));
+	//messageBoxes.push_back(new MessageBox(r, "Welcome to The Great War", "Hello dear player, \nWe just want to inform you that the game is still in a beta stage and will certainly have some bugs. Please be tolerant.\nKind regards, \nThe Great War devs.", [this](void* p) { DeleteMessageBox(p);} ));
 
 	InputDrawableArrtop = 5;
 	LabelArrtop = 0;

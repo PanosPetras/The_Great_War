@@ -4,6 +4,7 @@
 #pragma once
 #include <string>
 #include <functional>
+#include <memory>
 #include "Drawable.h"
 
 class Image;
@@ -20,7 +21,7 @@ public:
     TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint = "", int maxCharacters = 30);
 
     //Destructor
-    ~TextEntry();
+    ~TextEntry() = default;
 
     //Called when received input, to check whether the click was in this button
     void HandleInput(const SDL_Event* ev);
@@ -59,7 +60,7 @@ protected:
     SDL_Renderer* RendererReference;
 
     //The components of the Entry
-    Image* background;
-    Label* textLabel, *hintLabel;
+    std::unique_ptr<Image> background;
+    std::unique_ptr<Label> textLabel, hintLabel;
 };
 #endif

@@ -6,13 +6,8 @@ Checkbox::Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, 
 }
 
 Checkbox::Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, Anchor anchor, std::function<void(bool)> f, int keybind) {
-	toggleButton = new ToggleButton(r, x, y, Height, Height, "Drawable/Checkbox/Ticked Checkbox", "Drawable/Checkbox/Empty Checkbox", f, keybind);
-	label = new Label(r, text, textSize, x + int(Height * (1 + 0.1)), y);
-}
-
-Checkbox::~Checkbox() {
-	delete toggleButton;
-        delete label;
+	toggleButton = std::make_unique<ToggleButton>(r, x, y, Height, Height, "Drawable/Checkbox/Ticked Checkbox", "Drawable/Checkbox/Empty Checkbox", f, keybind);
+	label = std::make_unique<Label>(r, text, textSize, x + int(Height * (1 + 0.1)), y);
 }
 
 void Checkbox::pDraw() {

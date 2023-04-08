@@ -5,11 +5,12 @@
 #include <SDL.h>
 #include <string>
 #include <functional>
+#include <memory>
+#include "Button.h"
 #include "Drawable.h"
 
 class Image;
 class Label;
-class Button;
 
 class MessageBox : public InputDrawable {
 public:
@@ -17,20 +18,19 @@ public:
 	MessageBox(SDL_Renderer* r, std::string title, std::string message, std::function<void(void*)> f = nullptr);
 
 	//Destructor
-	~MessageBox();
+	~MessageBox() = default;
 
 	//Called when received input
 	void HandleInput(const SDL_Event* ev);
 
 private:
-
 	//Render the message box on screen
 	void pDraw();
 
-	Image* background;
-	Label* title;
-	Label* text;
-	Button* okButton;
+	std::unique_ptr<Image> background;
+	std::unique_ptr<Label> title;
+	std::unique_ptr<Label> text;
+	std::unique_ptr<Button> okButton;
 };
 
 #endif

@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include <string>
 #include <functional>
+#include <memory>
 #include "Drawable.h"
 
 class Label;
@@ -17,7 +18,7 @@ public:
 	Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, Anchor anchor, std::function<void(bool)> f = nullptr, int keybind = 0);
 
 	//Destructor
-	~Checkbox();
+	~Checkbox() = default;
 
 	//Called when received input, to check whether the click was in this button
 	void HandleInput(const SDL_Event* ev);
@@ -57,8 +58,8 @@ protected:
 	void pDraw();
 
 	//The Drawables that make up this Drawable
-	ToggleButton* toggleButton;
-	Label* label;
+	std::unique_ptr<ToggleButton> toggleButton;
+	std::unique_ptr<Label> label;
 };
 
 #endif
