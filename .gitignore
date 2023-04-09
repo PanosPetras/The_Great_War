@@ -361,6 +361,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Linux binaries
+build/
 The_Great_War
 asan
 tsan

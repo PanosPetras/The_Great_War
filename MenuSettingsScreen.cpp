@@ -9,11 +9,8 @@ MenuSettingsScreen::MenuSettingsScreen(SDL_Renderer* r, std::function<void()> fp
 	int Width = GetWindowWidth(), Height = GetWindowHeight();
 	auto change = std::bind(&MenuSettingsScreen::Back, this);
 
-	InputDrawableArr[0] = new Button(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", 32, change, SDLK_ESCAPE);
+	AddDrawable<Button>(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", 32, change, SDLK_ESCAPE);
 
-	InputDrawableArrtop = 1;
-	LabelArrtop = 0;
-	ImageArrtop = 0;
 	ChangeScreenFunc = fpl;
 	QuitFunc = fp;
 }

@@ -10,45 +10,40 @@ CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> Unpaus
 
 	int fontSize = 32, Width = GetWindowWidth(), Height = GetWindowHeight();
 
-	InputDrawableArr[0] = new Button(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", 32, [this]{StartGame();}, SDLK_KP_ENTER);
-	InputDrawableArr[1] = new Button(r, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", 32, [this]{ Back();}, SDLK_ESCAPE);
+	AddDrawable<Button>(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", 32, [this]{StartGame();}, SDLK_KP_ENTER);
+	AddDrawable<Button>(r, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", 32, [this]{ Back();}, SDLK_ESCAPE);
 
-	InputDrawableArr[2] = new Button(r, int(Width * 0.3), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/ger", [this]{ SelectGER();});
-	InputDrawableArr[3] = new Button(r, int(Width * 0.3), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/fra", [this]{ SelectFRA();});
-	InputDrawableArr[4] = new Button(r, int(Width * 0.3), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/eng", [this]{ SelectENG();});
-	InputDrawableArr[5] = new Button(r, int(Width * 0.3), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/kuk", [this]{ SelectKUK();});
-	InputDrawableArr[6] = new Button(r, int(Width * 0.635), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/ita", [this]{ SelectITA();});
-	InputDrawableArr[7] = new Button(r, int(Width * 0.635), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/rus", [this]{ SelectRUS();});
-	InputDrawableArr[8] = new Button(r, int(Width * 0.635), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/ott", [this]{ SelectOTT();});
-	InputDrawableArr[9] = new Button(r, int(Width * 0.635), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/usa", [this]{ SelectUSA();});
+	AddDrawable<Button>(r, int(Width * 0.3), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/ger", [this]{ SelectGER();});
+	AddDrawable<Button>(r, int(Width * 0.3), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/fra", [this]{ SelectFRA();});
+	AddDrawable<Button>(r, int(Width * 0.3), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/eng", [this]{ SelectENG();});
+	AddDrawable<Button>(r, int(Width * 0.3), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/kuk", [this]{ SelectKUK();});
+	AddDrawable<Button>(r, int(Width * 0.635), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/ita", [this]{ SelectITA();});
+	AddDrawable<Button>(r, int(Width * 0.635), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/rus", [this]{ SelectRUS();});
+	AddDrawable<Button>(r, int(Width * 0.635), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/ott", [this]{ SelectOTT();});
+	AddDrawable<Button>(r, int(Width * 0.635), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/usa", [this]{ SelectUSA();});
 
-	LabelArr[0] = new Label(r, "The World in 1910", int(Height * 0.03), int(Width * 0.43), int(Height * 0.07));
-	LabelArr[1] = new Label(r, "Choose your nation", int(Height * 0.03), int(Width * 0.427), int(Height * 0.13));
-	LabelArr[2] = new Label(r, "German Empire", int(Height * 0.023), int(Width * 0.37), int(Height * 0.21));
-	LabelArr[3] = new Label(r, "French Republic", int(Height * 0.023), int(Width * 0.37), int(Height * 0.31));
-	LabelArr[4] = new Label(r, "British Empire", int(Height * 0.023), int(Width * 0.37), int(Height * 0.41));
-	LabelArr[5] = new Label(r, "Austria-Hungary", int(Height * 0.023), int(Width * 0.37), int(Height * 0.51));
-	LabelArr[6] = new Label(r, "United States", int(Height * 0.023), int(Width * 0.55), int(Height * 0.21));
-	LabelArr[7] = new Label(r, "Kingdom of Italy", int(Height * 0.023), int(Width * 0.53), int(Height * 0.31));
-	LabelArr[8] = new Label(r, "Russian Empire", int(Height * 0.023), int(Width * 0.538), int(Height * 0.41));
-	LabelArr[9] = new Label(r, "Ottoman Empire", int(Height * 0.023), int(Width * 0.53), int(Height * 0.51));
+	AddLabel<Label>(r, "The World in 1910", int(Height * 0.03), int(Width * 0.43), int(Height * 0.07));
+	AddLabel<Label>(r, "Choose your nation", int(Height * 0.03), int(Width * 0.427), int(Height * 0.13));
+	AddLabel<Label>(r, "German Empire", int(Height * 0.023), int(Width * 0.37), int(Height * 0.21));
+	AddLabel<Label>(r, "French Republic", int(Height * 0.023), int(Width * 0.37), int(Height * 0.31));
+	AddLabel<Label>(r, "British Empire", int(Height * 0.023), int(Width * 0.37), int(Height * 0.41));
+	AddLabel<Label>(r, "Austria-Hungary", int(Height * 0.023), int(Width * 0.37), int(Height * 0.51));
+	AddLabel<Label>(r, "United States", int(Height * 0.023), int(Width * 0.55), int(Height * 0.21));
+	AddLabel<Label>(r, "Kingdom of Italy", int(Height * 0.023), int(Width * 0.53), int(Height * 0.31));
+	AddLabel<Label>(r, "Russian Empire", int(Height * 0.023), int(Width * 0.538), int(Height * 0.41));
+	AddLabel<Label>(r, "Ottoman Empire", int(Height * 0.023), int(Width * 0.53), int(Height * 0.51));
 
-	ImageArr[0] = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.428), int(Height * 0.07), int(Width * 0.14), int(Height * 0.04));
-	ImageArr[1] = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.425), int(Height * 0.13), int(Width * 0.146), int(Height * 0.04));
-	ImageArr[2] = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.296), int(Height * 0.195), int(Width * 0.069), int(Height * 0.072));
-	ImageArr[3] = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.296), int(Height * 0.295), int(Width * 0.069), int(Height * 0.072));
-	ImageArr[4] = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.296), int(Height * 0.395), int(Width * 0.069), int(Height * 0.072));
-	ImageArr[5] = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.296), int(Height * 0.495), int(Width * 0.069), int(Height * 0.072));
-	ImageArr[6] = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.631), int(Height * 0.195), int(Width * 0.069), int(Height * 0.072));
-	ImageArr[7] = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.631), int(Height * 0.295), int(Width * 0.069), int(Height * 0.072));
-	ImageArr[8] = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.631), int(Height * 0.395), int(Width * 0.069), int(Height * 0.072));
-	ImageArr[9] = new Image(r, "Backgrounds/FlagBg.png", int(Width * 0.631), int(Height * 0.495), int(Width * 0.069), int(Height * 0.072));
-
-	ImageArr[10] = new Image(r, "Icons/right.png", -Width, -Height, 64 * Width / 1920, 64 * Height / 1080);
-
-	InputDrawableArrtop = 10;
-	LabelArrtop = 10;
-	ImageArrtop = 11;
+	AddImage<Image>(r, "Backgrounds/FlagBg.png", int(Width * 0.428), int(Height * 0.07), int(Width * 0.14), int(Height * 0.04));
+	AddImage<Image>(r, "Backgrounds/FlagBg.png", int(Width * 0.425), int(Height * 0.13), int(Width * 0.146), int(Height * 0.04));
+	AddImage<Image>(r, "Backgrounds/FlagBg.png", int(Width * 0.296), int(Height * 0.195), int(Width * 0.069), int(Height * 0.072));
+	AddImage<Image>(r, "Backgrounds/FlagBg.png", int(Width * 0.296), int(Height * 0.295), int(Width * 0.069), int(Height * 0.072));
+	AddImage<Image>(r, "Backgrounds/FlagBg.png", int(Width * 0.296), int(Height * 0.395), int(Width * 0.069), int(Height * 0.072));
+	AddImage<Image>(r, "Backgrounds/FlagBg.png", int(Width * 0.296), int(Height * 0.495), int(Width * 0.069), int(Height * 0.072));
+	AddImage<Image>(r, "Backgrounds/FlagBg.png", int(Width * 0.631), int(Height * 0.195), int(Width * 0.069), int(Height * 0.072));
+	AddImage<Image>(r, "Backgrounds/FlagBg.png", int(Width * 0.631), int(Height * 0.295), int(Width * 0.069), int(Height * 0.072));
+	AddImage<Image>(r, "Backgrounds/FlagBg.png", int(Width * 0.631), int(Height * 0.395), int(Width * 0.069), int(Height * 0.072));
+	AddImage<Image>(r, "Backgrounds/FlagBg.png", int(Width * 0.631), int(Height * 0.495), int(Width * 0.069), int(Height * 0.072));
+	AddImage<Image>(r, "Icons/right.png", -Width, -Height, 64 * Width / 1920, 64 * Height / 1080);
 
 	ChangeScreenFunc = fpl;
 	mousepressed = false;
