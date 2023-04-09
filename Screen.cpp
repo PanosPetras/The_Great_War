@@ -3,24 +3,14 @@
 #include "Label.h"
 #include "Image.h"
 
+#include <iostream>
+
 Screen::Screen(SDL_Renderer* r){
 	renderer = r;
 }
 
 Screen::~Screen(){
 	//Delete all items created by the screen in order to avoid memory leaks
-	for (int x = 0; x < InputDrawableArrtop; x++) {
-		delete InputDrawableArr[x];
-	}
-
-	for (int x = 0; x < LabelArrtop; x++) {
-		delete LabelArr[x];
-	}
-
-	for (int x = 0; x < ImageArrtop; x++) {
-		delete ImageArr[x];
-	}
-
 	for (auto msgb : messageBoxes) {
 		delete msgb;
 	}
@@ -47,18 +37,18 @@ void Screen::Render(){
 	}
 
 	//Calls the render method for every active image
-	for (int x = 0; x < ImageArrtop; x++) {
-		ImageArr[x]->Draw();
+	for (auto& image : ImageArr) {
+		image->Draw();
 	}
 
 	//Calls the render method for every active button
-	for (int x = 0; x < InputDrawableArrtop; x++) {
-		InputDrawableArr[x]->Draw();
+        for(auto& drawable : InputDrawableArr) {
+		drawable->Draw();
 	}
 
 	//Calls the render method for every active label
-	for (int x = 0; x < LabelArrtop; x++) {
-		LabelArr[x]->Draw();
+	for (auto& label : LabelArr) {
+		label->Draw();
 	}
 
 	for (auto msgb : messageBoxes) {
@@ -67,8 +57,8 @@ void Screen::Render(){
 }
 
 void Screen::Handle_Input(SDL_Event* ev){
-	for (int x = 0; x < InputDrawableArrtop; x++) {
-		InputDrawableArr[x]->HandleInput(ev);
+        for(auto& drawable : InputDrawableArr) {
+		drawable->HandleInput(ev);
 	}
 
 	for (auto msgb : messageBoxes) {
