@@ -5,28 +5,29 @@ AOBJ = $(SRC:%.cpp=build/%.asan.o)
 TOBJ = $(SRC:%.cpp=build/%.tsan.o)
 SDLLIBS = $(shell pkg-config --cflags --libs SDL2_image SDL2_ttf SDL2_mixer sdl2)
 
-CMD = $(CXX) -std=c++20 -o $@ $^ $(SDLLIBS) -g
+CMD = $(CXX) -c -std=c++20 $(SDLLIBS) -g $< -o $@ -Wall -Wextra -pedantic-errors
+LCMD = $(CXX) -std=c++20 -o $@ $^ $(SDLLIBS) -g
 
 The_Great_War: $(OBJ)
-	$(CMD)
+	$(LCMD)
 
 asan: $(AOBJ)
-	$(CMD) -fsanitize=address,undefined,leak
+	$(LCMD) -fsanitize=address,undefined,leak
 
 tsan: $(TOBJ)
-	$(CMD) -fsanitize=thread
+	$(LCMD) -fsanitize=thread
 
 valgrind: The_Great_War
 	valgrind --show-error-list=yes --track-origins=yes --leak-check=full --show-leak-kinds=all ./$<
 
 build/%.o : %.cpp Makefile $(HEADERS) | build
-	$(CXX) -c -std=c++20 $(SDLLIBS) -g $< -o $@
+	$(CMD)
 
 build/%.asan.o : %.cpp Makefile $(HEADERS) | build
-	$(CXX) -c -std=c++20 $(SDLLIBS) -g -fsanitize=address,undefined,leak $< -o $@
+	$(CMD) -fsanitize=address,undefined,leak
 
 build/%.tsan.o : %.cpp Makefile $(HEADERS) | build
-	$(CXX) -c -std=c++20 $(SDLLIBS) -g -fsanitize=thread $< -o $@
+	$(CMD) -fsanitize=thread
 
 build:
 	mkdir -p build

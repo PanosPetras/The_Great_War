@@ -59,7 +59,7 @@ private:
 
     int stateCount;
     std::unordered_map<std::string, State*> ownedStates;
-    
+
     Technology technology;
 
     //The diplomatic requests that a country receives

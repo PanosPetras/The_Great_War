@@ -34,7 +34,7 @@ public:
     void Render();
 
     //Handles input events
-    void Handle_Input(SDL_Event* ev);
+    void Handle_Input(SDL_Event& ev);
 
     std::unique_ptr<Label> Date;
     std::unique_ptr<Label> Balance;

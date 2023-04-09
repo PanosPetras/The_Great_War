@@ -21,7 +21,7 @@ public:
 	~Checkbox() = default;
 
 	//Called when received input, to check whether the click was in this button
-	void HandleInput(const SDL_Event* ev);
+	void HandleInput(const SDL_Event& ev) override;
 
 	//Change the button's position
 	void ChangePosition(int x, int y, int Height);

@@ -26,13 +26,13 @@ TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Ancho
     ChangeHint(hint);
 }
 
-void TextEntry::HandleInput(const SDL_Event* ev){
+void TextEntry::HandleInput(const SDL_Event& ev){
     if (active) {
-        if (ev->type == SDL_MOUSEBUTTONDOWN) {
-            if (ev->button.x >= background->draw_rect.x &&
-                ev->button.x <= (background->draw_rect.x + background->draw_rect.w) &&
-                ev->button.y >= background->draw_rect.y &&
-                ev->button.y <= (background->draw_rect.y + background->draw_rect.h)) {
+        if (ev.type == SDL_MOUSEBUTTONDOWN) {
+            if (ev.button.x >= background->draw_rect.x &&
+                ev.button.x <= (background->draw_rect.x + background->draw_rect.w) &&
+                ev.button.y >= background->draw_rect.y &&
+                ev.button.y <= (background->draw_rect.y + background->draw_rect.h)) {
                 focused = true;
             }
             else {
@@ -41,16 +41,16 @@ void TextEntry::HandleInput(const SDL_Event* ev){
         }
 
         if (focused) {
-            if (ev->type == SDL_KEYDOWN) {
-                if (ev->key.keysym.sym >= SDLK_a && ev->key.keysym.sym <= SDLK_z) {
-                    text += char('a' + ev->key.keysym.sym - SDLK_a);
+            if (ev.type == SDL_KEYDOWN) {
+                if (ev.key.keysym.sym >= SDLK_a && ev.key.keysym.sym <= SDLK_z) {
+                    text += char('a' + ev.key.keysym.sym - SDLK_a);
 
                     ChangeText(text);
-                } else if (ev->key.keysym.sym >= SDLK_0 && ev->key.keysym.sym <= SDLK_9) {
-                    text += char('0' + ev->key.keysym.sym - SDLK_0);
+                } else if (ev.key.keysym.sym >= SDLK_0 && ev.key.keysym.sym <= SDLK_9) {
+                    text += char('0' + ev.key.keysym.sym - SDLK_0);
 
                     ChangeText(text);
-                } else if (ev->key.keysym.sym == SDLK_BACKSPACE) {
+                } else if (ev.key.keysym.sym == SDLK_BACKSPACE) {
                     if (text.size() > 0) {
                         text.pop_back();
 

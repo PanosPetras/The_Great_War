@@ -46,6 +46,7 @@
     <ClCompile Include="MainProg.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Country.cpp" />
+    <ClCompile Include="SDL_ctx.cpp" />
     <ClCompile Include="SDL_ColorDetection.cpp" />
     <ClCompile Include="Slider.cpp" />
     <ClCompile Include="State.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="Screen.h" />
+    <ClInclude Include="SDL_ctx.h" />
     <ClInclude Include="Slider.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Country.h" />

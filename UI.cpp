@@ -19,15 +19,10 @@ UI::UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<voi
 	flag = std::make_unique<Button>(r, int(Width * 0.005), int(Height * 0.005), int(Width * 0.05), int(Height * 0.05), flg.c_str(), nullptr, SDLK_q);
 
 	Buttons[0] = std::make_unique<Button>(r, int(Width * 0.1), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Technology", nullptr, SDLK_w);
-
 	Buttons[1] = std::make_unique<Button>(r, int(Width * 0.15), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Economy", [this]{OpenEconomyScreen();}, SDLK_e);
-
 	Buttons[3] = std::make_unique<Button>(r, int(Width * 0.2), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Industry", [this]{OpenIndustryScreen();}, SDLK_r);
-
 	Buttons[2] = std::make_unique<Button>(r, int(Width * 0.25), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Trade", [this]{OpenTradeScreen();}, SDLK_t);
-
 	Buttons[4] = std::make_unique<Button>(r, int(Width * 0.3), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Diplomacy", [this]{OpenDiplomacyScreen();}, SDLK_y);
-
 	Buttons[5] = std::make_unique<Button>(r, int(Width * 0.35), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Military", nullptr, SDLK_u);
 
 	flagbg = std::make_unique<Image>(r, "Backgrounds/FlagBg.png", 0, 0, int(Width * 0.06), int(Height * 0.06));
@@ -71,7 +66,7 @@ void UI::Render(){
 	PauseButton->Draw();
 }
 
-void UI::Handle_Input(SDL_Event* ev){
+void UI::Handle_Input(SDL_Event& ev){
 	//Handles inputs for buttons
 	flag->HandleInput(ev);
 
@@ -98,7 +93,7 @@ void UI::DecreaseSpeed(){
 	SpeedImg->ChangeImage(str.c_str());
 }
 
-void UI::PauseDate(bool _){
+void UI::PauseDate(bool){
 	PCref->Pause();
 }
 

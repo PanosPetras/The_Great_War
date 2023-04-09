@@ -70,7 +70,7 @@ void StatePreview::Render(){
 	}
 }
 
-void StatePreview::Handle_Input(SDL_Event* ev){
+void StatePreview::Handle_Input(SDL_Event& ev){
 	if (OFS) {
 		OFS->Handle_Input(ev);
 	}

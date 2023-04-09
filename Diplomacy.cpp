@@ -105,14 +105,6 @@ bool Relations::GetIfHasEmbargo(std::string Instigator) {
 	return embargoes.find(Instigator) != embargoes.end();
 }
 
-Diplomacy::Diplomacy() {
-	relations = new std::unordered_map<CountryPair, Relations>();
-}
-
-Diplomacy::~Diplomacy() {
-	delete relations;
-}
-
 Request::Request(RequestType id, int senderIndex, std::string senderTag, Relations& relations) {
 	this->id = id;
 	index = senderIndex;

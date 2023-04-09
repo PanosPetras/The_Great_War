@@ -47,27 +47,27 @@ void Slider::pDraw(){
 	SDL_RenderCopy(renderer, Marker, NULL, &marker_rect);
 }
 
-void Slider::HandleInput(const SDL_Event* ev){
+void Slider::HandleInput(const SDL_Event& ev){
 	if (active) {
 		//Check if the user is handling the slider
-		if (ev->button.button == SDL_BUTTON_LEFT && ev->type == SDL_MOUSEBUTTONDOWN && bmousepressed == false) {
-			if (ev->button.x >= marker_rect.x && ev->button.x <= marker_rect.x + marker_rect.w && ev->button.y > marker_rect.y && ev->button.y < marker_rect.h + marker_rect.y) {
+		if (ev.button.button == SDL_BUTTON_LEFT && ev.type == SDL_MOUSEBUTTONDOWN && bmousepressed == false) {
+			if (ev.button.x >= marker_rect.x && ev.button.x <= marker_rect.x + marker_rect.w && ev.button.y > marker_rect.y && ev.button.y < marker_rect.h + marker_rect.y) {
 				bmousepressed = true;
 			}
 		}
-		else if (ev->button.button == SDL_BUTTON_LEFT && ev->type == SDL_MOUSEBUTTONUP && bmousepressed == true) {
+		else if (ev.button.button == SDL_BUTTON_LEFT && ev.type == SDL_MOUSEBUTTONUP && bmousepressed == true) {
 			bmousepressed = false;
 		}
 
 		//If the user is handling the slider....
-		if (bmousepressed == true && marker_rect.x != ev->button.x) {
+		if (bmousepressed == true && marker_rect.x != ev.button.x) {
 			//Move the slider's marker to the appropriate position
-			if (ev->button.x > bg_rect.x + bg_rect.w - marker_rect.h + marker_rect.w / 2) {
+			if (ev.button.x > bg_rect.x + bg_rect.w - marker_rect.h + marker_rect.w / 2) {
 				marker_rect.x = bg_rect.x + bg_rect.w - marker_rect.h;
-			} else if (ev->button.x < bg_rect.x + marker_rect.w / 2) {
+			} else if (ev.button.x < bg_rect.x + marker_rect.w / 2) {
 				marker_rect.x = bg_rect.x;
 			} else {
-				marker_rect.x = ev->button.x - marker_rect.w / 2;
+				marker_rect.x = ev.button.x - marker_rect.w / 2;
 			}
 
 			//Calculate the value of the slider

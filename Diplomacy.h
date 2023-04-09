@@ -11,9 +11,9 @@
 
 #define RELATIONS_LIMIT 300
 
-typedef enum RequestType {
+enum RequestType {
     alliance, tradeDeal, peaceTreaty
-} RequestType;
+};
 
 struct CountryPair {
 public:
@@ -91,10 +91,7 @@ private:
 
 class Diplomacy {
 public:
-    Diplomacy();
-    ~Diplomacy();
-
-    std::unordered_map<CountryPair, Relations>* relations;
+    std::unordered_map<CountryPair, Relations> relations;
     std::vector<War> wars;
 };
 

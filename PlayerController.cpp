@@ -287,7 +287,7 @@ void PlayerController::InitializeCountries(VectorSmartPointer& names, VectorSmar
 	for (int c1 = 0; c1 < 58; c1++) {
 		for (int c2 = c1 + 1; c2 < 58; c2++) {
 			std::pair<CountryPair, Relations> cp(CountryPair(CountriesArr[c1], CountriesArr[c2]), Relations(100));
-			diplo.relations->insert(cp);
+			diplo.relations.insert(cp);
 		}
 	}
 }

@@ -20,6 +20,7 @@ class Screen{
 public:
 	//Constructor
 	Screen(SDL_Renderer* r);
+	Screen(SDL_Renderer* r, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf);
 
 	//Destructor
 	virtual ~Screen();
@@ -28,7 +29,7 @@ public:
 	virtual void Render();
 
 	//Handles input events
-	virtual void Handle_Input(SDL_Event* ev);
+	virtual void Handle_Input(SDL_Event& ev);
 
 	void DeleteMessageBox(void* p);
 
@@ -66,19 +67,26 @@ protected:
         LabelArr.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
     }
 
-	std::vector<MessageBox*> messageBoxes;
+        template<class T, class... Args>
+        void AddMessageBox(Args&&... args) {
+            messageBoxes.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
+        }
 	
-	bool bHasBackground;
+	bool bHasBackground = false;
 
 	//Stores the image's texture
-	SDL_Texture* texture;
+	SDL_Texture* texture = nullptr;
 
-	std::function<void(std::unique_ptr<Screen>)> ChangeScreenFunc;
 	std::function<void()> QuitFunc;
+	std::function<void(std::unique_ptr<Screen>)> ChangeScreenFunc;
 
 	//Sets the screen's background
 	virtual void RenderBackground();
 	
 	void SetupBg(const char* bg);
+
+private:
+	std::vector<std::unique_ptr<MessageBox>> messageBoxes;
+
 };
 #endif

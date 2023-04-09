@@ -6,22 +6,16 @@
 #include "Label.h"
 
 EconomyScreen::EconomyScreen(SDL_Renderer* r, Country* Pl) : Screen(r) {
-	bHasBackground = true;
 	SetupBg("Backgrounds/Industry.png");
 	Player = Pl;
 
 	int Width = GetWindowWidth(), Height = GetWindowHeight();
 
-	std::string l1 = "Current Funds: " + std::to_string(Pl->Stock.Money);
-	AddLabel<Label>(r, l1.c_str(), 32, int(0.1 * Width), int(0.1 * Height));
-	l1 = "Tax Rate: " + std::to_string(Pl->policy.TaxRate) + "%";
-	AddLabel<Label>(r, l1.c_str(), 32, int(0.1 * Width), int(0.2 * Height));
-	l1 = "Healthcare: "+ std::to_string(Pl->policy.Healthcare) + "%";
-	AddLabel<Label>(r, l1.c_str(), 32, int(0.4 * Width), int(0.2 * Height));
-	l1 = "Education: ", std::to_string(Pl->policy.TaxRate), "%";
-	AddLabel<Label>(r, l1.c_str(), 32, int(0.4 * Width), int(0.4 * Height));
-	l1 = "Research: ", std::to_string(Pl->policy.TaxRate), "%";
-	AddLabel<Label>(r, l1.c_str(), 32, int(0.4 * Width), int(0.6 * Height));
+	AddLabel<Label>(r, "Current Funds: " + std::to_string(Pl->Stock.Money), 32, int(0.1 * Width), int(0.1 * Height));
+	AddLabel<Label>(r, "Tax Rate: " + std::to_string(Pl->policy.TaxRate) + '%', 32, int(0.1 * Width), int(0.2 * Height));
+	AddLabel<Label>(r, "Healthcare: " + std::to_string(Pl->policy.Healthcare) + '%', 32, int(0.4 * Width), int(0.2 * Height));
+	AddLabel<Label>(r, "Education: " + std::to_string(Pl->policy.TaxRate) + '%', 32, int(0.4 * Width), int(0.4 * Height));
+	AddLabel<Label>(r, "Research: " + std::to_string(Pl->policy.TaxRate) + '%', 32, int(0.4 * Width), int(0.6 * Height));
 
 	AddDrawable<Slider>(r, int(0.11 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.TaxRate, [this]{OnTaxRateChanged();});
 	AddDrawable<Slider>(r, int(0.41 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.Healthcare, [this]{OnHealthcareChanged();});
