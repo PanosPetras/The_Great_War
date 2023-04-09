@@ -1,15 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#pragma once
+#include "Screen.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
-#include <stdio.h>
-
-class Screen;
 
 class MainWindow {
 public:
@@ -34,7 +31,7 @@ public:
     It deletes the already existing one
     And sets the screen that is passed as 
     a parameter as the current active screen*/
-    void ChangeScreen(Screen* NewScreen);
+    void ChangeScreen(std::unique_ptr<Screen> NewScreen);
 
 public:
     //The game's main window
@@ -56,6 +53,6 @@ public:
     int Height;
 
     //Stores a pointer to the active screen
-    Screen* scr;
+    std::unique_ptr<Screen> scr;
 };
 #endif

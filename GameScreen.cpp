@@ -9,7 +9,7 @@
 
 #include <cmath>
 
-GameScreen::GameScreen(SDL_Renderer* r, const char* tag,  std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r) {
+GameScreen::GameScreen(SDL_Renderer* r, const char* tag,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
 	bHasBackground = true;
 	bIsPaused = false;
 	bZoom = true;
@@ -25,13 +25,10 @@ GameScreen::GameScreen(SDL_Renderer* r, const char* tag,  std::function<void()> 
 	QuitFunc = fp;
 
 	PC = new PlayerController(renderer, tag);
-	auto change = std::bind(&GameScreen::ChangeActiveScreen, this, std::placeholders::_1, std::placeholders::_2);
-	overlay = new UI(r, tag, PC, change);
+	overlay = new UI(r, tag, PC, [this](std::unique_ptr<Screen> scr, std::string ID) { ChangeActiveScreen(std::move(scr), std::move(ID)); });
 
 	StateViewingScreen = nullptr;
 	bHasStatePreview = false;
-
-	bHasActiveScreen = false;
 }
 
 GameScreen::~GameScreen(){
@@ -42,16 +39,13 @@ GameScreen::~GameScreen(){
 	if (bIsPaused == true) {
 		delete PM;
 	}
-	if (bHasActiveScreen == true) {
-		delete ActiveScreen;
-	}
 }
 
 void GameScreen::Pause() {
 	if (bHasStatePreview == true) {
 		CloseScreenPreview();
 		//overlay->Buttons[0]->Playsound();
-	} else if (bHasActiveScreen == true){
+	} else if (bHasActiveScreen() == true){
 		CloseActiveScreen();
 		overlay->Buttons[0]->Playsound();
 	} else {
@@ -86,7 +80,7 @@ void GameScreen::RenderBackground() {
 
 void GameScreen::Render() {
 	//Calls the method responsible for rendering the background
-	if (bHasActiveScreen == false) {
+	if (bHasActiveScreen() == false) {
 		this->RenderBackground();
 	} else {
 		if (/*overlay->bDateUpdated == true && */ScreenID == "IndustryScreen") {
@@ -120,9 +114,9 @@ void GameScreen::Render() {
 				PC->CountriesArr.at(PC->player_index)->Stock.Paper,
 				PC->CountriesArr.at(PC->player_index)->Stock.Liquor,
 				PC->CountriesArr.at(PC->player_index)->Stock.Airship };
-			static_cast<IndustryScreen*>(ActiveScreen)->UpdateText(Res);
+			static_cast<IndustryScreen*>(ActiveScreen.get())->UpdateText(Res);
 		} else if (ScreenID == "EconomyScreen") {
-			static_cast<EconomyScreen*>(ActiveScreen)->Update();
+			static_cast<EconomyScreen*>(ActiveScreen.get())->Update();
 		}
 
 		ActiveScreen->Render();
@@ -163,13 +157,13 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 		}
 	}
 
-	if (bHasActiveScreen == true) {
+	if (bHasActiveScreen() == true) {
 		ActiveScreen->Handle_Input(ev);
 	}
 
 	//Handle clicks on the map
 	if (ev->type == SDL_MOUSEBUTTONDOWN && ev->button.button == SDL_BUTTON_LEFT) {
-		if (bHasActiveScreen == false &&
+		if (bHasActiveScreen() == false &&
 			flag == false &&
 			ev->button.y > GetWindowHeight() * 0.07 &&
 			bIsPaused == false && bHasStatePreview == false) {
@@ -246,7 +240,7 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 }
 
 void GameScreen::HandleMouseMovement(SDL_Event* ev) {
-	if (bHasActiveScreen == false) {
+	if (bHasActiveScreen() == false) {
 		/*Checks whether the mouse is pressed or not so that we
 		can move the camera when it is pressed*/
 		if (ev->type == SDL_MOUSEBUTTONDOWN && ev->button.button == SDL_BUTTON_MIDDLE && mousepressed == false) {
@@ -334,23 +328,19 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 	}
 }
 
-void GameScreen::ChangeActiveScreen(Screen* NewScreen, std::string ID){
-	if (bHasActiveScreen == false) {
-		bHasActiveScreen = true;
+void GameScreen::ChangeActiveScreen(std::unique_ptr<Screen> NewScreen, std::string ID){
+	if (bHasActiveScreen() == false) {
 		if (bHasStatePreview == true) {
 			CloseScreenPreview();
 		}
-	} else {
-		delete ActiveScreen;
 	}
 	ScreenID = ID;
-	ActiveScreen = NewScreen;
+	ActiveScreen = std::move(NewScreen);
 }
 
 void GameScreen::CloseActiveScreen(){
-	if (bHasActiveScreen == true) {
-		bHasActiveScreen = false;
-		delete ActiveScreen;
+	if (bHasActiveScreen() == true) {
+                ActiveScreen.reset();
 		ScreenID = "0";
 	}
 }

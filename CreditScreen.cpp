@@ -3,7 +3,7 @@
 #include "Button.h"
 #include "Label.h"
 
-CreditScreen::CreditScreen(SDL_Renderer* r, std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r) {
+CreditScreen::CreditScreen(SDL_Renderer* r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
 	bHasBackground = true;
 	SetupBg("Backgrounds/OldMenu.png");
 
@@ -18,6 +18,5 @@ CreditScreen::CreditScreen(SDL_Renderer* r, std::function<void()> fp, std::funct
 }
 
 void CreditScreen::Back() {
-	MainMenu* CS = new MainMenu(renderer, QuitFunc, ChangeScreenFunc);
-	ChangeScreenFunc(CS);
+	ChangeScreenFunc(std::make_unique<MainMenu>(renderer, QuitFunc, ChangeScreenFunc));
 }

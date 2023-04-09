@@ -3,7 +3,7 @@
 #include "MessageBox.h"
 #include "Button.h"
 
-MainMenu::MainMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void(Screen*)> fpl) : Screen(r) {
+MainMenu::MainMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
 	bHasBackground = true;
 	SetupBg("Backgrounds/OldMenu.png");
 
@@ -24,16 +24,13 @@ MainMenu::MainMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void
 }
 
 void MainMenu::ShowCredits(){
-	CreditScreen* CS = new CreditScreen(renderer, QuitFunc, ChangeScreenFunc);
-	ChangeScreenFunc(CS);
+	ChangeScreenFunc(std::make_unique<CreditScreen>(renderer, QuitFunc, ChangeScreenFunc));
 }
 
 void MainMenu::ShowSettings() {
-	MenuSettingsScreen* CS = new MenuSettingsScreen(renderer, QuitFunc, ChangeScreenFunc);
-	ChangeScreenFunc(CS);
+	ChangeScreenFunc(std::make_unique<MenuSettingsScreen>(renderer, QuitFunc, ChangeScreenFunc));
 }
 
 void MainMenu::StartGame() {
-	CountrySelection* GS = new CountrySelection(renderer, QuitFunc, ChangeScreenFunc);
-	ChangeScreenFunc(GS);
+	ChangeScreenFunc(std::make_unique<CountrySelection>(renderer, QuitFunc, ChangeScreenFunc));
 }

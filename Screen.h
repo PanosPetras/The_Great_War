@@ -75,7 +75,7 @@ protected:
 	//Stores the image's texture
 	SDL_Texture* texture;
 
-	std::function<void(Screen*)> ChangeScreenFunc;
+	std::function<void(std::unique_ptr<Screen>)> ChangeScreenFunc;
 	std::function<void()> QuitFunc;
 
 	//Sets the screen's background

@@ -58,13 +58,10 @@ MainWindow::MainWindow() {
     //Creating a pointer to the active screen
     auto fp = std::bind(&MainWindow::Quit, this);
     auto fpl = std::bind(&MainWindow::ChangeScreen, this, std::placeholders::_1);
-    scr = new MainMenu(renderer, fp, fpl);
+    scr = std::make_unique<MainMenu>(renderer, fp, fpl);
 }
 
 MainWindow::~MainWindow() {
-    //Delete the active screen
-    delete scr;
-
     //Free the memory allocated to the cursor
     SDL_FreeCursor(cursor);
 
@@ -94,12 +91,8 @@ void MainWindow::Render() {
     SDL_RenderPresent(renderer);
 }
 
-void MainWindow::ChangeScreen(Screen* NewScreen){
-    //Delete the active screen
-    delete scr;
-
-    //Save the new screen
-    scr = NewScreen;
+void MainWindow::ChangeScreen(std::unique_ptr<Screen> NewScreen){
+    scr = std::move(NewScreen);
 }
 
 void MainWindow::Keyboard() {

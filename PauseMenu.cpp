@@ -3,7 +3,7 @@
 #include "Button.h"
 #include "Image.h"
 
-PauseMenu::PauseMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void()> UnpauseF, std::function<void(Screen*)> fpl) : Screen(r) {
+PauseMenu::PauseMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
 	bHasBackground = false;
 
 	int fontSize = 32, Width = GetWindowWidth(), Height = GetWindowHeight();
@@ -21,6 +21,5 @@ PauseMenu::PauseMenu(SDL_Renderer* r, std::function<void()> fp, std::function<vo
 }
 
 void PauseMenu::ReturnToMainMenu(){
-	MainMenu* MM = new MainMenu(renderer, QuitFunc, ChangeScreenFunc);
-	ChangeScreenFunc(MM);
+	ChangeScreenFunc(std::make_unique<MainMenu>(renderer, QuitFunc, ChangeScreenFunc));
 }

@@ -21,7 +21,7 @@ class PlayerController;
 class UI {
 public:
     //Constructor
-    UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<void(Screen*, std::string)> fpl = nullptr);
+    UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl = nullptr);
     ~UI() = default;
 
     //This is a reference to the main window's renderer
@@ -50,7 +50,7 @@ public:
 
     PlayerController* PCref;
 
-    std::function<void(Screen*, std::string)> ChangeScreenFunc;
+    std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc;
 
     //Functions
 

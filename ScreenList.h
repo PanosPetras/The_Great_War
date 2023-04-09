@@ -1,11 +1,14 @@
 #pragma once
 
+#include "Screen.h"
+
 #include <SDL.h>
 #include <SDL_image.h>
+
 #include <functional>
+#include <memory>
 #include <string>
 #include <vector>
-#include "Screen.h"
 
 class PlayerController;
 class UI;
@@ -14,7 +17,7 @@ class Country;
 class MainMenu : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    MainMenu(SDL_Renderer* r, std::function<void()> fp = nullptr, std::function<void(Screen*)> fpl = nullptr);
+    MainMenu(SDL_Renderer* r, std::function<void()> fp , std::function<void(std::unique_ptr<Screen>)> fpl );
 
     void ShowCredits();
     void ShowSettings();
@@ -24,9 +27,9 @@ public:
 class CreditScreen : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    CreditScreen(SDL_Renderer* r, std::function<void()> fp = nullptr, std::function<void(Screen*)> fpl = nullptr);
+    CreditScreen(SDL_Renderer* r, std::function<void()> fp = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
 
-    std::function<void(Screen*)> ChangeScreenFunc;
+    std::function<void(std::unique_ptr<Screen>)> ChangeScreenFunc;
     std::function<void()> QuitFunc;
     void Back();
 };
@@ -34,9 +37,9 @@ public:
 class MenuSettingsScreen : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    MenuSettingsScreen(SDL_Renderer* r, std::function<void()> fp = nullptr, std::function<void(Screen*)> fpl = nullptr);
+    MenuSettingsScreen(SDL_Renderer* r, std::function<void()> fp = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
 
-    std::function<void(Screen*)> ChangeScreenFunc;
+    std::function<void(std::unique_ptr<Screen>)> ChangeScreenFunc;
     std::function<void()> QuitFunc;
     void Back();
 };
@@ -48,7 +51,7 @@ public:
 class GameScreen : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    GameScreen(SDL_Renderer* r, const char* tag, std::function<void()> fp = nullptr, std::function<void(Screen*)> fpl = nullptr);
+    GameScreen(SDL_Renderer* r, const char* tag, std::function<void()> fp = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
     ~GameScreen();
 
     PlayerController* PC;
@@ -94,26 +97,26 @@ public:
     SDL_Texture* assets;
 
     void HandleMouseMovement(SDL_Event* ev);
-    void ChangeActiveScreen(Screen* NewScreen, std::string ID);
+    void ChangeActiveScreen(std::unique_ptr<Screen> NewScreen, std::string ID);
     void CloseActiveScreen();
     void CloseScreenPreview();
 
-    bool bHasActiveScreen;
+    bool bHasActiveScreen() const { return static_cast<bool>(ActiveScreen); }
     std::string ScreenID;
-    Screen* ActiveScreen;
+    std::unique_ptr<Screen> ActiveScreen;
 };
 
 class PauseMenu : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    PauseMenu(SDL_Renderer* r, std::function<void()> fp = nullptr, std::function<void()> UnpauseF = nullptr, std::function<void(Screen*)> fpl = nullptr);
+    PauseMenu(SDL_Renderer* r, std::function<void()> fp = {}, std::function<void()> UnpauseF = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
 
     void ReturnToMainMenu();
 };
 
 class CountrySelection : public Screen {
 public:
-    CountrySelection(SDL_Renderer* r, std::function<void()> UnpauseF = nullptr, std::function<void(Screen*)> fpl = nullptr);
+    CountrySelection(SDL_Renderer* r, std::function<void()> UnpauseF = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
 
     bool mousepressed;
 
@@ -235,9 +238,7 @@ public:
 
 class StatePreview : public Screen {
 public:
-    StatePreview(SDL_Renderer* r, int id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(Screen*, std::string)> ChangeScreenFunc);
-
-    ~StatePreview();
+    StatePreview(SDL_Renderer* r, int id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc);
 
     void Render() override;
 
@@ -249,11 +250,11 @@ public:
 
 private:
     std::string Controller;
-    std::function<void(Screen*, std::string)> ChangeScreenFunc2;
+    std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc2;
 
     void OpenDiplomacyTab();
 
-    OpenFactoryScreen* OFS = nullptr;
+    std::unique_ptr<OpenFactoryScreen> OFS;
 
     int Id;
 
