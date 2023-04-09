@@ -13,7 +13,7 @@ public:
 	int size;
 
 	Factory(Stockpile* Target, Market* market, std::string arg, int c);
-	~Factory();
+	virtual ~Factory();
 
 	virtual void Tick();
 

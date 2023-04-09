@@ -8,6 +8,7 @@
 #include "Image.h"
 
 #include <cmath>
+#include <memory>
 
 GameScreen::GameScreen(SDL_Renderer* r, const char* tag,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
 	bHasBackground = true;
@@ -24,25 +25,12 @@ GameScreen::GameScreen(SDL_Renderer* r, const char* tag,  std::function<void()> 
 	ChangeScreenFunc = fpl;
 	QuitFunc = fp;
 
-	PC = new PlayerController(renderer, tag);
-	overlay = new UI(r, tag, PC, [this](std::unique_ptr<Screen> scr, std::string ID) { ChangeActiveScreen(std::move(scr), std::move(ID)); });
-
-	StateViewingScreen = nullptr;
-	bHasStatePreview = false;
-}
-
-GameScreen::~GameScreen(){
-	delete PC;
-        delete overlay;
-
-	//Delete all items created by the screen in order to avoid memory leaks
-	if (bIsPaused == true) {
-		delete PM;
-	}
+	PC = std::make_unique<PlayerController>(renderer, tag);
+	overlay = std::make_unique<UI>(r, tag, PC.get(), [this](std::unique_ptr<Screen> scr, std::string ID) { ChangeActiveScreen(std::move(scr), std::move(ID)); });
 }
 
 void GameScreen::Pause() {
-	if (bHasStatePreview == true) {
+	if (StateViewingScreen) {
 		CloseScreenPreview();
 		//overlay->Buttons[0]->Playsound();
 	} else if (bHasActiveScreen() == true){
@@ -51,11 +39,10 @@ void GameScreen::Pause() {
 	} else {
 		if (bIsPaused == true) {
 			bIsPaused = false;
-			delete PM;
+                        PM.reset();
 		}
 		else {
-			auto unpause = std::bind(&GameScreen::Pause, this);
-			PM = new PauseMenu(renderer, QuitFunc, unpause, ChangeScreenFunc);
+			PM = std::make_unique<PauseMenu>(renderer, QuitFunc, [this]{ Pause(); }, ChangeScreenFunc);
 			bIsPaused = true;
 			if (PC->Date.bIsPaused == false) {
 				overlay->PauseDate(true);
@@ -143,16 +130,16 @@ void GameScreen::Render() {
 	}
 	overlay->Render();
 
-	if (bHasStatePreview == true) {
+	if (StateViewingScreen) {
 		StateViewingScreen->Render();
 	}
 }
 
-void GameScreen::Handle_Input(SDL_Event* ev) {
+void GameScreen::Handle_Input(SDL_Event& ev) {
 	bool flag = false;
-	if (bHasStatePreview) {
+	if (StateViewingScreen) {
 		StateViewingScreen->Handle_Input(ev);
-		if (!bHasStatePreview) {
+		if (!StateViewingScreen) {
 			flag = true;
 		}
 	}
@@ -162,14 +149,11 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 	}
 
 	//Handle clicks on the map
-	if (ev->type == SDL_MOUSEBUTTONDOWN && ev->button.button == SDL_BUTTON_LEFT) {
-		if (bHasActiveScreen() == false &&
-			flag == false &&
-			ev->button.y > GetWindowHeight() * 0.07 &&
-			bIsPaused == false && bHasStatePreview == false) {
+	if (ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT) {
+		if (bHasActiveScreen() == false && flag == false && ev.button.y > GetWindowHeight() * 0.07 && bIsPaused == false && !StateViewingScreen) {
 
-			int x = Cam_Width + int(ev->button.x / factor) - 5384;
-			int y = Cam_Height + int(ev->button.y / factor);
+			int x = Cam_Width + int(ev.button.x / factor) - 5384;
+			int y = Cam_Height + int(ev.button.y / factor);
 
 			Color rgb = CD::getcolor(PC->provinces, x, y);
 
@@ -188,18 +172,11 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 
 				//Access the state's resources
 				int res[8] = { state->Resources.Coal, state->Resources.Cotton, state->Resources.Fruit, state->Resources.Grain, state->Resources.Iron, state->Resources.Oil, state->Resources.Rubber, state->Resources.Timber };
-				auto close = std::bind(&GameScreen::Pause, this);
-				auto change = std::bind(&GameScreen::ChangeActiveScreen, this, std::placeholders::_1, std::placeholders::_2);
+				auto close = [this]{ Pause(); };
+				auto change = [this](std::unique_ptr<Screen> NewScreen, std::string ID) { ChangeActiveScreen(std::move(NewScreen), std::move(ID)); };
 
 				//Create the StatePreview screen
-				if (bHasStatePreview == false) {
-					StateViewingScreen = new StatePreview(renderer, state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, int(state->State_Population), fcs, close, change);
-					bHasStatePreview = true;
-				}
-				else {
-					delete StateViewingScreen;
-					StateViewingScreen = new StatePreview(renderer, state->State_ID - 1, state->State_Name, state->State_Controller, PC, res, int(state->State_Population), fcs, close, change);
-				}
+                                StateViewingScreen = std::make_unique<StatePreview>(renderer, state->State_ID - 1, state->State_Name, state->State_Controller, PC.get(), res, int(state->State_Population), fcs, close, change);
 			}
 
 			SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
@@ -218,14 +195,15 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 	}
 
 	//Pause game if esc is pressed
-	if (ev->type == SDL_KEYDOWN && ev->key.keysym.sym == SDLK_ESCAPE) {
+	if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE) {
 		this->Pause();
 		SDL_Delay(200);
 	}
 
 	//Handles inputs for buttons if the game is not paused
-	if (bIsPaused == false) {
+	if (not bIsPaused) {
                 for(auto& drawable : InputDrawableArr) {
+                        std::cerr << "GameScreen::Handle_Input\t" << static_cast<void*>(drawable.get()) << std::endl;
 			drawable->HandleInput(ev);
 		}
 
@@ -239,14 +217,14 @@ void GameScreen::Handle_Input(SDL_Event* ev) {
 	HandleMouseMovement(ev);
 }
 
-void GameScreen::HandleMouseMovement(SDL_Event* ev) {
+void GameScreen::HandleMouseMovement(SDL_Event& ev) {
 	if (bHasActiveScreen() == false) {
 		/*Checks whether the mouse is pressed or not so that we
 		can move the camera when it is pressed*/
-		if (ev->type == SDL_MOUSEBUTTONDOWN && ev->button.button == SDL_BUTTON_MIDDLE && mousepressed == false) {
+		if (ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_MIDDLE && mousepressed == false) {
 			mousepressed = true;
 		}
-		else if (ev->type == SDL_MOUSEBUTTONUP && ev->button.button == SDL_BUTTON_MIDDLE && mousepressed == true) {
+		else if (ev.type == SDL_MOUSEBUTTONUP && ev.button.button == SDL_BUTTON_MIDDLE && mousepressed == true) {
 			mousepressed = false;
 		}
 		//Requests the mouse movement
@@ -290,15 +268,15 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 		}
 
 		//Change the screen's magnification, albeit the zoom factor
-		if (ev->type == SDL_MOUSEWHEEL) {
+		if (ev.type == SDL_MOUSEWHEEL) {
 			//Zoom in
-			if (ev->wheel.y > 0 && factor < GetWindowWidth() / 480.0) {
+			if (ev.wheel.y > 0 && factor < GetWindowWidth() / 480.0) {
 				factor += ZoomingSpeed * factor;
 				Cam_Width += int(GetWindowWidth() / factor * ZoomingSpeed / 2);
 				Cam_Height += int(GetWindowHeight() / factor * ZoomingSpeed / 2);
 			}
 			//Zoom out
-			else if (factor > GetWindowWidth() / 3840.0 && ev->wheel.y < 0) {
+			else if (factor > GetWindowWidth() / 3840.0 && ev.wheel.y < 0) {
 				factor -= ZoomingSpeed * factor;
 
 				//Make sure we are not off the limits
@@ -330,11 +308,11 @@ void GameScreen::HandleMouseMovement(SDL_Event* ev) {
 
 void GameScreen::ChangeActiveScreen(std::unique_ptr<Screen> NewScreen, std::string ID){
 	if (bHasActiveScreen() == false) {
-		if (bHasStatePreview == true) {
+		if (StateViewingScreen) {
 			CloseScreenPreview();
 		}
 	}
-	ScreenID = ID;
+	ScreenID = std::move(ID);
 	ActiveScreen = std::move(NewScreen);
 }
 
@@ -346,8 +324,7 @@ void GameScreen::CloseActiveScreen(){
 }
 
 void GameScreen::CloseScreenPreview(){
-	delete StateViewingScreen;
-	bHasStatePreview = false;
+        StateViewingScreen.reset();
 
 	SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
 

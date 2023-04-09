@@ -25,7 +25,7 @@ public:
     ~Button();
 
     //Called when received input, to check whether the click was in this button
-    void HandleInput(const SDL_Event* ev);
+    void HandleInput(const SDL_Event& ev) override;
 
     //Change the image assigned to the button
     void ChangeImage(std::string image);
@@ -60,7 +60,7 @@ protected:
     void Click();
 
     //Check if the mouse is within the limits of an SDL_Rect
-    static bool CheckIfMouseInRect(const SDL_Rect rect, const SDL_MouseButtonEvent ev);
+    static bool CheckIfMouseInRect(const SDL_Rect& rect, const SDL_MouseButtonEvent& ev);
 
     //The visual state of the button
     bool bHovered;

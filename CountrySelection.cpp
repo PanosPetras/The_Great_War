@@ -1,14 +1,15 @@
-#include "ScreenList.h"
-#include "WindowInfo.h"
 #include "Button.h"
-#include "Label.h"
 #include "Image.h"
+#include "Label.h"
+#include "PlayerController.h"
+#include "ScreenList.h"
+#include "UI.h"
+#include "WindowInfo.h"
 
-CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
-	bHasBackground = true;
+CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r, UnpauseF, fpl) {
 	SetupBg("Backgrounds/CountrySelection.png");
 
-	int fontSize = 32, Width = GetWindowWidth(), Height = GetWindowHeight();
+	int Width = GetWindowWidth(), Height = GetWindowHeight();
 
 	AddDrawable<Button>(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", 32, [this]{StartGame();}, SDLK_KP_ENTER);
 	AddDrawable<Button>(r, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", 32, [this]{ Back();}, SDLK_ESCAPE);
@@ -45,9 +46,7 @@ CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> Unpaus
 	AddImage<Image>(r, "Backgrounds/FlagBg.png", int(Width * 0.631), int(Height * 0.495), int(Width * 0.069), int(Height * 0.072));
 	AddImage<Image>(r, "Icons/right.png", -Width, -Height, 64 * Width / 1920, 64 * Height / 1080);
 
-	ChangeScreenFunc = fpl;
 	mousepressed = false;
-	QuitFunc = UnpauseF;
 
 	tags[0] = "ger";
 	tags[1] = "fra";
@@ -58,14 +57,14 @@ CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> Unpaus
 	tags[6] = "ott";
 	tags[7] = "usa";
 
-	colors[0][0], colors[0][1], colors[0][2] = 42, 42, 42;
-	colors[1][0], colors[1][1], colors[1][2] = 18, 30, 152; 
-	colors[2][0], colors[2][1], colors[2][2] = 128, 0, 32;
-	colors[3][0], colors[3][1], colors[3][2] = 255, 255, 255;
-	colors[4][0], colors[4][1], colors[4][2] = 38, 160, 64;
-	colors[5][0], colors[5][1], colors[5][2] = 64, 160, 96;
-	colors[6][0], colors[6][1], colors[6][2] = 160, 144, 96;
-	colors[7][0], colors[7][1], colors[7][2] = 0, 96, 128;
+	colors[0] = {42, 42, 42};
+	colors[1] = {18, 30, 152}; 
+	colors[2] = {128, 0, 32};
+	colors[3] = {255, 255, 255};
+	colors[4] = {38, 160, 64};
+	colors[5] = {64, 160, 96};
+	colors[6] = {160, 144, 96};
+	colors[7] = {0, 96, 128};
 
 	CountryIndex = -1;
 }

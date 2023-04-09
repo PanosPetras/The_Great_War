@@ -2,6 +2,8 @@
 #include "WindowInfo.h"
 #include "ScreenList.h"
 
+#include <iostream>
+
 void MainWindow::MainLoop() {
     while (!quit) {            
         this->Render();
@@ -9,35 +11,9 @@ void MainWindow::MainLoop() {
     }
 }
 
-MainWindow::MainWindow() {
-    // Initialize SDL2
-    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-
-    // Create an application window with the following settings:
-    window = SDL_CreateWindow(
-        "The Great War",                  // window title
-        SDL_WINDOWPOS_UNDEFINED,           // initial x position
-        SDL_WINDOWPOS_UNDEFINED,           // initial y position
-        1920,                               // width, in pixels
-        1080,                               // height, in pixels
-        SDL_WINDOW_OPENGL //| SDL_WINDOW_FULLSCREEN                  // flags - see below
-    );
-    //2560x1440, 1920x1080, 1280x720
-
-    //Initializing the window renderer
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    //SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
-
-    //Initializing the rendring libraries
-    TTF_Init();
-    IMG_Init(0);
-
-    //Initializing the audio playing library
-    //Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    Mix_AllocateChannels(2);
-    //Mix_Init(0);
-
+MainWindow::MainWindow():
+    sdl_init_ctx{}, window{}, renderer(window), ttf_init_ctx{}, img_init_ctx{}, mix_ctx{}, cursor{}
+{
     //Get dimensions of the screen
     SDL_GetWindowSize(window, &WindowInfo::width, &WindowInfo::height);
 
@@ -49,35 +25,8 @@ MainWindow::MainWindow() {
     //Initializing the quit variable, this ends the main loop
     quit = 0;
 
-    //Creates the cursor
-    SDL_Surface* surface = IMG_Load("Icons/mouse.png");
-    cursor = SDL_CreateColorCursor(surface, 1, 1);
-    SDL_SetCursor(cursor);
-    SDL_FreeSurface(surface);
-
     //Creating a pointer to the active screen
-    auto fp = std::bind(&MainWindow::Quit, this);
-    auto fpl = std::bind(&MainWindow::ChangeScreen, this, std::placeholders::_1);
-    scr = std::make_unique<MainMenu>(renderer, fp, fpl);
-}
-
-MainWindow::~MainWindow() {
-    //Free the memory allocated to the cursor
-    SDL_FreeCursor(cursor);
-
-    //Free all the allocated memory
-    TTF_Quit();
-    IMG_Quit();
-    Mix_Quit();
-
-    //Destroy the renderer
-    SDL_DestroyRenderer(renderer);
-
-    // Close and destroy the window
-    SDL_DestroyWindow(window);
-
-    // Clean up
-    SDL_Quit();
+    scr = std::make_unique<MainMenu>(renderer, [this]{ Quit(); }, [this](std::unique_ptr<Screen> newScreen){ ChangeScreen(std::move(newScreen)); });
 }
 
 void MainWindow::Render() {
@@ -132,7 +81,12 @@ void MainWindow::Keyboard() {
             break;
         }
         // pass event to screen
-        scr->Handle_Input(&event);
+        if(scr) {
+            std::cerr << "MainWindow::Keyboard " << static_cast<void*>(scr.get()) << std::endl;
+            scr->Handle_Input(event);
+        } else {
+            std::cerr << "invalid scr" << std::endl;
+        }
     } // end of message processing
 }
 

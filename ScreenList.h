@@ -1,17 +1,18 @@
 #pragma once
 
 #include "Screen.h"
+#include "UI.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include <array>
 #include <functional>
 #include <memory>
 #include <string>
 #include <vector>
 
 class PlayerController;
-class UI;
 class Country;
 
 class MainMenu : public Screen {
@@ -24,24 +25,24 @@ public:
     void StartGame();
 };
 
-class CreditScreen : public Screen {
+class BackScreen : public Screen {
 public:
-    //Constructor, sets default values and creates all needed assets
-    CreditScreen(SDL_Renderer* r, std::function<void()> fp = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
+    inline BackScreen(SDL_Renderer* r,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r, fp, fpl) {}
 
-    std::function<void(std::unique_ptr<Screen>)> ChangeScreenFunc;
-    std::function<void()> QuitFunc;
-    void Back();
+    inline void Back() {
+        ChangeScreenFunc(std::make_unique<MainMenu>(renderer, QuitFunc, ChangeScreenFunc));
+    }
 };
 
-class MenuSettingsScreen : public Screen {
+class CreditScreen : public BackScreen {
+public:
+    CreditScreen(SDL_Renderer* r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
+};
+
+class MenuSettingsScreen : public BackScreen {
 public:
     //Constructor, sets default values and creates all needed assets
-    MenuSettingsScreen(SDL_Renderer* r, std::function<void()> fp = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
-
-    std::function<void(std::unique_ptr<Screen>)> ChangeScreenFunc;
-    std::function<void()> QuitFunc;
-    void Back();
+    MenuSettingsScreen(SDL_Renderer* r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
 };
 
 class InGameSettingsScreen : public Screen {
@@ -51,10 +52,9 @@ public:
 class GameScreen : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    GameScreen(SDL_Renderer* r, const char* tag, std::function<void()> fp = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
-    ~GameScreen();
+    GameScreen(SDL_Renderer* r, const char* tag, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
 
-    PlayerController* PC;
+    std::unique_ptr<PlayerController> PC;
 
     void Pause();
 
@@ -62,14 +62,14 @@ public:
     void Render() override;
 
     //Handles input events
-    void Handle_Input(SDL_Event* ev) override;
+    void Handle_Input(SDL_Event& ev) override;
 
     bool bIsPaused;
 
     //This is a reference to the pausing screen
-    Screen* PM;
+    std::unique_ptr<Screen> PM;
 
-    UI* overlay;
+    std::unique_ptr<UI> overlay;
 
     //This is the boolean about whether the screen is zoomable or not
     bool bZoom;
@@ -91,12 +91,12 @@ public:
     bool mousepressed;
     int MouseSensitivity;
 
-    Screen *StateViewingScreen;
-    bool bHasStatePreview;
+    std::unique_ptr<Screen> StateViewingScreen;
+    //bool bHasStatePreview;
 
     SDL_Texture* assets;
 
-    void HandleMouseMovement(SDL_Event* ev);
+    void HandleMouseMovement(SDL_Event& ev);
     void ChangeActiveScreen(std::unique_ptr<Screen> NewScreen, std::string ID);
     void CloseActiveScreen();
     void CloseScreenPreview();
@@ -122,7 +122,7 @@ public:
 
     const char* tags[8];
 
-    int colors[8][3];
+    std::array<std::array<int, 3>, 8> colors;
 
     int CountryIndex;
 
@@ -242,7 +242,7 @@ public:
 
     void Render() override;
 
-    void Handle_Input(SDL_Event* ev) override;
+    void Handle_Input(SDL_Event& ev) override;
 
     void OpenOFS();
 

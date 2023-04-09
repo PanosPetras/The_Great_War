@@ -1,6 +1,8 @@
 #include "Button.h"
 #include <SDL_ttf.h>
 
+#include <iostream>
+
 Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) : Button(r, x, y, Width, Height, image, top_left, f, keybind) {
 }
 
@@ -30,7 +32,7 @@ Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string
     music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
-Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, image, anchor, NULL, keybind) {
+Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, image, anchor, nullptr, keybind) {
     //Saving the bound function
     ChangeFunctionBinding(f, arg);
 }
@@ -64,12 +66,13 @@ Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string
     music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
-Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, text, textSize, anchor) {
+Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, [[maybe_unused]] int keybind) : Button(r, x, y, Width, Height, text, textSize, anchor) {
     //Saving the bound function
     ChangeFunctionBinding(f, arg);
 }
 
 Button::~Button() {
+    std::cerr << "Button::~Button()\t" << static_cast<void*>(this) << std::endl;
     //Free up the memory
     SDL_DestroyTexture(texture);
 
@@ -82,19 +85,19 @@ Button::~Button() {
 
 void Button::pDraw() {
     //Drawing the button
-    SDL_RenderCopy(RendererReference, texture, NULL, &draw_rect);
+    SDL_RenderCopy(RendererReference, texture, nullptr, &draw_rect);
 
     if (text != nullptr) {
         //Add text on top of Button background
 
-        SDL_RenderCopy(RendererReference, text, NULL, &text_draw_rect);
+        SDL_RenderCopy(RendererReference, text, nullptr, &text_draw_rect);
     }
 }
 
-void Button::HandleInput(const SDL_Event* ev) {
+void Button::HandleInput(const SDL_Event& ev) {
     if (active) {
         //Detect if the button is hovered
-        if (CheckIfMouseInRect(draw_rect, ev->button)) {
+        if (CheckIfMouseInRect(draw_rect, ev.button)) {
             if (bHovered == false) {
                 //If the button is hovered, change to the hovered button image
                 SDL_SetTextureColorMod(texture, 170, 170, 170);
@@ -103,7 +106,7 @@ void Button::HandleInput(const SDL_Event* ev) {
             }
 
             //react on mouse click within button rectangle
-            if (ev->type == SDL_MOUSEBUTTONDOWN) {
+            if (ev.type == SDL_MOUSEBUTTONDOWN) {
                 Click();
             }
         }
@@ -114,8 +117,9 @@ void Button::HandleInput(const SDL_Event* ev) {
             SDL_SetTextureColorMod(text, 255, 255, 255);
         }
 
+        std::cerr << "Button::HandleInput " << static_cast<void*>(this) << std::endl;
         if (key) {
-            if (ev->type == SDL_KEYDOWN && ev->key.keysym.sym == key) {
+            if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == key) {
                 Click();
             }
         }
@@ -130,18 +134,8 @@ void Button::Click(){
     CallBoundFunction();
 }
 
-bool Button::CheckIfMouseInRect(const SDL_Rect rect, const SDL_MouseButtonEvent ev) {
-    if (ev.x >= rect.x) {
-        if (ev.x <= rect.x + rect.w) {
-            if (ev.y >= rect.y) {
-                if (ev.y <= rect.y + rect.h) {
-                    return true;
-                }
-            }
-        }
-    }
-
-    return false;
+bool Button::CheckIfMouseInRect(const SDL_Rect& rect, const SDL_MouseButtonEvent& ev) {
+    return (ev.x >= rect.x) && (ev.x <= rect.x + rect.w) && (ev.y >= rect.y) && (ev.y <= rect.y + rect.h);
 }
 
 void Button::ChangeImage(std::string image) {
@@ -183,7 +177,7 @@ void Button::ChangeText(std::string text, int textSize){
     TTF_Font* font = TTF_OpenFont(GLOBAL_FONT, textSize);
 
     //Convert the text to a surface
-    SDL_Surface* textSur = TTF_RenderText_Blended(font, text.c_str(), SDL_Color{.r = 255, .g = 255, .b = 255});
+    SDL_Surface* textSur = TTF_RenderText_Blended(font, text.c_str(), SDL_Color{.r = 255, .g = 255, .b = 255, .a = 0});
     this->text = SDL_CreateTextureFromSurface(RendererReference, textSur);
 
     int text_x = (draw_rect.w - textSur->w) / 2;
@@ -211,8 +205,8 @@ void Button::ChangePosition(int x, int y, int Width, int Height) {
 
 void Button::ChangeFunctionBinding(std::function<void()> f) {
     //saving the newly bound function
-    funcWArg = NULL;
-    arg = NULL;
+    funcWArg = nullptr;
+    arg = nullptr;
     func = f;
 }
 
@@ -220,7 +214,7 @@ void Button::ChangeFunctionBinding(std::function<void(void*)> f, void* arg){
     //saving the newly bound function
     funcWArg = f;
     this->arg = arg;
-    func = NULL;
+    func = nullptr;
 }
 
 void Button::ChangeKeybind(int keybind){

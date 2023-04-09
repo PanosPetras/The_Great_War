@@ -9,3 +9,6 @@ int WindowInfo::GetWindowWidth() {
 int WindowInfo::GetWindowHeight() {
     return height;
 }
+
+int (*GetWindowWidth)() = WindowInfo::GetWindowWidth;
+int (*GetWindowHeight)() = WindowInfo::GetWindowHeight;

@@ -21,7 +21,7 @@ public:
     ~ToggleButton();
 
     //Called when received input, to check whether the click was in this button
-    void HandleInput(const SDL_Event* ev);
+    void HandleInput(const SDL_Event& ev) override;
 
     //Change the image assigned to the button
     void ChangeImage(std::string image, std::string inactiveImage);

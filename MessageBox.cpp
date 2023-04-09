@@ -13,7 +13,7 @@ MessageBox::MessageBox(SDL_Renderer* r, std::string title, std::string message, 
 	okButton = std::make_unique<Button>(r, int(Width * 0.67), int(Height * 0.66), int(Width * 0.09), int(Height * 0.055), "OK", 26, bottom_right, f, this, SDLK_RETURN);
 }
 
-void MessageBox::HandleInput(const SDL_Event* ev) {
+void MessageBox::HandleInput(const SDL_Event& ev) {
 	okButton->HandleInput(ev);
 }
 

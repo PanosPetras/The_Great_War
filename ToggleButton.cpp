@@ -32,7 +32,7 @@ ToggleButton::ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height,
     music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
-ToggleButton::ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, bool val, std::function<void(bool)> f, int keybind) {
+ToggleButton::ToggleButton([[maybe_unused]]SDL_Renderer* r, [[maybe_unused]]int x, [[maybe_unused]]int y, [[maybe_unused]]int Width, [[maybe_unused]]int Height, [[maybe_unused]]std::string activeImage, [[maybe_unused]]std::string inactiveImage, [[maybe_unused]]Anchor anchor, [[maybe_unused]]bool val, [[maybe_unused]]std::function<void(bool)> f, [[maybe_unused]]int keybind) {
     value = val;
 }
 
@@ -52,10 +52,10 @@ void ToggleButton::pDraw(){
     }
 }
 
-void ToggleButton::HandleInput(const SDL_Event* ev){
+void ToggleButton::HandleInput(const SDL_Event& ev){
     if (active) {
         //Detect if the button is hovered
-        if (Button::CheckIfMouseInRect(draw_rect, ev->button)) {
+        if (Button::CheckIfMouseInRect(draw_rect, ev.button)) {
 
             if (bHovered == false) {
                 //If the button is hovered, change to the hovered button image
@@ -65,7 +65,7 @@ void ToggleButton::HandleInput(const SDL_Event* ev){
             }
 
             //react on mouse click within button rectangle
-            if (ev->type == SDL_MOUSEBUTTONDOWN) {
+            if (ev.type == SDL_MOUSEBUTTONDOWN) {
                 Click();
             }
         }
@@ -76,7 +76,7 @@ void ToggleButton::HandleInput(const SDL_Event* ev){
             SDL_SetTextureColorMod(activeTexture, 255, 255, 255);
         }
         if (key) {
-            if (ev->type == SDL_KEYDOWN && ev->key.keysym.sym == key) {
+            if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == key) {
                 Click();
             }
         }

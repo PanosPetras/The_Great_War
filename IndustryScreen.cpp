@@ -3,7 +3,6 @@
 #include "Label.h"
 
 IndustryScreen::IndustryScreen(SDL_Renderer* r, int Stockpile[30]) : Screen(r) {
-	bHasBackground = true;
 	SetupBg("Backgrounds/Industry1.png");
 
 	int Width = GetWindowWidth(), Height = GetWindowHeight();

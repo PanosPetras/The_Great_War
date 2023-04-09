@@ -18,7 +18,7 @@ Label::Label(SDL_Renderer* r, std::string Text, int size, int x, int y, int xlim
     RendererReference = r;
 
     //Save the color assigned to the label in order to be used later
-    Color = { red, green, blue };
+    Color = { red, green, blue, 0 };
 
     //Save the label's coordinates
     this->x = x, this->y = y, this->xLim = xlim;
@@ -53,7 +53,7 @@ void Label::ChangeTextSize(int size){
 
 void Label::ChangeColor(Uint8 red, Uint8 green, Uint8 blue) {
     //Assign the new color to the label
-    Color = { red, green, blue };
+    Color = { red, green, blue, 0 };
     UpdateLabel();
 }
 

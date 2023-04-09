@@ -15,13 +15,10 @@ class Label;
 class MessageBox : public InputDrawable {
 public:
 	//Constructor
-	MessageBox(SDL_Renderer* r, std::string title, std::string message, std::function<void(void*)> f = nullptr);
-
-	//Destructor
-	~MessageBox() = default;
+	MessageBox(SDL_Renderer* r, std::string title, std::string message, std::function<void(void*)> f);
 
 	//Called when received input
-	void HandleInput(const SDL_Event* ev);
+	void HandleInput(const SDL_Event& ev) override;
 
 private:
 	//Render the message box on screen

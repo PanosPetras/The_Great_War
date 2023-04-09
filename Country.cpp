@@ -6,17 +6,17 @@ Country::Country(std::string tag, std::string name, int r, int g, int b, int Res
     isPlayer = isPlayerControlled;
 }
 
-Country::Country(std::string tag, std::string name, int r, int g, int b, int Res[31]) :tag(tag), name(name){
-	population = 0;
-	stateCount = 0; 
+Country::Country(std::string tag, std::string name, int r, int g, int b, int Res[31]) : name(name), tag(tag) {
+    population = 0;
+    stateCount = 0;
     isPlayer = false;
 
     policy = {.TaxRate = 50, .Healthcare =  30};
 
 	color = {.r = (unsigned char)r, .g = (unsigned char)g, .b = (unsigned char)b};
 
-	technology = {  .FactoryInput = 1.0f, 
-                    .FactoryThroughput = 1.0f, 
+	technology = {  .FactoryInput = 1.0f,
+                    .FactoryThroughput = 1.0f,
                     .FactoryOutput = 1.0f,
                     .MineralOutput = 1.0f,
                     .FarmOutput = 1.0f,
@@ -68,7 +68,7 @@ void Country::RemoveState(State* state){
     }
 }
 
-void Country::Tick(){  
+void Country::Tick(){
     for (auto& [name, state] : ownedStates) {
         state->Tick(policy.TaxRate, policy.Healthcare);
     }

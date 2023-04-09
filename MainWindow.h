@@ -3,6 +3,8 @@
 
 #include "Screen.h"
 
+#include "SDL_ctx.h"
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -12,8 +14,6 @@ class MainWindow {
 public:
     //Constructor
     MainWindow();
-    //Destructor
-    ~MainWindow();
 
     //The Main loop of the window
     void MainLoop();
@@ -34,14 +34,13 @@ public:
     void ChangeScreen(std::unique_ptr<Screen> NewScreen);
 
 public:
-    //The game's main window
-    SDL_Window* window;
-
-    //The window's renderer
-    SDL_Renderer* renderer;
-
-    //The window's cursor
-    SDL_Cursor* cursor;
+    SDL_Init_ctx sdl_init_ctx;
+    SDL_Window_ctx window; //The game's main window
+    SDL_Renderer_ctx renderer; //The window's renderer
+    TTF_Init_ctx ttf_init_ctx;
+    IMG_Init_ctx img_init_ctx;
+    MIX_ctx mix_ctx;
+    SDL_Cursor_ctx cursor; //The window's cursor
 
 public:
     bool KEYS[322];  // 322 is the number of SDLK_DOWN events

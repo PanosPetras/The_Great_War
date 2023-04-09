@@ -12,7 +12,7 @@ private:
 	friend class MainWindow;
 };
 
-static auto GetWindowWidth = WindowInfo::GetWindowWidth;
-static auto GetWindowHeight = WindowInfo::GetWindowHeight;
+extern int(*GetWindowWidth)();
+extern int(*GetWindowHeight)();
 
 #endif
