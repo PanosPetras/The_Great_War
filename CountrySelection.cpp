@@ -4,7 +4,7 @@
 #include "Label.h"
 #include "Image.h"
 
-CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> UnpauseF, std::function<void(Screen*)> fpl) : Screen(r) {
+CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
 	bHasBackground = true;
 	SetupBg("Backgrounds/CountrySelection.png");
 
@@ -47,7 +47,6 @@ CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> Unpaus
 
 	ChangeScreenFunc = fpl;
 	mousepressed = false;
-	ChangeScreenFunc = fpl;
 	QuitFunc = UnpauseF;
 
 	tags[0] = "ger";
@@ -72,8 +71,7 @@ CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> Unpaus
 }
 
 void CountrySelection::Back(){
-	MainMenu* MM = new MainMenu(renderer, QuitFunc, ChangeScreenFunc);
-	ChangeScreenFunc(MM);
+        ChangeScreenFunc(std::make_unique<MainMenu>(renderer, QuitFunc, ChangeScreenFunc));
 }
 
 void CountrySelection::SelectGER() {
@@ -127,7 +125,6 @@ void CountrySelection::ChangeArrow(int x, int y, int img) {
 
 void CountrySelection::StartGame() {
 	if (CountryIndex != -1) {
-		GameScreen* GS = new GameScreen(renderer, tags[CountryIndex], QuitFunc, ChangeScreenFunc);
-		ChangeScreenFunc(GS);
+		ChangeScreenFunc(std::make_unique<GameScreen>(renderer, tags[CountryIndex], QuitFunc, ChangeScreenFunc));
 	}
 }

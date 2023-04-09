@@ -5,7 +5,7 @@
 #include "Label.h"
 #include "Image.h"
 
-StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(Screen*, std::string)> ChangeScreenFunc) : Screen(r) {
+StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc) : Screen(r) {
 	int Width = GetWindowWidth(), Height = GetWindowHeight();
 	Controller = controller;
 	std::string str = "Flags/" + Controller;
@@ -36,16 +36,12 @@ StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::
 	}
 
 	if (Controller == PC->player_tag && Factories[3] == "") {
-		AddDrawable<Button>(r, int(Width * .058), int(Height * 0.95), int(160 * Width / 1920), int(38 * Height / 1080), "Open Factory", 24, [this]{OpenOFS();});
+		AddDrawable<Button>(r, int(Width * .058), int(Height * 0.95), int(160 * Width / 1920), int(38 * Height / 1080), "Open Factory", 24, [this]{ OpenOFS(); });
 	}
 
 	PCref = PC;
 	this->Id = id;
 	ChangeScreenFunc2 = ChangeScreenFunc;
-}
-
-StatePreview::~StatePreview() {
-        delete OFS;
 }
 
 void StatePreview::Render(){
@@ -69,13 +65,13 @@ void StatePreview::Render(){
 		label->Draw();
 	}
 
-	if (OFS != nullptr) {
+	if (OFS) {
 		OFS->Render();
 	}
 }
 
 void StatePreview::Handle_Input(SDL_Event* ev){
-	if (OFS != nullptr) {
+	if (OFS) {
 		OFS->Handle_Input(ev);
 	}
 	for (auto& drawable : InputDrawableArr) {
@@ -84,15 +80,13 @@ void StatePreview::Handle_Input(SDL_Event* ev){
 }
 
 void StatePreview::OpenOFS(){
-	if (OFS == nullptr) {
-		auto del = std::bind(&StatePreview::DeleteOFS, this);
-		OFS = new OpenFactoryScreen(renderer, Id, PCref, del);
+	if (!OFS) {
+		OFS = std::make_unique<OpenFactoryScreen>(renderer, Id, PCref, [this]{ DeleteOFS(); });
 	}
 }
 
 void StatePreview::DeleteOFS(){
-	delete OFS;
-	OFS = nullptr;
+        OFS.reset();
 
 	int Width = GetWindowWidth(), Height = GetWindowHeight();
 
@@ -110,6 +104,5 @@ void StatePreview::DeleteOFS(){
 }
 
 void StatePreview::OpenDiplomacyTab() {
-	Screen* NS = new DiplomacyScreen(renderer, PCref, Controller);
-	ChangeScreenFunc2(NS, "DiplomacyScreen");
+	ChangeScreenFunc2(std::make_unique<DiplomacyScreen>(renderer, PCref, Controller), "DiplomacyScreen");
 }

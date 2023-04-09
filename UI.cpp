@@ -8,7 +8,7 @@
 #include "Label.h"
 #include "Image.h"
 
-UI::UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<void(Screen*, std::string)> fpl) {
+UI::UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl) {
 	renderer = r;
 
 	std::string str = tag;
@@ -103,8 +103,7 @@ void UI::PauseDate(bool _){
 }
 
 void UI::OpenDiplomacyScreen() {
-	Screen* NS = new DiplomacyScreen(renderer, PCref);
-	ChangeScreenFunc(NS, "DiplomacyScreen");
+	ChangeScreenFunc(std::make_unique<DiplomacyScreen>(renderer, PCref), "DiplomacyScreen");
 }
 
 void UI::OpenIndustryScreen(){
@@ -138,16 +137,13 @@ void UI::OpenIndustryScreen(){
 					PCref->CountriesArr.at(PCref->player_index)->Stock.Paper,
 					PCref->CountriesArr.at(PCref->player_index)->Stock.Liquor,
 					PCref->CountriesArr.at(PCref->player_index)->Stock.Airship};
-	Screen* NS = new IndustryScreen(renderer, Res);
-	ChangeScreenFunc(NS, "IndustryScreen");
+	ChangeScreenFunc(std::make_unique<IndustryScreen>(renderer, Res), "IndustryScreen");
 }
 
 void UI::OpenEconomyScreen() {
-	Screen* NS = new EconomyScreen(renderer, PCref->CountriesArr.at(PCref->player_index));
-	ChangeScreenFunc(NS, "EconomyScreen");
+	ChangeScreenFunc(std::make_unique<EconomyScreen>(renderer, PCref->CountriesArr.at(PCref->player_index)), "EconomyScreen");
 }
 
 void UI::OpenTradeScreen() {
-	Screen* NS = new TradeScreen(renderer, PCref->CountriesArr.at(PCref->player_index));
-	ChangeScreenFunc(NS, "TradeScreen");
+	ChangeScreenFunc(std::make_unique<TradeScreen>(renderer, PCref->CountriesArr.at(PCref->player_index)), "TradeScreen");
 }

@@ -33,9 +33,6 @@ public:
     Country(std::string tag, std::string name, int r, int g, int b, int Res[31], bool isPlayerControlled);
     Country(std::string tag, std::string name, int r, int g, int b, int Res[31]);
 
-    //Destructor
-    ~Country();
-
     //Handle the states of the country
     void AddState(State* state);
     void RemoveState(State* state);
@@ -61,7 +58,7 @@ private:
     int population;
 
     int stateCount;
-    std::unordered_map<std::string, State*>* ownedStates;
+    std::unordered_map<std::string, State*> ownedStates;
     
     Technology technology;
 

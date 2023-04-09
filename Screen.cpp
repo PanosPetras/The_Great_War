@@ -58,7 +58,10 @@ void Screen::Render(){
 
 void Screen::Handle_Input(SDL_Event* ev){
         for(auto& drawable : InputDrawableArr) {
+            if(drawable)
 		drawable->HandleInput(ev);
+            else
+                std::cerr << "invalid drawable\n";
 	}
 
 	for (auto msgb : messageBoxes) {
