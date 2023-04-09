@@ -93,13 +93,11 @@ void StatePreview::DeleteOFS(){
 	if (PCref->StatesArr[Id]->State_Factories[3] != nullptr) {
                 InputDrawableArr.resize(InputDrawableArrtop()-1);
 	}
-	for (int x = ImageArrtop() - 1; x < 4; x++) {
-		if (PCref->StatesArr[Id]->State_Factories[x] != nullptr) {
-			std::string str = "Icons/Goods/" + PCref->StatesArr[Id]->State_Factories[x]->Type + ".png";
-			AddImage<Image>(renderer, str, int(Width * (0.055 + 0.0288 * x)), int(Height * 0.8999), 48, 48);
-		} else {
-			break;
-		}
+
+	int index = int(ImageArr.size()) - 1;
+	if (PCref->StatesArr[Id]->State_Factories[index] != nullptr) {
+		std::string str = "Icons/Goods/" + PCref->StatesArr[Id]->State_Factories[index]->Type + ".png";
+		AddImage<Image>(renderer, str, int(Width * (0.055 + 0.0288 * index)), int(Height * 0.8999), 48, 48);
 	}
 }
 

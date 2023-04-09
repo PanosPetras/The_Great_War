@@ -71,7 +71,7 @@ CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> Unpaus
 }
 
 void CountrySelection::Back(){
-        ChangeScreenFunc(std::make_unique<MainMenu>(renderer, QuitFunc, ChangeScreenFunc));
+    ChangeScreenFunc(std::make_unique<MainMenu>(renderer, QuitFunc, ChangeScreenFunc));
 }
 
 void CountrySelection::SelectGER() {
