@@ -1,13 +1,17 @@
 #pragma once
+
+#include <cstdint>
+#include <istream>
+#include <ostream>
 #include <string>
 
-//8 bit unsigned integer
-typedef unsigned char uint8;
+struct Color {
+    std::uint8_t r;
+    std::uint8_t g;
+    std::uint8_t b;
 
-typedef struct Color {
-    uint8 r;
-    uint8 g;
-    uint8 b;
+    std::string toString() const;
 
-    std::string toString();
-} Color;
+    friend std::istream& operator>>(std::istream& is, Color& c);
+    friend std::ostream& operator<<(std::ostream& os, const Color& c);
+};

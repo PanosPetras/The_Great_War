@@ -23,6 +23,7 @@
     <ClCompile Include="AI.h" />
     <ClCompile Include="Checkbox.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Coordinate.cpp" />
     <ClCompile Include="CountrySelection.cpp" />
     <ClCompile Include="CreditScreen.cpp" />
     <ClCompile Include="Diplomacy.cpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Checkbox.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Coordinate.h" />
     <ClInclude Include="Diplomacy.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="Factory.h" />
@@ -153,8 +155,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.3\include;$(SolutionDir)\SDL2\SDL2_ttf-2.20.2\include;$(SolutionDir)\SDL2\SDL2_image-2.6.3\include;$(SolutionDir)\SDL2\SDL2-2.26.4\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.3\lib\x64;$(SolutionDir)\SDL2\SDL2_ttf-2.20.2\lib\x64;$(SolutionDir)\SDL2\SDL2_image-2.6.3\lib\x64;$(SolutionDir)\SDL2\SDL2-2.26.4\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.3\include;$(SolutionDir)\SDL2\SDL2_ttf-2.20.2\include;$(SolutionDir)\SDL2\SDL2_image-2.6.3\include;$(SolutionDir)\SDL2\SDL2-2.26.5\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.3\lib\x64;$(SolutionDir)\SDL2\SDL2_ttf-2.20.2\lib\x64;$(SolutionDir)\SDL2\SDL2_image-2.6.3\lib\x64;$(SolutionDir)\SDL2\SDL2-2.26.5\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

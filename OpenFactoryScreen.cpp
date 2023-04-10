@@ -240,7 +240,7 @@ void OpenFactoryScreen::BuildFactory(){
 	}
 
 	if (PCref->CountriesArr.at(PCref->player_index)->Stock.Money >= NF->cost) {
-		PCref->StatesArr[index]->AddFactory(NF);
+		PCref->StatesArr[index].AddFactory(NF);
 		PCref->CountriesArr.at(PCref->player_index)->Stock.Money -= NF->cost;
 		
 		QuitFunc();

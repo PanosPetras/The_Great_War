@@ -1,37 +1,31 @@
 #ifndef PLAYERCONTROLLER_H
 #define PLAYERCONTROLLER_H
 
+#include "Color.h"
+#include "Coordinate.h"
 #include "Country.h"
 #include "Diplomacy.h"
 #include "State.h"
 
 #include <SDL.h>
 
+#include <cstdint>
 #include <memory>
 #include <array>
 #include <unordered_map>
-
-typedef std::unique_ptr<std::vector<std::string>, std::default_delete<std::vector<std::string>>> VectorSmartPointer;
+#include <vector>
 
 class PlayerController {
 public:
 	//Constructor
 	PlayerController(SDL_Renderer* r, const char* tag);
 
-    ~PlayerController();
+        ~PlayerController();
 
 private:
 	//Loading data functions
-	VectorSmartPointer LoadCountryNames(std::ifstream&);
-	VectorSmartPointer LoadCountryTags(std::ifstream&);
-	std::array<int, 58> LoadCountriesBalance(std::ifstream&);
-	VectorSmartPointer LoadStateNames(std::ifstream&);
-	VectorSmartPointer LoadStateOwnerTags(std::ifstream&);
-	unsigned char(*LoadStateColors(std::ifstream&))[3];
-	short (*LoadStateCoordinates(std::ifstream&))[2];
-	std::array<int, 2703> LoadStatePops(std::ifstream&);
-	void InitializeCountries(VectorSmartPointer& names, VectorSmartPointer& tags, const char* tag, std::array<int, 58> balance);
-	void InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], std::array<int, 2703> populations, unsigned char(*colors)[3]);
+	void InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, std::vector<int>& balance);
+	void InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors);
 
 	static int LoadMap(void*);
 	static int LoadUtilityAssets(void*);
@@ -67,7 +61,7 @@ public:
 	Market WorldMarket;
 
 	//Reference to every single state on the map
-	std::array<std::unique_ptr<State>, 2703> StatesArr;
+	std::vector<State> StatesArr;
 	std::unordered_map<std::string, State*> StatesMap;
 
 	//Reference to every country

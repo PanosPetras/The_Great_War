@@ -148,6 +148,9 @@
     <ClCompile Include="SDL_ctx.cpp">
       <Filter>General purpose code\Source_Files</Filter>
     </ClCompile>
+    <ClCompile Include="Coordinate.cpp">
+      <Filter>General purpose code\Source_Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">
@@ -221,6 +224,9 @@
       <Filter>UI_Elements\Header_Files</Filter>
     </ClInclude>
     <ClInclude Include="SDL_ctx.h">
+      <Filter>General purpose code\Header_Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Coordinate.h">
       <Filter>General purpose code\Header_Files</Filter>
     </ClInclude>
   </ItemGroup>
