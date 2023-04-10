@@ -8,6 +8,7 @@
 #include <SDL.h>
 
 #include <memory>
+#include <array>
 #include <unordered_map>
 
 typedef std::unique_ptr<std::vector<std::string>, std::default_delete<std::vector<std::string>>> VectorSmartPointer;
@@ -17,7 +18,7 @@ public:
 	//Constructor
 	PlayerController(SDL_Renderer* r, const char* tag);
 
-        ~PlayerController();
+    ~PlayerController();
 
 private:
 	//Loading data functions
@@ -66,11 +67,11 @@ public:
 	Market WorldMarket;
 
 	//Reference to every single state on the map
-	State** StatesArr;
+	std::array<std::unique_ptr<State>, 2703> StatesArr;
 	std::unordered_map<std::string, State*> StatesMap;
 
 	//Reference to every country
-	std::vector<Country*> CountriesArr;
+	std::vector<std::unique_ptr<Country>> CountriesArr;
 
 	//The state of the diplomatic relations between every country
 	Diplomacy diplo;

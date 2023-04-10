@@ -81,7 +81,7 @@ void DiplomacyScreen::SelectCountry(void* country){
 }
 
 void DiplomacyScreen::ImproveRelations(){
-	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
+	Country* c1 = PCref->CountriesArr[PCref->player_index].get(), * c2 = PCref->CountriesArr[selectedCountryIndex].get();
 	auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
 	if (rel != PCref->diplo.relations.end()) {
@@ -92,7 +92,7 @@ void DiplomacyScreen::ImproveRelations(){
 }
 
 void DiplomacyScreen::WorsenRelations(){
-	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
+	Country* c1 = PCref->CountriesArr[PCref->player_index].get(), * c2 = PCref->CountriesArr[selectedCountryIndex].get();
 	auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
 	if (rel != PCref->diplo.relations.end()) {
@@ -103,7 +103,7 @@ void DiplomacyScreen::WorsenRelations(){
 }
 
 void DiplomacyScreen::ImposeEmbargo() {
-	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
+	Country* c1 = PCref->CountriesArr[PCref->player_index].get(), * c2 = PCref->CountriesArr[selectedCountryIndex].get();
 
 	auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
@@ -121,7 +121,7 @@ void DiplomacyScreen::ImposeEmbargo() {
 }
 
 void DiplomacyScreen::SendAllianceRequest() {
-	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
+	Country* c1 = PCref->CountriesArr[PCref->player_index].get(), * c2 = PCref->CountriesArr[selectedCountryIndex].get();
 
 	auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
@@ -139,7 +139,7 @@ void DiplomacyScreen::SendAllianceRequest() {
 
 
 void DiplomacyScreen::UpdateRelationValue(){
-	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
+	Country* c1 = PCref->CountriesArr[PCref->player_index].get(), * c2 = PCref->CountriesArr[selectedCountryIndex].get();
 
 	auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
@@ -151,7 +151,7 @@ void DiplomacyScreen::UpdateRelationValue(){
 }
 
 void DiplomacyScreen::UpdateAllianceState() {
-	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
+	Country* c1 = PCref->CountriesArr[PCref->player_index].get(), * c2 = PCref->CountriesArr[selectedCountryIndex].get();
 
 	auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
@@ -165,7 +165,7 @@ void DiplomacyScreen::UpdateAllianceState() {
 }
 
 void DiplomacyScreen::UpdateEmbargoState() {
-	Country* c1 = PCref->CountriesArr[PCref->player_index], * c2 = PCref->CountriesArr[selectedCountryIndex];
+	Country* c1 = PCref->CountriesArr[PCref->player_index].get(), * c2 = PCref->CountriesArr[selectedCountryIndex].get();
 
 	auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 

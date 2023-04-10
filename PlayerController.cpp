@@ -19,10 +19,6 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	SDL_Thread* MapThread = SDL_CreateThread(&PlayerController::LoadMap, nullptr, this);
 	SDL_Thread* AssetsThread = SDL_CreateThread(&PlayerController::LoadUtilityAssets, nullptr, this);
 
-	//Allocate space for some members
-	StatesArr = new State* [2703];
-	//StatesMap = new std::unordered_map<std::string, State*>;
-
 	//Create the variables needed to load all the needed data
 	std::string line;
 	std::ifstream myfile("map/Countries/CountryNames.txt");
@@ -66,7 +62,7 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 
 	//Free allocated memory
 	delete[] colors;
-        delete[] coords;
+    delete[] coords;
 
 	//Initialize the date
 	Date = { .Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .bIsPaused = true, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31} };
@@ -77,18 +73,6 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 }
 
 PlayerController::~PlayerController() {
-	//Delete all objects created by the player Controller
-	for (int x = 0; x < 2703; x++) {
-		delete StatesArr[x];
-	}
-	for (auto i : CountriesArr) {
-		delete i;
-	}
-
-	//Free all allocated Memory
-	delete StatesArr;
-	//delete StatesMap;
-
 	//Stop the date thread if the game is not paused
 	if (Date.bIsPaused == false) {
 		Pause();
@@ -278,7 +262,7 @@ void PlayerController::InitializeCountries(VectorSmartPointer& names, VectorSmar
 
 	for (int x = 0; x < 58; x++) {
 		Res[30] = balance[x];
-		CountriesArr.push_back(new Country(tags->at(x), names->at(x), 0, 0, 0, Res));
+		CountriesArr.push_back(std::make_unique<Country>(tags->at(x), names->at(x), 0, 0, 0, Res));
 		if (tag == tags->at(x)) {
 			player_index = x;
 		}
@@ -286,7 +270,7 @@ void PlayerController::InitializeCountries(VectorSmartPointer& names, VectorSmar
 
 	for (int c1 = 0; c1 < 58; c1++) {
 		for (int c2 = c1 + 1; c2 < 58; c2++) {
-			std::pair<CountryPair, Relations> cp(CountryPair(CountriesArr[c1], CountriesArr[c2]), Relations(100));
+			std::pair<CountryPair, Relations> cp(CountryPair(CountriesArr[c1].get(), CountriesArr[c2].get()), Relations(100));
 			diplo.relations.insert(cp);
 		}
 	}
@@ -295,7 +279,6 @@ void PlayerController::InitializeCountries(VectorSmartPointer& names, VectorSmar
 void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], int* populations, unsigned char(*colors)[3]){
 	short int res[8] = { 50, 50, 50, 50, 50, 50, 50, 50 };
 	int target = 0;
-	State* state;
 
 	for (int x = 0; x < 2703; x++) {
 		for (int y = 0; y < 58; y++) {
@@ -305,20 +288,18 @@ void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartP
 			}
 		}
 
-		state = new State(names->at(x), x + 1, owners->at(x), owners->at(x), populations[x], coords[x], colors[x], res, &CountriesArr.at(target)->Stock);
+		StatesArr[x] = std::make_unique<State>(names->at(x), x + 1, owners->at(x), owners->at(x), populations[x], coords[x], colors[x], res, &CountriesArr.at(target)->Stock);
 
-		StatesMap.insert(std::pair(state->color.toString(), state));
-		StatesArr[x] = state;
+		StatesMap.insert(std::pair(StatesArr[x]->color.toString(), StatesArr[x].get()));
 
-		CountriesArr.at(target)->AddState(state);
+		CountriesArr.at(target)->AddState(StatesArr[x].get());
 	}
 }
 
 int PlayerController::AdvanceDate(void* ref){
 	PlayerController* reference = static_cast<PlayerController*>(ref);
 
-	while (true)
-	{
+	while (true) {
 		for (int i = 0; i < 10 && reference->Date.bIsPaused == false; i++) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(260 - reference->Date.Speed * 60));
 		}
@@ -382,7 +363,7 @@ void PlayerController::ChangeSpeed(bool change){
 
 void PlayerController::Tick(){
 	//Execute the tick function for all countries (and all states)
-	for (auto i : CountriesArr) {
+	for (auto& i : CountriesArr) {
 		i->Tick();
 	}
 }

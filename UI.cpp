@@ -136,9 +136,9 @@ void UI::OpenIndustryScreen(){
 }
 
 void UI::OpenEconomyScreen() {
-	ChangeScreenFunc(std::make_unique<EconomyScreen>(renderer, PCref->CountriesArr.at(PCref->player_index)), "EconomyScreen");
+	ChangeScreenFunc(std::make_unique<EconomyScreen>(renderer, PCref->CountriesArr.at(PCref->player_index).get()), "EconomyScreen");
 }
 
 void UI::OpenTradeScreen() {
-	ChangeScreenFunc(std::make_unique<TradeScreen>(renderer, PCref->CountriesArr.at(PCref->player_index)), "TradeScreen");
+	ChangeScreenFunc(std::make_unique<TradeScreen>(renderer, PCref->CountriesArr.at(PCref->player_index).get()), "TradeScreen");
 }
