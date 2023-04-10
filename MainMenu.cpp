@@ -16,12 +16,10 @@ MainMenu::MainMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void
 	AddDrawable<Button>(r, int(Width * 0.22), int(Height * 0.5), int(Width * 0.12), int(Height * 0.06), "Credits", fontSize, [this]{ ShowCredits(); });
 	AddDrawable<Button>(r, int(Width * 0.22), int(Height * 0.6), int(Width * 0.12), int(Height * 0.06), "Quit", fontSize, fp);
 
-        /*
         AddMessageBox<MessageBox>(r, "Welcome to The Great War", "Hello dear player, \n"
                 "We just want to inform you that the game is still in a beta stage and will certainly have some bugs. Please be tolerant.\n"
                 "Kind regards,\n"
                 "The Great War devs.", [this](void* p) { DeleteMessageBox(p);} );
-        */
 }
 
 void MainMenu::ShowCredits(){
