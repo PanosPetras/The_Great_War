@@ -1,15 +1,18 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include <string>
+#include "Color.h"
+#include "Coordinate.h"
 #include "Factory.h"
 #include "Stockpile.h"
 #include "Color.h"
 
+#include <string>
+
 class State {
 public:
     //Constructor
-    State(std::string name, int ID, std::string owner, std::string controller, int pop, short int Coords[2], unsigned char C[3], short int Res[8], Stockpile* stock);
+    State(std::string name, int ID, std::string owner, std::string controller, int pop, Coordinate Coords, Color C, short int Res[8], Stockpile* stock);
 
     //This is the representing the pass of a single day
     void Tick(int TaxRate, int HealthCare);

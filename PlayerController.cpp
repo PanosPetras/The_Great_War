@@ -1,12 +1,34 @@
+#include "Color.h"
 #include "PlayerController.h"
 #include "SDL_ColorDetection.h"
-#include <vector>
-#include <future>
-#include <fstream>
-#include <string>
-#include <thread>
+
 #include <SDL_image.h>
 #include <SDL_thread.h>
+
+#include <vector>
+#include <fstream>
+#include <iterator>
+#include <string>
+#include <thread>
+
+namespace {
+struct Line {
+    std::string str;
+
+    operator std::string& () { return str; }
+    operator std::string const& () const { return str; }
+
+    friend std::istream& operator>>(std::istream& is, Line& l) {
+        return std::getline(is, l.str);
+    }
+};
+
+template<class T, class Adapter = T>
+std::vector<T> LoadFromFile(const char* filename) {
+    std::ifstream is(filename);
+    return {std::istream_iterator<Adapter>(is), std::istream_iterator<Adapter>{}};
+}
+} // namesapce
 
 PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	//Save a reference to the window's renderer
@@ -20,51 +42,46 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	SDL_Thread* AssetsThread = SDL_CreateThread(&PlayerController::LoadUtilityAssets, nullptr, this);
 
 	//Create the variables needed to load all the needed data
-	std::string line;
-	std::ifstream myfile("map/Countries/CountryNames.txt");
 
 	//Load the Countries' Names
-	auto names = LoadCountryNames(myfile);
+	auto countryNames = LoadFromFile<std::string, Line>("map/Countries/CountryNames.txt");
 
 	//Load the country tags
-	myfile.open("map/Countries/CountryTags.txt");
-	auto tags = LoadCountryTags(myfile);
+	auto tags = LoadFromFile<std::string, Line>("map/Countries/CountryTags.txt");
 
 	//Load the countries' budget at the start of the game
-	myfile.open("map/Countries/CountryBalances.txt");
-	auto balance = LoadCountriesBalance(myfile);
+	auto balance = LoadFromFile<int>("map/Countries/CountryBalances.txt");
+
+        if(countryNames.size() != tags.size() || countryNames.size() != tags.size() || countryNames.size() != balance.size()) {
+            std::cerr << "Country data mismatch " << countryNames.size() << ',' << tags.size() << ',' << balance.size() << std::endl;
+            std::terminate();
+        }
 
 	//Load all state names
-	myfile.open("map/States/StateNames.txt");
-	auto Names = LoadStateNames(myfile);
+	auto stateNames = LoadFromFile<std::string, Line>("map/States/StateNames.txt");
 
 	//Load all state owner tags
-	myfile.open("map/States/StateOwners.txt");
-	auto owners = LoadStateOwnerTags(myfile);
+	auto owners = LoadFromFile<std::string, Line>("map/States/StateOwners.txt");
 
 	//Load all the states' unique color IDs
-	myfile.open("map/States/StateColors.txt");
-	auto colors = LoadStateColors(myfile);
+	auto colors = LoadFromFile<Color>("map/States/StateColors.txt");
 
 	//Load all the state's coordinates
-	myfile.open("map/States/StateCoordinates.txt");
-	auto coords = LoadStateCoordinates(myfile);
+	auto coords = LoadFromFile<Coordinate>("map/States/StateCoordinates.txt");
 
 	//Load all the state's populations
-	myfile.open("map/States/StatePopulations.txt");
-	auto populations = LoadStatePops(myfile);
+	auto populations = LoadFromFile<int>("map/States/StatePopulations.txt");
+
+        if(stateNames.size() != owners.size() || stateNames.size() != colors.size() || stateNames.size() != coords.size() || stateNames.size() != populations.size()) {
+            std::cerr << "State data mismatch " << stateNames.size() << ',' << owners.size() << ',' << colors.size() << ',' << coords.size() << ',' << populations.size() << std::endl;
+            std::terminate();
+        }
 
 	//Create all countries
-	InitializeCountries(names, tags, tag, balance);
+	InitializeCountries(countryNames, tags, tag, balance);
 
 	//Create all the states
-	InitializeStates(owners, Names, coords, populations, colors);
-
-	//Free allocated memory
-	delete[] colors;
-    delete[] coords;
-	delete populations;
-	delete balance;
+	InitializeStates(owners, stateNames, coords, populations, colors);
 
 	//Initialize the date
 	Date = { .Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .bIsPaused = true, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31} };
@@ -88,7 +105,7 @@ PlayerController::~PlayerController() {
 }
 
 int PlayerController::LoadMap(void* pc){
-	PlayerController* PC = (PlayerController*)pc;
+	PlayerController* PC = static_cast<PlayerController*>(pc);
 	PC->map = IMG_Load("map/1910.png");
 
 	SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0, 0, 0, 0);
@@ -116,185 +133,42 @@ int PlayerController::LoadUtilityAssets(void* pc){
 	return 0;
 }
 
-VectorSmartPointer PlayerController::LoadCountryNames(std::ifstream& file){
-	auto names = std::make_unique<std::vector<std::string>>();
-	std::string line;
-
-	if (file.is_open())
-	{
-		while (getline(file, line))
-		{
-			names->push_back(line);
-		}
-		file.close();
-	}
-
-	return names;
-}
-
-VectorSmartPointer PlayerController::LoadCountryTags(std::ifstream& file) {
-	auto tags = std::make_unique<std::vector<std::string>>();
-	std::string line;
-
-	if (file.is_open())
-	{
-		while (getline(file, line))
-		{
-			tags->push_back(line);
-		}
-		file.close();
-	}
-
-	return tags;
-}
-
-int* PlayerController::LoadCountriesBalance(std::ifstream& file){
-	int* balance = new int[58];
-	std::string line;
-	int i = 0;
-
-	if (file.is_open())
-	{
-		while (getline(file, line))
-		{
-			balance[i++] = stoi(line);
-		}
-		file.close();
-	}
-
-	return balance;
-}
-
-VectorSmartPointer PlayerController::LoadStateNames(std::ifstream& file) {
-	auto names = std::make_unique<std::vector<std::string>>();
-	std::string line;
-
-	if (file.is_open())
-	{
-		while (getline(file, line))
-		{
-			names->push_back(line);
-		}
-		file.close();
-	}
-
-	return names;
-}
-
-VectorSmartPointer PlayerController::LoadStateOwnerTags(std::ifstream& file) {
-	auto owners = std::make_unique<std::vector<std::string>>();
-	std::string line;
-
-	if (file.is_open())
-	{
-		while (getline(file, line))
-		{
-			owners->push_back(line);
-		}
-		file.close();
-	}
-
-	return owners;
-}
-
-unsigned char (*PlayerController::LoadStateColors(std::ifstream& file))[3] {
-	auto colors = new unsigned char[2703][3];
-	std::string line;
-	int x = 0;
-
-	if (file.is_open())
-	{
-		while (getline(file, line))
-		{
-			colors[x][0] = stoi(line.substr(0, 3));
-			colors[x][1] = stoi(line.substr(4, 3));
-			colors[x][2] = stoi(line.substr(8, 8));
-			x++;
-		}
-		file.close();
-	}
-
-	return colors;
-}
-
-short (*PlayerController::LoadStateCoordinates(std::ifstream& file))[2] {
-	auto coords = new short[2703][2];
-	std::string line;
-	int x = 0;
-
-	if (file.is_open())
-	{
-		while (getline(file, line))
-		{
-			if (line == "---") {
-				coords[x][0] = -1;
-				coords[x][1] = -1;
-			}
-			else {
-				coords[x][0] = std::stoi(line.substr(0, 4));
-				coords[x][1] = std::stoi(line.substr(7, 11));
-			}
-			x++;
-		}
-		file.close();
-	}
-
-	return coords;
-}
-
-int* PlayerController::LoadStatePops(std::ifstream& file){
-	int* pops = new int[2703];
-	std::string line;
-	int i = 0;
-
-	if (file.is_open())
-	{
-		while (getline(file, line))
-		{
-			pops[i++] = stoi(line);
-		}
-		file.close();
-	}
-
-	return pops;
-}
-
-void PlayerController::InitializeCountries(VectorSmartPointer& names, VectorSmartPointer& tags, const char* tag, int* balance){
+void PlayerController::InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, std::vector<int>& balance){
 	int Res[31] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000 };
 
-	for (int x = 0; x < 58; x++) {
+	for (unsigned x = 0; x < tags.size(); x++) {
 		Res[30] = balance[x];
-		CountriesArr.push_back(std::make_unique<Country>(tags->at(x), names->at(x), 0, 0, 0, Res));
-		if (tag == tags->at(x)) {
+		CountriesArr.push_back(std::make_unique<Country>(tags[x], names[x], 0, 0, 0, Res));
+		if (tag == tags[x]) {
 			player_index = x;
 		}
 	}
 
-	for (int c1 = 0; c1 < 58; c1++) {
-		for (int c2 = c1 + 1; c2 < 58; c2++) {
-			std::pair<CountryPair, Relations> cp(CountryPair(CountriesArr[c1].get(), CountriesArr[c2].get()), Relations(100));
-			diplo.relations.insert(cp);
+	for (unsigned c1 = 0; c1 < CountriesArr.size(); c1++) {
+		for (unsigned c2 = c1 + 1; c2 < CountriesArr.size(); c2++) {
+			diplo.relations.emplace(CountryPair{CountriesArr[c1].get(), CountriesArr[c2].get()}, Relations{100});
 		}
 	}
 }
 
-void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], int* populations, unsigned char(*colors)[3]){
+void PlayerController::InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors){
 	short int res[8] = { 50, 50, 50, 50, 50, 50, 50, 50 };
 	int target = 0;
 
-	for (int x = 0; x < 2703; x++) {
-		for (int y = 0; y < 58; y++) {
-			if (owners->at(x) == CountriesArr.at(y)->GetTag()) {
+        StatesArr.reserve(populations.size());
+	for (unsigned x = 0; x < owners.size(); ++x) {
+		for (unsigned y = 0; y < CountriesArr.size(); y++) {
+			if (owners[x] == CountriesArr[y]->GetTag()) {
 				target = y;
 				break;
 			}
 		}
 
-		StatesArr[x] = std::make_unique<State>(names->at(x), x + 1, owners->at(x), owners->at(x), populations[x], coords[x], colors[x], res, &CountriesArr.at(target)->Stock);
+                StatesArr.emplace_back(names[x], x + 1, owners[x], owners[x], populations[x], coords[x], colors[x], res, &CountriesArr.at(target)->Stock);
 
-		StatesMap.insert(std::pair(StatesArr[x]->color.toString(), StatesArr[x].get()));
+		StatesMap.insert(std::pair(StatesArr.back().color.toString(), &StatesArr.back()));
 
-		CountriesArr.at(target)->AddState(StatesArr[x].get());
+		CountriesArr.at(target)->AddState(&StatesArr.back());
 	}
 }
 

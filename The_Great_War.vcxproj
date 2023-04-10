@@ -23,6 +23,7 @@
     <ClCompile Include="AI.h" />
     <ClCompile Include="Checkbox.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Coordinate.cpp" />
     <ClCompile Include="CountrySelection.cpp" />
     <ClCompile Include="CreditScreen.cpp" />
     <ClCompile Include="Diplomacy.cpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Checkbox.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Coordinate.h" />
     <ClInclude Include="Diplomacy.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="Factory.h" />
