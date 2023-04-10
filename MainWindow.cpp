@@ -13,12 +13,9 @@ MainWindow::MainWindow():
     //sdl_init_ctx{}, window{}, renderer(window), ttf_init_ctx{}, img_init_ctx{}, mix_ctx{}, cursor{}
     renderer(window)
 {
-    //Get dimensions of the screen
-    SDL_GetWindowSize(window, &WindowInfo::width, &WindowInfo::height);
-
     //Initializing the input array
-    for (int i = 0; i < 322; i++) {
-        KEYS[i] = false;
+    for (bool& i : KEYS) {
+        i = false;
     }
 
     //Creating a pointer to the active screen

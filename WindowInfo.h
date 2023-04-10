@@ -9,7 +9,7 @@ public:
 private:
 	static int width, height;
 
-	friend class MainWindow;
+	friend class SDL_Window_ctx;
 };
 
 extern int(*GetWindowWidth)();

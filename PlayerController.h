@@ -24,14 +24,14 @@ private:
 	//Loading data functions
 	VectorSmartPointer LoadCountryNames(std::ifstream&);
 	VectorSmartPointer LoadCountryTags(std::ifstream&);
-	int* LoadCountriesBalance(std::ifstream&);
+	std::array<int, 58> LoadCountriesBalance(std::ifstream&);
 	VectorSmartPointer LoadStateNames(std::ifstream&);
 	VectorSmartPointer LoadStateOwnerTags(std::ifstream&);
 	unsigned char(*LoadStateColors(std::ifstream&))[3];
 	short (*LoadStateCoordinates(std::ifstream&))[2];
-	int* LoadStatePops(std::ifstream&);
-	void InitializeCountries(VectorSmartPointer& names, VectorSmartPointer& tags, const char* tag, int* balance);
-	void InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], int* populations, unsigned char(*colors)[3]);
+	std::array<int, 2703> LoadStatePops(std::ifstream&);
+	void InitializeCountries(VectorSmartPointer& names, VectorSmartPointer& tags, const char* tag, std::array<int, 58> balance);
+	void InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], std::array<int, 2703> populations, unsigned char(*colors)[3]);
 
 	static int LoadMap(void*);
 	static int LoadUtilityAssets(void*);

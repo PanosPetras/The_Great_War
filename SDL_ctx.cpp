@@ -1,4 +1,5 @@
 #include "SDL_ctx.h"
+#include "WindowInfo.h"
 
 //-----------------------------------------------------------------------------
 SDL_Init_ctx::SDL_Init_ctx() {
@@ -17,8 +18,10 @@ SDL_Window_ctx::SDL_Window_ctx() : window(SDL_CreateWindow(
         1080,                             // height, in pixels
         SDL_WINDOW_OPENGL //| SDL_WINDOW_FULLSCREEN                  // flags - see below
     ))
-{
     //2560x1440, 1920x1080, 1280x720
+{
+    //Get dimensions of the screen
+    SDL_GetWindowSize(window, &WindowInfo::width, &WindowInfo::height);
 }
 
 SDL_Window_ctx::~SDL_Window_ctx() {

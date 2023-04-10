@@ -13,6 +13,7 @@
 #include <functional>
 #include <utility>
 #include <vector>
+#include <array>
 
 class MainWindow {
 public:
@@ -48,7 +49,7 @@ public:
     SDL_Cursor_ctx cursor; //The window's cursor
 
 public:
-    bool KEYS[322];  // 322 is the number of SDLK_DOWN events
+    std::array<bool, 322> KEYS;  // 322 is the number of SDLK_DOWN events
 
     bool quit = false;
 

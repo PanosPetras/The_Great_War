@@ -62,9 +62,7 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 
 	//Free allocated memory
 	delete[] colors;
-    delete[] coords;
-	delete populations;
-	delete balance;
+	delete[] coords;
 
 	//Initialize the date
 	Date = { .Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .bIsPaused = true, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31} };
@@ -148,8 +146,8 @@ VectorSmartPointer PlayerController::LoadCountryTags(std::ifstream& file) {
 	return tags;
 }
 
-int* PlayerController::LoadCountriesBalance(std::ifstream& file){
-	int* balance = new int[58];
+std::array<int, 58> PlayerController::LoadCountriesBalance(std::ifstream& file){
+	std::array<int, 58> balance = std::array<int, 58>();
 	std::string line;
 	int i = 0;
 
@@ -242,8 +240,8 @@ short (*PlayerController::LoadStateCoordinates(std::ifstream& file))[2] {
 	return coords;
 }
 
-int* PlayerController::LoadStatePops(std::ifstream& file){
-	int* pops = new int[2703];
+std::array<int, 2703> PlayerController::LoadStatePops(std::ifstream& file){
+	std::array<int, 2703> pops = std::array<int, 2703>();
 	std::string line;
 	int i = 0;
 
@@ -259,7 +257,7 @@ int* PlayerController::LoadStatePops(std::ifstream& file){
 	return pops;
 }
 
-void PlayerController::InitializeCountries(VectorSmartPointer& names, VectorSmartPointer& tags, const char* tag, int* balance){
+void PlayerController::InitializeCountries(VectorSmartPointer& names, VectorSmartPointer& tags, const char* tag, std::array<int, 58> balance){
 	int Res[31] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000 };
 
 	for (int x = 0; x < 58; x++) {
@@ -278,7 +276,7 @@ void PlayerController::InitializeCountries(VectorSmartPointer& names, VectorSmar
 	}
 }
 
-void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], int* populations, unsigned char(*colors)[3]){
+void PlayerController::InitializeStates(VectorSmartPointer& owners, VectorSmartPointer& names, short(*coords)[2], std::array<int, 2703> populations, unsigned char(*colors)[3]){
 	short int res[8] = { 50, 50, 50, 50, 50, 50, 50, 50 };
 	int target = 0;
 
