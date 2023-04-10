@@ -145,7 +145,9 @@
     <ClCompile Include="AI.cpp">
       <Filter>Game_Classes\Source_Files</Filter>
     </ClCompile>
-    <ClCompile Include="SDL_ctx.cpp" />
+    <ClCompile Include="SDL_ctx.cpp">
+      <Filter>General purpose code\Source_Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">
@@ -218,7 +220,9 @@
     <ClInclude Include="MessageBox.h">
       <Filter>UI_Elements\Header_Files</Filter>
     </ClInclude>
-    <ClInclude Include="SDL_ctx.h" />
+    <ClInclude Include="SDL_ctx.h">
+      <Filter>General purpose code\Header_Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="The_Great_War.rc" />

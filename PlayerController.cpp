@@ -63,6 +63,8 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	//Free allocated memory
 	delete[] colors;
     delete[] coords;
+	delete populations;
+	delete balance;
 
 	//Initialize the date
 	Date = { .Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .bIsPaused = true, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31} };
