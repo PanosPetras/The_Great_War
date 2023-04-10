@@ -9,8 +9,8 @@
 class Slider : public InputDrawable {
 public:
 	//Constructor, initializes the values
-	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = nullptr);
-	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = nullptr);
+	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
+	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
 
 	//Destructor, frees up the memory
 	~Slider();
@@ -23,9 +23,6 @@ public:
 
 	//Change the slider's position on the screen
 	void ChangePosition(int x, int y, int Width, int Height);
-
-	//Called when the value of the slider changes
-	std::function<void()> onSliderValueChanged;
 
 	//Holds the slider's values
 	struct {
@@ -56,5 +53,9 @@ protected:
 
 	//Whether the mouse has been pressed over the Marker
 	bool bmousepressed;
+
+private:
+	//Called when the value of the slider changes
+	std::function<void()> onSliderValueChanged;
 };
 #endif

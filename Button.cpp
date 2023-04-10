@@ -1,7 +1,10 @@
 #include "Button.h"
+#include "MainWindow.h"
+
 #include <SDL_ttf.h>
 
 #include <iostream>
+#include <unordered_set>
 
 Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) : Button(r, x, y, Width, Height, image, top_left, f, keybind) {
 }
@@ -71,8 +74,17 @@ Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string
     ChangeFunctionBinding(f, arg);
 }
 
+std::unordered_set<Button*> deads;
+void log(Button* This, const char* txt) {
+    if(deads.contains(This))
+        std::cerr << txt << " (on DEAD)\t" << static_cast<void*>(This) << std::endl;
+    else
+        std::cerr << txt << " (on live)\t" << static_cast<void*>(This) << std::endl;
+}
+
 Button::~Button() {
-    std::cerr << "Button::~Button()\t" << static_cast<void*>(this) << std::endl;
+    std::cerr << "Button::~Button\t" << static_cast<void*>(this) << std::endl;
+    deads.emplace(this);
     //Free up the memory
     SDL_DestroyTexture(texture);
 
@@ -117,7 +129,6 @@ void Button::HandleInput(const SDL_Event& ev) {
             SDL_SetTextureColorMod(text, 255, 255, 255);
         }
 
-        std::cerr << "Button::HandleInput " << static_cast<void*>(this) << std::endl;
         if (key) {
             if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == key) {
                 Click();
@@ -127,6 +138,7 @@ void Button::HandleInput(const SDL_Event& ev) {
 }
 
 void Button::Click(){
+    log(this, "Button::Click");
     //Play the sound effect
     Playsound();
 
@@ -205,16 +217,12 @@ void Button::ChangePosition(int x, int y, int Width, int Height) {
 
 void Button::ChangeFunctionBinding(std::function<void()> f) {
     //saving the newly bound function
-    funcWArg = nullptr;
-    arg = nullptr;
     func = f;
 }
 
 void Button::ChangeFunctionBinding(std::function<void(void*)> f, void* arg){
     //saving the newly bound function
-    funcWArg = f;
-    this->arg = arg;
-    func = nullptr;
+    func = [f=std::move(f), arg]{ f(arg); };
 }
 
 void Button::ChangeKeybind(int keybind){
@@ -226,10 +234,10 @@ void Button::Playsound() {
 }
 
 void Button::CallBoundFunction(){
+    log(this, "Button::CallBoundFunction 1");
     if (func) {
-        func();
-    } else if (funcWArg) {
-        funcWArg(arg);
+        MainWindow::Instance().AddEvent([func=func]{ func(); });
+        log(this, "Button::CallBoundFunction added func MainWindow event list");
     }
 }
 

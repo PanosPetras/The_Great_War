@@ -2,61 +2,61 @@
 #include "ToggleButton.h"
 #include "Label.h"
 
-Checkbox::Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, std::function<void(bool)> f, int keybind) : Checkbox(r, x, y, Height, text, textSize, top_left, f, keybind) {
-}
-
-Checkbox::Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, [[maybe_unused]]Anchor anchor, std::function<void(bool)> f, int keybind) {
-	toggleButton = std::make_unique<ToggleButton>(r, x, y, Height, Height, "Drawable/Checkbox/Ticked Checkbox", "Drawable/Checkbox/Empty Checkbox", f, keybind);
-	label = std::make_unique<Label>(r, text, textSize, x + int(Height * (1 + 0.1)), y);
+Checkbox::Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, [[maybe_unused]]Anchor anchor, std::function<void(bool)> f, int keybind) :
+    toggleButton(r, x, y, Height, Height, "Drawable/Checkbox/Ticked Checkbox", "Drawable/Checkbox/Empty Checkbox", f, keybind),
+    label(r, text, textSize, x + int(Height * (1 + 0.1)), y)
+{
+//	toggleButton = std::make_unique<ToggleButton>(r, x, y, Height, Height, "Drawable/Checkbox/Ticked Checkbox", "Drawable/Checkbox/Empty Checkbox", f, keybind);
+//	label = std::make_unique<Label>(r, text, textSize, x + int(Height * (1 + 0.1)), y);
 }
 
 void Checkbox::pDraw() {
-	toggleButton->Draw();
-	label->Draw();
+	toggleButton.Draw();
+	label.Draw();
 }
 
 void Checkbox::HandleInput(const SDL_Event& ev) {
-	toggleButton->HandleInput(ev);
+	toggleButton.HandleInput(ev);
 }
 
 void Checkbox::ChangePosition(int x, int y, int Height) {
-	toggleButton->ChangePosition(x, y, Height, Height);
-	label->ChangePosition(x, y);
+	toggleButton.ChangePosition(x, y, Height, Height);
+	label.ChangePosition(x, y);
 }
 
 void Checkbox::ChangeFunctionBinding(std::function<void(bool)> f) {
-	toggleButton->ChangeFunctionBinding(f);
+	toggleButton.ChangeFunctionBinding(f);
 }
 
 void Checkbox::ChangeKeybind(int keybind) {
-	toggleButton->ChangeKeybind(keybind);
+	toggleButton.ChangeKeybind(keybind);
 }
 
 void Checkbox::ChangeText(std::string text) {
-	label->ChangeText(text);
+	label.ChangeText(text);
 }
 
 void Checkbox::ChangeTextSize(int size) {
-	label->ChangeTextSize(size);
+	label.ChangeTextSize(size);
 }
 
 void Checkbox::ChangeValue(bool val) {
-	toggleButton->ChangeValue(val);
+	toggleButton.ChangeValue(val);
 }
 
 bool Checkbox::GetValue() {
-	return toggleButton->GetValue();
+	return toggleButton.GetValue();
 }
 
 void Checkbox::Playsound() {
-	toggleButton->Playsound();
+	toggleButton.Playsound();
 }
 
 void Checkbox::CallBoundFunction() {
-	toggleButton->CallBoundFunction();
+	toggleButton.CallBoundFunction();
 }
 
 void Checkbox::SetActive(bool state) {
 	InputDrawable::SetActive(state);
-	toggleButton->SetActive(state);
+	toggleButton.SetActive(state);
 }

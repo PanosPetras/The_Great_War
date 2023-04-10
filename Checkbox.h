@@ -2,20 +2,20 @@
 #define CHECKBOX_H
 
 #pragma once
+#include "Drawable.h"
+#include "Label.h"
+#include "ToggleButton.h"
+
 #include <SDL.h>
+
 #include <string>
 #include <functional>
 #include <memory>
-#include "Drawable.h"
-
-class Label;
-class ToggleButton;
 
 class Checkbox : public InputDrawable {
 public:
 	//Constructor
-	Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, std::function<void(bool)> f = nullptr, int keybind = 0);
-	Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, Anchor anchor, std::function<void(bool)> f = nullptr, int keybind = 0);
+	Checkbox(SDL_Renderer* r, int x, int y, int Height, std::string text, int textSize, Anchor anchor, std::function<void(bool)> f, int keybind = 0);
 
 	//Destructor
 	~Checkbox() = default;
@@ -58,8 +58,10 @@ protected:
 	void pDraw();
 
 	//The Drawables that make up this Drawable
-	std::unique_ptr<ToggleButton> toggleButton;
-	std::unique_ptr<Label> label;
+	//std::unique_ptr<ToggleButton> toggleButton;
+	//std::unique_ptr<Label> label;
+        ToggleButton toggleButton;
+        Label label;
 };
 
 #endif
