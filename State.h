@@ -39,7 +39,7 @@ public:
     double State_Population;
     
     //This is the state's coorditates on the map expressed in pixels
-    int State_Coords[2];
+    Coordinate State_Coords;
 
     //This is the state's factories
     Factory* State_Factories[4]= { nullptr, nullptr, nullptr, nullptr };

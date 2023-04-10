@@ -52,7 +52,7 @@ protected:
 	SDL_Rect marker_rect;
 
 	//Whether the mouse has been pressed over the Marker
-	bool bmousepressed;
+	bool bmousepressed = false;
 
 private:
 	//Called when the value of the slider changes

@@ -1,10 +1,15 @@
 #include "Slider.h"
 #include <SDL_image.h>
 
-Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged) : Slider(r, x, y, Width, Height, top_left, minvalue, maxvalue, value, onSliderValueChanged) {
-}
+#include <iostream>
 
-Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged) : InputDrawable(anchor) {
+Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged)
+    : Slider(r, x, y, Width, Height, top_left, minvalue, maxvalue, value, onSliderValueChanged)
+{}
+
+Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged)
+    : InputDrawable(anchor)
+{
 	//Saving a reference to the renderer
 	renderer = r;
 
@@ -44,18 +49,18 @@ void Slider::pDraw(){
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
 	//Draw the slider's marker
-	SDL_RenderCopy(renderer, Marker, NULL, &marker_rect);
+	SDL_RenderCopy(renderer, Marker, nullptr, &marker_rect);
 }
 
 void Slider::HandleInput(const SDL_Event& ev){
 	if (active) {
 		//Check if the user is handling the slider
-		if (ev.button.button == SDL_BUTTON_LEFT && ev.type == SDL_MOUSEBUTTONDOWN && bmousepressed == false) {
+		if (ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT && bmousepressed == false) {
 			if (ev.button.x >= marker_rect.x && ev.button.x <= marker_rect.x + marker_rect.w && ev.button.y > marker_rect.y && ev.button.y < marker_rect.h + marker_rect.y) {
 				bmousepressed = true;
 			}
 		}
-		else if (ev.button.button == SDL_BUTTON_LEFT && ev.type == SDL_MOUSEBUTTONUP && bmousepressed == true) {
+		else if (ev.type == SDL_MOUSEBUTTONUP && ev.button.button == SDL_BUTTON_LEFT && bmousepressed == true) {
 			bmousepressed = false;
 		}
 
@@ -99,7 +104,7 @@ void Slider::ChangePosition(int x, int y, int Width, int Height){
 }
 
 void Slider::callOnValueChanged(){
-	if (onSliderValueChanged != NULL) {
+	if (onSliderValueChanged) {
 		onSliderValueChanged();
 	}
 }

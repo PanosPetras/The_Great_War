@@ -1,17 +1,17 @@
 #include "State.h"
 
-State::State(std::string name, int ID, std::string owner, std::string controller, int pop, Coordinate Coords, Color C, short int Res[8], Stockpile* stock){
+State::State(std::string name, int ID, std::string owner, std::string controller, int pop, Coordinate Coords, Color C, short int Res[8], Stockpile* stock) :
+	State_Name{std::move(name)},
+	State_ID{ID},
+	State_Owner{std::move(owner)},
+	State_Controller{std::move(controller)},
+	State_Population{static_cast<double>(pop)},
+	State_Coords{Coords},
+	color{C}
+{
 	//These variables MUST not change during the game's flow
-	State_Name = name;
-	State_ID = ID;
-	State_Coords[0] = Coords.x;
-	State_Coords[1] = Coords.y;
-	color = C;
 
 	//These variables might change during the game's flow
-	State_Controller = owner;
-	State_Owner = controller;
-	State_Population = pop;
 	Pop_needs = {
 		.Telephones = short(pop * 0.04),
 		.Fuel = short(pop * 0.02),
