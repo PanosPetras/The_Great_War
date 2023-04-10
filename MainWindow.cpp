@@ -4,15 +4,14 @@
 
 #include <iostream>
 
-void MainWindow::MainLoop() {
-    while (!quit) {            
-        this->Render();
-        this->Keyboard();
-    }
+MainWindow& MainWindow::Instance() {
+    static MainWindow inst;
+    return inst;
 }
 
 MainWindow::MainWindow():
-    sdl_init_ctx{}, window{}, renderer(window), ttf_init_ctx{}, img_init_ctx{}, mix_ctx{}, cursor{}
+    //sdl_init_ctx{}, window{}, renderer(window), ttf_init_ctx{}, img_init_ctx{}, mix_ctx{}, cursor{}
+    renderer(window)
 {
     //Get dimensions of the screen
     SDL_GetWindowSize(window, &WindowInfo::width, &WindowInfo::height);
@@ -22,11 +21,15 @@ MainWindow::MainWindow():
         KEYS[i] = false;
     }
 
-    //Initializing the quit variable, this ends the main loop
-    quit = 0;
-
     //Creating a pointer to the active screen
     scr = std::make_unique<MainMenu>(renderer, [this]{ Quit(); }, [this](std::unique_ptr<Screen> newScreen){ ChangeScreen(std::move(newScreen)); });
+}
+
+void MainWindow::MainLoop() {
+    while (!quit) {            
+        Render();
+        Keyboard();
+    }
 }
 
 void MainWindow::Render() {
@@ -80,17 +83,22 @@ void MainWindow::Keyboard() {
         default:
             break;
         }
+
         // pass event to screen
-        if(scr) {
-            std::cerr << "MainWindow::Keyboard " << static_cast<void*>(scr.get()) << std::endl;
-            scr->Handle_Input(event);
-        } else {
-            std::cerr << "invalid scr" << std::endl;
+        scr->Handle_Input(event);
+
+        // execute events added by screen and its children
+        if(not quit) {
+            for(auto&& ev : event_queue) {
+                std::cerr << "MainWindow::Keyboard\tcalling deferred event" << std::endl;
+                ev();
+            }
+            event_queue.clear();
         }
     } // end of message processing
 }
 
 void MainWindow::Quit() {
     //Change the flag variable to 1 so that the main loop stops running
-    quit = 1;
+    quit = true;
 }

@@ -67,8 +67,6 @@ protected:
 
     //Stores the bound function
     std::function<void()> func;
-    std::function<void(void*)> funcWArg;
-    void* arg = nullptr;
 
     //Saves the index of the keyboard key this button is bound to
     int key;

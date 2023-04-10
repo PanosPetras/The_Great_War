@@ -10,10 +10,14 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
+#include <functional>
+#include <utility>
+#include <vector>
+
 class MainWindow {
 public:
-    //Constructor
-    MainWindow();
+    // Singleton instance interface
+    static MainWindow& Instance();
 
     //The Main loop of the window
     void MainLoop();
@@ -34,6 +38,7 @@ public:
     void ChangeScreen(std::unique_ptr<Screen> NewScreen);
 
 public:
+    // Note that the order of the SDL context instances is important
     SDL_Init_ctx sdl_init_ctx;
     SDL_Window_ctx window; //The game's main window
     SDL_Renderer_ctx renderer; //The window's renderer
@@ -45,7 +50,7 @@ public:
 public:
     bool KEYS[322];  // 322 is the number of SDLK_DOWN events
 
-    int quit;
+    bool quit = false;
 
     //Used to store the window's width and Height
     int Width;
@@ -53,5 +58,16 @@ public:
 
     //Stores a pointer to the active screen
     std::unique_ptr<Screen> scr;
+
+    template<class Event>
+    void AddEvent(Event&& ev) {
+        event_queue.emplace_back(std::forward<Event>(ev));
+    }
+private:
+    //Constructor
+    MainWindow();
+
+    std::vector<std::function<void()>> event_queue;
 };
+
 #endif
