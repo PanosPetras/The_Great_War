@@ -41,7 +41,7 @@ OpenFactoryScreen::OpenFactoryScreen(SDL_Renderer* r, int id, PlayerController* 
 	AddDrawable<Button>(r, int(Width * 0.4), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/explosives", [this]{ FactoryTypeExplosives();});
 	AddDrawable<Button>(r, int(Width * 0.45), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/tank", [this]{ FactoryTypeTank();});
 	AddDrawable<Button>(r, int(Width * 0.3), int(Height * 0.6), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/airship", [this]{ FactoryTypeAirship();});
-	AddDrawable<Button>(r, int(Width * 0.35), int(Height * 0.6), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/plane", [this]{ FactoryTypeAirship();});
+	AddDrawable<Button>(r, int(Width * 0.35), int(Height * 0.6), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/plane", [this]{ FactoryTypePlane();});
 
 	bHasBackground = false;
 	QuitFunc = fp;
@@ -166,82 +166,82 @@ void OpenFactoryScreen::FactoryType(char t, int cost){
 }
 
 void OpenFactoryScreen::BuildFactory(){
-	Factory* NF;
+	std::unique_ptr<Factory> NF;
 	switch (type){
 		case 'a':
-			NF = new LumberMill(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<LumberMill>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'b':
-			NF = new GlassFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<GlassFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'c':
-			NF = new CanningFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<CanningFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'd':
-			NF = new ClothesFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<ClothesFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'e':
-			NF = new LiquorDistillery(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<LiquorDistillery>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'f':
-			NF = new FurnitureFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<FurnitureFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'g':
-			NF = new AutomobileFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<AutomobileFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'h':
-			NF = new PaperMill(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<PaperMill>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'i':
-			NF = new TelephoneFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<TelephoneFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'j':
-			NF = new RadioFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<RadioFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'k':
-			NF = new MachinePartFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<MachinePartFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'l':
-			NF = new ElectricGearFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<ElectricGearFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'm':
-			NF = new FuelRefinery(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<FuelRefinery>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'n':
-			NF = new CementFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<CementFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'o':
-			NF = new Shipyard(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<Shipyard>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'p':
-			NF = new SmallArmsFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<SmallArmsFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'q':
-			NF = new AmmunitionFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<AmmunitionFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'r':
-			NF = new ArtilleryFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<ArtilleryFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 's':
-			NF = new ExplosivesFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<ExplosivesFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 't':
-			NF = new TankFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<TankFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'u':
-			NF = new AirshipFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<AirshipFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		case 'v':
-			NF = new PlaneFactory(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
+			NF = std::make_unique<PlaneFactory>(&PCref->CountriesArr.at(PCref->player_index)->Stock, &PCref->WorldMarket);
 			break;
 		default:
 			return;
 			break;
 	}
 
-	if (PCref->CountriesArr.at(PCref->player_index)->Stock.Money >= NF->cost) {
-		PCref->StatesArr[index].AddFactory(NF);
+	if (PCref->CountriesArr.at(PCref->player_index)->Stock.Money >= NF->cost){
 		PCref->CountriesArr.at(PCref->player_index)->Stock.Money -= NF->cost;
+		PCref->StatesArr[index].AddFactory(NF);
 		
 		QuitFunc();
 	}

@@ -20,7 +20,7 @@ public:
 	//Constructor
 	PlayerController(SDL_Renderer* r, const char* tag);
 
-        ~PlayerController();
+    ~PlayerController();
 
 private:
 	//Loading data functions

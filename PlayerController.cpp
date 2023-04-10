@@ -41,8 +41,6 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	SDL_Thread* MapThread = SDL_CreateThread(&PlayerController::LoadMap, nullptr, this);
 	SDL_Thread* AssetsThread = SDL_CreateThread(&PlayerController::LoadUtilityAssets, nullptr, this);
 
-	//Create the variables needed to load all the needed data
-
 	//Load the Countries' Names
 	auto countryNames = LoadFromFile<std::string, Line>("map/Countries/CountryNames.txt");
 
@@ -52,10 +50,10 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	//Load the countries' budget at the start of the game
 	auto balance = LoadFromFile<int>("map/Countries/CountryBalances.txt");
 
-        if(countryNames.size() != tags.size() || countryNames.size() != tags.size() || countryNames.size() != balance.size()) {
-            std::cerr << "Country data mismatch " << countryNames.size() << ',' << tags.size() << ',' << balance.size() << std::endl;
-            std::terminate();
-        }
+    if(countryNames.size() != tags.size() || countryNames.size() != balance.size()) {
+        std::cerr << "Country data mismatch " << countryNames.size() << ',' << tags.size() << ',' << balance.size() << std::endl;
+        std::terminate();
+    }
 
 	//Load all state names
 	auto stateNames = LoadFromFile<std::string, Line>("map/States/StateNames.txt");
@@ -72,10 +70,10 @@ PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
 	//Load all the state's populations
 	auto populations = LoadFromFile<int>("map/States/StatePopulations.txt");
 
-        if(stateNames.size() != owners.size() || stateNames.size() != colors.size() || stateNames.size() != coords.size() || stateNames.size() != populations.size()) {
-            std::cerr << "State data mismatch " << stateNames.size() << ',' << owners.size() << ',' << colors.size() << ',' << coords.size() << ',' << populations.size() << std::endl;
-            std::terminate();
-        }
+    if(stateNames.size() != owners.size() || stateNames.size() != colors.size() || stateNames.size() != coords.size() || stateNames.size() != populations.size()) {
+        std::cerr << "State data mismatch " << stateNames.size() << ',' << owners.size() << ',' << colors.size() << ',' << coords.size() << ',' << populations.size() << std::endl;
+        std::terminate();
+    }
 
 	//Create all countries
 	InitializeCountries(countryNames, tags, tag, balance);

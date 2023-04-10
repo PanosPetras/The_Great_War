@@ -8,6 +8,8 @@
 #include "Color.h"
 
 #include <string>
+#include <array>
+#include <memory>
 
 class State {
 public:
@@ -19,7 +21,7 @@ public:
 
     void ChangeController(std::string NewOwner, Stockpile* NewStock);
 
-    int AddFactory(Factory* NewFactory);
+    int AddFactory(std::unique_ptr<Factory>& NewFactory);
 
     int RemoveFactory(int index);
 
@@ -42,7 +44,7 @@ public:
     Coordinate State_Coords;
 
     //This is the state's factories
-    Factory* State_Factories[4]= { nullptr, nullptr, nullptr, nullptr };
+    std::array<std::unique_ptr<Factory>, 4> State_Factories = { nullptr, nullptr, nullptr, nullptr };
 
     Stockpile* TargetStockpile;
 

@@ -9,8 +9,6 @@ State::State(std::string name, int ID, std::string owner, std::string controller
 	State_Coords{Coords},
 	color{C}
 {
-	//These variables MUST not change during the game's flow
-
 	//These variables might change during the game's flow
 	Pop_needs = {
 		.Telephones = short(pop * 0.04),
@@ -67,10 +65,10 @@ void State::ChangeController(std::string NewOwner, Stockpile* NewStock){
 	}
 }
 
-int State::AddFactory(Factory* NewFactory){
+int State::AddFactory(std::unique_ptr<Factory>& NewFactory){
 	for (int x = 0; x < 4; x++) {
 		if (State_Factories[x] == nullptr) {
-			State_Factories[x] = NewFactory;
+			State_Factories[x] = std::move(NewFactory);
 			return 0;
 		}
 	}
@@ -79,7 +77,6 @@ int State::AddFactory(Factory* NewFactory){
 
 int State::RemoveFactory(int index){
 	if (State_Factories[index]) {
-		delete State_Factories[index];
 		State_Factories[index] = nullptr;
 
 		return 0;
