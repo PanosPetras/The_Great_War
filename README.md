@@ -1,5 +1,5 @@
 # The Great War
-A ww1 themed strategy game in progress. Built using C++ and SDL2.0.
+### A WW1 themed strategy game in progress. Built using C++ and SDL2.0.
 
 Created with Visual Studio 2019/2022
 
@@ -43,21 +43,11 @@ Last but not least, the player will have the ability to create universities. If 
 The game is stable at it's current state and there are 
 no bugs that will cause a crash as far as I'm aware of.
 
-This project requires the following libraries:
+This project makes use the following libraries:
 - SDL 2.26.5(Link: https://github.com/libsdl-org/SDL)
 - SDL Mixer 2.6.3(Link: https://github.com/libsdl-org/SDL_mixer)
 - SDL Image 2.6.3(Link: https://github.com/libsdl-org/SDL_image)
 - SDL ttf 2.20.2(Link: https://github.com/libsdl-org/SDL_ttf)
-
-Download the Visual C++ 32/64-bit Development Library
-
-Edit the settings on Project > Project properties as following
-
-Add "SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;" in Configuration Properties > Linker > Input > Additonal Dependencies
-
-Add the path to all the "include" folders of the aforementioned libraries in Configuration Properties > VC++ Directories > Include Directories
-
-Add the path to all the "lib" folders of the aforementioned libraries in Configuration Properties > VC++ Directories > Library Directories
 
 The project is a work in progress and currently on a non-playable state.
 Many features are missing and/or are not working as intended.
