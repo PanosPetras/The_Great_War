@@ -1,5 +1,5 @@
 #include "ScreenList.h"
-#include "WindowInfo.h"
+#include "MainWindow.h"
 #include "Button.h"
 
 MenuSettingsScreen::MenuSettingsScreen(SDL_Renderer* r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : BackScreen(r, fp, fpl) {

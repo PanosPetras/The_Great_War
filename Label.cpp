@@ -1,5 +1,5 @@
 #include "Label.h"
-#include "WindowInfo.h"
+#include "MainWindow.h"
 
 Label::Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Uint8 red, Uint8 green, Uint8 blue) : Label(r, Text, size, x, y, 300, top_left, red, green, blue) {
 }

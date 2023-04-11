@@ -56,7 +56,6 @@
     <ClCompile Include="ToggleButton.cpp" />
     <ClCompile Include="TradeScreen.cpp" />
     <ClCompile Include="UI.cpp" />
-    <ClCompile Include="WindowInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
@@ -84,7 +83,6 @@
     <ClInclude Include="TextEntry.h" />
     <ClInclude Include="ToggleButton.h" />
     <ClInclude Include="UI.h" />
-    <ClInclude Include="WindowInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="The_Great_War.rc" />

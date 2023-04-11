@@ -136,9 +136,6 @@
     <ClCompile Include="MessageBox.cpp">
       <Filter>UI_Elements\Source_Files</Filter>
     </ClCompile>
-    <ClCompile Include="WindowInfo.cpp">
-      <Filter>Screen_Classes\Source_Files</Filter>
-    </ClCompile>
     <ClCompile Include="AI.h">
       <Filter>Game_Classes\Header_Files</Filter>
     </ClCompile>
@@ -216,9 +213,6 @@
     </ClInclude>
     <ClInclude Include="Diplomacy.h">
       <Filter>Game_Classes\Header_Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowInfo.h">
-      <Filter>Screen_Classes\Header_Files</Filter>
     </ClInclude>
     <ClInclude Include="MessageBox.h">
       <Filter>UI_Elements\Header_Files</Filter>

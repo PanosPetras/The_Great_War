@@ -1,6 +1,6 @@
 #include "PlayerController.h"
 #include "ScreenList.h"
-#include "WindowInfo.h"
+#include "MainWindow.h"
 #include "Button.h"
 #include "Slider.h"
 #include "Label.h"

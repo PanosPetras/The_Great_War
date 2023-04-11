@@ -1,5 +1,5 @@
 #include "MainWindow.h"
-#include "WindowInfo.h"
+
 #include "ScreenList.h"
 
 #include <iostream>
@@ -13,6 +13,11 @@ MainWindow::MainWindow():
     //sdl_init_ctx{}, window{}, renderer(window), ttf_init_ctx{}, img_init_ctx{}, mix_ctx{}, cursor{}
     renderer(window)
 {
+    // Ugly fix - Use static variables to avoid deadlock when MainMenu needs the dimensions.
+    // An alternative would be to supply the dimensions to screens being constructed.
+    Width = window.GetWindowWidth();
+    Height = window.GetWindowHeight();
+
     //Initializing the input array
     for (bool& i : KEYS) {
         i = false;

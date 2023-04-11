@@ -3,10 +3,11 @@ HEADERS = $(wildcard *.h)
 OBJ = $(SRC:%.cpp=build/%.o)
 AOBJ = $(SRC:%.cpp=build/%.asan.o)
 TOBJ = $(SRC:%.cpp=build/%.tsan.o)
-SDLLIBS = $(shell pkg-config --cflags --libs SDL2_image SDL2_ttf SDL2_mixer sdl2)
+SDLINCS = $(shell pkg-config --cflags SDL2_image SDL2_ttf SDL2_mixer sdl2)
+SDLLIBS = $(shell pkg-config --libs SDL2_image SDL2_ttf SDL2_mixer sdl2)
 
-CMD = $(CXX) -c -std=c++20 $(SDLLIBS) -g $< -o $@ -Wall -Wextra -pedantic-errors
-LCMD = $(CXX) -std=c++20 -o $@ $^ $(SDLLIBS) -g
+CCMD = $(CXX) -std=c++20 -g $(SDLINCS) -c -o $@ $< -Wall -Wextra -pedantic-errors
+LCMD = $(CXX) -o $@ -std=c++20 -g $^ $(SDLLIBS)
 
 The_Great_War: $(OBJ)
 	$(LCMD)
@@ -21,13 +22,13 @@ valgrind: The_Great_War
 	valgrind --show-error-list=yes --track-origins=yes --leak-check=full --show-leak-kinds=all ./$<
 
 build/%.o : %.cpp Makefile $(HEADERS) | build
-	$(CMD)
+	$(CCMD)
 
 build/%.asan.o : %.cpp Makefile $(HEADERS) | build
-	$(CMD) -fsanitize=address,undefined,leak
+	$(CCMD) -fsanitize=address,undefined,leak
 
 build/%.tsan.o : %.cpp Makefile $(HEADERS) | build
-	$(CMD) -fsanitize=thread
+	$(CCMD) -fsanitize=thread
 
 build:
 	mkdir -p build

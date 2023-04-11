@@ -3,7 +3,7 @@
 #include "Screen.h"
 #include "PlayerController.h"
 #include "ToggleButton.h"
-#include "WindowInfo.h"
+#include "MainWindow.h"
 #include "Button.h"
 #include "Label.h"
 #include "Image.h"

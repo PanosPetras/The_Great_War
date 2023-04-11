@@ -1,5 +1,5 @@
 #include "MessageBox.h"
-#include "WindowInfo.h"
+#include "MainWindow.h"
 #include "Button.h"
 #include "Label.h"
 #include "Image.h"

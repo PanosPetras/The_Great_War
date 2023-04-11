@@ -1,5 +1,5 @@
 #include "ScreenList.h"
-#include "WindowInfo.h"
+#include "MainWindow.h"
 #include "MessageBox.h"
 #include "Button.h"
 

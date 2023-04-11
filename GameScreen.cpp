@@ -2,7 +2,7 @@
 #include "ScreenList.h"
 #include "SDL_ColorDetection.h"
 #include "UI.h"
-#include "WindowInfo.h"
+#include "MainWindow.h"
 #include "Button.h"
 #include "Label.h"
 #include "Image.h"

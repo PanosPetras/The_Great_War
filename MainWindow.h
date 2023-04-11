@@ -20,6 +20,11 @@ public:
     // Singleton instance interface
     static MainWindow& Instance();
 
+    MainWindow(const MainWindow&) = delete;
+    MainWindow(MainWindow&&) = delete;
+    MainWindow& operator=(const MainWindow&) = delete;
+    MainWindow& operator=(MainWindow&&) = delete;
+
     //The Main loop of the window
     void MainLoop();
 
@@ -38,7 +43,16 @@ public:
     a parameter as the current active screen*/
     void ChangeScreen(std::unique_ptr<Screen> NewScreen);
 
-public:
+    // Use AddEvent to add deferred events, like button clicks that may
+    // destroy the component while it's processing events.
+    template<class Event>
+    void AddEvent(Event&& ev) {
+        event_queue.emplace_back(std::forward<Event>(ev));
+    }
+
+private:
+    MainWindow(); //Constructor for Instance()
+
     // Note that the order of the SDL context instances is important
     SDL_Init_ctx sdl_init_ctx;
     SDL_Window_ctx window; //The game's main window
@@ -48,27 +62,25 @@ public:
     MIX_ctx mix_ctx;
     SDL_Cursor_ctx cursor; //The window's cursor
 
-public:
     std::array<bool, 322> KEYS;  // 322 is the number of SDLK_DOWN events
 
     bool quit = false;
 
-    //Used to store the window's width and Height
-    int Width;
-    int Height;
-
     //Stores a pointer to the active screen
     std::unique_ptr<Screen> scr;
 
-    template<class Event>
-    void AddEvent(Event&& ev) {
-        event_queue.emplace_back(std::forward<Event>(ev));
-    }
-private:
-    //Constructor
-    MainWindow();
+    std::vector<std::function<void()>> event_queue; // deferred events
 
-    std::vector<std::function<void()>> event_queue;
+    //Used to store the window's width and Height:
+    static inline int Width = 0;
+    static inline int Height = 0;
+
+    friend int GetWindowWidth();
+    friend int GetWindowHeight();
 };
+
+// For convenience:
+inline int GetWindowWidth() { return MainWindow::Width; }
+inline int GetWindowHeight() { return MainWindow::Height; }
 
 #endif
