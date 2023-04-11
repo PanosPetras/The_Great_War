@@ -6,6 +6,8 @@
 #include <iostream>
 #include <unordered_set>
 
+std::unordered_set<Button*> deads; // Only used for debugging
+
 Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) : Button(r, x, y, Width, Height, image, top_left, f, keybind) {
 }
 
@@ -13,6 +15,8 @@ Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string
 }
 
 Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f, int keybind) : InputDrawable(anchor) {
+    deads.erase(this); // if a previous Button had the same address, remove it from the dead Buttons
+
     //Saving the renderer's reference
     RendererReference = r;
 
@@ -74,7 +78,6 @@ Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string
     ChangeFunctionBinding(f, arg);
 }
 
-std::unordered_set<Button*> deads;
 void log(Button* This, const char* txt) {
     if(deads.contains(This))
         std::cerr << txt << " (on DEAD)\t" << static_cast<void*>(This) << std::endl;
