@@ -11,9 +11,9 @@ The world is in turmoil, tensions between the great powers of Europe are rising.
 The Balkan Nation-states are in a state of constant war.
 This might spark a greater conflict that will change the World forever.
 
-"One day the great European War will come out of some damned foolish thing in the Balkans."
-
--Otto von Bismarck
+> One day the great European War will come out of some damned foolish thing in the Balkans.
+>
+> -- _Otto von Bismarck_
 
 In this time of crisis you take control over one of the following countries:
 - The German Empire
