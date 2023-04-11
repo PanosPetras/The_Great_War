@@ -1,10 +1,6 @@
 # The Great War
 ### A WW1 themed strategy game in progress. Built using C++ and SDL2.0.
 
-Created with Visual Studio 2019/2022
-
-C++ version: C++/20
-
 Starting date: January 1st 1910
 
 The world is in turmoil, tensions between the great powers of Europe are rising.
@@ -42,6 +38,12 @@ Last but not least, the player will have the ability to create universities. If 
 
 The game is stable at it's current state and there are 
 no bugs that will cause a crash as far as I'm aware of.
+
+---
+
+Created with Visual Studio 2019/2022
+
+C++ version: C++/20
 
 This project makes use the following libraries:
 - SDL 2.26.5(Link: https://github.com/libsdl-org/SDL)
