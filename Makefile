@@ -1,11 +1,11 @@
-SRC = $(wildcard *.cpp)
-HEADERS = $(wildcard *.h)
+SRC := $(wildcard *.cpp)
+HEADERS := $(wildcard *.h)
+SDLINCS := $(shell pkg-config --cflags SDL2_image SDL2_ttf SDL2_mixer sdl2)
+SDLLIBS := $(shell pkg-config --libs SDL2_image SDL2_ttf SDL2_mixer sdl2)
+
 OBJ = $(SRC:%.cpp=build/%.o)
 AOBJ = $(SRC:%.cpp=build/%.asan.o)
 TOBJ = $(SRC:%.cpp=build/%.tsan.o)
-SDLINCS = $(shell pkg-config --cflags SDL2_image SDL2_ttf SDL2_mixer sdl2)
-SDLLIBS = $(shell pkg-config --libs SDL2_image SDL2_ttf SDL2_mixer sdl2)
-
 CCMD = $(CXX) -std=c++20 -g $(SDLINCS) -c -o $@ $< -Wall -Wextra -pedantic-errors
 LCMD = $(CXX) -o $@ -std=c++20 -g $^ $(SDLLIBS)
 
