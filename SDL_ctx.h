@@ -25,15 +25,13 @@ public:
     SDL_Window_ctx& operator=(SDL_Window_ctx&&) = delete;
     ~SDL_Window_ctx();
 
-    inline int GetWindowWidth() const { return width; }
-    inline int GetWindowHeight() const { return height; }
+    inline const SDL_Point& GetWindowDimensions() const { return windim; }
 
     SDL_Window* operator->();
     operator SDL_Window* ();
 private:
     SDL_Window* window;
-    int width;
-    int height;
+    SDL_Point windim;
 };
 
 class SDL_Renderer_ctx {

@@ -34,10 +34,10 @@ public:
 	void DeleteMessageBox(void* p);
 
 protected:
-	//This is a reference to the main window's renderer
-	SDL_Renderer* renderer;
+    //This is a reference to the main window's renderer
+    SDL_Renderer* renderer;
 
-	//Allows the creation of Images on the screen
+    //Allows the creation of Images on the screen
     std::vector<std::unique_ptr<Image>> ImageArr;
 
     template<class T, class... Args>
@@ -45,9 +45,8 @@ protected:
         ImageArr.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
     }
 
-	//Allows the creation of Drawable elements on the screen
-    std::vector<std::unique_ptr<InputDrawable>> InputDrawableArr;
-        inline std::size_t InputDrawableArrtop() const { return InputDrawableArr.size(); }
+    //Allows the creation of Drawable elements on the screen
+    inline std::size_t InputDrawableArrtop() const { return InputDrawableArr.size(); }
 
     template<class T, class... Args>
     void AddDrawable(Args&&... args) {
@@ -59,7 +58,7 @@ protected:
         return *static_cast<T*>(InputDrawableArr[idx].get());
     }
 
-	//Allows the creation of Labels on the screen
+    //Allows the creation of Labels on the screen
     std::vector<std::unique_ptr<Label>> LabelArr;
 
     template<class T, class... Args>
@@ -67,26 +66,28 @@ protected:
         LabelArr.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
     }
 
-        template<class T, class... Args>
-        void AddMessageBox(Args&&... args) {
-            messageBoxes.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
-        }
-	
-	bool bHasBackground = false;
+    template<class T, class... Args>
+    void AddMessageBox(Args&&... args) {
+        messageBoxes.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
+    }
 
-	//Stores the image's texture
-	SDL_Texture* texture = nullptr;
+    bool bHasBackground = false;
 
-	std::function<void()> QuitFunc;
-	std::function<void(std::unique_ptr<Screen>)> ChangeScreenFunc;
+    //Stores the image's texture
+    SDL_Texture* texture = nullptr;
 
-	//Sets the screen's background
-	virtual void RenderBackground();
-	
-	void SetupBg(const char* bg);
+    std::function<void()> QuitFunc;
+    std::function<void(std::unique_ptr<Screen>)> ChangeScreenFunc;
+
+    //Sets the screen's background
+    virtual void RenderBackground();
+
+    void SetupBg(const char* bg);
+
+    std::vector<std::unique_ptr<InputDrawable>> InputDrawableArr;
 
 private:
-	std::vector<std::unique_ptr<MessageBox>> messageBoxes;
+    std::vector<std::unique_ptr<MessageBox>> messageBoxes;
 
 };
 #endif

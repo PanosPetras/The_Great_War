@@ -15,8 +15,7 @@ MainWindow::MainWindow():
 {
     // Ugly fix - Use static variables to avoid deadlock when MainMenu needs the dimensions.
     // An alternative would be to supply the dimensions to screens being constructed.
-    Width = window.GetWindowWidth();
-    Height = window.GetWindowHeight();
+    windim = window.GetWindowDimensions();
 
     //Initializing the input array
     for (bool& i : KEYS) {

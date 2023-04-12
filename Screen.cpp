@@ -58,11 +58,7 @@ void Screen::Render(){
 
 void Screen::Handle_Input(SDL_Event& ev){
 	for(auto& drawable : InputDrawableArr) {
-		if (drawable) {
-			drawable->HandleInput(ev);
-		} else {
-			std::cerr << "invalid drawable\n";
-		}
+                drawable->HandleInput(ev);
 	}
 
 	for (auto& msgb : messageBoxes) {
@@ -81,7 +77,6 @@ void Screen::SetupBg(const char* bg) {
 }
 
 void Screen::DeleteMessageBox(void* p) {
-        //std::cerr << "DeleteMessageBox " << p << std::endl;
 	MessageBox* msgb = static_cast<MessageBox*>(p);
 
 	auto res = std::remove_if(messageBoxes.begin(), messageBoxes.end(), [msgb](auto& ptr) { return ptr.get() == msgb; });

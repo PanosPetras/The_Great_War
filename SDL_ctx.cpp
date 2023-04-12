@@ -20,7 +20,7 @@ SDL_Window_ctx::SDL_Window_ctx() : window(SDL_CreateWindow(
     //2560x1440, 1920x1080, 1280x720
 {
     //Get dimensions of the screen
-    SDL_GetWindowSize(window, &width, &height);
+    SDL_GetWindowSize(window, &windim.x, &windim.y);
 }
 
 SDL_Window_ctx::~SDL_Window_ctx() {

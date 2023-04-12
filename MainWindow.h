@@ -72,15 +72,16 @@ private:
     std::vector<std::function<void()>> event_queue; // deferred events
 
     //Used to store the window's width and Height:
-    static inline int Width = 0;
-    static inline int Height = 0;
+    static inline SDL_Point windim{};
 
     friend int GetWindowWidth();
     friend int GetWindowHeight();
+    friend const SDL_Point& GetWindowDimensions();
 };
 
 // For convenience:
-inline int GetWindowWidth() { return MainWindow::Width; }
-inline int GetWindowHeight() { return MainWindow::Height; }
+inline int GetWindowWidth() { return MainWindow::windim.x; }
+inline int GetWindowHeight() { return MainWindow::windim.y; }
+inline const SDL_Point& GetWindowDimensions() { return MainWindow::windim; }
 
 #endif
