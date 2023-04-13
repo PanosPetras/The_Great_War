@@ -1,15 +1,15 @@
+#include "ScreenList.h"
+
 #include "Button.h"
 #include "Image.h"
 #include "Label.h"
-#include "PlayerController.h"
-#include "ScreenList.h"
-#include "UI.h"
 #include "MainWindow.h"
+#include "PlayerController.h"
+#include "UI.h"
 
 CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r, UnpauseF, fpl) {
 	SetupBg("Backgrounds/CountrySelection.png");
-
-	int Width = GetWindowWidth(), Height = GetWindowHeight();
+        auto [Width, Height] = GetWindowDimensions();
 
 	AddDrawable<Button>(r, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", 32, [this]{StartGame();}, SDLK_KP_ENTER);
 	AddDrawable<Button>(r, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", 32, [this]{ Back();}, SDLK_ESCAPE);
@@ -58,7 +58,7 @@ CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> Unpaus
 	tags[7] = "usa";
 
 	colors[0] = {42, 42, 42};
-	colors[1] = {18, 30, 152}; 
+	colors[1] = {18, 30, 152};
 	colors[2] = {128, 0, 32};
 	colors[3] = {255, 255, 255};
 	colors[4] = {38, 160, 64};

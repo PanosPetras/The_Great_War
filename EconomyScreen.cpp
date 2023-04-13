@@ -5,11 +5,9 @@
 #include "Slider.h"
 #include "Label.h"
 
-EconomyScreen::EconomyScreen(SDL_Renderer* r, Country* Pl) : Screen(r) {
+EconomyScreen::EconomyScreen(SDL_Renderer* r, Country* Pl) : Screen(r), Player(Pl) {
 	SetupBg("Backgrounds/Industry.png");
-	Player = Pl;
-
-	int Width = GetWindowWidth(), Height = GetWindowHeight();
+        auto [Width, Height] = GetWindowDimensions();
 
 	AddLabel<Label>(r, "Current Funds: " + std::to_string(Pl->Stock.Money), 32, int(0.1 * Width), int(0.1 * Height));
 	AddLabel<Label>(r, "Tax Rate: " + std::to_string(Pl->policy.TaxRate) + '%', 32, int(0.1 * Width), int(0.2 * Height));

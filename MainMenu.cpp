@@ -5,8 +5,9 @@
 
 MainMenu::MainMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r, fp, fpl) {
 	SetupBg("Backgrounds/OldMenu.png");
+        auto [Width, Height] = GetWindowDimensions();
 
-	int fontSize = 32, Width = GetWindowWidth(), Height = GetWindowHeight();
+	int fontSize = 32;
 
 	AddDrawable<Button>(r, int(Width * 0.22), int(Height * 0.2), int(Width * 0.12), int(Height * 0.06), "New Game", fontSize, [this]{ StartGame(); });
 	AddDrawable<Button>(r, int(Width * 0.22), int(Height * 0.3), int(Width * 0.12), int(Height * 0.06), "Load Game", fontSize, fp);

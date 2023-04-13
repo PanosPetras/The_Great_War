@@ -4,8 +4,7 @@
 
 IndustryScreen::IndustryScreen(SDL_Renderer* r, int Stockpile[30]) : Screen(r) {
 	SetupBg("Backgrounds/Industry1.png");
-
-	int Width = GetWindowWidth(), Height = GetWindowHeight();
+        auto [Width, Height] = GetWindowDimensions();
 
 	AddLabel<Label>(r, std::to_string(Stockpile[0]), 32, int(Width * 0.24), int(Height * 0.165));
 	AddLabel<Label>(r, std::to_string(Stockpile[5]), 32, int(Width * 0.365), int(Height * 0.165));
