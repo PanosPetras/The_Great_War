@@ -1,8 +1,9 @@
 #include "MessageBox.h"
-#include "MainWindow.h"
+
 #include "Button.h"
-#include "Label.h"
 #include "Image.h"
+#include "Label.h"
+#include "MainWindow.h"
 
 MessageBox::MessageBox(SDL_Renderer_ctx& r, std::string title, std::string message, std::function<void(void*)> f) {
     auto [Width, Height] = GetWindowDimensions();

@@ -24,7 +24,7 @@ bool InputDrawable::GetActive() {
     return active;
 }
 
-void ApplyAnchor(SDL_Rect &rect, Anchor anchor) {
+void ApplyAnchor(SDL_Rect& rect, Anchor anchor) {
     switch (anchor) {
         case top_left:
             break;

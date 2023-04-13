@@ -100,8 +100,8 @@ PlayerController::~PlayerController() {
 
 int PlayerController::LoadMap(void* pc){
 	PlayerController& PC = *static_cast<PlayerController*>(pc);
-	PC.map = IMG_Load("map/1910.png");
 
+	PC.map = SDL_Surface_ctx::IMG_Load("map/1910.png");
 	SDL_Surface_ctx base(SDL_CreateRGBSurface(0, 16383, 2160, 32, 0, 0, 0, 0));
 
 	SDL_Rect strect = { .x = 232, .y = 0, .w = 5616 , .h = 2160 };
@@ -110,17 +110,19 @@ int PlayerController::LoadMap(void* pc){
 	SDL_BlitSurface(PC.map, &strect, base, NULL);
 	strect = { .x = -5616 * 2 + 232, .y = 0, .w = 5616 * 3 , .h = 2160 };
 	SDL_BlitSurface(PC.map, &strect, base, NULL);
-	PC.txt = SDL_CreateTextureFromSurface(PC.RendererReference, base);
+
+	PC.txt = SDL_Texture_ctx(PC.RendererReference, base);
 
 	return 0;
 }
 
 int PlayerController::LoadUtilityAssets(void* pc){
-	PlayerController* PC = (PlayerController*)pc;
-	PC->provinces = IMG_Load("map/provinces.bmp");
+	PlayerController& PC = *static_cast<PlayerController*>(pc);
+
+	PC.provinces = SDL_Surface_ctx::IMG_Load("map/provinces.bmp");
 
 	SDL_Surface_ctx base(SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000));
-	PC->overlay = SDL_CreateTextureFromSurface(PC->RendererReference, base);
+	PC.overlay = SDL_Texture_ctx(PC.RendererReference, base);
 
 	return 0;
 }

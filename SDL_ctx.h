@@ -7,6 +7,7 @@
 #include <SDL_ttf.h>
 
 #include <memory>
+#include <string_view>
 
 /*-----------------------------------------------------------------------------
 The promiscuous_ref is to be used while converting from storing
@@ -154,6 +155,8 @@ public:
     SDL_Surface* operator->();
     operator SDL_Surface* ();
     operator const SDL_Surface* () const;
+
+    static SDL_Surface_ctx IMG_Load(std::string_view filename);
 private:
     std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface;
 };
@@ -171,6 +174,8 @@ public:
 
     SDL_Texture* operator->();
     operator SDL_Texture* ();
+
+    static SDL_Texture_ctx IMG_Load(SDL_Renderer_ctx& r, std::string_view filename);
 private:
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture;
 };

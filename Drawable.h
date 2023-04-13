@@ -37,6 +37,6 @@ protected:
 	bool active;
 };
 
-void ApplyAnchor(SDL_Rect &rect, Anchor anchor);
+void ApplyAnchor(SDL_Rect& rect, Anchor anchor);
 
 #endif

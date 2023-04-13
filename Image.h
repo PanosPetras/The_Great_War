@@ -28,14 +28,14 @@ protected:
 	//Render the image on the screen
 	void pDraw();
 
+	//Reference the the screen's renderer
+	RendererRef RendererReference;
+
 	//Reference to the path of the image assigned to the button
 	std::string imagepath;
 
 	//Dimensions of the image
 	SDL_Rect draw_rect;
-
-	//Reference the the screen's renderer
-	RendererRef RendererReference;
 
 	//The texture containing the image surface
 	SDL_Texture_ctx texture;

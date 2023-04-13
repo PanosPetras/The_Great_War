@@ -60,6 +60,15 @@ SDL_Renderer_ctx::SDL_Renderer_ctx(SDL_Window_ctx& window) :
 SDL_Renderer* SDL_Renderer_ctx::operator->() { return renderer.get(); }
 SDL_Renderer_ctx::operator SDL_Renderer* () { return renderer.get(); }
 //-----------------------------------------------------------------------------
+SDL_Cursor_ctx::SDL_Cursor_ctx() :
+    cursor(SDL_CreateColorCursor(SDL_Surface_ctx(IMG_Load("Icons/mouse.png")), 1, 1), &SDL_FreeCursor)
+{
+    SDL_SetCursor(*this);
+}
+
+SDL_Cursor* SDL_Cursor_ctx::operator->() { return cursor.get(); }
+SDL_Cursor_ctx::operator SDL_Cursor* () { return cursor.get(); }
+//-----------------------------------------------------------------------------
 SDL_Surface_ctx::SDL_Surface_ctx() : SDL_Surface_ctx(nullptr) {}
 SDL_Surface_ctx::SDL_Surface_ctx(SDL_Surface* s) : surface(s, &SDL_FreeSurface) {}
 
@@ -71,15 +80,10 @@ SDL_Surface_ctx& SDL_Surface_ctx::operator=(SDL_Surface* s) {
 SDL_Surface* SDL_Surface_ctx::operator->() { return surface.get(); }
 SDL_Surface_ctx::operator SDL_Surface* () { return surface.get(); }
 SDL_Surface_ctx::operator const SDL_Surface* () const { return surface.get(); }
-//-----------------------------------------------------------------------------
-SDL_Cursor_ctx::SDL_Cursor_ctx() :
-    cursor(SDL_CreateColorCursor(SDL_Surface_ctx(IMG_Load("Icons/mouse.png")), 1, 1), &SDL_FreeCursor)
-{
-    SDL_SetCursor(*this);
-}
 
-SDL_Cursor* SDL_Cursor_ctx::operator->() { return cursor.get(); }
-SDL_Cursor_ctx::operator SDL_Cursor* () { return cursor.get(); }
+SDL_Surface_ctx SDL_Surface_ctx::IMG_Load(std::string_view filename) {
+    return SDL_Surface_ctx(::IMG_Load(filename.data()));
+}
 //-----------------------------------------------------------------------------
 SDL_Texture_ctx::SDL_Texture_ctx() : texture(nullptr, &SDL_DestroyTexture) {}
 SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Surface_ctx& s) :
@@ -88,4 +92,9 @@ SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Surface_ctx& s) :
 
 SDL_Texture* SDL_Texture_ctx::operator->() { return texture.get(); }
 SDL_Texture_ctx::operator SDL_Texture* () { return texture.get(); }
+
+SDL_Texture_ctx SDL_Texture_ctx::IMG_Load(SDL_Renderer_ctx& r, std::string_view filename) {
+    auto surface = SDL_Surface_ctx::IMG_Load(filename);
+    return {r, surface};
+}
 //-----------------------------------------------------------------------------

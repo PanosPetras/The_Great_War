@@ -1,16 +1,15 @@
-#ifndef MESSAGEBOX_H
-#define MESSAGEBOX_H
-
 #pragma once
-#include <SDL.h>
-#include <string>
-#include <functional>
-#include <memory>
+
 #include "Button.h"
 #include "Drawable.h"
+#include "Image.h"
+#include "Label.h"
 
-class Image;
-class Label;
+#include <SDL.h>
+
+#include <functional>
+#include <memory>
+#include <string>
 
 class MessageBox : public InputDrawable {
 public:
@@ -29,5 +28,3 @@ private:
 	std::unique_ptr<Label> text;
 	std::unique_ptr<Button> okButton;
 };
-
-#endif

@@ -160,14 +160,12 @@ void Button::ChangeImage(std::string image) {
     }
 
     //Load the button texture
-    SDL_Surface_ctx img(IMG_Load(imagePath.c_str()));
-    texture = SDL_Texture_ctx(RendererReference, img);
+    texture = SDL_Texture_ctx::IMG_Load(RendererReference, imagePath);
 }
 
 void Button::ChangeText(std::string textstr, int textSize){
     //Load the button background
-    SDL_Surface_ctx bg(IMG_Load("Drawable/Button/Button.png"));
-    texture = SDL_Texture_ctx(RendererReference, bg);
+    texture = SDL_Texture_ctx::IMG_Load(RendererReference, "Drawable/Button/Button.png");
 
     //Loading the font from the file
     TTF_Font* font = TTF_OpenFont(GLOBAL_FONT, textSize);
