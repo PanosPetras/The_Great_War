@@ -15,9 +15,6 @@ public:
 	//Constructors
 	Image(SDL_Renderer_ctx& r, std::string img, int x, int y, int Width, int Height, Anchor anchor = top_left);
 
-	//Destructor
-	~Image();
-
 	//Change the image assigned to the button
 	void ChangeImage(std::string img);
 
@@ -41,7 +38,7 @@ protected:
 	RendererRef RendererReference;
 
 	//The texture containing the image surface
-	SDL_Texture* texture;
+	SDL_Texture_ctx texture;
 
 	friend class TextEntry;
 };

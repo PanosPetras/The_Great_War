@@ -160,34 +160,21 @@ void Button::ChangeImage(std::string image) {
     }
 
     //Load the button texture
-    SDL_Surface* img = IMG_Load(imagePath.c_str());
-    texture = SDL_CreateTextureFromSurface(RendererReference, img);
-    SDL_FreeSurface(img);
+    SDL_Surface_ctx img(IMG_Load(imagePath.c_str()));
+    texture = SDL_Texture_ctx(RendererReference, img);
 }
 
-void Button::ChangeText(std::string text, int textSize){
-    //Destroy the texture if it already exists
-    if (texture != nullptr) {
-        SDL_DestroyTexture(texture);
-    }
-    if (this->text != nullptr) {
-        SDL_DestroyTexture(this->text);
-        this->text = nullptr;
-    }
-
+void Button::ChangeText(std::string textstr, int textSize){
     //Load the button background
-    SDL_Surface* bg = IMG_Load("Drawable/Button/Button.png");
-    texture = SDL_CreateTextureFromSurface(RendererReference, bg);
-
-    //Free the background surface
-    SDL_FreeSurface(bg);
+    SDL_Surface_ctx bg(IMG_Load("Drawable/Button/Button.png"));
+    texture = SDL_Texture_ctx(RendererReference, bg);
 
     //Loading the font from the file
     TTF_Font* font = TTF_OpenFont(GLOBAL_FONT, textSize);
 
     //Convert the text to a surface
-    SDL_Surface* textSur = TTF_RenderText_Blended(font, text.c_str(), SDL_Color{.r = 255, .g = 255, .b = 255, .a = 0});
-    this->text = SDL_CreateTextureFromSurface(RendererReference, textSur);
+    SDL_Surface_ctx textSur(TTF_RenderText_Blended(font, textstr.c_str(), SDL_Color{.r = 255, .g = 255, .b = 255, .a = 0}));
+    text = SDL_Texture_ctx(RendererReference, textSur);
 
     int text_x = (draw_rect.w - textSur->w) / 2;
     int text_y = (draw_rect.h - textSur->h) / 3;
@@ -195,9 +182,6 @@ void Button::ChangeText(std::string text, int textSize){
                         .y = draw_rect.y + text_y,
                         .w = (text_x > 0 ? textSur->w : int(draw_rect.w * 0.8)),
                         .h = textSur->h };
-
-    //Free the surface
-    SDL_FreeSurface(textSur);
 
     //Delete the font
     TTF_CloseFont(font);

@@ -7,21 +7,14 @@ Image::Image(SDL_Renderer_ctx& r, std::string img, int x, int y, int Width, int 
     imagepath = img;
 
     //Loading the image texture
-    SDL_Surface* image = IMG_Load(imagepath.c_str());
+    SDL_Surface_ctx image(IMG_Load(imagepath.c_str()));
 
-    texture = SDL_CreateTextureFromSurface(RendererReference, image);
-
-    SDL_FreeSurface(image);
-}
-
-Image::~Image(){
-    //Free up the memory
-    SDL_DestroyTexture(texture);
+    texture = SDL_Texture_ctx(RendererReference, image);
 }
 
 void Image::pDraw(){
     //Drawing the Image
-    SDL_RenderCopy(RendererReference, texture, NULL, &draw_rect);
+    SDL_RenderCopy(RendererReference, texture, nullptr, &draw_rect);
 }
 
 void Image::ChangeImage(std::string img){
@@ -42,8 +35,7 @@ void Image::Update(){
     SDL_DestroyTexture(texture);
 
     //Loading the image texture
-    SDL_Surface* image = IMG_Load(imagepath.c_str());
-    texture = SDL_CreateTextureFromSurface(RendererReference, image);
-    SDL_FreeSurface(image);
+    SDL_Surface_ctx image(IMG_Load(imagepath.c_str()));
+    texture = SDL_Texture_ctx(RendererReference, image);
     //SDL_SetTextureColorMod(texture, 255, 255, 255); //in order to change color of the state
 }

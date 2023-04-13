@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <fstream>
+#include <iostream>
 #include <iterator>
 #include <string>
 #include <thread>
@@ -95,24 +96,21 @@ PlayerController::~PlayerController() {
 	//Remove the map surface and texture from memory
 	SDL_DestroyTexture(txt);
 	SDL_DestroyTexture(overlay);
-	SDL_FreeSurface(map);
-	SDL_FreeSurface(provinces);
 }
 
 int PlayerController::LoadMap(void* pc){
-	PlayerController* PC = static_cast<PlayerController*>(pc);
-	PC->map = IMG_Load("map/1910.png");
+	PlayerController& PC = *static_cast<PlayerController*>(pc);
+	PC.map = IMG_Load("map/1910.png");
 
-	SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0, 0, 0, 0);
+	SDL_Surface_ctx base(SDL_CreateRGBSurface(0, 16383, 2160, 32, 0, 0, 0, 0));
 
 	SDL_Rect strect = { .x = 232, .y = 0, .w = 5616 , .h = 2160 };
-	SDL_BlitSurface(PC->map, &strect, base, NULL);
+	SDL_BlitSurface(PC.map, &strect, base, NULL);
 	strect = { .x = -5616 + 232, .y = 0, .w = 5616 * 2 , .h = 2160 };
-	SDL_BlitSurface(PC->map, &strect, base, NULL);
+	SDL_BlitSurface(PC.map, &strect, base, NULL);
 	strect = { .x = -5616 * 2 + 232, .y = 0, .w = 5616 * 3 , .h = 2160 };
-	SDL_BlitSurface(PC->map, &strect, base, NULL);
-	PC->txt = SDL_CreateTextureFromSurface(PC->RendererReference, base);
-	SDL_FreeSurface(base);
+	SDL_BlitSurface(PC.map, &strect, base, NULL);
+	PC.txt = SDL_CreateTextureFromSurface(PC.RendererReference, base);
 
 	return 0;
 }
@@ -121,9 +119,8 @@ int PlayerController::LoadUtilityAssets(void* pc){
 	PlayerController* PC = (PlayerController*)pc;
 	PC->provinces = IMG_Load("map/provinces.bmp");
 
-	SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
+	SDL_Surface_ctx base(SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000));
 	PC->overlay = SDL_CreateTextureFromSurface(PC->RendererReference, base);
-	SDL_FreeSurface(base);
 
 	return 0;
 }

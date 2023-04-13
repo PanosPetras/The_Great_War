@@ -8,6 +8,7 @@
 #include "Image.h"
 
 #include <cmath>
+#include <iostream>
 #include <memory>
 
 GameScreen::GameScreen(SDL_Renderer_ctx& r, const char* tag,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {

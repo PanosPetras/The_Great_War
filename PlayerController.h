@@ -76,8 +76,8 @@ public:
 	SDL_Texture* txt;
 
 	SDL_Texture* overlay;
-	SDL_Surface* map;
-	SDL_Surface* provinces;
+	SDL_Surface_ctx map;
+	SDL_Surface_ctx provinces;
 
 	//Used to run the time-functionality of the game
 	SDL_Thread* thread;
