@@ -72,11 +72,6 @@ SDL_Cursor_ctx::operator SDL_Cursor* () { return cursor.get(); }
 SDL_Surface_ctx::SDL_Surface_ctx() : SDL_Surface_ctx(nullptr) {}
 SDL_Surface_ctx::SDL_Surface_ctx(SDL_Surface* s) : surface(s, &SDL_FreeSurface) {}
 
-SDL_Surface_ctx& SDL_Surface_ctx::operator=(SDL_Surface* s) {
-    surface.reset(s);
-    return *this;
-}
-
 SDL_Surface* SDL_Surface_ctx::operator->() { return surface.get(); }
 SDL_Surface_ctx::operator SDL_Surface* () { return surface.get(); }
 SDL_Surface_ctx::operator const SDL_Surface* () const { return surface.get(); }

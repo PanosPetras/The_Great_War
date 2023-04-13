@@ -150,8 +150,6 @@ public:
     SDL_Surface_ctx& operator=(SDL_Surface_ctx&&) noexcept = default;
     ~SDL_Surface_ctx() = default;
 
-    SDL_Surface_ctx& operator=(SDL_Surface*); // take ownership of a raw pointer
-
     SDL_Surface* operator->();
     operator SDL_Surface* ();
     operator const SDL_Surface* () const;
