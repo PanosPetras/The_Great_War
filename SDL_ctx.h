@@ -6,6 +6,49 @@
 #include <SDL_thread.h>
 #include <SDL_ttf.h>
 
+/*
+
+The promiscuous_ref is to be used while converting from storing
+pointers to SDL objects to storing instances of RAII SDL wrappers.
+
+  * It can be implicitly converted to either a reference to an instance
+    of the RAII class.
+
+  * It can also be implicitly converted into a pointer to the object
+    the RAII instance encapsulates.
+
+  * operator->() does a direct conversion to the object the RAII class
+    encapsulates.
+
+The idea is to gradually remove parts of the promiscuous_refs interface
+until it can be replaced by a std::reference_wrapper.
+
+*/
+
+template<class T, class U>
+class promiscuous_ref {
+public:
+    promiscuous_ref() = delete;
+    promiscuous_ref(T& o) : obj(&o) {}
+    promiscuous_ref(const promiscuous_ref& other) : obj(other.obj) {}
+    promiscuous_ref& operator=(const promiscuous_ref& other) { obj = other.obj; return *this; }
+    ~promiscuous_ref() = default;
+
+    operator T& () { return *obj; }
+    operator const T& () const { return *obj; }
+
+    operator T* () { return obj; }
+    operator const T* () const { return obj; }
+
+    operator U* () { return *obj; }
+    operator const U* () const { return *obj; }
+
+    U* operator->() { return obj.operator->(); }
+    const U* operator->() const { return obj.operator->(); }
+private:
+    T* obj = nullptr;
+};
+
 class SDL_Init_ctx {
 public:
     SDL_Init_ctx();
@@ -48,6 +91,7 @@ public:
 private:
     SDL_Renderer* renderer;
 };
+using RendererRef = promiscuous_ref<SDL_Renderer_ctx, SDL_Renderer>;
 
 class TTF_Init_ctx {
 public:

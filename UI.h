@@ -5,7 +5,10 @@
 
 #include "ToggleButton.h"
 
+#include "SDL_ctx.h"
+
 #include <SDL.h>
+
 #include <array>
 #include <functional>
 #include <memory>
@@ -21,11 +24,11 @@ class PlayerController;
 class UI {
 public:
     //Constructor
-    UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl = nullptr);
+    UI(SDL_Renderer_ctx& r, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl = nullptr);
     ~UI() = default;
 
     //This is a reference to the main window's renderer
-    SDL_Renderer* renderer;
+    RendererRef renderer;
 
     //Stores the main window's dimensions
     int WindowSize[2];

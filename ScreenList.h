@@ -3,6 +3,8 @@
 #include "Screen.h"
 #include "UI.h"
 
+#include "SDL_ctx.h"
+
 #include <SDL.h>
 #include <SDL_image.h>
 
@@ -18,7 +20,7 @@ class Country;
 class MainMenu : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    MainMenu(SDL_Renderer* r, std::function<void()> fp , std::function<void(std::unique_ptr<Screen>)> fpl );
+    MainMenu(SDL_Renderer_ctx& r, std::function<void()> fp , std::function<void(std::unique_ptr<Screen>)> fpl );
 
     void ShowCredits();
     void ShowSettings();
@@ -27,7 +29,7 @@ public:
 
 class BackScreen : public Screen {
 public:
-    inline BackScreen(SDL_Renderer* r,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r, fp, fpl) {}
+    inline BackScreen(SDL_Renderer_ctx& r,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r, fp, fpl) {}
 
     inline void Back() {
         ChangeScreenFunc(std::make_unique<MainMenu>(renderer, QuitFunc, ChangeScreenFunc));
@@ -36,13 +38,13 @@ public:
 
 class CreditScreen : public BackScreen {
 public:
-    CreditScreen(SDL_Renderer* r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
+    CreditScreen(SDL_Renderer_ctx& r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
 };
 
 class MenuSettingsScreen : public BackScreen {
 public:
     //Constructor, sets default values and creates all needed assets
-    MenuSettingsScreen(SDL_Renderer* r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
+    MenuSettingsScreen(SDL_Renderer_ctx& r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
 };
 
 class InGameSettingsScreen : public Screen {
@@ -52,7 +54,7 @@ public:
 class GameScreen : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    GameScreen(SDL_Renderer* r, const char* tag, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
+    GameScreen(SDL_Renderer_ctx& r, const char* tag, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
 
     std::unique_ptr<PlayerController> PC;
 
@@ -109,14 +111,14 @@ public:
 class PauseMenu : public Screen {
 public:
     //Constructor, sets default values and creates all needed assets
-    PauseMenu(SDL_Renderer* r, std::function<void()> fp = {}, std::function<void()> UnpauseF = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
+    PauseMenu(SDL_Renderer_ctx& r, std::function<void()> fp = {}, std::function<void()> UnpauseF = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
 
     void ReturnToMainMenu();
 };
 
 class CountrySelection : public Screen {
 public:
-    CountrySelection(SDL_Renderer* r, std::function<void()> UnpauseF = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
+    CountrySelection(SDL_Renderer_ctx& r, std::function<void()> UnpauseF = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
 
     bool mousepressed;
 
@@ -144,9 +146,9 @@ public:
 
 class DiplomacyScreen : public Screen {
 public:
-    DiplomacyScreen(SDL_Renderer* r, PlayerController* PC);
-    DiplomacyScreen(SDL_Renderer* r, PlayerController* PC, std::string targetTag);
-    DiplomacyScreen(SDL_Renderer* r, PlayerController* PC, int index);
+    DiplomacyScreen(SDL_Renderer_ctx& r, PlayerController* PC);
+    DiplomacyScreen(SDL_Renderer_ctx& r, PlayerController* PC, std::string targetTag);
+    DiplomacyScreen(SDL_Renderer_ctx& r, PlayerController* PC, int index);
 
     PlayerController* PCref;
 
@@ -170,13 +172,13 @@ private:
 
 class IndustryScreen : public Screen {
 public:
-    IndustryScreen(SDL_Renderer* r, int Stockpile[30]);
+    IndustryScreen(SDL_Renderer_ctx& r, int Stockpile[30]);
     void UpdateText(int Stockpile[29]);
 };
 
 class TradeScreen : public Screen {
 public:
-    TradeScreen(SDL_Renderer* r, Country* Pl);
+    TradeScreen(SDL_Renderer_ctx& r, Country* Pl);
     void Update();
 
 private:
@@ -185,7 +187,7 @@ private:
 
 class EconomyScreen : public Screen {
 public:
-    EconomyScreen(SDL_Renderer* r, Country* Pl);
+    EconomyScreen(SDL_Renderer_ctx& r, Country* Pl);
 
     void Update();
 
@@ -198,7 +200,7 @@ public:
 
 class OpenFactoryScreen : public Screen {
 public:
-    OpenFactoryScreen(SDL_Renderer* r, int id, PlayerController* PC, std::function<void()> fp);
+    OpenFactoryScreen(SDL_Renderer_ctx& r, int id, PlayerController* PC, std::function<void()> fp);
 
     void FactoryTypeLumber();
     void FactoryTypeGlass();
@@ -238,7 +240,7 @@ public:
 
 class StatePreview : public Screen {
 public:
-    StatePreview(SDL_Renderer* r, int id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc);
+    StatePreview(SDL_Renderer_ctx& r, int id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc);
 
     void Render() override;
 

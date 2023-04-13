@@ -2,5 +2,5 @@
 
 class CreditScreen : public Screen {
 public:
-	CreditScreen(SDL_Renderer* r, int Width, int Height);
+	CreditScreen(SDL_Renderer_ctx& r, int Width, int Height);
 };

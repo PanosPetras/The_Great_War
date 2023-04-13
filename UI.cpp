@@ -9,7 +9,7 @@
 #include "ScreenList.h"
 #include "ToggleButton.h"
 
-UI::UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl), renderer(r) {
+UI::UI(SDL_Renderer_ctx& r, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl) : renderer(r) {
         auto [Width, Height] = GetWindowDimensions();
 
 	//The country management tabs

@@ -30,10 +30,7 @@ std::vector<T> LoadFromFile(const char* filename) {
 }
 } // namesapce
 
-PlayerController::PlayerController(SDL_Renderer* r, const char* tag) {
-	//Save a reference to the window's renderer
-	RendererReference = r;
-
+PlayerController::PlayerController(SDL_Renderer_ctx& r, const char* tag) : RendererReference(r) {
 	//Save the player's country tag
 	player_tag = tag;
 

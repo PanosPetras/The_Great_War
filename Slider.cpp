@@ -3,16 +3,13 @@
 
 #include <iostream>
 
-Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged)
+Slider::Slider(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged)
     : Slider(r, x, y, Width, Height, top_left, minvalue, maxvalue, value, onSliderValueChanged)
 {}
 
-Slider::Slider(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged)
-    : InputDrawable(anchor)
+Slider::Slider(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, Anchor anchor, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged)
+    : InputDrawable(anchor), renderer(r)
 {
-	//Saving a reference to the renderer
-	renderer = r;
-
 	//Initialize all variables
 	ChangeValues(minvalue, maxvalue, value);
 	ChangePosition(x, y, Width, Height);

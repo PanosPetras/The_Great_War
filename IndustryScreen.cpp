@@ -2,7 +2,7 @@
 #include "MainWindow.h"
 #include "Label.h"
 
-IndustryScreen::IndustryScreen(SDL_Renderer* r, int Stockpile[30]) : Screen(r) {
+IndustryScreen::IndustryScreen(SDL_Renderer_ctx& r, int Stockpile[30]) : Screen(r) {
 	SetupBg("Backgrounds/Industry1.png");
         auto [Width, Height] = GetWindowDimensions();
 

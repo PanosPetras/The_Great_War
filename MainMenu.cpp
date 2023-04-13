@@ -3,7 +3,7 @@
 #include "MessageBox.h"
 #include "Button.h"
 
-MainMenu::MainMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r, fp, fpl) {
+MainMenu::MainMenu(SDL_Renderer_ctx& r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r, fp, fpl) {
 	SetupBg("Backgrounds/OldMenu.png");
         auto [Width, Height] = GetWindowDimensions();
 

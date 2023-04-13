@@ -4,7 +4,7 @@
 #include "Label.h"
 #include "MainWindow.h"
 
-CreditScreen::CreditScreen(SDL_Renderer* r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : BackScreen(r, fp, fpl) {
+CreditScreen::CreditScreen(SDL_Renderer_ctx& r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : BackScreen(r, fp, fpl) {
 	SetupBg("Backgrounds/OldMenu.png");
 
 	int fontSize = 40;

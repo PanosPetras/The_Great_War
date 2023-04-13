@@ -15,7 +15,7 @@ class Label;
 class MessageBox : public InputDrawable {
 public:
 	//Constructor
-	MessageBox(SDL_Renderer* r, std::string title, std::string message, std::function<void(void*)> f);
+	MessageBox(SDL_Renderer_ctx& r, std::string title, std::string message, std::function<void(void*)> f);
 
 	//Called when received input
 	void HandleInput(const SDL_Event& ev) override;

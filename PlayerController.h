@@ -6,19 +6,20 @@
 #include "Country.h"
 #include "Diplomacy.h"
 #include "State.h"
+#include "SDL_ctx.h"
 
 #include <SDL.h>
 
+#include <array>
 #include <cstdint>
 #include <memory>
-#include <array>
 #include <unordered_map>
 #include <vector>
 
 class PlayerController {
 public:
 	//Constructor
-	PlayerController(SDL_Renderer* r, const char* tag);
+	PlayerController(SDL_Renderer_ctx& r, const char* tag);
 
     ~PlayerController();
 
@@ -71,7 +72,7 @@ public:
 	Diplomacy diplo;
 
 	//Some SDL assets needed
-	SDL_Renderer* RendererReference;
+	RendererRef RendererReference;
 	SDL_Texture* txt;
 
 	SDL_Texture* overlay;

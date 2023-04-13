@@ -2,24 +2,28 @@
 #define BUTTON_H
 
 #pragma once
+#include "Drawable.h"
+
+#include "SDL_ctx.h"
+
 #include <SDL.h>
-#include <string>
-#include <functional>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
-#include "Drawable.h"
+
+#include <functional>
+#include <string>
 
 class Button : public InputDrawable {
 public:
     //Constructors
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f = nullptr, int keybind = 0);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind = 0);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f = nullptr, int keybind = 0);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind = 0);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
-    Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, std::function<void()> f = nullptr, int keybind = 0);
+    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
+    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f = nullptr, int keybind = 0);
+    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
+    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
 
     //Destructor
     ~Button();
@@ -76,7 +80,7 @@ protected:
     SDL_Rect text_draw_rect;
 
     //Reference the the screen's renderer
-    SDL_Renderer* RendererReference;
+    RendererRef RendererReference;
 
     //Reference to the button's texture
     SDL_Texture* texture = nullptr;

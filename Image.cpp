@@ -1,10 +1,7 @@
 #include "Image.h"
 
-Image::Image(SDL_Renderer* r, std::string img, int x, int y, int Width, int Height, Anchor anchor) : Drawable(anchor) {
+Image::Image(SDL_Renderer_ctx& r, std::string img, int x, int y, int Width, int Height, Anchor anchor) : Drawable(anchor), RendererReference(r) {
     ChangePosition(x, y, Width, Height);
-    
-    //Saving the renderer's reference
-    RendererReference = r;
 
     //Saving the image path
     imagepath = img;

@@ -10,7 +10,7 @@
 #include <cmath>
 #include <memory>
 
-GameScreen::GameScreen(SDL_Renderer* r, const char* tag,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
+GameScreen::GameScreen(SDL_Renderer_ctx& r, const char* tag,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
 	bHasBackground = true;
 	bIsPaused = false;
 	bZoom = true;

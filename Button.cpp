@@ -8,17 +8,14 @@
 
 std::unordered_set<Button*> deads; // Only used for debugging
 
-Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) : Button(r, x, y, Width, Height, image, top_left, f, keybind) {
+Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) : Button(r, x, y, Width, Height, image, top_left, f, keybind) {
 }
 
-Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, image, top_left, f, arg, keybind) {
+Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, image, top_left, f, arg, keybind) {
 }
 
-Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f, int keybind) : InputDrawable(anchor) {
+Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f, int keybind) : InputDrawable(anchor), RendererReference(r) {
     deads.erase(this); // if a previous Button had the same address, remove it from the dead Buttons
-
-    //Saving the renderer's reference
-    RendererReference = r;
 
     //Sets the default value for the button's state
     bHovered = false;
@@ -39,21 +36,18 @@ Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string
     music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
-Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, image, anchor, nullptr, keybind) {
+Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, image, anchor, nullptr, keybind) {
     //Saving the bound function
     ChangeFunctionBinding(f, arg);
 }
 
-Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f, int keybind) : Button(r, x, y, Width, Height, text, textSize, top_left, f, keybind) {
+Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f, int keybind) : Button(r, x, y, Width, Height, text, textSize, top_left, f, keybind) {
 }
 
-Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, text, textSize, top_left, f, arg, keybind) {
+Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, text, textSize, top_left, f, arg, keybind) {
 }
 
-Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f, int keybind) : InputDrawable(anchor) {
-    //Saving the renderer's reference
-    RendererReference = r;
-
+Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f, int keybind) : InputDrawable(anchor), RendererReference(r) {
     //Sets the default value for the button's state
     bHovered = false;
 
@@ -73,7 +67,7 @@ Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string
     music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
-Button::Button(SDL_Renderer* r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, [[maybe_unused]] int keybind) : Button(r, x, y, Width, Height, text, textSize, anchor) {
+Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, [[maybe_unused]] int keybind) : Button(r, x, y, Width, Height, text, textSize, anchor) {
     //Saving the bound function
     ChangeFunctionBinding(f, arg);
 }

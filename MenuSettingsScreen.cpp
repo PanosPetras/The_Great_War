@@ -3,7 +3,7 @@
 #include "Button.h"
 #include "MainWindow.h"
 
-MenuSettingsScreen::MenuSettingsScreen(SDL_Renderer* r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : BackScreen(r, fp, fpl) {
+MenuSettingsScreen::MenuSettingsScreen(SDL_Renderer_ctx& r, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : BackScreen(r, fp, fpl) {
 	SetupBg("Backgrounds/OldMenu.png");
         auto [Width, Height] = GetWindowDimensions();
 

@@ -5,7 +5,7 @@
 #include "Label.h"
 #include "Image.h"
 
-StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc) : Screen(r) {
+StatePreview::StatePreview(SDL_Renderer_ctx& r, int id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc) : Screen(r) {
         auto [Width, Height] = GetWindowDimensions();
 	Controller = controller;
 	std::string str = "Flags/" + Controller;

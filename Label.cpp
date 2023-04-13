@@ -1,21 +1,18 @@
 #include "Label.h"
 #include "MainWindow.h"
 
-Label::Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Uint8 red, Uint8 green, Uint8 blue) : Label(r, Text, size, x, y, 300, top_left, red, green, blue) {
+Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, Uint8 red, Uint8 green, Uint8 blue) : Label(r, Text, size, x, y, 300, top_left, red, green, blue) {
 }
 
-Label::Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Anchor anchor, Uint8 red, Uint8 green, Uint8 blue) : Label(r, Text, size, x, y, 300, anchor, red, green, blue) {
+Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, Anchor anchor, Uint8 red, Uint8 green, Uint8 blue) : Label(r, Text, size, x, y, 300, anchor, red, green, blue) {
 }
 
-Label::Label(SDL_Renderer* r, std::string Text, int size, int x, int y, int xlim, Uint8 red, Uint8 green, Uint8 blue) : Label(r, Text, size, x, y, xlim, top_left, red, green, blue) {
+Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xlim, Uint8 red, Uint8 green, Uint8 blue) : Label(r, Text, size, x, y, xlim, top_left, red, green, blue) {
 }
 
-Label::Label(SDL_Renderer* r, std::string Text, int size, int x, int y, int xlim, Anchor anchor, Uint8 red, Uint8 green, Uint8 blue) : Drawable(anchor) {
+Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xlim, Anchor anchor, Uint8 red, Uint8 green, Uint8 blue) : Drawable(anchor), RendererReference(r) {
     //Save the text assigned to the label in order to be used later
     text = Text;
-
-    //Saving the renderer's reference
-    RendererReference = r;
 
     //Save the color assigned to the label in order to be used later
     Color = { red, green, blue, 0 };

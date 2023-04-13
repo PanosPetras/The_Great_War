@@ -1,19 +1,23 @@
 #ifndef LABEL_H
 #define LABEL_H
 
-#include <string>
+#include "Drawable.h"
+
+#include "SDL_ctx.h"
+
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <SDL_image.h>
-#include "Drawable.h"
+
+#include <string>
 
 class Label : public Drawable {
 public:
     //Constructor
-    Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
-    Label(SDL_Renderer* r, std::string Text, int size, int x, int y, Anchor anchor, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
-    Label(SDL_Renderer* r, std::string Text, int size, int x, int y, int xLim, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
-    Label(SDL_Renderer* r, std::string Text, int size, int x, int y, int xLim, Anchor anchor, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
+    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
+    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, Anchor anchor, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
+    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xLim, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
+    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xLim, Anchor anchor, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
 
     //Destructor
     ~Label();
@@ -59,7 +63,7 @@ protected:
     std::string text;
 
     //Reference the the screen's renderer
-    SDL_Renderer* RendererReference;
+    RendererRef RendererReference;
 
     //The label's position
     int x, y;

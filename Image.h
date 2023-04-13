@@ -1,15 +1,19 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include "Drawable.h"
+
+#include "SDL_ctx.h"
+
 #include <SDL.h>
 #include <SDL_image.h>
+
 #include <string>
-#include "Drawable.h"
 
 class Image : public Drawable {
 public:
 	//Constructors
-	Image(SDL_Renderer* r, std::string img, int x, int y, int Width, int Height, Anchor anchor = top_left);
+	Image(SDL_Renderer_ctx& r, std::string img, int x, int y, int Width, int Height, Anchor anchor = top_left);
 
 	//Destructor
 	~Image();
@@ -34,7 +38,7 @@ protected:
 	SDL_Rect draw_rect;
 
 	//Reference the the screen's renderer
-	SDL_Renderer* RendererReference;
+	RendererRef RendererReference;
 
 	//The texture containing the image surface
 	SDL_Texture* texture;
