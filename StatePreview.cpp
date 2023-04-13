@@ -6,7 +6,7 @@
 #include "Image.h"
 
 StatePreview::StatePreview(SDL_Renderer* r, int id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc) : Screen(r) {
-	int Width = GetWindowWidth(), Height = GetWindowHeight();
+        auto [Width, Height] = GetWindowDimensions();
 	Controller = controller;
 	std::string str = "Flags/" + Controller;
 
@@ -87,8 +87,7 @@ void StatePreview::OpenOFS(){
 
 void StatePreview::DeleteOFS(){
         OFS.reset();
-
-	int Width = GetWindowWidth(), Height = GetWindowHeight();
+        auto [Width, Height] = GetWindowDimensions();
 
 	if (PCref->StatesArr[Id].State_Factories[3] != nullptr) {
                 InputDrawableArr.resize(InputDrawableArrtop()-1);

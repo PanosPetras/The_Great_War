@@ -6,11 +6,11 @@
 #include <iostream>
 
 Screen::Screen(SDL_Renderer* r) : renderer(r) {
-        std::cerr << "Screen::Screen()\t" << static_cast<void*>(this) << std::endl;
+    std::cerr << "Screen::Screen()\t" << static_cast<void*>(this) << std::endl;
 }
 
 Screen::Screen(SDL_Renderer* r, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf) : renderer(r), QuitFunc(qf), ChangeScreenFunc(csf) {
-        std::cerr << "Screen::Screen(...)\t" << static_cast<void*>(this) << std::endl;
+    std::cerr << "Screen::Screen(...)\t" << static_cast<void*>(this) << std::endl;
 }
 
 Screen::~Screen(){

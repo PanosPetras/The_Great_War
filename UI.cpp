@@ -1,21 +1,19 @@
 #include "UI.h"
-#include "ScreenList.h"
-#include "Screen.h"
-#include "PlayerController.h"
-#include "ToggleButton.h"
-#include "MainWindow.h"
+
 #include "Button.h"
-#include "Label.h"
 #include "Image.h"
+#include "Label.h"
+#include "MainWindow.h"
+#include "PlayerController.h"
+#include "Screen.h"
+#include "ScreenList.h"
+#include "ToggleButton.h"
 
-UI::UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl) {
-	renderer = r;
-
-	std::string str = tag;
-	int Width = GetWindowWidth(), Height = GetWindowHeight();
+UI::UI(SDL_Renderer* r, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl), renderer(r) {
+        auto [Width, Height] = GetWindowDimensions();
 
 	//The country management tabs
-	std::string flg = "Flags/" + str;
+	std::string flg = std::string("Flags/") + tag;
 	flag = std::make_unique<Button>(r, int(Width * 0.005), int(Height * 0.005), int(Width * 0.05), int(Height * 0.05), flg.c_str(), nullptr, SDLK_q);
 
 	Buttons[0] = std::make_unique<Button>(r, int(Width * 0.1), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Technology", nullptr, SDLK_w);

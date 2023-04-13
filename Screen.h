@@ -18,20 +18,20 @@ class MessageBox;
 
 class Screen{
 public:
-	//Constructor
-	Screen(SDL_Renderer* r);
-	Screen(SDL_Renderer* r, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf);
+    //Constructor
+    Screen(SDL_Renderer* r);
+    Screen(SDL_Renderer* r, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf = {});
 
-	//Destructor
-	virtual ~Screen();
+    //Destructor
+    virtual ~Screen();
 
-	//Renders all of the screen's components
-	virtual void Render();
+    //Renders all of the screen's components
+    virtual void Render();
 
-	//Handles input events
-	virtual void Handle_Input(SDL_Event& ev);
+    //Handles input events
+    virtual void Handle_Input(SDL_Event& ev);
 
-	void DeleteMessageBox(void* p);
+    void DeleteMessageBox(void* p);
 
 protected:
     //This is a reference to the main window's renderer
