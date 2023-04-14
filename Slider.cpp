@@ -8,23 +8,13 @@ Slider::Slider(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, int min
 {}
 
 Slider::Slider(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, Anchor anchor, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged)
-    : InputDrawable(anchor), renderer(r)
+    : InputDrawable(anchor), renderer(r), Marker(SDL_Texture_ctx::IMG_Load(renderer, "Drawable/Slider/Circle.png"))
 {
 	//Initialize all variables
 	ChangeValues(minvalue, maxvalue, value);
 	ChangePosition(x, y, Width, Height);
 
-	//Load the slider's textures
-	SDL_Surface* temp = IMG_Load("Drawable/Slider/Circle.png");
-	Marker = SDL_CreateTextureFromSurface(renderer, temp);
-	SDL_FreeSurface(temp);
-
 	this->onSliderValueChanged = onSliderValueChanged;
-}
-
-Slider::~Slider(){
-	//Freeing up the memory
-	SDL_DestroyTexture(Marker);
 }
 
 void Slider::SetActive(bool state) {

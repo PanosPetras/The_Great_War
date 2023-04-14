@@ -16,9 +16,6 @@ public:
 	Slider(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
 	Slider(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, Anchor anchor, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
 
-	//Destructor, frees up the memory
-	~Slider();
-
 	//Handle input events
 	void HandleInput(const SDL_Event& ev) override;
 
@@ -49,7 +46,7 @@ protected:
 	RendererRef renderer;
 
 	//The Slider's graphical components
-	SDL_Texture* Marker;
+	SDL_Texture_ctx Marker;
 
 	//The rectangles of the marker and the slider
 	SDL_Rect bg_rect;
