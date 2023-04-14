@@ -3,13 +3,13 @@
 #include "Image.h"
 #include "Label.h"
 
-TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters) : TextEntry(r, x, y, Width, Height, top_left, defaultText, maxCharacters) {
+TextEntry::TextEntry(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters) : TextEntry(r, x, y, Width, Height, top_left, defaultText, maxCharacters) {
 }
 
-TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, std::string hint, int maxCharacters) : TextEntry(r, x, y, Width, Height, top_left, defaultText, hint, maxCharacters) {
+TextEntry::TextEntry(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string defaultText, std::string hint, int maxCharacters) : TextEntry(r, x, y, Width, Height, top_left, defaultText, hint, maxCharacters) {
 }
 
-TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters) {
+TextEntry::TextEntry(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters) : RendererReference(r) {
     background = std::make_unique<Image>(r, "Backgrounds/FlagBg.png", x, y, Width, Height, anchor);
     textLabel = std::make_unique<Label>(r, defaultText, 20, int(x * 1.08), int(y * 1.08), anchor);
     hintLabel = NULL;
@@ -22,7 +22,7 @@ TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Ancho
     this->y = y;
 }
 
-TextEntry::TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint, int maxCharacters) : TextEntry(r, x, y, Width, Height, anchor, defaultText, maxCharacters) {
+TextEntry::TextEntry(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint, int maxCharacters) : TextEntry(r, x, y, Width, Height, anchor, defaultText, maxCharacters) {
     ChangeHint(hint);
 }
 

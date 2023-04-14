@@ -2,23 +2,24 @@
 #define BUTTON_H
 
 #pragma once
-#include <string>
+#include "Drawable.h"
+
+#include "SDL_ctx.h"
+
 #include <functional>
 #include <memory>
-#include "Drawable.h"
+#include <string>
 
 class Image;
 class Label;
 
-typedef struct SDL_Renderer SDL_Renderer;
-
 class TextEntry : public InputDrawable {
 public:
     //Constructor
-    TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters = 30);
-    TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, std::string defaultText, std::string hint = "", int maxCharacters = 30);
-    TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters = 30);
-    TextEntry(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint = "", int maxCharacters = 30);
+    TextEntry(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters = 30);
+    TextEntry(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string defaultText, std::string hint = "", int maxCharacters = 30);
+    TextEntry(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters = 30);
+    TextEntry(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint = "", int maxCharacters = 30);
 
     //Destructor
     ~TextEntry() = default;
@@ -57,7 +58,7 @@ protected:
     bool focused;
 
     //Reference the the screen's renderer
-    SDL_Renderer* RendererReference;
+    RendererRef RendererReference;
 
     //The components of the Entry
     std::unique_ptr<Image> background;

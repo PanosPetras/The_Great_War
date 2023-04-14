@@ -1,6 +1,6 @@
 #include "SDL_ColorDetection.h"
 
-Uint32 CD::getpixel(SDL_Surface* surface, int x, int y){
+Uint32 CD::getpixel(SDL_Surface_ctx& surface, int x, int y){
 	//Get the bit depth of the surface
 	int bpp = surface->format->BytesPerPixel;
 
@@ -33,7 +33,7 @@ Uint32 CD::getpixel(SDL_Surface* surface, int x, int y){
 	}
 }
 
-Color CD::getcolor(SDL_Surface* surface, int x, int y) {
+Color CD::getcolor(SDL_Surface_ctx& surface, int x, int y) {
 	Color rgb;
 
 	//Get the requested pixel's data

@@ -2,20 +2,24 @@
 #define TOGGLEBUTTON_H
 
 #pragma once
+#include "Drawable.h"
+
+#include "SDL_ctx.h"
+
 #include <SDL.h>
-#include <string>
-#include <functional>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
-#include "Drawable.h"
+
+#include <string>
+#include <functional>
 
 class ToggleButton : public InputDrawable {
 public:
     //Constructor
-    ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f = {}, int keybind = 0);
-    ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f = {}, int keybind = 0);
-    ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, std::function<void(bool)> f = {}, int keybind = 0);
-    ToggleButton(SDL_Renderer* r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, bool val, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, bool val, std::function<void(bool)> f = {}, int keybind = 0);
 
     //Destructor
     ~ToggleButton();
@@ -73,11 +77,11 @@ protected:
     SDL_Rect draw_rect;
 
     //Reference the the screen's renderer
-    SDL_Renderer* RendererReference;
+    RendererRef RendererReference;
 
     //Reference to the button's texture
-    SDL_Texture* activeTexture = nullptr;
-    SDL_Texture* inactiveTexture = nullptr;
+    SDL_Texture_ctx activeTexture;
+    SDL_Texture_ctx inactiveTexture;
 
     //The button's onClick sound
     Mix_Chunk* music = nullptr;

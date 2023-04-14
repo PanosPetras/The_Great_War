@@ -2,18 +2,19 @@
 #define Slider_H
 
 #pragma once
-#include <SDL.h>
-#include <functional>
 #include "Drawable.h"
+
+#include "SDL_ctx.h"
+
+#include <SDL.h>
+
+#include <functional>
 
 class Slider : public InputDrawable {
 public:
 	//Constructor, initializes the values
-	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
-	Slider(SDL_Renderer* r, int x, int y, int Width, int Height, Anchor anchor, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
-
-	//Destructor, frees up the memory
-	~Slider();
+	Slider(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
+	Slider(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, Anchor anchor, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
 
 	//Handle input events
 	void HandleInput(const SDL_Event& ev) override;
@@ -42,10 +43,10 @@ protected:
 	void callOnValueChanged();
 
 	//A reference to the window's renderer
-	SDL_Renderer* renderer;
+	RendererRef renderer;
 
 	//The Slider's graphical components
-	SDL_Texture* Marker;
+	SDL_Texture_ctx Marker;
 
 	//The rectangles of the marker and the slider
 	SDL_Rect bg_rect;

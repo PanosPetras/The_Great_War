@@ -5,20 +5,12 @@
 
 #include <iostream>
 
-Screen::Screen(SDL_Renderer* r) : renderer(r) {
+Screen::Screen(SDL_Renderer_ctx& r) : renderer(r) {
     std::cerr << "Screen::Screen()\t" << static_cast<void*>(this) << std::endl;
 }
 
-Screen::Screen(SDL_Renderer* r, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf) : renderer(r), QuitFunc(qf), ChangeScreenFunc(csf) {
+Screen::Screen(SDL_Renderer_ctx& r, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf) : renderer(r), QuitFunc(qf), ChangeScreenFunc(csf) {
     std::cerr << "Screen::Screen(...)\t" << static_cast<void*>(this) << std::endl;
-}
-
-Screen::~Screen(){
-	//Free all the allocated memory
-	if (bHasBackground) {
-		SDL_DestroyTexture(texture);
-	}
-        std::cerr << "Screen::~Screen\t" << static_cast<void*>(this) << std::endl;
 }
 
 void Screen::RenderBackground() {
@@ -27,7 +19,7 @@ void Screen::RenderBackground() {
 	If it does, then we create a rectangle and give it the
 	appropriate dimensions, based on the magnification
 	factor reiceived from user input*/
-	if (bHasBackground) {
+	if (texture) {
             SDL_RenderCopy(renderer, texture, NULL, NULL);
         }
 }
@@ -67,13 +59,8 @@ void Screen::Handle_Input(SDL_Event& ev){
 }
 
 void Screen::SetupBg(const char* bg) {
-    if(bHasBackground) {
-        SDL_DestroyTexture(texture);
-    } else bHasBackground = true;
-
-    SDL_Surface* img = IMG_Load(bg);
-    texture = SDL_CreateTextureFromSurface(renderer, img);
-    SDL_FreeSurface(img);
+    bHasBackground = true;
+    texture = SDL_Texture_ctx::IMG_Load(renderer, bg);
 }
 
 void Screen::DeleteMessageBox(void* p) {

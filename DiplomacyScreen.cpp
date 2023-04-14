@@ -6,10 +6,10 @@
 #include "MainWindow.h"
 #include "PlayerController.h"
 
-DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, PlayerController* PC) : DiplomacyScreen(r, PC, PC->player_tag) {
+DiplomacyScreen::DiplomacyScreen(SDL_Renderer_ctx& r, PlayerController* PC) : DiplomacyScreen(r, PC, PC->player_tag) {
 }
 
-DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, PlayerController* PC, std::string targetTag) : Screen(r) {
+DiplomacyScreen::DiplomacyScreen(SDL_Renderer_ctx& r, PlayerController* PC, std::string targetTag) : Screen(r) {
 	SetupBg("Backgrounds/Industry.png");
 
         auto [Width, Height] = GetWindowDimensions();
@@ -39,7 +39,7 @@ DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, PlayerController* PC, std::str
 	UpdateAllianceState();
 }
 
-DiplomacyScreen::DiplomacyScreen(SDL_Renderer* r, PlayerController* PC, int index) : DiplomacyScreen(r, PC){
+DiplomacyScreen::DiplomacyScreen(SDL_Renderer_ctx& r, PlayerController* PC, int index) : DiplomacyScreen(r, PC){
 	SelectCountry((void*)((Uint64)index));
 }
 

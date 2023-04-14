@@ -1,10 +1,11 @@
 #include "MessageBox.h"
-#include "MainWindow.h"
-#include "Button.h"
-#include "Label.h"
-#include "Image.h"
 
-MessageBox::MessageBox(SDL_Renderer* r, std::string title, std::string message, std::function<void(void*)> f) {
+#include "Button.h"
+#include "Image.h"
+#include "Label.h"
+#include "MainWindow.h"
+
+MessageBox::MessageBox(SDL_Renderer_ctx& r, std::string title, std::string message, std::function<void(void*)> f) {
     auto [Width, Height] = GetWindowDimensions();
 
     background = std::make_unique<Image>(r, "Backgrounds/old_paper.png", int(Width * 0.3), int(Height * 0.3), int(Width * 0.4), int(Height * 0.4));

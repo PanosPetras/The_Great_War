@@ -6,7 +6,7 @@
 #include "MainWindow.h"
 #include "PlayerController.h"
 
-OpenFactoryScreen::OpenFactoryScreen(SDL_Renderer* r, int id, PlayerController* PC, std::function<void()> quitfunc) : Screen(r, quitfunc){
+OpenFactoryScreen::OpenFactoryScreen(SDL_Renderer_ctx& r, int id, PlayerController* PC, std::function<void()> quitfunc) : Screen(r, quitfunc){
     PCref = PC;
     auto [Width, Height] = GetWindowDimensions();
 

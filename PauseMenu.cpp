@@ -3,7 +3,7 @@
 #include "Button.h"
 #include "Image.h"
 
-PauseMenu::PauseMenu(SDL_Renderer* r, std::function<void()> fp, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
+PauseMenu::PauseMenu(SDL_Renderer_ctx& r, std::function<void()> fp, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
     auto [Width, Height] = GetWindowDimensions();
 
     int fontSize = 32;

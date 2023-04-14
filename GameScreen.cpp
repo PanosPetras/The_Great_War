@@ -8,9 +8,10 @@
 #include "Image.h"
 
 #include <cmath>
+#include <iostream>
 #include <memory>
 
-GameScreen::GameScreen(SDL_Renderer* r, const char* tag,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
+GameScreen::GameScreen(SDL_Renderer_ctx& r, const char* tag,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
 	bHasBackground = true;
 	bIsPaused = false;
 	bZoom = true;
@@ -179,18 +180,13 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
                                 StateViewingScreen = std::make_unique<StatePreview>(renderer, state->State_ID - 1, state->State_Name, state->State_Controller, PC.get(), res, int(state->State_Population), fcs, close, change);
 			}
 
-			SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
-
-			SDL_Surface* Marker = IMG_Load("Icons/pin1.png");
+			SDL_Surface_ctx base(SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000));
+			auto Marker = SDL_Surface_ctx::IMG_Load("Icons/pin1.png");
 
 			SDL_Rect strect = { .x = -x - 5384 + 7, .y = -y + 24, .w = 5616 * 3 , .h = 2160 };
-			SDL_BlitSurface(Marker, &strect, base, NULL);
+			SDL_BlitSurface(Marker, &strect, base, nullptr);
 
-			SDL_Texture* txt = SDL_CreateTextureFromSurface(renderer, base);
-			SDL_DestroyTexture(PC->overlay);
-			PC->overlay = txt;
-			SDL_FreeSurface(base);
-			SDL_FreeSurface(Marker);
+			PC->overlay = SDL_Texture_ctx(renderer, base);
 		}
 	}
 
@@ -326,10 +322,7 @@ void GameScreen::CloseActiveScreen(){
 void GameScreen::CloseScreenPreview(){
         StateViewingScreen.reset();
 
-	SDL_Surface* base = SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
+	SDL_Surface_ctx base(SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000));
 
-	SDL_Texture* txt = SDL_CreateTextureFromSurface(renderer, base);
-	SDL_DestroyTexture(PC->overlay);
-	PC->overlay = txt;
-	SDL_FreeSurface(base);
+	PC->overlay = SDL_Texture_ctx(renderer, base);
 }

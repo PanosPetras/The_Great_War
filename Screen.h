@@ -4,6 +4,9 @@
 #include "Drawable.h"
 #include "Image.h"
 #include "Label.h"
+#include "MessageBox.h"
+
+#include "SDL_ctx.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -14,16 +17,13 @@
 #include <string>
 #include <vector>
 
-class MessageBox;
-
 class Screen{
 public:
     //Constructor
-    Screen(SDL_Renderer* r);
-    Screen(SDL_Renderer* r, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf = {});
+    Screen(SDL_Renderer_ctx& r);
+    Screen(SDL_Renderer_ctx& r, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf = {});
 
-    //Destructor
-    virtual ~Screen();
+    virtual ~Screen() = default;
 
     //Renders all of the screen's components
     virtual void Render();
@@ -35,7 +35,7 @@ public:
 
 protected:
     //This is a reference to the main window's renderer
-    SDL_Renderer* renderer;
+    RendererRef renderer;
 
     //Allows the creation of Images on the screen
     std::vector<std::unique_ptr<Image>> ImageArr;
@@ -74,7 +74,7 @@ protected:
     bool bHasBackground = false;
 
     //Stores the image's texture
-    SDL_Texture* texture = nullptr;
+    SDL_Texture_ctx texture;
 
     std::function<void()> QuitFunc;
     std::function<void(std::unique_ptr<Screen>)> ChangeScreenFunc;

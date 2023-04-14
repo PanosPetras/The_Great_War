@@ -7,7 +7,7 @@
 #include "PlayerController.h"
 #include "UI.h"
 
-CountrySelection::CountrySelection(SDL_Renderer* r, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r, UnpauseF, fpl) {
+CountrySelection::CountrySelection(SDL_Renderer_ctx& r, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r, UnpauseF, fpl) {
 	SetupBg("Backgrounds/CountrySelection.png");
         auto [Width, Height] = GetWindowDimensions();
 

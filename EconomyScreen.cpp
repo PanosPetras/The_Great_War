@@ -5,7 +5,7 @@
 #include "Slider.h"
 #include "Label.h"
 
-EconomyScreen::EconomyScreen(SDL_Renderer* r, Country* Pl) : Screen(r), Player(Pl) {
+EconomyScreen::EconomyScreen(SDL_Renderer_ctx& r, Country* Pl) : Screen(r), Player(Pl) {
 	SetupBg("Backgrounds/Industry.png");
         auto [Width, Height] = GetWindowDimensions();
 

@@ -1,35 +1,23 @@
 #include "Image.h"
 
-Image::Image(SDL_Renderer* r, std::string img, int x, int y, int Width, int Height, Anchor anchor) : Drawable(anchor) {
-    ChangePosition(x, y, Width, Height);
-    
-    //Saving the renderer's reference
-    RendererReference = r;
-
-    //Saving the image path
-    imagepath = img;
-
-    //Loading the image texture
-    SDL_Surface* image = IMG_Load(imagepath.c_str());
-
-    texture = SDL_CreateTextureFromSurface(RendererReference, image);
-
-    SDL_FreeSurface(image);
-}
-
-Image::~Image(){
-    //Free up the memory
-    SDL_DestroyTexture(texture);
+Image::Image(SDL_Renderer_ctx& r, std::string img, int x, int y, int Width, int Height, Anchor anchor) :
+    Drawable(anchor),
+    RendererReference(r),
+    imagepath(img),
+    draw_rect{.x = x, .y = y, .w = Width, .h = Height},
+    texture(SDL_Texture_ctx::IMG_Load(RendererReference, imagepath))
+{
+    ApplyAnchor(draw_rect, dAnchor);
 }
 
 void Image::pDraw(){
     //Drawing the Image
-    SDL_RenderCopy(RendererReference, texture, NULL, &draw_rect);
+    SDL_RenderCopy(RendererReference, texture, nullptr, &draw_rect);
 }
 
 void Image::ChangeImage(std::string img){
     //Saving the new image path
-    imagepath = img;
+    imagepath = std::move(img);
     Update();
 }
 
@@ -41,12 +29,7 @@ void Image::ChangePosition(int x, int y, int Width, int Height){
 }
 
 void Image::Update(){
-    //Free up the memory
-    SDL_DestroyTexture(texture);
-
     //Loading the image texture
-    SDL_Surface* image = IMG_Load(imagepath.c_str());
-    texture = SDL_CreateTextureFromSurface(RendererReference, image);
-    SDL_FreeSurface(image);
+    texture = SDL_Texture_ctx::IMG_Load(RendererReference, imagepath);
     //SDL_SetTextureColorMod(texture, 255, 255, 255); //in order to change color of the state
 }
