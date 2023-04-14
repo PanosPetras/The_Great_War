@@ -93,3 +93,11 @@ SDL_Texture_ctx SDL_Texture_ctx::IMG_Load(SDL_Renderer_ctx& r, std::string_view 
     return {r, surface};
 }
 //-----------------------------------------------------------------------------
+TTF_Font_ctx::TTF_Font_ctx(int ptsize) : TTF_Font_ctx("Fonts/segoeui.ttf", ptsize) {}
+TTF_Font_ctx::TTF_Font_ctx(std::string_view filename, int ptsize) :
+    font(TTF_OpenFont(filename.data(), ptsize), &TTF_CloseFont)
+{}
+
+TTF_Font* TTF_Font_ctx::operator->() { return font.get(); }
+TTF_Font_ctx::operator TTF_Font* () { return font.get(); }
+//-----------------------------------------------------------------------------

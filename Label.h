@@ -19,9 +19,6 @@ public:
     Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xLim, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
     Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xLim, Anchor anchor, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
 
-    //Destructor
-    ~Label();
-
     //Get the label's text
     std::string GetText();
 
@@ -47,8 +44,11 @@ protected:
     //Render the label on the screen
     void pDraw();
 
-    //The label's font
-    TTF_Font* font;
+    //Reference the the screen's renderer
+    RendererRef RendererReference;
+
+    //The label's font size
+    int FontSize;
 
     //The color of the text displayed by the label
     SDL_Color Color;
@@ -57,19 +57,13 @@ protected:
     SDL_Rect draw_rect;
 
     //The texture containing the text surface
-    SDL_Texture* texture;
+    SDL_Texture_ctx texture;
 
     //The contents of the label
     std::string text;
 
-    //Reference the the screen's renderer
-    RendererRef RendererReference;
-
     //The label's position
     int x, y;
-
-    //The label's font size
-    int FontSize;
 
     //The label's pixel limit in width before it enters a new line
     int xLim;

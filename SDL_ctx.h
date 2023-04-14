@@ -177,3 +177,20 @@ public:
 private:
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture;
 };
+//-----------------------------------------------------------------------------
+class TTF_Font_ctx {
+public:
+    TTF_Font_ctx(int ptsize); // use the default
+    explicit TTF_Font_ctx(std::string_view filename, int ptsize);
+
+    TTF_Font_ctx(const TTF_Font_ctx&) = delete;
+    TTF_Font_ctx(TTF_Font_ctx&&) noexcept = default;
+    TTF_Font_ctx& operator=(const TTF_Font_ctx&) = delete;
+    TTF_Font_ctx& operator=(TTF_Font_ctx&&) noexcept = default;
+    ~TTF_Font_ctx() = default;
+
+    TTF_Font* operator->();
+    operator TTF_Font* ();
+private:
+    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> font;
+};

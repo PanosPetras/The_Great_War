@@ -168,7 +168,7 @@ void Button::ChangeText(std::string textstr, int textSize){
     texture = SDL_Texture_ctx::IMG_Load(RendererReference, "Drawable/Button/Button.png");
 
     //Loading the font from the file
-    TTF_Font* font = TTF_OpenFont(GLOBAL_FONT, textSize);
+    TTF_Font_ctx font(textSize);
 
     //Convert the text to a surface
     SDL_Surface_ctx textSur(TTF_RenderText_Blended(font, textstr.c_str(), SDL_Color{.r = 255, .g = 255, .b = 255, .a = 0}));
@@ -180,9 +180,6 @@ void Button::ChangeText(std::string textstr, int textSize){
                         .y = draw_rect.y + text_y,
                         .w = (text_x > 0 ? textSur->w : int(draw_rect.w * 0.8)),
                         .h = textSur->h };
-
-    //Delete the font
-    TTF_CloseFont(font);
 
     bHovered = false;
 }

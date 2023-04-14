@@ -10,7 +10,7 @@ Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, Anch
 Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xlim, Uint8 red, Uint8 green, Uint8 blue) : Label(r, Text, size, x, y, xlim, top_left, red, green, blue) {
 }
 
-Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xlim, Anchor anchor, Uint8 red, Uint8 green, Uint8 blue) : Drawable(anchor), RendererReference(r) {
+Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xlim, Anchor anchor, Uint8 red, Uint8 green, Uint8 blue) : Drawable(anchor), RendererReference(r), FontSize(size) {
     //Save the text assigned to the label in order to be used later
     text = Text;
 
@@ -20,16 +20,7 @@ Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int 
     //Save the label's coordinates
     this->x = x, this->y = y, this->xLim = xlim;
 
-    //Save the label's font size
-    FontSize = size;
-
-    texture = NULL;
     UpdateLabel();
-}
-
-Label::~Label(){
-    //Free up the memory
-    SDL_DestroyTexture(texture);
 }
 
 void Label::pDraw() {
@@ -62,7 +53,7 @@ void Label::ChangePosition(int x, int y) {
     int texW, texH;
 
     //Create the rectangle that will express the size of the texture we created
-    SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
+    SDL_QueryTexture(texture, nullptr, nullptr, &texW, &texH);
     draw_rect = { x, y, texW, texH };
 
     ApplyAnchor(draw_rect, dAnchor);
@@ -75,21 +66,12 @@ void Label::ChangeXLimit(int xLim) {
 }
 
 void Label::UpdateLabel() {
-    //Free up the memory
-    if (texture != NULL) {
-        SDL_DestroyTexture(texture);
-    }
-
     //Loading the font from the file
-    TTF_Font* font = TTF_OpenFont(GLOBAL_FONT, FontSize);
+    TTF_Font_ctx font(FontSize);
 
     //Convert the text to a surface and then assign the surface to a texture
-    SDL_Surface* surface = TTF_RenderText_Blended_Wrapped(font, text.c_str(), Color, xLim);
-    texture = SDL_CreateTextureFromSurface(RendererReference, surface);
-    SDL_FreeSurface(surface);
-
-    //Delete the font
-    TTF_CloseFont(font);
+    SDL_Surface_ctx surface(TTF_RenderText_Blended_Wrapped(font, text.c_str(), Color, xLim));
+    texture = SDL_Texture_ctx(RendererReference, surface);
 
     ChangePosition(x, y);
 }

@@ -3,8 +3,6 @@
 
 #include <SDL.h>
 
-#define GLOBAL_FONT "Fonts/segoeui.ttf"
-
 enum Anchor {
 	top_left, top_right, bottom_left, bottom_right, center, center_top, center_bottom, center_left, center_right
 };
