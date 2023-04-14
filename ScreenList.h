@@ -94,9 +94,6 @@ public:
     int MouseSensitivity;
 
     std::unique_ptr<Screen> StateViewingScreen;
-    //bool bHasStatePreview;
-
-    SDL_Texture* assets;
 
     void HandleMouseMovement(SDL_Event& ev);
     void ChangeActiveScreen(std::unique_ptr<Screen> NewScreen, std::string ID);
