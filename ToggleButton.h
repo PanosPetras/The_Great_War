@@ -80,8 +80,8 @@ protected:
     RendererRef RendererReference;
 
     //Reference to the button's texture
-    SDL_Texture* activeTexture = nullptr;
-    SDL_Texture* inactiveTexture = nullptr;
+    SDL_Texture_ctx activeTexture;
+    SDL_Texture_ctx inactiveTexture;
 
     //The button's onClick sound
     Mix_Chunk* music = nullptr;

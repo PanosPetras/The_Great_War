@@ -35,8 +35,6 @@ ToggleButton::ToggleButton(SDL_Renderer_ctx& r, [[maybe_unused]]int x, [[maybe_u
 
 ToggleButton::~ToggleButton(){
     //Free up the memory
-    SDL_DestroyTexture(activeTexture);
-    SDL_DestroyTexture(inactiveTexture);
     Mix_FreeChunk(music);
 }
 
@@ -96,22 +94,9 @@ void ToggleButton::ChangeImage(std::string activeImage, std::string inactiveImag
     auto activeImagePath = activeImage + ".png";
     auto inactiveImagePath = inactiveImage + ".png";
 
-    //Destroy the textures, if they already exist
-    if (activeTexture != nullptr) {
-        SDL_DestroyTexture(activeTexture);
-    }
-    if (inactiveTexture != nullptr) {
-        SDL_DestroyTexture(inactiveTexture);
-    }
-
     //Loading the button's textures
-    SDL_Surface* img = IMG_Load(activeImagePath.c_str());
-    activeTexture = SDL_CreateTextureFromSurface(RendererReference, img);
-    SDL_FreeSurface(img);
-
-    img = IMG_Load(inactiveImagePath.c_str());
-    inactiveTexture = SDL_CreateTextureFromSurface(RendererReference, img);
-    SDL_FreeSurface(img);
+    activeTexture = SDL_Texture_ctx::IMG_Load(RendererReference, activeImagePath);
+    inactiveTexture = SDL_Texture_ctx::IMG_Load(RendererReference, inactiveImagePath);
 }
 
 void ToggleButton::ChangePosition(int x, int y, int Width, int Height){

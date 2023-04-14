@@ -92,10 +92,6 @@ PlayerController::~PlayerController() {
 	if (Date.bIsPaused == false) {
 		Pause();
 	}
-
-	//Remove the map surface and texture from memory
-	SDL_DestroyTexture(txt);
-	SDL_DestroyTexture(overlay);
 }
 
 int PlayerController::LoadMap(void* pc){

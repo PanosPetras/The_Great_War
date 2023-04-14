@@ -82,12 +82,6 @@ void log(Button* This, const char* txt) {
 Button::~Button() {
     std::cerr << "Button::~Button\t" << static_cast<void*>(this) << std::endl;
     deads.emplace(this);
-    //Free up the memory
-    SDL_DestroyTexture(texture);
-
-    if (text != nullptr) {
-        SDL_DestroyTexture(text);
-    }
 
     Mix_FreeChunk(music);
 }
@@ -150,14 +144,6 @@ bool Button::CheckIfMouseInRect(const SDL_Rect& rect, const SDL_MouseButtonEvent
 void Button::ChangeImage(std::string image) {
     //Saving the new image path
     auto imagePath = image + ".png";
-
-    //Destroy the texture if it already exists
-    if (texture != nullptr) {
-        SDL_DestroyTexture(texture);
-    }
-    if (this->text != nullptr) {
-        SDL_DestroyTexture(this->text);
-    }
 
     //Load the button texture
     texture = SDL_Texture_ctx::IMG_Load(RendererReference, imagePath);

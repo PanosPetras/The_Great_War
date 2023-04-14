@@ -74,7 +74,6 @@ public:
 	//Some SDL assets needed
 	RendererRef RendererReference;
 	SDL_Texture_ctx txt;
-
 	SDL_Texture_ctx overlay;
 	SDL_Surface_ctx map;
 	SDL_Surface_ctx provinces;
