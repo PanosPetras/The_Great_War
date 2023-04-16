@@ -1,6 +1,8 @@
 #include "ScreenList.h"
 
-TradeScreen::TradeScreen(SDL_Renderer_ctx& r, Country* Pl) : Screen(r) {
+#include "Button.h"
+
+TradeScreen::TradeScreen(MainWindow& mw, Country* Pl) : Screen(mw) {
 	SetupBg("Backgrounds/Industry.png");
 	Player = Pl;
 }

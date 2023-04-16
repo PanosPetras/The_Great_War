@@ -14,21 +14,22 @@
 #include <memory>
 #include <string>
 
-class Screen;
+class Button;
 class Image;
 class Label;
-class Button;
-class ToggleButton;
+class MainWindow;
 class PlayerController;
+class Screen;
+class ToggleButton;
 
 class UI {
 public:
     //Constructor
-    UI(SDL_Renderer_ctx& r, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl = nullptr);
+    UI(MainWindow& mw, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl = nullptr);
     ~UI() = default;
 
     //This is a reference to the main window's renderer
-    RendererRef renderer;
+    MainWindow* main_window;
 
     //Stores the main window's dimensions
     int WindowSize[2];

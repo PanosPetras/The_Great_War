@@ -6,32 +6,32 @@
 #include "MainWindow.h"
 #include "PlayerController.h"
 
-DiplomacyScreen::DiplomacyScreen(SDL_Renderer_ctx& r, PlayerController* PC) : DiplomacyScreen(r, PC, PC->player_tag) {
+DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC) : DiplomacyScreen(mw, PC, PC->player_tag) {
 }
 
-DiplomacyScreen::DiplomacyScreen(SDL_Renderer_ctx& r, PlayerController* PC, std::string targetTag) : Screen(r) {
+DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, std::string targetTag) : Screen(mw) {
 	SetupBg("Backgrounds/Industry.png");
 
-        auto [Width, Height] = GetWindowDimensions();
+        auto [Width, Height] = mw.GetWindowDimensions();
 	int fontSize = 26;
 
-	AddImage<Image>(r, "Backgrounds/old_paper.png", int(Width * 0.4), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
+	AddImage<Image>(*main_window, "Backgrounds/old_paper.png", int(Width * 0.4), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
 
-	AddImage<Image>(r, std::string("Flags/") + targetTag + ".png", int(Width * 0.4), int(Height * 0.2), 120, 80);
-	AddImage<Image>(r, "Icons/population.png", int(Width * 0.43), int(Height * 0.3), int(Width * 0.027), int(Height * 0.048));
-	AddImage<Image>(r, "Icons/flags.png", int(Width * 0.77), int(Height * 0.225), int(Width * 0.027), int(Height * 0.048));
+	AddImage<Image>(*main_window, std::string("Flags/") + targetTag + ".png", int(Width * 0.4), int(Height * 0.2), 120, 80);
+	AddImage<Image>(*main_window, "Icons/population.png", int(Width * 0.43), int(Height * 0.3), int(Width * 0.027), int(Height * 0.048));
+	AddImage<Image>(*main_window, "Icons/flags.png", int(Width * 0.77), int(Height * 0.225), int(Width * 0.027), int(Height * 0.048));
 
 	CreateCountryButtons(PC, targetTag);
 
-	AddLabel<Label>(r, PC->CountriesArr[selectedCountryIndex]->GetName(), 32, int(Width * 0.48), int(Height * 0.218), Width);
-	AddLabel<Label>(r, std::to_string(PC->CountriesArr[selectedCountryIndex]->GetPopulation()), 24, int(Width * 0.465), int(Height * 0.31));
-	AddLabel<Label>(r, "N/A", 28, int(Width * 0.8), int(Height * 0.225));
+	AddLabel<Label>(*main_window, PC->CountriesArr[selectedCountryIndex]->GetName(), 32, int(Width * 0.48), int(Height * 0.218), Width);
+	AddLabel<Label>(*main_window, std::to_string(PC->CountriesArr[selectedCountryIndex]->GetPopulation()), 24, int(Width * 0.465), int(Height * 0.31));
+	AddLabel<Label>(*main_window, "N/A", 28, int(Width * 0.8), int(Height * 0.225));
 
-	AddDrawable<Button>(r, int(Width * 0.43), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Declare War", fontSize);
-	AddDrawable<Button>(r, int(Width * 0.43), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Improve Relations", fontSize, [this]{ ImproveRelations();});
-	AddDrawable<Button>(r, int(Width * 0.43), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Worsen Relations", fontSize, [this]{ WorsenRelations();});
-	AddDrawable<Button>(r, int(Width * 0.645), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Form Alliance", fontSize, [this]{ SendAllianceRequest();});
-	AddDrawable<Button>(r, int(Width * 0.645), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Embargo", fontSize, [this]{ ImposeEmbargo();});
+	AddDrawable<Button>(*main_window, int(Width * 0.43), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Declare War", fontSize);
+	AddDrawable<Button>(*main_window, int(Width * 0.43), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Improve Relations", fontSize, [this]{ ImproveRelations();});
+	AddDrawable<Button>(*main_window, int(Width * 0.43), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Worsen Relations", fontSize, [this]{ WorsenRelations();});
+	AddDrawable<Button>(*main_window, int(Width * 0.645), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Form Alliance", fontSize, [this]{ SendAllianceRequest();});
+	AddDrawable<Button>(*main_window, int(Width * 0.645), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Embargo", fontSize, [this]{ ImposeEmbargo();});
 
 	PCref = PC;
 
@@ -39,16 +39,16 @@ DiplomacyScreen::DiplomacyScreen(SDL_Renderer_ctx& r, PlayerController* PC, std:
 	UpdateAllianceState();
 }
 
-DiplomacyScreen::DiplomacyScreen(SDL_Renderer_ctx& r, PlayerController* PC, int index) : DiplomacyScreen(r, PC){
+DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, int index) : DiplomacyScreen(mw, PC){
 	SelectCountry((void*)((Uint64)index));
 }
 
 int DiplomacyScreen::CreateCountryButtons(PlayerController* PC) {
 	int i = 0, flagsPerLine = 12;
-        auto [Width, Height] = GetWindowDimensions();
+        auto [Width, Height] = main_window->GetWindowDimensions();
 
 	for (auto& country : PC->CountriesArr) {
-		AddDrawable<Button>(renderer, int(Width * (0.1 + (i / flagsPerLine) * 0.05)), int(Height * (0.17 + (i % flagsPerLine) * 0.06)), 60, 40, ("Flags/" + country->GetTag()).c_str(), [this](void*p){SelectCountry(p);}, (void*)((Uint64)i));
+		AddDrawable<Button>(*main_window, int(Width * (0.1 + (i / flagsPerLine) * 0.05)), int(Height * (0.17 + (i % flagsPerLine) * 0.06)), 60, 40, ("Flags/" + country->GetTag()).c_str(), [this](void*p){SelectCountry(p);}, (void*)((Uint64)i));
 		i++;
 	}
 
@@ -57,10 +57,10 @@ int DiplomacyScreen::CreateCountryButtons(PlayerController* PC) {
 
 int DiplomacyScreen::CreateCountryButtons(PlayerController* PC, std::string targetTag) {
 	int i = 0, flagsPerLine = 12;
-        auto [Width, Height] = GetWindowDimensions();
+        auto [Width, Height] = main_window->GetWindowDimensions();
 
 	for (auto& country : PC->CountriesArr) {
-		AddDrawable<Button>(renderer, int(Width * (0.1 + (i / flagsPerLine) * 0.05)), int(Height * (0.17 + (i % flagsPerLine) * 0.06)), 60, 40, ("Flags/" + country->GetTag()).c_str(), [this](void*p){SelectCountry(p);}, (void*)((Uint64)i));
+		AddDrawable<Button>(*main_window, int(Width * (0.1 + (i / flagsPerLine) * 0.05)), int(Height * (0.17 + (i % flagsPerLine) * 0.06)), 60, 40, ("Flags/" + country->GetTag()).c_str(), [this](void*p){SelectCountry(p);}, (void*)((Uint64)i));
 		if (country->GetTag() == targetTag) {
 			selectedCountryIndex = i;
 		}

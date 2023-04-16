@@ -6,25 +6,46 @@
 #include <iostream>
 #include <unordered_set>
 
+namespace {
+    std::array<TextureRef, 3> Load(MainWindow& mw, std::string image) {
+        std::cerr << "Button::Load " << image << std::endl;
+        return mw.IMG_Load(image + ".png",
+            [](SDL_Texture_ctx& texture){ // inactive
+                SDL_SetTextureColorMod(texture, 100, 100, 100);
+            },
+            [](SDL_Texture_ctx& texture){ // idle
+                SDL_SetTextureColorMod(texture, 255, 255, 255);
+            },
+            [](SDL_Texture_ctx& texture) { // hoovered
+                SDL_SetTextureColorMod(texture, 170, 170, 170);
+            }
+        );
+    }
+}
+
 std::unordered_set<Button*> deads; // Only used for debugging
 
-Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) : Button(r, x, y, Width, Height, image, top_left, f, keybind) {
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) :
+    Button(mw, x, y, Width, Height, image, top_left, f, keybind) {
 }
 
-Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, image, top_left, f, arg, keybind) {
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind) :
+    Button(mw, x, y, Width, Height, image, top_left, f, arg, keybind) {
 }
 
-Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f, int keybind) : InputDrawable(anchor), RendererReference(r) {
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f, int keybind) :
+    InputDrawable(anchor),
+    main_window(&mw),
+    textures{Load(mw, image)}
+{
     deads.erase(this); // if a previous Button had the same address, remove it from the dead Buttons
-
-    //Sets the default value for the button's state
-    bHovered = false;
+    std::cerr << "Button::Button image: " << image << std::endl;
 
     //Saving the button's coordinates
     ChangePosition(x, y, Width, Height);
 
     //Loading the button texture
-    ChangeImage(image);
+    //ChangeImage(image);
 
     //Saving the bound function
     ChangeFunctionBinding(f);
@@ -36,20 +57,25 @@ Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::st
     music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
-Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, image, anchor, nullptr, keybind) {
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind) :
+    Button(mw, x, y, Width, Height, image, anchor, nullptr, keybind) {
     //Saving the bound function
     ChangeFunctionBinding(f, arg);
 }
 
-Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f, int keybind) : Button(r, x, y, Width, Height, text, textSize, top_left, f, keybind) {
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f, int keybind) : Button(mw, x, y, Width, Height, text, textSize, top_left, f, keybind) {
 }
 
-Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind) : Button(r, x, y, Width, Height, text, textSize, top_left, f, arg, keybind) {
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind) :
+    Button(mw, x, y, Width, Height, text, textSize, top_left, f, arg, keybind)
+{
 }
 
-Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f, int keybind) : InputDrawable(anchor), RendererReference(r) {
-    //Sets the default value for the button's state
-    bHovered = false;
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f, int keybind) :
+    Button(mw, x, y, Width, Height, "Drawable/Button/Button", anchor, f, keybind)
+{
+    deads.erase(this); // if a previous Button had the same address, remove it from the dead Buttons
+    std::cerr << "Button::Button text: " << text << std::endl;
 
     //Saving the button's coordinates
     ChangePosition(x, y, Width, Height);
@@ -62,12 +88,11 @@ Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::st
 
     //Save the button's bind to the keyboard
     ChangeKeybind(keybind);
-
-    //Load the button's click sound
-    music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
-Button::Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, [[maybe_unused]] int keybind) : Button(r, x, y, Width, Height, text, textSize, anchor) {
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, [[maybe_unused]] int keybind) :
+    Button(mw, x, y, Width, Height, text, textSize, anchor)
+{
     //Saving the bound function
     ChangeFunctionBinding(f, arg);
 }
@@ -88,11 +113,11 @@ Button::~Button() {
 
 void Button::pDraw() {
     //Drawing the button
-    SDL_RenderCopy(RendererReference, bHovered ? hoveredTexture : texture, nullptr, &draw_rect);
+    SDL_RenderCopy(*main_window, active_texture, nullptr, &draw_rect);
 
     if (text != nullptr) {
         //Add text on top of Button background
-        SDL_RenderCopy(RendererReference, text, nullptr, &text_draw_rect);
+        SDL_RenderCopy(*main_window, text, nullptr, &text_draw_rect);
     }
 }
 
@@ -102,6 +127,7 @@ void Button::HandleInput(const SDL_Event& ev) {
         if (CheckIfMouseInRect(draw_rect, ev.button)) {
             if (bHovered == false) {
                 //If the button is hovered, change to the hovered button image
+                active_texture = textures[textureHoovered];
                 SDL_SetTextureColorMod(text, 170, 170, 170);
                 bHovered = true;
             }
@@ -114,6 +140,7 @@ void Button::HandleInput(const SDL_Event& ev) {
         //If not hovered, return to the idle button image
         else if (bHovered == true) {
             bHovered = false;
+            active_texture = textures[textureIdle];
             SDL_SetTextureColorMod(text, 255, 255, 255);
         }
 
@@ -122,6 +149,8 @@ void Button::HandleInput(const SDL_Event& ev) {
                 Click();
             }
         }
+    } else {
+        active_texture = textures[textureInactive];
     }
 }
 
@@ -138,26 +167,13 @@ bool Button::CheckIfMouseInRect(const SDL_Rect& rect, const SDL_MouseButtonEvent
     return (ev.x >= rect.x) && (ev.x <= rect.x + rect.w) && (ev.y >= rect.y) && (ev.y <= rect.y + rect.h);
 }
 
-void Button::ChangeImage(std::string image) {
-    //Saving the new image path
-    auto imagePath = image + ".png";
-
-    //Load the button texture
-    texture = SDL_Texture_ctx::IMG_Load(RendererReference, imagePath);
-    hoveredTexture = SDL_Texture_ctx::IMG_Load_ColorMod(RendererReference, imagePath, SDL_Color{ 170, 170, 170 });
-}
-
 void Button::ChangeText(std::string textstr, int textSize){
-    //Load the button background
-    texture = SDL_Texture_ctx::IMG_Load(RendererReference, "Drawable/Button/Button.png");
-    hoveredTexture = SDL_Texture_ctx::IMG_Load_ColorMod(RendererReference, "Drawable/Button/Button.png", SDL_Color{170, 170, 170});
-
     //Loading the font from the file
     TTF_Font_ctx font(textSize);
 
     //Convert the text to a surface
     SDL_Surface_ctx textSur(TTF_RenderText_Blended(font, textstr.c_str(), SDL_Color{.r = 255, .g = 255, .b = 255, .a = 0}));
-    text = SDL_Texture_ctx(RendererReference, textSur);
+    text = SDL_Texture_ctx(*main_window, textSur);
 
     int text_x = (draw_rect.w - textSur->w) / 2;
     int text_y = (draw_rect.h - textSur->h) / 3;
@@ -197,7 +213,7 @@ void Button::Playsound() {
 void Button::CallBoundFunction(){
     log(this, "Button::CallBoundFunction 1");
     if (func) {
-        MainWindow::Instance().AddEvent([func=func]{ func(); });
+        main_window->AddEvent([func=func]{ func(); });
         log(this, "Button::CallBoundFunction added func MainWindow event list");
     }
 }
@@ -206,6 +222,11 @@ void Button::SetActive(bool state) {
     InputDrawable::SetActive(state);
 
     if (state) {
+        active_texture = textures[textureIdle];
+        SDL_SetTextureColorMod(text, 255, 255, 255);
         bHovered = false;
+    } else {
+        active_texture = textures[textureInactive];
+        SDL_SetTextureColorMod(text, 100, 100, 100);
     }
 }

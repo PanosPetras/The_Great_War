@@ -1,15 +1,18 @@
 #include "Screen.h"
+
+#include "Button.h"
+#include "MainWindow.h"
 #include "MessageBox.h"
 #include "Label.h"
 #include "Image.h"
 
 #include <iostream>
 
-Screen::Screen(SDL_Renderer_ctx& r) : renderer(r) {
+Screen::Screen(MainWindow& mw) : main_window(&mw) {
     std::cerr << "Screen::Screen()\t" << static_cast<void*>(this) << std::endl;
 }
 
-Screen::Screen(SDL_Renderer_ctx& r, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf) : renderer(r), QuitFunc(qf), ChangeScreenFunc(csf) {
+Screen::Screen(MainWindow& mw, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf) : main_window(&mw), QuitFunc(qf), ChangeScreenFunc(csf) {
     std::cerr << "Screen::Screen(...)\t" << static_cast<void*>(this) << std::endl;
 }
 
@@ -20,7 +23,7 @@ void Screen::RenderBackground() {
 	appropriate dimensions, based on the magnification
 	factor reiceived from user input*/
 	if (texture) {
-            SDL_RenderCopy(renderer, texture, NULL, NULL);
+            SDL_RenderCopy(*main_window, texture, NULL, NULL);
         }
 }
 
@@ -60,7 +63,7 @@ void Screen::Handle_Input(SDL_Event& ev){
 
 void Screen::SetupBg(const char* bg) {
     bHasBackground = true;
-    texture = SDL_Texture_ctx::IMG_Load(renderer, bg);
+    texture = SDL_Texture_ctx::IMG_Load(*main_window, bg);
 }
 
 void Screen::DeleteMessageBox(void* p) {
