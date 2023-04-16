@@ -90,7 +90,7 @@ SDL_Texture* SDL_Texture_ctx::operator->() { return texture.get(); }
 SDL_Texture_ctx::operator SDL_Texture* () { return texture.get(); }
 
 SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Texture_ctx& t) : 
-    texture(t.texture.get(), nullptr) {
+    texture(t.texture.get(), { }) {
 }
 
 SDL_Texture_ctx SDL_Texture_ctx::IMG_Load(SDL_Renderer_ctx& r, std::string_view filename) {
