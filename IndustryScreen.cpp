@@ -1,41 +1,43 @@
 #include "ScreenList.h"
+
 #include "MainWindow.h"
 #include "Label.h"
+#include "Button.h"
 
-IndustryScreen::IndustryScreen(SDL_Renderer_ctx& r, int Stockpile[30]) : Screen(r) {
+IndustryScreen::IndustryScreen(MainWindow& mw, int Stockpile[30]) : Screen(mw) {
 	SetupBg("Backgrounds/Industry1.png");
-        auto [Width, Height] = GetWindowDimensions();
+        auto [Width, Height] = mw.GetWindowDimensions();
 
-	AddLabel<Label>(r, std::to_string(Stockpile[0]), 32, int(Width * 0.24), int(Height * 0.165));
-	AddLabel<Label>(r, std::to_string(Stockpile[5]), 32, int(Width * 0.365), int(Height * 0.165));
-	AddLabel<Label>(r, std::to_string(Stockpile[2]), 32, int(Width * 0.49), int(Height * 0.165));
-	AddLabel<Label>(r, std::to_string(Stockpile[4]), 32, int(Width * 0.615), int(Height * 0.165));
-	AddLabel<Label>(r, std::to_string(Stockpile[3]), 32, int(Width * 0.24), int(Height * 0.26));
-	AddLabel<Label>(r, std::to_string(Stockpile[1]), 32, int(Width * 0.365), int(Height * 0.26));
-	AddLabel<Label>(r, std::to_string(Stockpile[11]), 32, int(Width * 0.49), int(Height * 0.26));
-	AddLabel<Label>(r, std::to_string(Stockpile[10]), 32, int(Width * 0.615), int(Height * 0.26));
-	AddLabel<Label>(r, std::to_string(Stockpile[6]), 32, int(Width * 0.74), int(Height * 0.21));
-	AddLabel<Label>(r, std::to_string(Stockpile[19]), 32, int(Width * 0.24), int(Height * 0.395));
-	AddLabel<Label>(r, std::to_string(Stockpile[21]), 32, int(Width * 0.365), int(Height * 0.395));
-	AddLabel<Label>(r, std::to_string(Stockpile[28]), 32, int(Width * 0.49), int(Height * 0.395));
-	AddLabel<Label>(r, std::to_string(Stockpile[20]), 32, int(Width * 0.615), int(Height * 0.395));
-	AddLabel<Label>(r, std::to_string(Stockpile[27]), 32, int(Width * 0.24), int(Height * 0.49));
-	AddLabel<Label>(r, std::to_string(Stockpile[25]), 32, int(Width * 0.365), int(Height * 0.49));
-	AddLabel<Label>(r, std::to_string(Stockpile[7]), 32, int(Width * 0.49), int(Height * 0.49));
-	AddLabel<Label>(r, std::to_string(Stockpile[24]), 32, int(Width * 0.615), int(Height * 0.49));
-	AddLabel<Label>(r, std::to_string(Stockpile[22]), 32, int(Width * 0.74), int(Height * 0.44));
-	AddLabel<Label>(r, std::to_string(Stockpile[9]), 32, int(Width * 0.24), int(Height * 0.63));
-	AddLabel<Label>(r, std::to_string(Stockpile[8]), 32, int(Width * 0.365), int(Height * 0.63));
-	AddLabel<Label>(r, std::to_string(Stockpile[26]), 32, int(Width * 0.49), int(Height * 0.63));
-	AddLabel<Label>(r, std::to_string(Stockpile[12]), 32, int(Width * 0.615), int(Height * 0.63));
-	AddLabel<Label>(r, std::to_string(Stockpile[23]), 32, int(Width * 0.74), int(Height * 0.63));
-	AddLabel<Label>(r, std::to_string(Stockpile[16]), 32, int(Width * 0.24), int(Height * 0.765));
-	AddLabel<Label>(r, std::to_string(Stockpile[13]), 32, int(Width * 0.365), int(Height * 0.765));
-	AddLabel<Label>(r, std::to_string(Stockpile[17]), 32, int(Width * 0.49), int(Height * 0.765));
-	AddLabel<Label>(r, std::to_string(Stockpile[15]), 32, int(Width * 0.615), int(Height * 0.765));
-	AddLabel<Label>(r, std::to_string(Stockpile[18]), 32, int(Width * 0.74), int(Height * 0.765));
-	AddLabel<Label>(r, std::to_string(Stockpile[14]), 32, int(Width * 0.49), int(Height * 0.86));
-	AddLabel<Label>(r, std::to_string(Stockpile[29]), 32, int(Width * 0.365), int(Height * 0.86));
+	AddLabel<Label>(mw, std::to_string(Stockpile[0]), 32, int(Width * 0.24), int(Height * 0.165));
+	AddLabel<Label>(mw, std::to_string(Stockpile[5]), 32, int(Width * 0.365), int(Height * 0.165));
+	AddLabel<Label>(mw, std::to_string(Stockpile[2]), 32, int(Width * 0.49), int(Height * 0.165));
+	AddLabel<Label>(mw, std::to_string(Stockpile[4]), 32, int(Width * 0.615), int(Height * 0.165));
+	AddLabel<Label>(mw, std::to_string(Stockpile[3]), 32, int(Width * 0.24), int(Height * 0.26));
+	AddLabel<Label>(mw, std::to_string(Stockpile[1]), 32, int(Width * 0.365), int(Height * 0.26));
+	AddLabel<Label>(mw, std::to_string(Stockpile[11]), 32, int(Width * 0.49), int(Height * 0.26));
+	AddLabel<Label>(mw, std::to_string(Stockpile[10]), 32, int(Width * 0.615), int(Height * 0.26));
+	AddLabel<Label>(mw, std::to_string(Stockpile[6]), 32, int(Width * 0.74), int(Height * 0.21));
+	AddLabel<Label>(mw, std::to_string(Stockpile[19]), 32, int(Width * 0.24), int(Height * 0.395));
+	AddLabel<Label>(mw, std::to_string(Stockpile[21]), 32, int(Width * 0.365), int(Height * 0.395));
+	AddLabel<Label>(mw, std::to_string(Stockpile[28]), 32, int(Width * 0.49), int(Height * 0.395));
+	AddLabel<Label>(mw, std::to_string(Stockpile[20]), 32, int(Width * 0.615), int(Height * 0.395));
+	AddLabel<Label>(mw, std::to_string(Stockpile[27]), 32, int(Width * 0.24), int(Height * 0.49));
+	AddLabel<Label>(mw, std::to_string(Stockpile[25]), 32, int(Width * 0.365), int(Height * 0.49));
+	AddLabel<Label>(mw, std::to_string(Stockpile[7]), 32, int(Width * 0.49), int(Height * 0.49));
+	AddLabel<Label>(mw, std::to_string(Stockpile[24]), 32, int(Width * 0.615), int(Height * 0.49));
+	AddLabel<Label>(mw, std::to_string(Stockpile[22]), 32, int(Width * 0.74), int(Height * 0.44));
+	AddLabel<Label>(mw, std::to_string(Stockpile[9]), 32, int(Width * 0.24), int(Height * 0.63));
+	AddLabel<Label>(mw, std::to_string(Stockpile[8]), 32, int(Width * 0.365), int(Height * 0.63));
+	AddLabel<Label>(mw, std::to_string(Stockpile[26]), 32, int(Width * 0.49), int(Height * 0.63));
+	AddLabel<Label>(mw, std::to_string(Stockpile[12]), 32, int(Width * 0.615), int(Height * 0.63));
+	AddLabel<Label>(mw, std::to_string(Stockpile[23]), 32, int(Width * 0.74), int(Height * 0.63));
+	AddLabel<Label>(mw, std::to_string(Stockpile[16]), 32, int(Width * 0.24), int(Height * 0.765));
+	AddLabel<Label>(mw, std::to_string(Stockpile[13]), 32, int(Width * 0.365), int(Height * 0.765));
+	AddLabel<Label>(mw, std::to_string(Stockpile[17]), 32, int(Width * 0.49), int(Height * 0.765));
+	AddLabel<Label>(mw, std::to_string(Stockpile[15]), 32, int(Width * 0.615), int(Height * 0.765));
+	AddLabel<Label>(mw, std::to_string(Stockpile[18]), 32, int(Width * 0.74), int(Height * 0.765));
+	AddLabel<Label>(mw, std::to_string(Stockpile[14]), 32, int(Width * 0.49), int(Height * 0.86));
+	AddLabel<Label>(mw, std::to_string(Stockpile[29]), 32, int(Width * 0.365), int(Height * 0.86));
 }
 
 void IndustryScreen::UpdateText(int Stockpile[29]){

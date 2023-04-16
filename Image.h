@@ -10,10 +10,12 @@
 
 #include <string>
 
+class MainWindow;
+
 class Image : public Drawable {
 public:
 	//Constructors
-	Image(SDL_Renderer_ctx& r, std::string img, int x, int y, int Width, int Height, Anchor anchor = top_left);
+	Image(MainWindow& mw, std::string img, int x, int y, int Width, int Height, Anchor anchor = top_left);
 
 	//Change the image assigned to the button
 	void ChangeImage(std::string img);
@@ -25,11 +27,11 @@ public:
 	void Update();
 
 protected:
+	//Reference the the main window
+	MainWindow* main_window;
+
 	//Render the image on the screen
 	void pDraw();
-
-	//Reference the the screen's renderer
-	RendererRef RendererReference;
 
 	//Reference to the path of the image assigned to the button
 	std::string imagepath;
@@ -38,7 +40,7 @@ protected:
 	SDL_Rect draw_rect;
 
 	//The texture containing the image surface
-	SDL_Texture_ctx texture;
+	TextureRef texture;
 
 	friend class TextEntry;
 };

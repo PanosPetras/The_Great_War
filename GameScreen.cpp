@@ -11,7 +11,7 @@
 #include <iostream>
 #include <memory>
 
-GameScreen::GameScreen(SDL_Renderer_ctx& r, const char* tag,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(r) {
+GameScreen::GameScreen(MainWindow& mw, const char* tag,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(mw) {
 	bHasBackground = true;
 	bIsPaused = false;
 	bZoom = true;
@@ -26,8 +26,8 @@ GameScreen::GameScreen(SDL_Renderer_ctx& r, const char* tag,  std::function<void
 	ChangeScreenFunc = fpl;
 	QuitFunc = fp;
 
-	PC = std::make_unique<PlayerController>(renderer, tag);
-	overlay = std::make_unique<UI>(r, tag, PC.get(), [this](std::unique_ptr<Screen> scr, std::string ID) { ChangeActiveScreen(std::move(scr), std::move(ID)); });
+	PC = std::make_unique<PlayerController>(*main_window, tag);
+	overlay = std::make_unique<UI>(*main_window, tag, PC.get(), [this](std::unique_ptr<Screen> scr, std::string ID) { ChangeActiveScreen(std::move(scr), std::move(ID)); });
 }
 
 void GameScreen::Pause() {
@@ -43,7 +43,7 @@ void GameScreen::Pause() {
                         PM.reset();
 		}
 		else {
-			PM = std::make_unique<PauseMenu>(renderer, QuitFunc, [this]{ Pause(); }, ChangeScreenFunc);
+			PM = std::make_unique<PauseMenu>(*main_window, QuitFunc, [this]{ Pause(); }, ChangeScreenFunc);
 			bIsPaused = true;
 			if (PC->Date.bIsPaused == false) {
 				overlay->PauseDate(true);
@@ -61,8 +61,8 @@ void GameScreen::RenderBackground() {
 	factor reiceived from user input*/
 	if (bZoom == true) {
 		SDL_Rect dstrect = { int(Cam_Width * -1 * factor), int(Cam_Height * -1 * factor), int(ImgSize[0] * factor) , int(factor * ImgSize[1]) };
-		SDL_RenderCopy(renderer, PC->txt, NULL, &dstrect);
-		SDL_RenderCopy(renderer, PC->overlay, NULL, &dstrect);
+		SDL_RenderCopy(*main_window, PC->txt, NULL, &dstrect);
+		SDL_RenderCopy(*main_window, PC->overlay, NULL, &dstrect);
 	}
 }
 
@@ -151,7 +151,7 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
 
 	//Handle clicks on the map
 	if (ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT) {
-		if (bHasActiveScreen() == false && flag == false && ev.button.y > GetWindowHeight() * 0.07 && bIsPaused == false && !StateViewingScreen) {
+		if (bHasActiveScreen() == false && flag == false && ev.button.y > main_window->Height() * 0.07 && bIsPaused == false && !StateViewingScreen) {
 
 			int x = Cam_Width + int(ev.button.x / factor) - 5384;
 			int y = Cam_Height + int(ev.button.y / factor);
@@ -177,7 +177,7 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
 				auto change = [this](std::unique_ptr<Screen> NewScreen, std::string ID) { ChangeActiveScreen(std::move(NewScreen), std::move(ID)); };
 
 				//Create the StatePreview screen
-                                StateViewingScreen = std::make_unique<StatePreview>(renderer, state->State_ID - 1, state->State_Name, state->State_Controller, PC.get(), res, int(state->State_Population), fcs, close, change);
+                                StateViewingScreen = std::make_unique<StatePreview>(*main_window, state->State_ID - 1, state->State_Name, state->State_Controller, PC.get(), res, int(state->State_Population), fcs, close, change);
 			}
 
 			SDL_Surface_ctx base(SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000));
@@ -186,7 +186,7 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
 			SDL_Rect strect = { .x = -x - 5384 + 7, .y = -y + 24, .w = 5616 * 3 , .h = 2160 };
 			SDL_BlitSurface(Marker, &strect, base, nullptr);
 
-			PC->overlay = SDL_Texture_ctx(renderer, base);
+			PC->overlay = SDL_Texture_ctx(*main_window, base);
 		}
 	}
 
@@ -228,7 +228,7 @@ void GameScreen::HandleMouseMovement(SDL_Event& ev) {
 		SDL_GetRelativeMouseState(&x, &y);
 
 		//Moves the camera upwards
-		int lim1 = int((int(ImgSize[1] * factor) - GetWindowHeight()) / factor);
+		int lim1 = int((int(ImgSize[1] * factor) - main_window->Height()) / factor);
 
 		if (mousepressed) {
 			if (y > 0 && Cam_Height > 0) {
@@ -254,7 +254,7 @@ void GameScreen::HandleMouseMovement(SDL_Event& ev) {
 			}
 			//Moves the camera to the right
 			else if (x < 0 && Cam_Width) {
-				lim1 = int(11000 - GetWindowWidth() / 2 / factor);
+				lim1 = int(11000 - main_window->Width() / 2 / factor);
 				
 				Cam_Width += int((MouseSensitivity * x * -1) / factor);
 				if (Cam_Width > lim1) {
@@ -266,32 +266,32 @@ void GameScreen::HandleMouseMovement(SDL_Event& ev) {
 		//Change the screen's magnification, albeit the zoom factor
 		if (ev.type == SDL_MOUSEWHEEL) {
 			//Zoom in
-			if (ev.wheel.y > 0 && factor < GetWindowWidth() / 480.0) {
+			if (ev.wheel.y > 0 && factor < main_window->Width() / 480.0) {
 				factor += ZoomingSpeed * factor;
-				Cam_Width += int(GetWindowWidth() / factor * ZoomingSpeed / 2);
-				Cam_Height += int(GetWindowHeight() / factor * ZoomingSpeed / 2);
+				Cam_Width += int(main_window->Width() / factor * ZoomingSpeed / 2);
+				Cam_Height += int(main_window->Height() / factor * ZoomingSpeed / 2);
 			}
 			//Zoom out
-			else if (factor > GetWindowWidth() / 3840.0 && ev.wheel.y < 0) {
+			else if (factor > main_window->Width() / 3840.0 && ev.wheel.y < 0) {
 				factor -= ZoomingSpeed * factor;
 
 				//Make sure we are not off the limits
-				if (factor < GetWindowWidth() / 3840.0) {
-					factor = float(GetWindowWidth() / 3840.0);
+				if (factor < main_window->Width() / 3840.0) {
+					factor = float(main_window->Width() / 3840.0);
 				}
 
-				Cam_Width -= int(GetWindowWidth() / factor * ZoomingSpeed / 2);
-				Cam_Height -= int(GetWindowHeight() / factor * ZoomingSpeed / 2);
+				Cam_Width -= int(main_window->Width() / factor * ZoomingSpeed / 2);
+				Cam_Height -= int(main_window->Height() / factor * ZoomingSpeed / 2);
 
 				/*If the zoomed out image extends out of the rendered image's bounds,
 				then we move the camera towards the center of the rendered image*/
-				int lim = int((std::trunc(ImgSize[1] * factor) - GetWindowHeight()) / factor);
+				int lim = int((std::trunc(ImgSize[1] * factor) - main_window->Height()) / factor);
 				if (Cam_Height < 0) {
 					Cam_Height = 0;
 				} else if (Cam_Height > lim) {
 					Cam_Height = lim;
 				}
-				lim = int((trunc(ImgSize[0] * factor) - GetWindowWidth()) / factor);
+				lim = int((trunc(ImgSize[0] * factor) - main_window->Width()) / factor);
 				if (Cam_Width < 0) {
 					Cam_Width = 0;
 				} else if (Cam_Width > lim) {
@@ -324,5 +324,5 @@ void GameScreen::CloseScreenPreview(){
 
 	SDL_Surface_ctx base(SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000));
 
-	PC->overlay = SDL_Texture_ctx(renderer, base);
+	PC->overlay = SDL_Texture_ctx(*main_window, base);
 }

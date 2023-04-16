@@ -6,8 +6,8 @@
 #include <SDL_thread.h>
 #include <SDL_ttf.h>
 
+#include <iostream>
 #include <memory>
-#include <unordered_map>
 #include <string_view>
 
 /*-----------------------------------------------------------------------------
@@ -29,20 +29,42 @@ until it can be replaced by a std::reference_wrapper.
 template<class T, class U>
 class promiscuous_ref {
 public:
-    promiscuous_ref() = delete;
+    promiscuous_ref() = default;
     promiscuous_ref(T& o) : obj(&o) {}
     promiscuous_ref(const promiscuous_ref& other) : obj(other.obj) {}
     promiscuous_ref& operator=(const promiscuous_ref& other) { obj = other.obj; return *this; }
     ~promiscuous_ref() = default;
 
-    operator T& () { return *obj; }
-    operator const T& () const { return *obj; }
+    operator T& () {
+        //if(obj == nullptr) std::cerr << "promiscuous_ref nullptr dereferenced" << std::endl;
+        return *obj; }
+    operator const T& () const {
+        if(obj == nullptr) std::cerr << "promiscuous_ref nullptr dereferenced" << std::endl;
+        return *obj; }
 
-    operator T* () { return obj; }
-    operator const T* () const { return obj; }
+    /*
+    operator T* () {
+        if(obj == nullptr) std::cerr << "promiscuous_ref nullptr returned" << std::endl;
+        return obj;
+    }
+    operator const T* () const {
+        if(obj == nullptr) std::cerr << "promiscuous_ref nullptr returned" << std::endl;
+        return obj;
+    }
+    */
 
-    operator U* () { return *obj; }
-    operator const U* () const { return *obj; }
+    operator U* () {
+        if(obj == nullptr) {
+            //std::cerr << "promiscuous_ref nullptr returned" << std::endl;
+            return nullptr;
+        }
+        return *obj; }
+    operator const U* () const {
+        if(obj == nullptr) {
+            //std::cerr << "promiscuous_ref nullptr returned" << std::endl;
+            return nullptr;
+        }
+        return *obj; }
 
     U* operator->() { return obj.operator->(); }
     const U* operator->() const { return obj.operator->(); }
@@ -176,12 +198,9 @@ public:
 
     static SDL_Texture_ctx IMG_Load(SDL_Renderer_ctx& r, std::string_view filename);
 private:
-    std::shared_ptr<SDL_Texture> texture;
-
-    SDL_Texture_ctx(SDL_Renderer_ctx&, SDL_Texture_ctx&);
-
-    static std::unordered_map<std::string, SDL_Texture_ctx> textureCache;
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture;
 };
+using TextureRef = promiscuous_ref<SDL_Texture_ctx, SDL_Texture>;
 //-----------------------------------------------------------------------------
 class TTF_Font_ctx {
 public:

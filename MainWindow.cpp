@@ -1,5 +1,7 @@
 #include "MainWindow.h"
 
+#include "Button.h"
+
 #include "ScreenList.h"
 
 #include <iostream>
@@ -23,7 +25,7 @@ MainWindow::MainWindow():
     }
 
     //Creating a pointer to the active screen
-    scr = std::make_unique<MainMenu>(renderer, [this]{ Quit(); }, [this](std::unique_ptr<Screen> newScreen){ ChangeScreen(std::move(newScreen)); });
+    scr = std::make_unique<MainMenu>(*this, [this]{ Quit(); }, [this](std::unique_ptr<Screen> newScreen){ ChangeScreen(std::move(newScreen)); });
 }
 
 void MainWindow::MainLoop() {
@@ -42,6 +44,25 @@ void MainWindow::Render() {
 
     //Render the results
     SDL_RenderPresent(renderer);
+}
+
+SDL_Texture_ctx& MainWindow::IMG_Load(const std::string& filename) {
+    if(auto it = file_textures.find(filename); it != file_textures.end()) {
+        return it->second[0];
+    } else {
+        std::vector<SDL_Texture_ctx> vec;
+        vec.emplace_back(SDL_Texture_ctx::IMG_Load(renderer, filename));
+        auto [newit, inserted] = file_textures.emplace(filename, std::move(vec));
+        return newit->second[0];
+    }
+}
+
+MainWindow::operator SDL_Renderer_ctx& () {
+    return renderer;
+}
+
+MainWindow::operator SDL_Renderer* () {
+    return renderer;
 }
 
 void MainWindow::ChangeScreen(std::unique_ptr<Screen> NewScreen){
@@ -103,3 +124,7 @@ void MainWindow::Quit() {
     //Change the flag variable to 1 so that the main loop stops running
     quit = true;
 }
+
+int MainWindow::Width() const { return windim.x; }
+int MainWindow::Height() const { return windim.y; }
+const SDL_Point& MainWindow::GetWindowDimensions() const { return windim; }
