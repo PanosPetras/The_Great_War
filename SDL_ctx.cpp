@@ -80,6 +80,7 @@ SDL_Surface_ctx SDL_Surface_ctx::IMG_Load(std::string_view filename) {
     return SDL_Surface_ctx(::IMG_Load(filename.data()));
 }
 //-----------------------------------------------------------------------------
+std::unordered_map<std::string, SDL_Texture_ctx> SDL_Texture_ctx::textureCache;
 SDL_Texture_ctx::SDL_Texture_ctx() : texture(nullptr, &SDL_DestroyTexture) {}
 SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Surface_ctx& s) :
     texture(SDL_CreateTextureFromSurface(r, s), &SDL_DestroyTexture)
@@ -88,9 +89,20 @@ SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Surface_ctx& s) :
 SDL_Texture* SDL_Texture_ctx::operator->() { return texture.get(); }
 SDL_Texture_ctx::operator SDL_Texture* () { return texture.get(); }
 
+SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Texture_ctx& t) : 
+    texture(t.texture.get(), nullptr) {
+}
+
 SDL_Texture_ctx SDL_Texture_ctx::IMG_Load(SDL_Renderer_ctx& r, std::string_view filename) {
-    auto surface = SDL_Surface_ctx::IMG_Load(filename);
-    return {r, surface};
+    std::string fName = std::string(filename);
+
+    if (!textureCache.contains(fName)) {
+        auto surface = SDL_Surface_ctx::IMG_Load(filename);
+
+        textureCache[fName] = SDL_Texture_ctx(r, surface);
+    }
+
+    return { r, textureCache.find(fName)->second };
 }
 //-----------------------------------------------------------------------------
 TTF_Font_ctx::TTF_Font_ctx(int ptsize) : TTF_Font_ctx("Fonts/segoeui.ttf", ptsize) {}
