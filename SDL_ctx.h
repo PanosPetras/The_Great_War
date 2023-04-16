@@ -176,7 +176,7 @@ public:
 
     static SDL_Texture_ctx IMG_Load(SDL_Renderer_ctx& r, std::string_view filename);
 private:
-    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture;
+    std::shared_ptr<SDL_Texture> texture;
 
     SDL_Texture_ctx(SDL_Renderer_ctx&, SDL_Texture_ctx&);
 
