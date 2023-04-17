@@ -5,11 +5,10 @@
 #include <vector>
 #include <string>
 #include <set>
+#include <array>
 #include <unordered_map>
-#include <set>
-#include "Country.h"
 
-#define RELATIONS_LIMIT 300
+#include "Country.h"
 
 enum RequestType {
     alliance, tradeDeal, peaceTreaty
@@ -23,6 +22,7 @@ public:
 
     Country* GetC1() const;
     Country* GetC2() const;
+    std::string toString() const;
 
 private:
     Country *c1, *c2;
@@ -33,23 +33,52 @@ struct std::hash<CountryPair> {
     std::size_t operator()(const CountryPair& k) const {
         std::hash<std::string> hasher;
 
-        const std::string& str1 = k.GetC1()->GetTag();
-        const std::string& str2 = k.GetC2()->GetTag();
-
-        return hasher(str1 > str2 ? str1 + '\0' + str2 : str2 + '\0' + str1);
+        return hasher(k.toString());
     }
 };
 
-struct War {
-    std::vector<Country*> Side1;
-    std::vector<Country*> Side2;
-    int Score;
+struct Claim {
+
 };
 
-class Relations {
+struct War {
 public:
-    Relations();
-    Relations(int relations, bool allied = false);
+    War(Country* aggressor, Country* defender);
+    
+    bool GetIfTargetPairIsAtWar(const CountryPair& pair) const;
+    void JoinWar(Country* newParticipant, Country* onTheSideOf);
+    const std::set<Country*>& GetFaction(int i);
+
+    void AddScore(Country* instigator, int score);
+    int GetRelativeScore() const;
+
+private:
+    struct Faction {
+        Faction(Country* c);
+
+        void AddMember(Country* c);
+        void RemoveMember(Country* c);
+        bool Contains(Country* c) const;
+        const std::set<Country*>& GetFaction();
+
+        void AddScore(int c);
+        int GetScore() const;
+
+    private:
+        std::set<Country*> members;
+        std::vector<Claim> claims;
+
+        static const int scoreLimit = 100;
+        int score = 0;
+    };
+
+    std::array<Faction, 2> factions;
+};
+
+class Relation {
+public:
+    Relation();
+    Relation(int relations, bool allied = false);
 
     void ImproveRelations(int value = 15);
     void WorsenRelations(int value = 15);
@@ -61,11 +90,13 @@ public:
 
     void ImposeEmbargo(std::string Instigator);
     void LiftEmbargo(std::string Instigator);
-    bool GetIfEmbargoExists();
-    bool GetIfHasEmbargo(std::string Instigator);
+    bool GetIfEmbargoExists() const;
+    bool GetIfHasEmbargo(std::string Instigator) const;
 
 private:
-    std::set<std::string> embargoes;
+    static const int RELATIONS_LIMIT = 300;
+
+    std::vector<std::string> embargoes;
 
     int relationsValue;
     bool allied;
@@ -73,27 +104,26 @@ private:
 
 class Request {
 public:
-    Request(RequestType id, int senderIndex, std::string senderTag, Relations& rel);
+    Request(RequestType id, int senderIndex, std::string senderTag, Relation& rel);
 
     void Accept();
     void Decline();
 
-    Relations GetRelations();
-    std::string GetSender();
-    int GetSenderIndex();
+    Relation& GetRelations() const;
+    std::string GetSender() const;
+    int GetSenderIndex() const;
 
 private:
     RequestType id;
     int index;
-    Relations* rel;
+    Relation &rel;
     std::string tag;
 
 };
 
 class Diplomacy {
 public:
-    std::unordered_map<CountryPair, Relations> relations;
+    std::unordered_map<CountryPair, Relation> relations;
     std::vector<War> wars;
 };
-
 #endif
