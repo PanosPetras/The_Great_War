@@ -35,7 +35,8 @@ Country* CountryPair::GetC2() const {
 }
 
 std::string CountryPair::toString() const {
-	std::string t1 = t1, t2 = t2;
+	std::string t1 = c1 ? c1->GetName() : "";
+	std::string t2 = c2 ? c2->GetName() : "";
 	return t1 > t2 ? t1 + '\0' + t2 : t2 + '\0' + t1;
 }
 
@@ -96,7 +97,7 @@ bool Relation::GetIfHasEmbargo(std::string Instigator) const {
 }
 
 Request::Request(RequestType id, int senderIndex, std::string senderTag, Relation& relations) : 
-	rel(relations), index(senderIndex), tag(senderTag), id(id) 
+    id{id}, index{senderIndex}, rel{relations}, tag(senderTag)
 {}
 
 void Request::Accept() {
