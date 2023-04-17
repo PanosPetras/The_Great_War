@@ -35,7 +35,9 @@ MIX_ctx::MIX_ctx() {
 MIX_ctx::~MIX_ctx() {
     Mix_Quit();
 }
-//-----------------------------------------------------------------------------
+//=============================================================================
+// SDL
+//=============================================================================
 SDL_Window_ctx::SDL_Window_ctx() : window(SDL_CreateWindow(
         "The Great War",                  // window title
         SDL_WINDOWPOS_UNDEFINED,          // initial x position
@@ -124,7 +126,9 @@ SDL_Texture_ctx SDL_Texture_ctx::IMG_Load(SDL_Renderer_ctx& r, const std::string
     auto surface = SDL_Surface_ctx::IMG_Load(filename);
     return {r, surface};
 }
-//-----------------------------------------------------------------------------
+//=============================================================================
+// TTF
+//=============================================================================
 TTF_Font_ctx::TTF_Font_ctx(int ptsize) : TTF_Font_ctx("Fonts/segoeui.ttf", ptsize) {}
 TTF_Font_ctx::TTF_Font_ctx(const std::string& filename, int ptsize) :
     font(TTF_OpenFont(filename.data(), ptsize), &TTF_CloseFont)
@@ -134,4 +138,16 @@ TTF_Font_ctx::TTF_Font_ctx(const std::string& filename, int ptsize) :
 
 TTF_Font* TTF_Font_ctx::operator->() { return font.get(); }
 TTF_Font_ctx::operator TTF_Font* () { return font.get(); }
+//=============================================================================
+// MIX
+//=============================================================================
+MIX_Chunk_ctx::MIX_Chunk_ctx() : music(nullptr, &Mix_FreeChunk) {}
+MIX_Chunk_ctx::MIX_Chunk_ctx(std::string_view filename) : music(Mix_LoadWAV(filename.data()), &Mix_FreeChunk) {}
+
+int MIX_Chunk_ctx::PlayChannel(int channel, int loops) {
+    return Mix_PlayChannel(channel, music.get(), loops);
+}
+
+Mix_Chunk* MIX_Chunk_ctx::operator->() { return music.get(); }
+MIX_Chunk_ctx::operator Mix_Chunk* () { return music.get(); }
 //-----------------------------------------------------------------------------
