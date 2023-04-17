@@ -1,20 +1,20 @@
 #pragma once
 
-#include "Button.h"
 #include "Drawable.h"
-#include "Image.h"
-#include "Label.h"
-
-#include <SDL.h>
 
 #include <functional>
 #include <memory>
 #include <string>
 
+class Button;
+class Image;
+class Label;
+class MainWindow;
+
 class MessageBox : public InputDrawable {
 public:
 	//Constructor
-	MessageBox(SDL_Renderer_ctx& r, std::string title, std::string message, std::function<void(void*)> f);
+	MessageBox(MainWindow& mw, std::string title, std::string message, std::function<void(void*)> f);
 
 	//Called when received input
 	void HandleInput(const SDL_Event& ev) override;

@@ -6,41 +6,41 @@
 #include "MainWindow.h"
 #include "PlayerController.h"
 
-OpenFactoryScreen::OpenFactoryScreen(SDL_Renderer_ctx& r, int id, PlayerController* PC, std::function<void()> quitfunc) : Screen(r, quitfunc){
+OpenFactoryScreen::OpenFactoryScreen(MainWindow& mw, int id, PlayerController* PC, std::function<void()> quitfunc) : Screen(mw, quitfunc){
     PCref = PC;
-    auto [Width, Height] = GetWindowDimensions();
+    auto [Width, Height] = mw.GetWindowDimensions();
 
-    AddImage<Image>(renderer, "Backgrounds/factory1.png", int(Width * 0.25), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
-    AddLabel<Label>(renderer, "Open Factory", 32, int(Width * 0.45), int(Height * 0.22), 0, 0, 0);
+    AddImage<Image>(mw, "Backgrounds/factory1.png", int(Width * 0.25), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
+    AddLabel<Label>(mw, "Open Factory", 32, int(Width * 0.45), int(Height * 0.22), 0, 0, 0);
     std::string lbl1txt = "Current Funds: " + std::to_string(PC->CountriesArr.at(PC->player_index)->Stock.Money);
-    AddLabel<Label>(renderer, lbl1txt.c_str(), 32, int(Width * 0.55), int(Height * 0.35), 0, 0, 0);
+    AddLabel<Label>(mw, lbl1txt.c_str(), 32, int(Width * 0.55), int(Height * 0.35), 0, 0, 0);
     lbl1txt = "Factory cost: " + std::to_string(10);
-    AddLabel<Label>(renderer, lbl1txt.c_str(), 32, int(Width * 0.55), int(Height * 0.41), 0, 0, 0);
+    AddLabel<Label>(mw, lbl1txt.c_str(), 32, int(Width * 0.55), int(Height * 0.41), 0, 0, 0);
 
-    AddDrawable<Button>(r, int(Width * 0.32), int(Height * 0.7), int(Width * 0.08), int(Height * 0.06), "Back", 32, [this]{ Close();});
-    AddDrawable<Button>(r, int(Width * 0.59), int(Height * 0.7), int(Width * 0.1), int(Height * 0.06), "Confirm", 32, [this]{ BuildFactory();});
-    AddDrawable<Button>(r, int(Width * 0.3), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/lumber", [this]{ FactoryTypeLumber();});
-    AddDrawable<Button>(r, int(Width * 0.35), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/glass", [this]{ FactoryTypeGlass();});
-    AddDrawable<Button>(r, int(Width * 0.4), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/canned food", [this]{ FactoryTypeFood();});
-    AddDrawable<Button>(r, int(Width * 0.45), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/Clothes", [this]{ FactoryTypeClothes();});
-    AddDrawable<Button>(r, int(Width * 0.3), int(Height * 0.36), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/liquor", [this]{ FactoryTypeLiquor();});
-    AddDrawable<Button>(r, int(Width * 0.35), int(Height * 0.36), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/furniture", [this]{ FactoryTypeFurniture();});
-    AddDrawable<Button>(r, int(Width * 0.4), int(Height * 0.36), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/automobile", [this]{ FactoryTypeAutomobile();});
-    AddDrawable<Button>(r, int(Width * 0.45), int(Height * 0.36), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/paper", [this]{ FactoryTypePaper();});
-    AddDrawable<Button>(r, int(Width * 0.3), int(Height * 0.42), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/telephone", [this]{ FactoryTypeTelephone();});
-    AddDrawable<Button>(r, int(Width * 0.35), int(Height * 0.42), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/radio", [this]{ FactoryTypeRadio();});
-    AddDrawable<Button>(r, int(Width * 0.4), int(Height * 0.42), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/machine parts", [this]{ FactoryTypeMachineParts();});
-    AddDrawable<Button>(r, int(Width * 0.45), int(Height * 0.42), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/electric gear", [this]{ FactoryTypeElectricGear();});
-    AddDrawable<Button>(r, int(Width * 0.3), int(Height * 0.48), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/fuel", [this]{ FactoryTypeFuel();});
-    AddDrawable<Button>(r, int(Width * 0.35), int(Height * 0.48), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/cement", [this]{ FactoryTypeCement();});
-    AddDrawable<Button>(r, int(Width * 0.4), int(Height * 0.48), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/merchant ship", [this]{ FactoryTypeMerchantShip();});
-    AddDrawable<Button>(r, int(Width * 0.45), int(Height * 0.48), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/small arms", [this]{ FactoryTypeSmallArms();});
-    AddDrawable<Button>(r, int(Width * 0.3), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/ammunition", [this]{ FactoryTypeAmmunition();});
-    AddDrawable<Button>(r, int(Width * 0.35), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/artillery", [this]{ FactoryTypeArtillery();});
-    AddDrawable<Button>(r, int(Width * 0.4), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/explosives", [this]{ FactoryTypeExplosives();});
-    AddDrawable<Button>(r, int(Width * 0.45), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/tank", [this]{ FactoryTypeTank();});
-    AddDrawable<Button>(r, int(Width * 0.3), int(Height * 0.6), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/airship", [this]{ FactoryTypeAirship();});
-    AddDrawable<Button>(r, int(Width * 0.35), int(Height * 0.6), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/plane", [this]{ FactoryTypePlane();});
+    AddDrawable<Button>(mw, int(Width * 0.32), int(Height * 0.7), int(Width * 0.08), int(Height * 0.06), "Back", 32, [this]{ Close();});
+    AddDrawable<Button>(mw, int(Width * 0.59), int(Height * 0.7), int(Width * 0.1), int(Height * 0.06), "Confirm", 32, [this]{ BuildFactory();});
+    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/lumber", [this]{ FactoryTypeLumber();});
+    AddDrawable<Button>(mw, int(Width * 0.35), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/glass", [this]{ FactoryTypeGlass();});
+    AddDrawable<Button>(mw, int(Width * 0.4), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/canned food", [this]{ FactoryTypeFood();});
+    AddDrawable<Button>(mw, int(Width * 0.45), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/Clothes", [this]{ FactoryTypeClothes();});
+    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.36), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/liquor", [this]{ FactoryTypeLiquor();});
+    AddDrawable<Button>(mw, int(Width * 0.35), int(Height * 0.36), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/furniture", [this]{ FactoryTypeFurniture();});
+    AddDrawable<Button>(mw, int(Width * 0.4), int(Height * 0.36), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/automobile", [this]{ FactoryTypeAutomobile();});
+    AddDrawable<Button>(mw, int(Width * 0.45), int(Height * 0.36), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/paper", [this]{ FactoryTypePaper();});
+    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.42), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/telephone", [this]{ FactoryTypeTelephone();});
+    AddDrawable<Button>(mw, int(Width * 0.35), int(Height * 0.42), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/radio", [this]{ FactoryTypeRadio();});
+    AddDrawable<Button>(mw, int(Width * 0.4), int(Height * 0.42), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/machine parts", [this]{ FactoryTypeMachineParts();});
+    AddDrawable<Button>(mw, int(Width * 0.45), int(Height * 0.42), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/electric gear", [this]{ FactoryTypeElectricGear();});
+    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.48), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/fuel", [this]{ FactoryTypeFuel();});
+    AddDrawable<Button>(mw, int(Width * 0.35), int(Height * 0.48), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/cement", [this]{ FactoryTypeCement();});
+    AddDrawable<Button>(mw, int(Width * 0.4), int(Height * 0.48), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/merchant ship", [this]{ FactoryTypeMerchantShip();});
+    AddDrawable<Button>(mw, int(Width * 0.45), int(Height * 0.48), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/small arms", [this]{ FactoryTypeSmallArms();});
+    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/ammunition", [this]{ FactoryTypeAmmunition();});
+    AddDrawable<Button>(mw, int(Width * 0.35), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/artillery", [this]{ FactoryTypeArtillery();});
+    AddDrawable<Button>(mw, int(Width * 0.4), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/explosives", [this]{ FactoryTypeExplosives();});
+    AddDrawable<Button>(mw, int(Width * 0.45), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/tank", [this]{ FactoryTypeTank();});
+    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.6), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/airship", [this]{ FactoryTypeAirship();});
+    AddDrawable<Button>(mw, int(Width * 0.35), int(Height * 0.6), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/plane", [this]{ FactoryTypePlane();});
 
     index = id;
 }

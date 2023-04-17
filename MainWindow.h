@@ -10,10 +10,12 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
+#include <array>
 #include <functional>
+#include <iostream>
+#include <unordered_map>
 #include <utility>
 #include <vector>
-#include <array>
 
 class MainWindow {
 public:
@@ -50,6 +52,52 @@ public:
         event_queue.emplace_back(std::forward<Event>(ev));
     }
 
+    SDL_Texture_ctx& IMG_Load(const std::string& filename);
+
+    template<class... Mods>
+    std::array<TextureRef, sizeof...(Mods)> IMG_Load(const std::string& filename, Mods&&... mods) {
+        auto vecit = [&]{
+            if(auto it = file_textures.find(filename); it != file_textures.end()) {
+                std::cerr << "Cached load of " << filename << std::endl;
+                if(it->second.size() != sizeof...(Mods)) {
+                    std::cerr << "Mismatch between cached textures and number of Mods" << std::endl;
+                    std::terminate();
+                }
+                return it;
+            }
+            // Not found in cache
+            std::cerr << "First load of " << filename << std::endl;
+            auto surface = SDL_Surface_ctx::IMG_Load(filename);
+
+            // a functor to create a texture from the surface and apply a modification
+            auto dupmod = [&](auto&& mod) {
+                SDL_Texture_ctx rv(renderer, surface);
+                mod(rv);
+                return rv;
+            };
+
+            std::vector<SDL_Texture_ctx> txts;
+            // create textures from the surface and apply modifications
+            (..., txts.emplace_back(dupmod(mods)));
+
+            auto [newit, inserted] = file_textures.emplace(filename, std::move(txts));
+
+            return newit;
+        }();
+
+        // Return the array of TextureRefs
+        return [&textures=vecit->second]<std::size_t... I>(std::index_sequence<I...>) -> std::array<TextureRef, sizeof...(I)> {
+            return {TextureRef(textures[I])...};
+        }(std::make_index_sequence<sizeof...(Mods)>{});
+    }
+
+    operator SDL_Renderer* ();
+    operator SDL_Renderer_ctx& ();
+
+    int Width() const;
+    int Height() const;
+    const SDL_Point& GetWindowDimensions() const;
+
 private:
     MainWindow(); //Constructor for Instance()
 
@@ -70,18 +118,10 @@ private:
     std::unique_ptr<Screen> scr;
 
     std::vector<std::function<void()>> event_queue; // deferred events
+    std::unordered_map<std::string, std::vector<SDL_Texture_ctx>> file_textures;
 
     //Used to store the window's width and Height:
-    static inline SDL_Point windim{};
-
-    friend int GetWindowWidth();
-    friend int GetWindowHeight();
-    friend const SDL_Point& GetWindowDimensions();
+    SDL_Point windim{};
 };
-
-// For convenience:
-inline int GetWindowWidth() { return MainWindow::windim.x; }
-inline int GetWindowHeight() { return MainWindow::windim.y; }
-inline const SDL_Point& GetWindowDimensions() { return MainWindow::windim; }
 
 #endif

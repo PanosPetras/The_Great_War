@@ -4,22 +4,21 @@
 #pragma once
 #include "Drawable.h"
 
-#include "SDL_ctx.h"
-
 #include <functional>
 #include <memory>
 #include <string>
 
 class Image;
 class Label;
+class MainWindow;
 
 class TextEntry : public InputDrawable {
 public:
     //Constructor
-    TextEntry(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters = 30);
-    TextEntry(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string defaultText, std::string hint = "", int maxCharacters = 30);
-    TextEntry(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters = 30);
-    TextEntry(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint = "", int maxCharacters = 30);
+    TextEntry(MainWindow& mw, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters = 30);
+    TextEntry(MainWindow& mw, int x, int y, int Width, int Height, std::string defaultText, std::string hint = "", int maxCharacters = 30);
+    TextEntry(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters = 30);
+    TextEntry(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint = "", int maxCharacters = 30);
 
     //Destructor
     ~TextEntry() = default;
@@ -41,6 +40,9 @@ public:
     void ChangeHint(std::string hint);
 
 protected:
+    //Reference the the screen's main window
+    MainWindow* main_window;
+
     //Render the button on the screen
     void pDraw();
 
@@ -56,9 +58,6 @@ protected:
 
     //The visual state of the button
     bool focused;
-
-    //Reference the the screen's renderer
-    RendererRef RendererReference;
 
     //The components of the Entry
     std::unique_ptr<Image> background;

@@ -80,7 +80,6 @@ SDL_Surface_ctx SDL_Surface_ctx::IMG_Load(std::string_view filename) {
     return SDL_Surface_ctx(::IMG_Load(filename.data()));
 }
 //-----------------------------------------------------------------------------
-std::unordered_map<std::string, SDL_Texture_ctx> SDL_Texture_ctx::textureCache;
 SDL_Texture_ctx::SDL_Texture_ctx() : texture(nullptr, &SDL_DestroyTexture) {}
 SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Surface_ctx& s) :
     texture(SDL_CreateTextureFromSurface(r, s), &SDL_DestroyTexture)
@@ -88,30 +87,9 @@ SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Surface_ctx& s) :
 
 SDL_Texture* SDL_Texture_ctx::operator->() { return texture.get(); }
 SDL_Texture_ctx::operator SDL_Texture* () { return texture.get(); }
-
-SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Texture_ctx& t, SDL_Color c) :
-    texture(t.texture) {
-    SDL_SetTextureColorMod(texture.get(), c.r, c.g, c.b);
-}
-
 SDL_Texture_ctx SDL_Texture_ctx::IMG_Load(SDL_Renderer_ctx& r, std::string_view filename) {
-    return IMG_Load_ColorMod(r, filename, SDL_Color{.r = 255, .g = 255, .b = 255 });
-}
-
-std::string SDL_Color_to_string(SDL_Color c) {
-    return std::to_string(c.r) + "/" + std::to_string(c.g) + "/" + std::to_string(c.b);
-}
-
-SDL_Texture_ctx SDL_Texture_ctx::IMG_Load_ColorMod(SDL_Renderer_ctx& r, std::string_view filename, SDL_Color color) {
-    std::string keyName = std::string(filename) + SDL_Color_to_string(color);
-
-    if (!textureCache.contains(keyName)) {
-        auto surface = SDL_Surface_ctx::IMG_Load(filename);
-
-        textureCache[keyName] = SDL_Texture_ctx(r, surface);
-    }
-
-    return { r, textureCache.find(keyName)->second, color };
+    auto surface = SDL_Surface_ctx::IMG_Load(filename);
+    return {r, surface};
 }
 //-----------------------------------------------------------------------------
 TTF_Font_ctx::TTF_Font_ctx(int ptsize) : TTF_Font_ctx("Fonts/segoeui.ttf", ptsize) {}

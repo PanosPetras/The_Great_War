@@ -6,20 +6,19 @@
 #include <SDL_thread.h>
 #include <SDL_ttf.h>
 
+#include <iostream>
 #include <memory>
-#include <string>
-#include <unordered_map>
 #include <string_view>
 
 /*-----------------------------------------------------------------------------
 The promiscuous_ref is to be used while converting from storing
 pointers to SDL objects to storing instances of RAII SDL wrappers.
 
-  * It can be implicitly converted to either a reference to an instance
-    of the RAII class.
+  * It can be implicitly converted to a reference to an instance of the RAII
+    class.
 
-  * It can also be implicitly converted into a pointer to the object
-    the RAII instance encapsulates.
+  * It can be implicitly converted into a pointer to the object the RAII
+    instance encapsulates.
 
   * operator->() does a direct conversion to the object the RAII class
     encapsulates.
@@ -30,23 +29,50 @@ until it can be replaced by a std::reference_wrapper.
 template<class T, class U>
 class promiscuous_ref {
 public:
-    promiscuous_ref() = delete;
+    promiscuous_ref() = default;
     promiscuous_ref(T& o) : obj(&o) {}
     promiscuous_ref(const promiscuous_ref& other) : obj(other.obj) {}
     promiscuous_ref& operator=(const promiscuous_ref& other) { obj = other.obj; return *this; }
     ~promiscuous_ref() = default;
 
-    operator T& () { return *obj; }
-    operator const T& () const { return *obj; }
+    operator T& () {
+        if(obj == nullptr) std::cerr << "promiscuous_ref nullptr dereferenced" << std::endl;
+        return *obj;
+    }
+    operator const T& () const {
+        if(obj == nullptr) std::cerr << "promiscuous_ref nullptr dereferenced" << std::endl;
+        return *obj;
+    }
 
-    operator T* () { return obj; }
-    operator const T* () const { return obj; }
+    operator U* () {
+        if(obj == nullptr) {
+            std::cerr << "promiscuous_ref nullptr returned" << std::endl;
+            return nullptr;
+        }
+        return *obj;
+    }
+    operator const U* () const {
+        if(obj == nullptr) {
+            std::cerr << "promiscuous_ref nullptr returned" << std::endl;
+            return nullptr;
+        }
+        return *obj;
+    }
 
-    operator U* () { return *obj; }
-    operator const U* () const { return *obj; }
-
-    U* operator->() { return obj.operator->(); }
-    const U* operator->() const { return obj.operator->(); }
+    U* operator->() {
+        if(obj == nullptr) {
+            std::cerr << "promiscuous_ref nullptr returned" << std::endl;
+            return nullptr;
+        }
+        return obj.operator->();
+    }
+    const U* operator->() const {
+        if(obj == nullptr) {
+            std::cerr << "promiscuous_ref nullptr returned" << std::endl;
+            return nullptr;
+        }
+        return obj.operator->();
+    }
 private:
     T* obj = nullptr;
 };
@@ -176,14 +202,10 @@ public:
     operator SDL_Texture* ();
 
     static SDL_Texture_ctx IMG_Load(SDL_Renderer_ctx& r, std::string_view filename);
-    static SDL_Texture_ctx IMG_Load_ColorMod(SDL_Renderer_ctx& r, std::string_view filename, SDL_Color color);
 private:
-    std::shared_ptr<SDL_Texture> texture;
-
-    SDL_Texture_ctx(SDL_Renderer_ctx&, SDL_Texture_ctx&, SDL_Color);
-
-    static std::unordered_map<std::string, SDL_Texture_ctx> textureCache;
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture;
 };
+using TextureRef = promiscuous_ref<SDL_Texture_ctx, SDL_Texture>;
 //-----------------------------------------------------------------------------
 class TTF_Font_ctx {
 public:

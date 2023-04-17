@@ -17,11 +17,13 @@
 #include <string>
 #include <vector>
 
+class MainWindow;
+
 class Screen{
 public:
     //Constructor
-    Screen(SDL_Renderer_ctx& r);
-    Screen(SDL_Renderer_ctx& r, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf = {});
+    Screen(MainWindow& mw);
+    Screen(MainWindow& mw, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf = {});
 
     virtual ~Screen() = default;
 
@@ -34,8 +36,8 @@ public:
     void DeleteMessageBox(void* p);
 
 protected:
-    //This is a reference to the main window's renderer
-    RendererRef renderer;
+    //This is a reference to the main window
+    MainWindow* main_window;
 
     //Allows the creation of Images on the screen
     std::vector<std::unique_ptr<Image>> ImageArr;

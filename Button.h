@@ -13,26 +13,25 @@
 #include <functional>
 #include <string>
 
+class MainWindow;
+
 class Button : public InputDrawable {
 public:
     //Constructors
-    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, std::function<void()> f = nullptr, int keybind = 0);
-    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind = 0);
-    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
-    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
-    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f = nullptr, int keybind = 0);
-    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind = 0);
-    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
-    Button(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void()> f = nullptr, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f = nullptr, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
 
     //Destructor
     ~Button();
 
     //Called when received input, to check whether the click was in this button
     void HandleInput(const SDL_Event& ev) override;
-
-    //Change the image assigned to the button
-    void ChangeImage(std::string image);
 
     //Change the text assigned to the button
     void ChangeText(std::string text, int textSize);
@@ -66,8 +65,11 @@ protected:
     //Check if the mouse is within the limits of an SDL_Rect
     static bool CheckIfMouseInRect(const SDL_Rect& rect, const SDL_MouseButtonEvent& ev);
 
+    //Reference the the main window
+    MainWindow* main_window;
+
     //The visual state of the button
-    bool bHovered;
+    bool bHovered = false;
 
     //Stores the bound function
     std::function<void()> func;
@@ -79,12 +81,11 @@ protected:
     SDL_Rect draw_rect;
     SDL_Rect text_draw_rect;
 
-    //Reference the the screen's renderer
-    RendererRef RendererReference;
-
     //Reference to the button's texture
-    SDL_Texture_ctx texture;
-    SDL_Texture_ctx hoveredTexture;
+    enum { textureInactive, textureIdle, textureHoovered };
+    std::array<TextureRef, 3> textures;
+    TextureRef active_texture{textures[textureIdle]};
+
     SDL_Texture_ctx text;
 
     //The button's onClick sound
