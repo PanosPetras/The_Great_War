@@ -7,6 +7,7 @@
 #include <SDL_ttf.h>
 
 #include <memory>
+#include <string>
 #include <unordered_map>
 #include <string_view>
 
@@ -175,10 +176,11 @@ public:
     operator SDL_Texture* ();
 
     static SDL_Texture_ctx IMG_Load(SDL_Renderer_ctx& r, std::string_view filename);
+    static SDL_Texture_ctx IMG_Load_ColorMod(SDL_Renderer_ctx& r, std::string_view filename, SDL_Color color);
 private:
     std::shared_ptr<SDL_Texture> texture;
 
-    SDL_Texture_ctx(SDL_Renderer_ctx&, SDL_Texture_ctx&);
+    SDL_Texture_ctx(SDL_Renderer_ctx&, SDL_Texture_ctx&, SDL_Color);
 
     static std::unordered_map<std::string, SDL_Texture_ctx> textureCache;
 };

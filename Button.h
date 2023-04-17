@@ -84,6 +84,7 @@ protected:
 
     //Reference to the button's texture
     SDL_Texture_ctx texture;
+    SDL_Texture_ctx hoveredTexture;
     SDL_Texture_ctx text;
 
     //The button's onClick sound

@@ -88,11 +88,10 @@ Button::~Button() {
 
 void Button::pDraw() {
     //Drawing the button
-    SDL_RenderCopy(RendererReference, texture, nullptr, &draw_rect);
+    SDL_RenderCopy(RendererReference, bHovered ? hoveredTexture : texture, nullptr, &draw_rect);
 
     if (text != nullptr) {
         //Add text on top of Button background
-
         SDL_RenderCopy(RendererReference, text, nullptr, &text_draw_rect);
     }
 }
@@ -103,7 +102,6 @@ void Button::HandleInput(const SDL_Event& ev) {
         if (CheckIfMouseInRect(draw_rect, ev.button)) {
             if (bHovered == false) {
                 //If the button is hovered, change to the hovered button image
-                SDL_SetTextureColorMod(texture, 170, 170, 170);
                 SDL_SetTextureColorMod(text, 170, 170, 170);
                 bHovered = true;
             }
@@ -116,7 +114,6 @@ void Button::HandleInput(const SDL_Event& ev) {
         //If not hovered, return to the idle button image
         else if (bHovered == true) {
             bHovered = false;
-            SDL_SetTextureColorMod(texture, 255, 255, 255);
             SDL_SetTextureColorMod(text, 255, 255, 255);
         }
 
@@ -147,11 +144,13 @@ void Button::ChangeImage(std::string image) {
 
     //Load the button texture
     texture = SDL_Texture_ctx::IMG_Load(RendererReference, imagePath);
+    hoveredTexture = SDL_Texture_ctx::IMG_Load_ColorMod(RendererReference, imagePath, SDL_Color{ 170, 170, 170 });
 }
 
 void Button::ChangeText(std::string textstr, int textSize){
     //Load the button background
     texture = SDL_Texture_ctx::IMG_Load(RendererReference, "Drawable/Button/Button.png");
+    hoveredTexture = SDL_Texture_ctx::IMG_Load_ColorMod(RendererReference, "Drawable/Button/Button.png", SDL_Color{170, 170, 170});
 
     //Loading the font from the file
     TTF_Font_ctx font(textSize);
@@ -207,11 +206,6 @@ void Button::SetActive(bool state) {
     InputDrawable::SetActive(state);
 
     if (state) {
-        SDL_SetTextureColorMod(texture, 255, 255, 255);
-        SDL_SetTextureColorMod(text, 255, 255, 255);
         bHovered = false;
-    } else {
-        SDL_SetTextureColorMod(texture, 100, 100, 100);
-        SDL_SetTextureColorMod(text, 100, 100, 100);
     }
 }
