@@ -136,7 +136,7 @@ void PlayerController::InitializeCountries(std::vector<std::string>& names, std:
 
 	for (unsigned c1 = 0; c1 < CountriesArr.size(); c1++) {
 		for (unsigned c2 = c1 + 1; c2 < CountriesArr.size(); c2++) {
-			diplo.relations.emplace(CountryPair{CountriesArr[c1].get(), CountriesArr[c2].get()}, Relations{100});
+			diplo.relations.emplace(CountryPair{CountriesArr[c1].get(), CountriesArr[c2].get()}, Relation{100});
 		}
 	}
 }

@@ -7,7 +7,7 @@ class AI {
 public:
 
 protected:
-	static void HandleRequest(Request req);
+	static void HandleRequest(Request& req);
 
 	friend class Country;
 };

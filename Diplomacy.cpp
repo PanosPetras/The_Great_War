@@ -1,14 +1,13 @@
 #include "Diplomacy.h"
 
+#include <algorithm>
 #include <stdexcept>
 
-CountryPair::CountryPair(Country* C1, Country* C2) {
+CountryPair::CountryPair(Country* C1, Country* C2) :
+	c1(C1), c2(C2) {
 	if (C1 == nullptr || C2 == nullptr) {
 		throw std::runtime_error("CountryPair got a nullptr");
 	}
-
-	c1 = C1;
-	c2 = C2;
 }
 
 bool CountryPair::operator==(const CountryPair& c) const {
@@ -35,87 +34,75 @@ Country* CountryPair::GetC2() const {
 	return c2;
 }
 
-Relations::Relations() {
-	relationsValue = 0;
-	allied = false;
+std::string CountryPair::toString() const {
+	std::string t1 = t1, t2 = t2;
+	return t1 > t2 ? t1 + '\0' + t2 : t2 + '\0' + t1;
 }
 
-Relations::Relations(int relations, bool allied) {
+Relation::Relation() : Relation(0, false) {
+}
+
+Relation::Relation(int relations, bool allied) {
 	relationsValue = relations;
 	this->allied = allied;
 }
 
-void Relations::ImproveRelations(int value) {
+void Relation::ImproveRelations(int value) {
 	if (relationsValue < RELATIONS_LIMIT) {
-		relationsValue += value;
-	}
-
-	if (relationsValue > RELATIONS_LIMIT) {
-		relationsValue = RELATIONS_LIMIT;
+		relationsValue = std::min(relationsValue + value, RELATIONS_LIMIT);
 	}
 }
 
-void Relations::WorsenRelations(int value) {
+void Relation::WorsenRelations(int value) {
 	if (relationsValue > -RELATIONS_LIMIT) {
-		relationsValue -= value;
-	}
-
-	if (relationsValue < -RELATIONS_LIMIT) {
-		relationsValue = -RELATIONS_LIMIT;
+		relationsValue = std::max(relationsValue - value, -RELATIONS_LIMIT);
 	}
 }
 
-int Relations::GetRelationsValue() const {
+int Relation::GetRelationsValue() const {
 	return relationsValue;
 }
 
-void Relations::CreateAlliance() {
+void Relation::CreateAlliance() {
 	allied = true;
 	ImproveRelations(80);
 }
 
-void Relations::BreakAlliance() {
+void Relation::BreakAlliance() {
 	allied = false; 
 	WorsenRelations(100);
 }
 
-bool Relations::GetIfAllied() const {
+bool Relation::GetIfAllied() const {
 	return allied;
 }
 
-void Relations::ImposeEmbargo(std::string Instigator) {
-	embargoes.insert(Instigator);
+void Relation::ImposeEmbargo(std::string Instigator) {
+	embargoes.push_back(Instigator);
 	WorsenRelations(100);
 }
 
-void Relations::LiftEmbargo(std::string Instigator) {
-	embargoes.erase(Instigator);
+void Relation::LiftEmbargo(std::string Instigator) {
+	embargoes.erase(std::remove(embargoes.begin(), embargoes.end(), Instigator), embargoes.end());
 	ImproveRelations(20);
 }
 
-bool Relations::GetIfEmbargoExists() {
+bool Relation::GetIfEmbargoExists() const {
 	return embargoes.size() != 0;
 }
 
-bool Relations::GetIfHasEmbargo(std::string Instigator) {
-	if (!GetIfEmbargoExists()) {
-		return false;
-	}
-
-	return embargoes.find(Instigator) != embargoes.end();
+bool Relation::GetIfHasEmbargo(std::string Instigator) const {
+	return std::find(embargoes.begin(), embargoes.end(), Instigator) != embargoes.end();
 }
 
-Request::Request(RequestType id, int senderIndex, std::string senderTag, Relations& relations) {
-	this->id = id;
-	index = senderIndex;
-	tag = senderTag;
-	rel = &relations;
-}
+Request::Request(RequestType id, int senderIndex, std::string senderTag, Relation& relations) : 
+	rel(relations), index(senderIndex), tag(senderTag), id(id) 
+{}
 
 void Request::Accept() {
 	switch (id) {
 		case alliance:
-			rel->CreateAlliance();
+			rel.CreateAlliance();
 			break;
 		case tradeDeal:
 			break;
@@ -129,7 +116,7 @@ void Request::Accept() {
 void Request::Decline() {
 	switch (id) {
 		case alliance:
-			rel->WorsenRelations();
+			rel.WorsenRelations();
 			break;
 		case tradeDeal:
 			break;
@@ -140,14 +127,92 @@ void Request::Decline() {
 	}
 }
 
-Relations Request::GetRelations() {
-	return *rel;
+Relation& Request::GetRelations() const {
+	return rel;
 }
 
-std::string Request::GetSender() {
+std::string Request::GetSender() const {
 	return tag;
 }
 
-int Request::GetSenderIndex() {
+int Request::GetSenderIndex() const {
 	return index;
+}
+
+War::War(Country* aggressor, Country* defender) :
+	factions({ Faction(aggressor), Faction(defender) }) {
+}
+
+bool War::GetIfTargetPairIsAtWar(const CountryPair& pair) const {
+	if (factions[0].Contains(pair.GetC1())) {
+		if (factions[1].Contains(pair.GetC2())) {
+			return true;
+		}
+	} else {
+		if (factions[1].Contains(pair.GetC1())) {
+			if (factions[0].Contains(pair.GetC2())) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void War::JoinWar(Country* newParticipant, Country* onTheSideOf) {
+	Faction& f = factions[1];
+
+	if (factions[0].Contains(onTheSideOf)) {
+		f = factions[0];
+	}
+
+	f.AddMember(newParticipant);
+}
+
+const std::set<Country*>& War::GetFaction(int i) {
+	if (i != 0 && i != 1) {
+		throw std::runtime_error("Faction index out of bounds");
+	}
+	return factions[i].GetFaction();
+}
+
+void War::AddScore(Country* instigator, int score) {
+	Faction& f = factions[1];
+
+	if (factions[0].Contains(instigator)) {
+		f = factions[0];
+	}
+
+	f.AddScore(score);
+}
+
+int War::GetRelativeScore() const {
+	return factions[0].GetScore() - factions[1].GetScore();
+}
+
+War::Faction::Faction(Country* c) {
+	AddMember(c);
+}
+
+void War::Faction::AddMember(Country* c) {
+	members.insert(c);
+}
+
+void War::Faction::RemoveMember(Country* c) {
+	members.erase(c);
+}
+
+bool War::Faction::Contains(Country* c) const {
+	return members.contains(c);
+}
+
+const std::set<Country*>& War::Faction::GetFaction() {
+	return members;
+}
+
+void War::Faction::AddScore(int c) {
+	score += c;
+}
+
+int War::Faction::GetScore() const {
+	return score;
 }
