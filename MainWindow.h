@@ -91,6 +91,8 @@ public:
         }(std::make_index_sequence<sizeof...(Mods)>{});
     }
 
+    ChunkRef Mix_LoadWAV(const std::string& filename);
+
     operator SDL_Renderer* ();
     operator SDL_Renderer_ctx& ();
 
@@ -119,6 +121,7 @@ private:
 
     std::vector<std::function<void()>> event_queue; // deferred events
     std::unordered_map<std::string, std::vector<SDL_Texture_ctx>> file_textures;
+    std::unordered_map<std::string, MIX_Chunk_ctx> file_chunks;
 
     //Used to store the window's width and Height:
     SDL_Point windim{};
