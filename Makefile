@@ -6,7 +6,7 @@ SDLLIBS := $(shell pkg-config --libs SDL2_image SDL2_ttf SDL2_mixer sdl2)
 OBJ = $(SRC:%.cpp=build/%.o)
 AOBJ = $(SRC:%.cpp=build/%.asan.o)
 TOBJ = $(SRC:%.cpp=build/%.tsan.o)
-CCMD = $(CXX) -std=c++20 -g $(SDLINCS) -c -o $@ $< -Wall -Wextra -Woverloaded-virtual -pedantic-errors
+CCMD = $(CXX) -std=c++20 -g $(SDLINCS) -c -o $@ $< -Wall -Wextra -Woverloaded-virtual -pedantic-errors $(OPTS)
 LCMD = $(CXX) -o $@ -std=c++20 -g $^ $(SDLLIBS)
 
 The_Great_War: $(OBJ)
@@ -22,13 +22,13 @@ valgrind: The_Great_War
 	valgrind --show-error-list=yes --track-origins=yes --leak-check=full --show-leak-kinds=all ./$<
 
 build/%.o : %.cpp Makefile $(HEADERS) | build
-	$(CCMD)
+	$(CCMD) -O3
 
 build/%.asan.o : %.cpp Makefile $(HEADERS) | build
-	$(CCMD) -fsanitize=address,undefined,leak
+	$(CCMD) -Og -fsanitize=address,undefined,leak
 
 build/%.tsan.o : %.cpp Makefile $(HEADERS) | build
-	$(CCMD) -fsanitize=thread
+	$(CCMD) -Og -fsanitize=thread
 
 build:
 	mkdir -p build
