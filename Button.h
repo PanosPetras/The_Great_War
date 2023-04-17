@@ -12,6 +12,7 @@
 
 #include <functional>
 #include <string>
+#include <array>
 
 class MainWindow;
 
