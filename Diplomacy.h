@@ -94,7 +94,7 @@ public:
     bool GetIfHasEmbargo(std::string Instigator) const;
 
 private:
-    static const int RELATIONS_LIMIT = 300;
+    static constexpr int RELATIONS_LIMIT = 300;
 
     std::vector<std::string> embargoes;
 
