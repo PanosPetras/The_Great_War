@@ -42,7 +42,7 @@ public:
 
 protected:
     //Render the label on the screen
-    void pDraw();
+    void pDraw() override;
 
     //Reference the the screen's renderer
     RendererRef RendererReference;

@@ -52,11 +52,11 @@ public:
     void CallBoundFunction();
 
     //Enable/Disable the button
-    void SetActive(bool state);
+    void SetActive(bool state) override;
 
 protected:
     //Render the button on the screen
-    void pDraw();
+    void pDraw() override;
 
     //Executed when the button is clicked
     void Click();

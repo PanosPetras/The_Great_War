@@ -13,26 +13,28 @@
 /*-----------------------------------------------------------------------------
 The promiscuous_ref is to be used while converting from storing
 pointers to SDL objects to storing instances of RAII SDL wrappers.
+It's a reference- and non-owning- pointer wrapper in one.
 
   * It can be implicitly converted to a reference to an instance of the RAII
     class.
 
+  * operator->() returns a pointer to the RAII class.
+
   * It can be implicitly converted into a pointer to the object the RAII
     instance encapsulates.
-
-  * operator->() does a direct conversion to the object the RAII class
-    encapsulates.
-
-The idea is to gradually remove parts of the promiscuous_refs interface
-until it can be replaced by a std::reference_wrapper.
 -----------------------------------------------------------------------------*/
 template<class T, class U>
 class promiscuous_ref {
 public:
-    promiscuous_ref() = default;
-    promiscuous_ref(T& o) : obj(&o) {}
-    promiscuous_ref(const promiscuous_ref& other) : obj(other.obj) {}
-    promiscuous_ref& operator=(const promiscuous_ref& other) { obj = other.obj; return *this; }
+    promiscuous_ref() noexcept = default;
+
+    explicit promiscuous_ref(T& o) noexcept : obj(&o) {}
+    promiscuous_ref& operator=(T& o) noexcept { obj = &o; return *this; }
+
+    promiscuous_ref(const promiscuous_ref& other) noexcept = default;
+    promiscuous_ref(promiscuous_ref&& other) = delete;
+    promiscuous_ref& operator=(const promiscuous_ref& other) noexcept = default;
+    promiscuous_ref& operator=(promiscuous_ref&& other) = delete;
     ~promiscuous_ref() = default;
 
     operator T& () {
@@ -42,6 +44,21 @@ public:
     operator const T& () const {
         if(obj == nullptr) std::cerr << "promiscuous_ref nullptr dereferenced" << std::endl;
         return *obj;
+    }
+
+    T* operator->() {
+        if(obj == nullptr) {
+            std::cerr << "promiscuous_ref nullptr returned" << std::endl;
+            return nullptr;
+        }
+        return obj;
+    }
+    const T* operator->() const {
+        if(obj == nullptr) {
+            std::cerr << "promiscuous_ref nullptr returned" << std::endl;
+            return nullptr;
+        }
+        return obj;
     }
 
     operator U* () {
@@ -57,21 +74,6 @@ public:
             return nullptr;
         }
         return *obj;
-    }
-
-    U* operator->() {
-        if(obj == nullptr) {
-            std::cerr << "promiscuous_ref nullptr returned" << std::endl;
-            return nullptr;
-        }
-        return obj.operator->();
-    }
-    const U* operator->() const {
-        if(obj == nullptr) {
-            std::cerr << "promiscuous_ref nullptr returned" << std::endl;
-            return nullptr;
-        }
-        return obj.operator->();
     }
 private:
     T* obj = nullptr;

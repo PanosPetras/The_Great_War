@@ -10,14 +10,14 @@ namespace {
     std::array<TextureRef, 3> Load(MainWindow& mw, std::string image) {
         std::cerr << "Button::Load " << image << std::endl;
         return mw.IMG_Load(image + ".png",
-            [](SDL_Texture_ctx& texture){ // inactive
-                SDL_SetTextureColorMod(texture, 100, 100, 100);
-            },
             [](SDL_Texture_ctx& texture){ // idle
                 SDL_SetTextureColorMod(texture, 255, 255, 255);
             },
             [](SDL_Texture_ctx& texture) { // hoovered
                 SDL_SetTextureColorMod(texture, 170, 170, 170);
+            },
+            [](SDL_Texture_ctx& texture){ // inactive
+                SDL_SetTextureColorMod(texture, 100, 100, 100);
             }
         );
     }
@@ -122,7 +122,7 @@ void Button::pDraw() {
 }
 
 void Button::HandleInput(const SDL_Event& ev) {
-    if (active) {
+    if (IsActive()) {
         //Detect if the button is hovered
         if (CheckIfMouseInRect(draw_rect, ev.button)) {
             if (bHovered == false) {

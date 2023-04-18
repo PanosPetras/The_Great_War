@@ -20,7 +20,7 @@ void InputDrawable::SetActive(bool state) {
     active = state;
 }
 
-bool InputDrawable::GetActive() {
+bool InputDrawable::IsActive() {
     return active;
 }
 

@@ -31,7 +31,7 @@ protected:
 	MainWindow* main_window;
 
 	//Render the image on the screen
-	void pDraw();
+	void pDraw() override;
 
 	//Reference to the path of the image assigned to the button
 	std::string imagepath;

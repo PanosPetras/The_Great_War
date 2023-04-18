@@ -7,7 +7,7 @@ OBJ = $(SRC:%.cpp=build/%.o)
 AOBJ = $(SRC:%.cpp=build/%.asan.o)
 TOBJ = $(SRC:%.cpp=build/%.tsan.o)
 CCMD = $(CXX) -std=c++20 -g $(SDLINCS) -c -o $@ $< -Wall -Wextra -Woverloaded-virtual -pedantic-errors $(OPTS)
-LCMD = $(CXX) -o $@ -std=c++20 -g $^ $(SDLLIBS)
+LCMD = $(CXX) -o $@ -std=c++20 -g $^ $(SDLLIBS) $(OPTS)
 
 The_Great_War: $(OBJ)
 	$(LCMD)

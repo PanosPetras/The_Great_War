@@ -44,7 +44,7 @@ protected:
     MainWindow* main_window;
 
     //Render the button on the screen
-    void pDraw();
+    void pDraw() override;
 
     //The position of the Entry
     int x, y;

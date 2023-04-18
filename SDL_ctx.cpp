@@ -87,6 +87,7 @@ SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Surface_ctx& s) :
 
 SDL_Texture* SDL_Texture_ctx::operator->() { return texture.get(); }
 SDL_Texture_ctx::operator SDL_Texture* () { return texture.get(); }
+
 SDL_Texture_ctx SDL_Texture_ctx::IMG_Load(SDL_Renderer_ctx& r, std::string_view filename) {
     auto surface = SDL_Surface_ctx::IMG_Load(filename);
     return {r, surface};

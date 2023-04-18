@@ -316,7 +316,7 @@ void GameScreen::ChangeActiveScreen(std::unique_ptr<Screen> NewScreen, std::stri
 void GameScreen::CloseActiveScreen(){
 	if (bHasActiveScreen() == true) {
                 ActiveScreen.reset();
-		ScreenID = "0";
+		ScreenID.clear();
 	}
 }
 

@@ -54,11 +54,11 @@ public:
     void CallBoundFunction();
 
     //Enable/Disable the button
-    void SetActive(bool state);
+    void SetActive(bool state) override;
 
 protected:
     //Render the button on the screen
-    void pDraw();
+    void pDraw() override;
 
     //Executed when the button is clicked
     void Click();
@@ -83,7 +83,7 @@ protected:
     SDL_Rect text_draw_rect;
 
     //Reference to the button's texture
-    enum { textureInactive, textureIdle, textureHoovered };
+    enum { textureIdle, textureHoovered, textureInactive };
     std::array<TextureRef, 3> textures;
     TextureRef active_texture{textures[textureIdle]};
 

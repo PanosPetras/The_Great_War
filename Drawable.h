@@ -27,11 +27,10 @@ public:
 	InputDrawable(Anchor anchor = top_left);
 
 	virtual void HandleInput(const SDL_Event&) = 0;
-
 	virtual void SetActive(bool state);
-	bool GetActive();
 
-protected:
+	bool IsActive();
+private:
 	bool active;
 };
 

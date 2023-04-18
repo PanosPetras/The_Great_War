@@ -29,7 +29,7 @@ TextEntry::TextEntry(MainWindow& mw, int x, int y, int Width, int Height, Anchor
 }
 
 void TextEntry::HandleInput(const SDL_Event& ev){
-    if (active) {
+    if (IsActive()) {
         if (ev.type == SDL_MOUSEBUTTONDOWN) {
             if (ev.button.x >= background->draw_rect.x &&
                 ev.button.x <= (background->draw_rect.x + background->draw_rect.w) &&
