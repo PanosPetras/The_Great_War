@@ -2,20 +2,18 @@
 #include "Diplomacy.h"
 #include "AI.h"
 
-Country::Country(std::string tag, std::string name, int r, int g, int b, int Res[31], bool isPlayerControlled) : Country(tag, name, r, g, b, Res) {
+Country::Country(std::string tag, std::string name, int Res[31], bool isPlayerControlled, Color rgb) : Country(tag, name, Res, rgb) {
     isPlayer = isPlayerControlled;
 }
 
-Country::Country(std::string tag, std::string name, int r, int g, int b, int Res[31]) : name(name), tag(tag) {
+Country::Country(std::string tag, std::string name, int Res[31], Color rgb) : color{rgb}, name{name}, tag{tag} {
     population = 0;
     stateCount = 0;
     isPlayer = false;
 
     policy = {.TaxRate = 50, .Healthcare =  30};
 
-	color = {.r = (unsigned char)r, .g = (unsigned char)g, .b = (unsigned char)b};
-
-	technology = {  .FactoryInput = 1.0f,
+    technology = {  .FactoryInput = 1.0f,
                     .FactoryThroughput = 1.0f,
                     .FactoryOutput = 1.0f,
                     .MineralOutput = 1.0f,
@@ -56,9 +54,9 @@ Country::Country(std::string tag, std::string name, int r, int g, int b, int Res
 }
 
 void Country::AddState(State* state){
-	ownedStates[state->State_Name] = state;
+    ownedStates[state->State_Name] = state;
     population += int(state->State_Population);
-	stateCount++;
+    stateCount++;
 }
 
 void Country::RemoveState(State* state){

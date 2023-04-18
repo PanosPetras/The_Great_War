@@ -128,7 +128,7 @@ void PlayerController::InitializeCountries(std::vector<std::string>& names, std:
 
 	for (unsigned x = 0; x < tags.size(); x++) {
 		Res[30] = balance[x];
-		CountriesArr.push_back(std::make_unique<Country>(tags[x], names[x], 0, 0, 0, Res));
+        CountriesArr.push_back(std::make_unique<Country>(tags[x], names[x], Res));
 		if (tag == tags[x]) {
 			player_index = x;
 		}
