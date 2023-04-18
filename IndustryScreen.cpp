@@ -4,7 +4,7 @@
 #include "Label.h"
 #include "Button.h"
 
-IndustryScreen::IndustryScreen(MainWindow& mw, int Stockpile[30]) : Screen(mw) {
+IndustryScreen::IndustryScreen(MainWindow& mw, const int(&Stockpile)[30]) : Screen(mw) {
 	SetupBg("Backgrounds/Industry1.png");
         auto [Width, Height] = mw.GetWindowDimensions();
 
@@ -40,7 +40,7 @@ IndustryScreen::IndustryScreen(MainWindow& mw, int Stockpile[30]) : Screen(mw) {
 	AddLabel<Label>(mw, std::to_string(Stockpile[29]), 32, int(Width * 0.365), int(Height * 0.86));
 }
 
-void IndustryScreen::UpdateText(int Stockpile[29]){
+void IndustryScreen::UpdateText(const int(&Stockpile)[30]){
 	LabelArr[0]->ChangeText(std::to_string(Stockpile[0]));
 	LabelArr[1]->ChangeText(std::to_string(Stockpile[5]));
 	LabelArr[2]->ChangeText(std::to_string(Stockpile[2]));

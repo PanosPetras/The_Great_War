@@ -169,8 +169,8 @@ private:
 
 class IndustryScreen : public Screen {
 public:
-    IndustryScreen(MainWindow& mw, int Stockpile[30]);
-    void UpdateText(int Stockpile[29]);
+    IndustryScreen(MainWindow& mw, const int(&Stockpile)[30]);
+    void UpdateText(const int(&Stockpile)[30]);
 };
 
 class TradeScreen : public Screen {
