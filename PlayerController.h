@@ -13,8 +13,10 @@
 #include <SDL.h>
 
 #include <array>
+#include <atomic>
 #include <cstdint>
 #include <memory>
+#include <thread>
 #include <unordered_map>
 #include <vector>
 
@@ -32,8 +34,8 @@ private:
     void InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, const std::vector<Stockpile>& balance);
     void InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors);
 
-    static int LoadMap(void*);
-    static int LoadUtilityAssets(void*);
+    void LoadMap();
+    void LoadUtilityAssets();
 	
 public:
     MainWindow* main_window;
@@ -48,15 +50,16 @@ public:
         int Month;
         int Day;
         int Speed;
-        bool bIsPaused;
         int MonthDays[12];
     } Date;
+
+    std::atomic<bool> bIsPaused{true};
 
     //This is the representing the pass of a single day
     void Tick();
 
     //Advances the date by one day
-    static int AdvanceDate(void* ref);
+    void AdvanceDate();
 
     //Pauses the flow of time
     void Pause();
@@ -83,6 +86,6 @@ public:
     SDL_Surface_ctx provinces;
 
     //Used to run the time-functionality of the game
-    SDL_Thread* thread;
+    std::jthread thread;
 };
 #endif

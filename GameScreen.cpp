@@ -21,26 +21,26 @@ GameScreen::GameScreen(MainWindow& mw, const char* tag,  std::function<void()> f
 }
 
 void GameScreen::Pause() {
-	if (StateViewingScreen) {
-		CloseScreenPreview();
-		//overlay->Buttons[0]->Playsound();
-	} else if (bHasActiveScreen() == true){
-		CloseActiveScreen();
-		overlay->Buttons[0]->Playsound();
-	} else {
-		if (bIsPaused == true) {
-			bIsPaused = false;
-                        PM.reset();
-		}
-		else {
-			PM = std::make_unique<PauseMenu>(*main_window, QuitFunc, [this]{ Pause(); }, ChangeScreenFunc);
-			bIsPaused = true;
-			if (PC->Date.bIsPaused == false) {
-				overlay->PauseDate(true);
-			}
-			overlay->Buttons[0]->Playsound();
-		}
-	}
+    if (StateViewingScreen) {
+        CloseScreenPreview();
+        //overlay->Buttons[0]->Playsound();
+    } else if (bHasActiveScreen() == true){
+        CloseActiveScreen();
+        overlay->Buttons[0]->Playsound();
+    } else {
+        if (bIsPaused == true) {
+            bIsPaused = false;
+            PM.reset();
+        }
+        else {
+            PM = std::make_unique<PauseMenu>(*main_window, QuitFunc, [this]{ Pause(); }, ChangeScreenFunc);
+            bIsPaused = true;
+            if (PC->bIsPaused == false) {
+                overlay->PauseDate(true);
+            }
+            overlay->Buttons[0]->Playsound();
+        }
+    }
 }
 
 void GameScreen::RenderBackground() {
