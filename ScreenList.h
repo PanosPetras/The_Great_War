@@ -145,15 +145,15 @@ class DiplomacyScreen : public Screen {
 public:
     DiplomacyScreen(MainWindow& mw, PlayerController* PC, std::string targetTag);
     DiplomacyScreen(MainWindow& mw, PlayerController* PC);
-    DiplomacyScreen(MainWindow& mw, PlayerController* PC, int index);
+    DiplomacyScreen(MainWindow& mw, PlayerController* PC, unsigned index);
 
     PlayerController* PCref;
 
 private:
-    int CreateCountryButtons(PlayerController* PC);
-    int CreateCountryButtons(PlayerController* PC, std::string targetTag);
+    unsigned CreateCountryButtons(PlayerController* PC);
+    unsigned CreateCountryButtons(PlayerController* PC, std::string targetTag);
 
-    void SelectCountry(void*);
+    void SelectCountry(unsigned index);
     void ImproveRelations();
     void WorsenRelations();
     void ImposeEmbargo();

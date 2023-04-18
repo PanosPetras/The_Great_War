@@ -83,7 +83,7 @@ protected:
     SDL_Rect text_draw_rect;
 
     //Reference to the button's texture
-    enum { textureInactive, textureIdle, textureHoovered };
+    enum { textureIdle, textureHoovered, textureInactive };
     std::array<TextureRef, 3> textures;
     TextureRef active_texture{textures[textureIdle]};
 

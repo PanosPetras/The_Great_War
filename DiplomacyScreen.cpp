@@ -38,43 +38,45 @@ DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, std::stri
 
 DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC) : DiplomacyScreen(mw, PC, PC->player_tag) {}
 
-DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, int index) : DiplomacyScreen(mw, PC) {
-    SelectCountry((void*)((Uint64)index));
+DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, unsigned index) : DiplomacyScreen(mw, PC) {
+    SelectCountry(index);
 }
 
-int DiplomacyScreen::CreateCountryButtons(PlayerController* PC) {
-    int i = 0, flagsPerLine = 12;
+unsigned DiplomacyScreen::CreateCountryButtons(PlayerController* PC) {
+    unsigned index = 0;
+    int flagsPerLine = 12;
     auto [Width, Height] = main_window->GetWindowDimensions();
 
     for(auto& country : PC->CountriesArr) {
         AddDrawable<Button>(
-            *main_window, int(Width * (0.1 + (i / flagsPerLine) * 0.05)), int(Height * (0.17 + (i % flagsPerLine) * 0.06)), 60, 40,
-            ("Flags/" + country->GetTag()).c_str(), [this](void* p) { SelectCountry(p); }, (void*)((Uint64)i));
-        i++;
+            *main_window, int(Width * (0.1 + (index / flagsPerLine) * 0.05)), int(Height * (0.17 + (index % flagsPerLine) * 0.06)), 60, 40,
+            "Flags/" + country->GetTag(), [this, index] { SelectCountry(index); });
+        index++;
     }
 
-    return i;
+    return index;
 }
 
-int DiplomacyScreen::CreateCountryButtons(PlayerController* PC, std::string targetTag) {
-    int i = 0, flagsPerLine = 12;
+unsigned DiplomacyScreen::CreateCountryButtons(PlayerController* PC, std::string targetTag) {
+    unsigned index = 0;
+    int flagsPerLine = 12;
     auto [Width, Height] = main_window->GetWindowDimensions();
 
     for(auto& country : PC->CountriesArr) {
         AddDrawable<Button>(
-            *main_window, int(Width * (0.1 + (i / flagsPerLine) * 0.05)), int(Height * (0.17 + (i % flagsPerLine) * 0.06)), 60, 40,
-            ("Flags/" + country->GetTag()).c_str(), [this](void* p) { SelectCountry(p); }, (void*)((Uint64)i));
+            *main_window, int(Width * (0.1 + (index / flagsPerLine) * 0.05)), int(Height * (0.17 + (index % flagsPerLine) * 0.06)), 60, 40,
+            "Flags/" + country->GetTag(), [this, index]{ SelectCountry(index); });
         if(country->GetTag() == targetTag) {
-            selectedCountryIndex = i;
+            selectedCountryIndex = index;
         }
-        i++;
+        index++;
     }
 
-    return i;
+    return index;
 }
 
-void DiplomacyScreen::SelectCountry(void* country) {
-    int index = (int)(Uint64)(country);
+void DiplomacyScreen::SelectCountry(unsigned index) {
+    std::cerr << "DiplomacyScreen::SelectCountry\n";
 
     ImageArr[1]->ChangeImage(std::string("Flags/") + PCref->CountriesArr[index]->GetTag() + ".png");
     LabelArr[0]->ChangeText(PCref->CountriesArr[index]->GetName());

@@ -60,6 +60,8 @@ public:
             if(auto it = file_textures.find(filename); it != file_textures.end()) {
                 std::cerr << "Cached load of " << filename << std::endl;
                 if(it->second.size() != sizeof...(Mods)) {
+                    // NOTE: This can happen if it was via an Image that only cares about one state.
+                    // If that happens, either we need to create duplicate textures - or we preload them all.
                     std::cerr << "Mismatch between cached textures and number of Mods" << std::endl;
                     std::terminate();
                 }

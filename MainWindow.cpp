@@ -48,6 +48,8 @@ void MainWindow::Render() {
 
 SDL_Texture_ctx& MainWindow::IMG_Load(const std::string& filename) {
     if(auto it = file_textures.find(filename); it != file_textures.end()) {
+        // NOTE: If a Button has already loaded this surface, three textures will have been
+        // placed in the std::vector<SDL_Texture_ctx>. idle, hoovered and inactive.
         return it->second[0];
     } else {
         std::vector<SDL_Texture_ctx> vec;
