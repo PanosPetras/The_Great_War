@@ -61,8 +61,8 @@ void GameScreen::RenderBackground() {
 	factor reiceived from user input*/
 	if (bZoom == true) {
 		SDL_Rect dstrect = { int(Cam_Width * -1 * factor), int(Cam_Height * -1 * factor), int(ImgSize[0] * factor) , int(factor * ImgSize[1]) };
-		SDL_RenderCopy(*main_window, PC->txt, NULL, &dstrect);
-		SDL_RenderCopy(*main_window, PC->overlay, NULL, &dstrect);
+		SDL_RenderCopy(*main_window, PC->txt, nullptr, &dstrect);
+		SDL_RenderCopy(*main_window, PC->overlay, nullptr, &dstrect);
 	}
 }
 
@@ -72,7 +72,8 @@ void GameScreen::Render() {
 		this->RenderBackground();
 	} else {
 		if (/*overlay->bDateUpdated == true && */ScreenID == "IndustryScreen") {
-			int Res[30] = { PC->CountriesArr.at(PC->player_index)->Stock.Coal,
+			int Res[30] = {
+                                PC->CountriesArr.at(PC->player_index)->Stock.Coal,
 				PC->CountriesArr.at(PC->player_index)->Stock.Oil,
 				PC->CountriesArr.at(PC->player_index)->Stock.Timber,
 				PC->CountriesArr.at(PC->player_index)->Stock.Rubber,
