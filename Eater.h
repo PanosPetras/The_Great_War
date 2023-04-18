@@ -29,7 +29,6 @@ struct Eater_impl {
             }
         };
         if((... || fail(Chars))) is.setstate(std::ios::failbit);
-
         return is;
     }
 };

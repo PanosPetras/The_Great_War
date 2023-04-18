@@ -35,7 +35,7 @@ void GameScreen::Pause() {
             PM = std::make_unique<PauseMenu>(
                 *main_window, QuitFunc, [this] { Pause(); }, ChangeScreenFunc);
             bIsPaused = true;
-            if(PC->Date.bIsPaused == false) {
+            if(PC->bIsPaused == false) {
                 overlay->PauseDate(true);
             }
             overlay->Buttons[0]->Playsound();

@@ -42,7 +42,7 @@ void MenuSettingsScreen::UpdateResolutionLabel() {
 }
 
 void MenuSettingsScreen::IncreaseResolution() {
-    if(currentResolutionIndex < Resolutions::SUPPORTED_RESOLUTIONS.size() - 1) {
+    if(currentResolutionIndex + 1 < Resolutions::SUPPORTED_RESOLUTIONS.size()) {
         currentResolutionIndex++;
     }
 

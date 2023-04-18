@@ -11,14 +11,10 @@ Slider::Slider(MainWindow& mw, int x, int y, int Width, int Height, int minvalue
 
 Slider::Slider(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, int minvalue, int maxvalue, int value, std::function<void()> OnSliderValueChanged) :
     InputDrawable(anchor), main_window(&mw), Marker(SDL_Texture_ctx::IMG_Load(mw, "Drawable/Slider/Circle.png")) {
-    std::cout << "Slider " << this << '\n';
     // Initialize all variables
     ChangeValues(minvalue, maxvalue, value);
     ChangePosition(x, y, Width, Height);
     onSliderValueChanged = OnSliderValueChanged;
-}
-Slider::~Slider() {
-    std::cout << "~Slider " << this << '\n';
 }
 
 void Slider::SetActive(bool state) {
