@@ -24,17 +24,17 @@ DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, std::stri
     AddLabel<Label>(*main_window, std::to_string(PC->CountriesArr[selectedCountryIndex]->GetPopulation()), 24, int(Width * 0.465), int(Height * 0.31));
     AddLabel<Label>(*main_window, "N/A", 28, int(Width * 0.8), int(Height * 0.225));
 
-	AddDrawable<Button>(*main_window, int(Width * 0.43), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Declare War", fontSize);
-	AddDrawable<Button>(*main_window, int(Width * 0.43), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Make Demands", fontSize);
-	AddDrawable<Button>(*main_window, int(Width * 0.43), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Justify Claim", fontSize);
-	AddDrawable<Button>(*main_window, int(Width * 0.645), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Form Alliance", fontSize, [this]{ SendAllianceRequest();});
-	AddDrawable<Button>(*main_window, int(Width * 0.645), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Non-Aggression Pact", fontSize);
-	AddDrawable<Button>(*main_window, int(Width * 0.645), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Improve Relations", fontSize, [this] { ImproveRelations(); });
-	AddDrawable<Button>(*main_window, int(Width * 0.645), int(Height * 0.74), int(Width * 0.13), int(Height * 0.04), "Worsen Relations", fontSize, [this] { WorsenRelations(); });
-	AddDrawable<Button>(*main_window, int(Width * 0.76), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Trade Deal", fontSize);
-	AddDrawable<Button>(*main_window, int(Width * 0.76), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Embargo", fontSize, [this] { ImposeEmbargo(); });
-	AddDrawable<Button>(*main_window, int(Width * 0.76), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Request Access", fontSize);
-	AddDrawable<Button>(*main_window, int(Width * 0.76), int(Height * 0.74), int(Width * 0.13), int(Height * 0.04), "Provide Access", fontSize);
+	AddDrawable<Button>(*main_window, int(Width * 0.4275), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Declare War", fontSize);
+	AddDrawable<Button>(*main_window, int(Width * 0.4275), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Make Demands", fontSize);
+	AddDrawable<Button>(*main_window, int(Width * 0.4275), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Justify Claim", fontSize);
+	AddDrawable<Button>(*main_window, int(Width * 0.585), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Form Alliance", fontSize, [this]{ SendAllianceRequest();});
+	AddDrawable<Button>(*main_window, int(Width * 0.585), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Non-Aggression Pact", fontSize);
+	AddDrawable<Button>(*main_window, int(Width * 0.585), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Improve Relations", fontSize, [this] { ImproveRelations(); });
+	AddDrawable<Button>(*main_window, int(Width * 0.585), int(Height * 0.74), int(Width * 0.13), int(Height * 0.04), "Worsen Relations", fontSize, [this] { WorsenRelations(); });
+	AddDrawable<Button>(*main_window, int(Width * 0.7425), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Trade Deal", fontSize);
+	AddDrawable<Button>(*main_window, int(Width * 0.7425), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Embargo", fontSize, [this] { ImposeEmbargo(); });
+	AddDrawable<Button>(*main_window, int(Width * 0.7425), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Request Access", fontSize);
+	AddDrawable<Button>(*main_window, int(Width * 0.7425), int(Height * 0.74), int(Width * 0.13), int(Height * 0.04), "Provide Access", fontSize);
 
     PCref = PC;
 
@@ -171,11 +171,11 @@ void DiplomacyScreen::UpdateAllianceState() {
 
     if(rel != PCref->diplo.relations.end()) {
         if(rel->second.GetIfAllied()) {
-            As<Button>(InputDrawableArrtop() - 2).ChangeText("Break Alliance", 26);
+            As<Button>(InputDrawableArrtop() - 8).ChangeText("Break Alliance", 26);
             return;
         }
     }
-    As<Button>(InputDrawableArrtop() - 2).ChangeText("Form Alliance", 26);
+    As<Button>(InputDrawableArrtop() - 8).ChangeText("Form Alliance", 26);
 }
 
 void DiplomacyScreen::UpdateEmbargoState() {
@@ -185,9 +185,9 @@ void DiplomacyScreen::UpdateEmbargoState() {
 
     if(rel != PCref->diplo.relations.end()) {
         if(rel->second.GetIfHasEmbargo(PCref->player_tag)) {
-            As<Button>(InputDrawableArrtop() - 1).ChangeText("Lift Embargo", 26);
+            As<Button>(InputDrawableArrtop() - 3).ChangeText("Lift Embargo", 26);
             return;
         }
     }
-    As<Button>(InputDrawableArrtop() - 1).ChangeText("Embargo", 26);
+    As<Button>(InputDrawableArrtop() - 3).ChangeText("Embargo", 26);
 }
