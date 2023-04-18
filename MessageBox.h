@@ -21,7 +21,7 @@ public:
 
 private:
 	//Render the message box on screen
-	void pDraw();
+	void pDraw() override;
 
 	std::unique_ptr<Image> background;
 	std::unique_ptr<Label> title;

@@ -51,11 +51,11 @@ public:
 	void CallBoundFunction();
 
 	//Enable/Disable the checkbox
-	void SetActive(bool state);
+	void SetActive(bool state) override;
 
 protected:
 	//Render the Checkbox on the screen
-	void pDraw();
+	void pDraw() override;
 
 	//The Drawables that make up this Drawable
 	//std::unique_ptr<ToggleButton> toggleButton;

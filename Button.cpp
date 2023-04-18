@@ -122,7 +122,7 @@ void Button::pDraw() {
 }
 
 void Button::HandleInput(const SDL_Event& ev) {
-    if (active) {
+    if (IsActive()) {
         //Detect if the button is hovered
         if (CheckIfMouseInRect(draw_rect, ev.button)) {
             if (bHovered == false) {

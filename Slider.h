@@ -33,11 +33,11 @@ public:
 	} Values;
 
 	//Enable/Disable the slider
-	void SetActive(bool state);
+	void SetActive(bool state) override;
 
 protected:
 	//Render the slider on the screen
-	void pDraw();
+	void pDraw() override;
 
 	//Calls the function bound to this slider, when the Value changes
 	void callOnValueChanged();
