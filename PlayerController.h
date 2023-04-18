@@ -11,74 +11,77 @@
 #include <SDL.h>
 
 #include <array>
+#include <atomic>
 #include <cstdint>
 #include <memory>
+#include <thread>
 #include <unordered_map>
 #include <vector>
 
 class PlayerController {
 public:
-	//Constructor
-	PlayerController(SDL_Renderer_ctx& r, const char* tag);
+    //Constructor
+    PlayerController(SDL_Renderer_ctx& r, const char* tag);
 
     ~PlayerController();
 
 private:
-	//Loading data functions
-	void InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, std::vector<int>& balance);
-	void InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors);
+    //Loading data functions
+    void InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, std::vector<int>& balance);
+    void InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors);
 
-	static int LoadMap(void*);
-	static int LoadUtilityAssets(void*);
+    void LoadMap();
+    void LoadUtilityAssets();
 	
 public:
 
-	//Some info about the player
-	std::string player_tag;
-	int player_index;
+    //Some info about the player
+    std::string player_tag;
+    int player_index;
 
-	//The in-game date
-	struct {
-		int Year;
-		int Month;
-		int Day;
-		int Speed;
-		bool bIsPaused;
-		int MonthDays[12];
-	} Date;
+    //The in-game date
+    struct {
+        int Year;
+        int Month;
+        int Day;
+        int Speed;
+        int MonthDays[12];
+    } Date;
 
-	//This is the representing the pass of a single day
-	void Tick();
+    std::atomic<bool> bIsPaused{true};
 
-	//Advances the date by one day
-	static int AdvanceDate(void* ref);
+    //This is the representing the pass of a single day
+    void Tick();
 
-	//Pauses the flow of time
-	void Pause();
+    //Advances the date by one day
+    void AdvanceDate();
 
-	//Changes the game speed
-	void ChangeSpeed(bool change);
+    //Pauses the flow of time
+    void Pause();
 
-	Market WorldMarket;
+    //Changes the game speed
+    void ChangeSpeed(bool change);
 
-	//Reference to every single state on the map
-	std::vector<State> StatesArr;
-	std::unordered_map<std::string, State*> StatesMap;
+    Market WorldMarket;
 
-	//Reference to every country
-	std::vector<std::unique_ptr<Country>> CountriesArr;
+    //Reference to every single state on the map
+    std::vector<State> StatesArr;
+    std::unordered_map<std::string, State*> StatesMap;
 
-	//The state of the diplomatic relations between every country
-	Diplomacy diplo;
+    //Reference to every country
+    std::vector<std::unique_ptr<Country>> CountriesArr;
 
-	//Some SDL assets needed
-	RendererRef RendererReference;
-	SDL_Texture_ctx txt;
-	SDL_Texture_ctx overlay;
-	SDL_Surface_ctx map;
-	SDL_Surface_ctx provinces;
+    //The state of the diplomatic relations between every country
+    Diplomacy diplo;
 
-	//Used to run the time-functionality of the game
-	SDL_Thread* thread;
+    //Some SDL assets needed
+    RendererRef RendererReference;
+    SDL_Texture_ctx txt;
+    SDL_Texture_ctx overlay;
+    SDL_Surface_ctx map;
+    SDL_Surface_ctx provinces;
+
+    //Used to run the time-functionality of the game
+    std::jthread thread;
 };
 #endif
