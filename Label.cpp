@@ -70,7 +70,7 @@ void Label::UpdateLabel() {
     TTF_Font_ctx font(FontSize);
 
     //Convert the text to a surface and then assign the surface to a texture
-    SDL_Surface_ctx surface(TTF_RenderText_Blended_Wrapped(font, text.c_str(), Color, xLim));
+    auto surface = SDL_Surface_ctx::TTF_RenderText_Blended_Wrapped(font, text, Color, xLim);
     texture = SDL_Texture_ctx(RendererReference, surface);
 
     ChangePosition(x, y);
