@@ -223,24 +223,3 @@ public:
 private:
     std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> font;
 };
-//-----------------------------------------------------------------------------
-class MIX_Chunk_ctx {
-public:
-    MIX_Chunk_ctx(); // no sound loaded
-    explicit MIX_Chunk_ctx(std::string_view filename);
-
-    MIX_Chunk_ctx(const MIX_Chunk_ctx&) = delete;
-    MIX_Chunk_ctx(MIX_Chunk_ctx&&) noexcept = default;
-    MIX_Chunk_ctx& operator=(const MIX_Chunk_ctx&) = delete;
-    MIX_Chunk_ctx& operator=(MIX_Chunk_ctx&&) noexcept = default;
-    ~MIX_Chunk_ctx() = default;
-
-    int PlayChannel(int channel, int loops);
-
-    Mix_Chunk* operator->();
-    operator Mix_Chunk* ();
-private:
-    std::unique_ptr<Mix_Chunk, decltype(&Mix_FreeChunk)> music;
-};
-using ChunkRef = promiscuous_ref<MIX_Chunk_ctx, Mix_Chunk>;
-//-----------------------------------------------------------------------------

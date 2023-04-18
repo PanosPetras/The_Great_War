@@ -125,14 +125,6 @@ void MainWindow::Quit() {
     quit = true;
 }
 
-ChunkRef MainWindow::Mix_LoadWAV(const std::string& filename) {
-    if(auto it = file_chunks.find(filename); it != file_chunks.end()) {
-        return it->second;
-    }
-    auto [newit, inserted] = file_chunks.emplace(filename, filename);
-    return newit->second;
-}
-
 int MainWindow::Width() const { return windim.x; }
 int MainWindow::Height() const { return windim.y; }
 const SDL_Point& MainWindow::GetWindowDimensions() const { return windim; }

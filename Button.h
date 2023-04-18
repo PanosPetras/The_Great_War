@@ -28,6 +28,9 @@ public:
     Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
     Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
 
+    //Destructor
+    ~Button();
+
     //Called when received input, to check whether the click was in this button
     void HandleInput(const SDL_Event& ev) override;
 
@@ -87,7 +90,7 @@ protected:
     SDL_Texture_ctx text;
 
     //The button's onClick sound
-    ChunkRef music;
+    Mix_Chunk* music = nullptr;
 
     friend class ToggleButton;
 };

@@ -23,6 +23,8 @@ namespace {
     }
 }
 
+std::unordered_set<Button*> deads; // Only used for debugging
+
 Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) :
     Button(mw, x, y, Width, Height, image, top_left, f, keybind) {
 }
@@ -34,9 +36,9 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
 Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f, int keybind) :
     InputDrawable(anchor),
     main_window(&mw),
-    textures{Load(mw, image)},
-    music{mw.Mix_LoadWAV("Sounds/ButtonClick.mp3")}
+    textures{Load(mw, image)}
 {
+    deads.erase(this); // if a previous Button had the same address, remove it from the dead Buttons
     std::cerr << "Button::Button image: " << image << std::endl;
 
     //Saving the button's coordinates
@@ -50,6 +52,9 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
 
     //Save the button's bind to the keyboard
     ChangeKeybind(keybind);
+
+    //Load the button's click sound
+    music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
 Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind) :
@@ -69,6 +74,7 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
 Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f, int keybind) :
     Button(mw, x, y, Width, Height, "Drawable/Button/Button", anchor, f, keybind)
 {
+    deads.erase(this); // if a previous Button had the same address, remove it from the dead Buttons
     std::cerr << "Button::Button text: " << text << std::endl;
 
     //Saving the button's coordinates
@@ -89,6 +95,20 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
 {
     //Saving the bound function
     ChangeFunctionBinding(f, arg);
+}
+
+void log(Button* This, const char* txt) {
+    if(deads.contains(This))
+        std::cerr << txt << " (on DEAD)\t" << static_cast<void*>(This) << std::endl;
+    else
+        std::cerr << txt << " (on live)\t" << static_cast<void*>(This) << std::endl;
+}
+
+Button::~Button() {
+    std::cerr << "Button::~Button\t" << static_cast<void*>(this) << std::endl;
+    deads.emplace(this);
+
+    Mix_FreeChunk(music);
 }
 
 void Button::pDraw() {
@@ -135,6 +155,7 @@ void Button::HandleInput(const SDL_Event& ev) {
 }
 
 void Button::Click(){
+    log(this, "Button::Click");
     //Play the sound effect
     Playsound();
 
@@ -186,12 +207,14 @@ void Button::ChangeKeybind(int keybind){
 }
 
 void Button::Playsound() {
-    static_cast<MIX_Chunk_ctx&>(music).PlayChannel(1, 0);
+    Mix_PlayChannel(1, music, 0);
 }
 
 void Button::CallBoundFunction(){
+    log(this, "Button::CallBoundFunction 1");
     if (func) {
         main_window->AddEvent([func=func]{ func(); });
+        log(this, "Button::CallBoundFunction added func MainWindow event list");
     }
 }
 
