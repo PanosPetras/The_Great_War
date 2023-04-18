@@ -1,4 +1,5 @@
 #include "Diplomacy.h"
+#include "Country.h"
 
 #include <algorithm>
 #include <stdexcept>
@@ -49,15 +50,11 @@ Relation::Relation(int relations, bool allied) {
 }
 
 void Relation::ImproveRelations(int value) {
-	if (relationsValue < RELATIONS_LIMIT) {
-		relationsValue = std::min(relationsValue + value, RELATIONS_LIMIT);
-	}
+	relationsValue = std::min(relationsValue + value, RELATIONS_LIMIT);
 }
 
 void Relation::WorsenRelations(int value) {
-	if (relationsValue > -RELATIONS_LIMIT) {
-		relationsValue = std::max(relationsValue - value, -RELATIONS_LIMIT);
-	}
+	relationsValue = std::max(relationsValue - value, -RELATIONS_LIMIT);
 }
 
 int Relation::GetRelationsValue() const {
@@ -169,11 +166,28 @@ void War::JoinWar(Country* newParticipant, Country* onTheSideOf) {
 	f.AddMember(newParticipant);
 }
 
-const std::set<Country*>& War::GetFaction(int i) {
+const std::set<Country*>& War::GetFaction(int i) const {
 	if (i != 0 && i != 1) {
 		throw std::runtime_error("Faction index out of bounds");
 	}
 	return factions[i].GetFaction();
+}
+
+void War::AddClaim(Claim claim) {
+	Faction& f = factions[1];
+
+	if (factions[0].Contains(claim.GetOwner())) {
+		f = factions[0];
+	}
+
+	f.AddClaim(claim);
+}
+
+const std::vector<Claim>& War::GetClaims(int i) const {
+	if (i != 0 && i != 1) {
+		throw std::runtime_error("Faction index out of bounds");
+	}
+	return factions[i].GetClaims();
 }
 
 void War::AddScore(Country* instigator, int score) {
@@ -206,7 +220,7 @@ bool War::Faction::Contains(Country* c) const {
 	return members.contains(c);
 }
 
-const std::set<Country*>& War::Faction::GetFaction() {
+const std::set<Country*>& War::Faction::GetFaction() const {
 	return members;
 }
 
@@ -216,4 +230,28 @@ void War::Faction::AddScore(int c) {
 
 int War::Faction::GetScore() const {
 	return score;
+}
+
+void War::Faction::AddClaim(Claim c) {
+	claims.push_back(c);
+}
+
+const std::vector<Claim>& War::Faction::GetClaims() const {
+	return claims;
+}
+
+Claim::Claim(Country* Owner, Country* Target, ClaimType Type, void* Data) :
+	owner(Owner), target(Target), type(Type), data(Data) {
+}
+
+Country* Claim::GetOwner() const {
+	return owner;
+}
+
+Country* Claim::GetTarget() const {
+	return target;
+}
+
+ClaimType Claim::GetType() const {
+	return type;
 }

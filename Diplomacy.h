@@ -8,11 +8,7 @@
 #include <array>
 #include <unordered_map>
 
-#include "Country.h"
-
-enum RequestType {
-    alliance, tradeDeal, peaceTreaty
-};
+class Country;
 
 struct CountryPair {
 public:
@@ -37,17 +33,35 @@ struct std::hash<CountryPair> {
     }
 };
 
-struct Claim {
-
+enum ClaimType {
+    territory, reparations
 };
 
-struct War {
+struct Claim {
+public:
+    Claim(Country* Owner, Country* Target, ClaimType Type, void* Data);
+
+    Country* GetOwner() const;
+    Country* GetTarget() const;
+    ClaimType GetType() const;
+
+protected:
+    Country *owner, *target;
+
+    ClaimType type;
+    void* data;
+};
+
+class War {
 public:
     War(Country* aggressor, Country* defender);
     
     bool GetIfTargetPairIsAtWar(const CountryPair& pair) const;
     void JoinWar(Country* newParticipant, Country* onTheSideOf);
-    const std::set<Country*>& GetFaction(int i);
+    const std::set<Country*>& GetFaction(int i) const;
+
+    void AddClaim(Claim claim);
+    const std::vector<Claim>& GetClaims(int i) const;
 
     void AddScore(Country* instigator, int score);
     int GetRelativeScore() const;
@@ -59,10 +73,13 @@ private:
         void AddMember(Country* c);
         void RemoveMember(Country* c);
         bool Contains(Country* c) const;
-        const std::set<Country*>& GetFaction();
+        const std::set<Country*>& GetFaction() const;
 
         void AddScore(int c);
         int GetScore() const;
+
+        void AddClaim(Claim c);
+        const std::vector<Claim>& GetClaims() const;
 
     private:
         std::set<Country*> members;
@@ -100,6 +117,10 @@ private:
 
     int relationsValue;
     bool allied;
+};
+
+enum RequestType {
+    alliance, tradeDeal, peaceTreaty
 };
 
 class Request {
