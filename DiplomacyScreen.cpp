@@ -6,9 +6,6 @@
 #include "MainWindow.h"
 #include "PlayerController.h"
 
-DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC) : DiplomacyScreen(mw, PC, PC->player_tag) {
-}
-
 DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, std::string targetTag) : Screen(mw) {
 	SetupBg("Backgrounds/Industry.png");
 
@@ -37,6 +34,9 @@ DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, std::stri
 
 	UpdateRelationValue();
 	UpdateAllianceState();
+}
+
+DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC) : DiplomacyScreen(mw, PC, PC->player_tag) {
 }
 
 DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, int index) : DiplomacyScreen(mw, PC){

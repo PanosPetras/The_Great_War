@@ -143,8 +143,8 @@ public:
 
 class DiplomacyScreen : public Screen {
 public:
-    DiplomacyScreen(MainWindow& mw, PlayerController* PC);
     DiplomacyScreen(MainWindow& mw, PlayerController* PC, std::string targetTag);
+    DiplomacyScreen(MainWindow& mw, PlayerController* PC);
     DiplomacyScreen(MainWindow& mw, PlayerController* PC, int index);
 
     PlayerController* PCref;
