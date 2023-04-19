@@ -46,7 +46,7 @@ PlayerController::PlayerController(SDL_Renderer_ctx& r, const char* tag) : Rende
 	auto tags = LoadFromFile<std::string, Line>("map/Countries/CountryTags.txt");
 
 	//Load the countries' budget at the start of the game
-	auto balance = LoadFromFile<int>("map/Countries/CountryBalances.txt");
+	auto balance = LoadFromFile<Stockpile>("map/Countries/CountryStockpiles.txt");
 
     if(countryNames.size() != tags.size() || countryNames.size() != balance.size()) {
         std::cerr << "Country data mismatch " << countryNames.size() << ',' << tags.size() << ',' << balance.size() << std::endl;
@@ -123,22 +123,19 @@ int PlayerController::LoadUtilityAssets(void* pc){
 	return 0;
 }
 
-void PlayerController::InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, std::vector<int>& balance){
-	int Res[31] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000 };
+void PlayerController::InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, const std::vector<Stockpile>& balance){
+    for (unsigned x = 0; x < tags.size(); x++) {
+        CountriesArr.push_back(std::make_unique<Country>(tags[x], names[x], balance[x]));
+        if (tag == tags[x]) {
+            player_index = x;
+        }
+    }
 
-	for (unsigned x = 0; x < tags.size(); x++) {
-		Res[30] = balance[x];
-        CountriesArr.push_back(std::make_unique<Country>(tags[x], names[x], Res));
-		if (tag == tags[x]) {
-			player_index = x;
-		}
-	}
-
-	for (unsigned c1 = 0; c1 < CountriesArr.size(); c1++) {
-		for (unsigned c2 = c1 + 1; c2 < CountriesArr.size(); c2++) {
-			diplo.relations.emplace(CountryPair{CountriesArr[c1].get(), CountriesArr[c2].get()}, Relation{100});
-		}
-	}
+    for (unsigned c1 = 0; c1 < CountriesArr.size(); c1++) {
+        for (unsigned c2 = c1 + 1; c2 < CountriesArr.size(); c2++) {
+            diplo.relations.emplace(CountryPair{CountriesArr[c1].get(), CountriesArr[c2].get()}, Relation{100});
+        }
+    }
 }
 
 void PlayerController::InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors){
