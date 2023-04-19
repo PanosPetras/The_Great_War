@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Screen.h"
+
+#include "Color.h"
 #include "UI.h"
 
 #include "SDL_ctx.h"
@@ -120,13 +122,14 @@ public:
 
 class CountrySelection : public Screen {
 public:
+    inline static constexpr unsigned Countries = 8;
+
     CountrySelection(MainWindow& mw, std::function<void()> UnpauseF = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
 
     bool mousepressed;
 
-    const char* tags[8];
-
-    std::array<std::array<int, 3>, 8> colors;
+    static const std::array<const char*, Countries> tags;
+    static const std::array<Color, Countries> colors;
 
     int CountryIndex;
 

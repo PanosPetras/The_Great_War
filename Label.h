@@ -3,6 +3,8 @@
 
 #include "Drawable.h"
 
+#include "Color.h"
+
 #include "SDL_ctx.h"
 
 #include <SDL.h>
@@ -14,10 +16,10 @@
 class Label : public Drawable {
 public:
     //Constructor
-    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
-    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, Anchor anchor, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
-    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xLim, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
-    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xLim, Anchor anchor, Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
+    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, Color rgb = Color{});
+    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, Anchor anchor, Color rgb = Color{});
+    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xLim, Color rgb = Color{});
+    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xLim, Anchor anchor, Color rgb = Color{});
 
     //Get the label's text
     std::string GetText();
@@ -29,7 +31,7 @@ public:
     void ChangeTextSize(int size);
 
     //Change the label's color
-    void ChangeColor(Uint8 red, Uint8 green, Uint8 blue);
+    void ChangeColor(Color rgb);
 
     //Change the label's position
     void ChangePosition(int x, int y);
@@ -51,7 +53,7 @@ protected:
     int FontSize;
 
     //The color of the text displayed by the label
-    SDL_Color Color;
+    SDL_Color color;
 
     //Dimensions of the label
     SDL_Rect draw_rect;

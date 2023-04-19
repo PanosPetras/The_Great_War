@@ -22,7 +22,7 @@ public:
     ToggleButton(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, bool val, std::function<void(bool)> f = {}, int keybind = 0);
 
     //Destructor
-    ~ToggleButton();
+    ~ToggleButton() override;
 
     //Called when received input, to check whether the click was in this button
     void HandleInput(const SDL_Event& ev) override;

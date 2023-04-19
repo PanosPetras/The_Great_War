@@ -33,7 +33,7 @@ ToggleButton::ToggleButton(SDL_Renderer_ctx& r, [[maybe_unused]]int x, [[maybe_u
     value = val;
 }
 
-ToggleButton::~ToggleButton(){
+ToggleButton::~ToggleButton() {
     //Free up the memory
     Mix_FreeChunk(music);
 }

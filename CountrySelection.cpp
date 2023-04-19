@@ -7,6 +7,28 @@
 #include "PlayerController.h"
 #include "UI.h"
 
+const std::array<const char*, CountrySelection::Countries> CountrySelection::tags {
+    "ger",
+    "fra",
+    "eng",
+    "kuk",
+    "ita",
+    "rus",
+    "ott",
+    "usa"
+};
+
+const std::array<Color, CountrySelection::Countries> CountrySelection::colors{{
+    {42, 42, 42},
+    {18, 30, 152},
+    {128, 0, 32},
+    {255, 255, 255},
+    {38, 160, 64},
+    {64, 160, 96},
+    {160, 144, 96},
+    {0, 96, 128}
+}};
+
 CountrySelection::CountrySelection(MainWindow& mw, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(mw, UnpauseF, fpl) {
 	SetupBg("Backgrounds/CountrySelection.png");
         auto [Width, Height] = mw.GetWindowDimensions();
@@ -47,24 +69,6 @@ CountrySelection::CountrySelection(MainWindow& mw, std::function<void()> Unpause
 	AddImage<Image>(mw, "Icons/right.png", -Width, -Height, 64 * Width / 1920, 64 * Height / 1080);
 
 	mousepressed = false;
-
-	tags[0] = "ger";
-	tags[1] = "fra";
-	tags[2] = "eng";
-	tags[3] = "kuk";
-	tags[4] = "ita";
-	tags[5] = "rus";
-	tags[6] = "ott";
-	tags[7] = "usa";
-
-	colors[0] = {42, 42, 42};
-	colors[1] = {18, 30, 152};
-	colors[2] = {128, 0, 32};
-	colors[3] = {255, 255, 255};
-	colors[4] = {38, 160, 64};
-	colors[5] = {64, 160, 96};
-	colors[6] = {160, 144, 96};
-	colors[7] = {0, 96, 128};
 
 	CountryIndex = -1;
 }

@@ -82,7 +82,7 @@ void UI::Handle_Input(SDL_Event& ev){
 void UI::IncreaseSpeed(){
 	PCref->ChangeSpeed(true);
 	std::string str = "Icons/" + std::to_string(PCref->Date.Speed) + "-Speed.png";
-	SpeedImg->ChangeImage(str.c_str());
+	SpeedImg->ChangeImage(str);
 }
 
 void UI::DecreaseSpeed(){

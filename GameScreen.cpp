@@ -157,7 +157,7 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
 			int x = Cam_Width + int(ev.button.x / factor) - 5384;
 			int y = Cam_Height + int(ev.button.y / factor);
 
-			Color rgb = CD::getcolor(PC->provinces, x, y);
+			Color rgb(CD::getcolor(PC->provinces, x, y));
 
 			if (PC->StatesMap.contains(rgb.toString())) {
 				State* state = PC->StatesMap.find(rgb.toString())->second;
@@ -181,7 +181,7 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
                                 StateViewingScreen = std::make_unique<StatePreview>(*main_window, state->State_ID - 1, state->State_Name, state->State_Controller, PC.get(), res, int(state->State_Population), fcs, close, change);
 			}
 
-			SDL_Surface_ctx base(SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000));
+			auto base = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
 			auto Marker = SDL_Surface_ctx::IMG_Load("Icons/pin1.png");
 
 			SDL_Rect strect = { .x = -x - 5384 + 7, .y = -y + 24, .w = 5616 * 3 , .h = 2160 };
@@ -323,7 +323,7 @@ void GameScreen::CloseActiveScreen(){
 void GameScreen::CloseScreenPreview(){
         StateViewingScreen.reset();
 
-	SDL_Surface_ctx base(SDL_CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000));
+        auto base = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
 
 	PC->overlay = SDL_Texture_ctx(*main_window, base);
 }

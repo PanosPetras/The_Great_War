@@ -172,7 +172,7 @@ void Button::ChangeText(std::string textstr, int textSize){
     TTF_Font_ctx font(textSize);
 
     //Convert the text to a surface
-    SDL_Surface_ctx textSur(TTF_RenderText_Blended(font, textstr.c_str(), SDL_Color{.r = 255, .g = 255, .b = 255, .a = 0}));
+    auto textSur = SDL_Surface_ctx::TTF_RenderText_Blended(font, textstr, SDL_Color{.r = 255, .g = 255, .b = 255, .a = 0});
     text = SDL_Texture_ctx(*main_window, textSur);
 
     int text_x = (draw_rect.w - textSur->w) / 2;
