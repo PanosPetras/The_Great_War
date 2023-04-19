@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include <memory>
-#include <string_view>
+#include <string>
 
 /*-----------------------------------------------------------------------------
 The promiscuous_ref is to be used while converting from storing
@@ -120,6 +120,23 @@ public:
     ~MIX_ctx();
 };
 //-----------------------------------------------------------------------------
+class TTF_Font_ctx {
+public:
+    TTF_Font_ctx(int ptsize); // use the default
+    explicit TTF_Font_ctx(const std::string& filename, int ptsize);
+
+    TTF_Font_ctx(const TTF_Font_ctx&) = delete;
+    TTF_Font_ctx(TTF_Font_ctx&&) noexcept = default;
+    TTF_Font_ctx& operator=(const TTF_Font_ctx&) = delete;
+    TTF_Font_ctx& operator=(TTF_Font_ctx&&) noexcept = default;
+    ~TTF_Font_ctx() = default;
+
+    TTF_Font* operator->();
+    operator TTF_Font* ();
+private:
+    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> font;
+};
+//-----------------------------------------------------------------------------
 class SDL_Window_ctx {
 public:
     SDL_Window_ctx();
@@ -172,8 +189,6 @@ private:
 class SDL_Surface_ctx {
 public:
     SDL_Surface_ctx(); // non-owning
-    explicit SDL_Surface_ctx(SDL_Surface*); // take ownership of a raw pointer
-
     SDL_Surface_ctx(const SDL_Surface_ctx&) = delete;
     SDL_Surface_ctx(SDL_Surface_ctx&&) noexcept = default;
     SDL_Surface_ctx& operator=(const SDL_Surface_ctx&) = delete;
@@ -182,10 +197,15 @@ public:
 
     SDL_Surface* operator->();
     operator SDL_Surface* ();
-    operator const SDL_Surface* () const;
+    inline explicit operator bool () const { return static_cast<bool>(surface); }
 
-    static SDL_Surface_ctx IMG_Load(std::string_view filename);
+    static SDL_Surface_ctx CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask);
+    static SDL_Surface_ctx IMG_Load(const std::string& filename);
+    static SDL_Surface_ctx TTF_RenderText_Blended(TTF_Font_ctx& cont, const std::string& text, SDL_Color fg);
+    static SDL_Surface_ctx TTF_RenderText_Blended_Wrapped(TTF_Font_ctx& font, const std::string& text, SDL_Color fg, Uint32 wrapLength);
 private:
+    SDL_Surface_ctx(SDL_Surface*); // take ownership of a raw pointer
+
     std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface;
 };
 
@@ -203,25 +223,8 @@ public:
     SDL_Texture* operator->();
     operator SDL_Texture* ();
 
-    static SDL_Texture_ctx IMG_Load(SDL_Renderer_ctx& r, std::string_view filename);
+    static SDL_Texture_ctx IMG_Load(SDL_Renderer_ctx& r, const std::string& filename);
 private:
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture;
 };
 using TextureRef = promiscuous_ref<SDL_Texture_ctx, SDL_Texture>;
-//-----------------------------------------------------------------------------
-class TTF_Font_ctx {
-public:
-    TTF_Font_ctx(int ptsize); // use the default
-    explicit TTF_Font_ctx(std::string_view filename, int ptsize);
-
-    TTF_Font_ctx(const TTF_Font_ctx&) = delete;
-    TTF_Font_ctx(TTF_Font_ctx&&) noexcept = default;
-    TTF_Font_ctx& operator=(const TTF_Font_ctx&) = delete;
-    TTF_Font_ctx& operator=(TTF_Font_ctx&&) noexcept = default;
-    ~TTF_Font_ctx() = default;
-
-    TTF_Font* operator->();
-    operator TTF_Font* ();
-private:
-    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> font;
-};
