@@ -58,10 +58,10 @@ public:
     
     bool GetIfTargetPairIsAtWar(const CountryPair& pair) const;
     void JoinWar(Country* newParticipant, Country* onTheSideOf);
-    const std::set<Country*>& GetFaction(int i) const;
+    const std::set<Country*>& GetFaction(unsigned i) const;
 
     void AddClaim(Claim claim);
-    const std::vector<Claim>& GetClaims(int i) const;
+    const std::vector<Claim>& GetClaims(unsigned i) const;
 
     void AddScore(Country* instigator, int score);
     int GetRelativeScore() const;
@@ -125,7 +125,7 @@ enum RequestType {
 
 class Request {
 public:
-    Request(RequestType id, int senderIndex, std::string senderTag, Relation& rel);
+    Request(RequestType id, unsigned senderIndex, std::string senderTag, Relation& rel);
 
     void Accept();
     void Decline();
@@ -136,7 +136,7 @@ public:
 
 private:
     RequestType id;
-    int index;
+    unsigned index;
     Relation &rel;
     std::string tag;
 

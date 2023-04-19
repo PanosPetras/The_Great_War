@@ -18,7 +18,7 @@ Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int 
 
 void Label::pDraw() {
     //Copy the text texture to the screen
-    SDL_RenderCopy(RendererReference, texture, NULL, &draw_rect);
+    SDL_RenderCopy(RendererReference, texture, nullptr, &draw_rect);
 }
 
 void Label::ChangeText(std::string Text) {
@@ -38,9 +38,10 @@ void Label::ChangeColor(Color rgb) {
     UpdateLabel();
 }
 
-void Label::ChangePosition(int x, int y) {
+void Label::ChangePosition(int X, int Y) {
     //Save the new Position
-    this->x = x, this->y = y;
+    x = X;
+    y = Y;
 
     //Setting the texture size
     int texW, texH;

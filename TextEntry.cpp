@@ -5,27 +5,26 @@
 #include "MainWindow.h"
 
 #include <SDL.h>
-TextEntry::TextEntry(MainWindow& mw, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters) : TextEntry(mw, x, y, Width, Height, top_left, defaultText, maxCharacters) {
+TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, std::string defaultText, int maxCharacters) : TextEntry(mw, X, Y, Width, Height, top_left, defaultText, maxCharacters) {
 }
 
-TextEntry::TextEntry(MainWindow& mw, int x, int y, int Width, int Height, std::string defaultText, std::string hint, int maxCharacters) : TextEntry(mw, x, y, Width, Height, top_left, defaultText, hint, maxCharacters) {
+TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, std::string defaultText, std::string Hint, int maxCharacters) : TextEntry(mw, X, Y, Width, Height, top_left, defaultText, Hint, maxCharacters) {
 }
 
-TextEntry::TextEntry(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters) : main_window(&mw) {
-    background = std::make_unique<Image>(mw, "Backgrounds/FlagBg.png", x, y, Width, Height, anchor);
-    textLabel = std::make_unique<Label>(mw, defaultText, 20, int(x * 1.08), int(y * 1.08), anchor);
-    hintLabel = NULL;
-
-    text = defaultText;
-    hint = "";
-    maxSize = maxCharacters;
-
-    this->x = x;
-    this->y = y;
+TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters) :
+    main_window(&mw),
+    x(X), y(Y),
+    text(defaultText),
+    maxSize(maxCharacters),
+    background(std::make_unique<Image>(mw, "Backgrounds/FlagBg.png", x, y, Width, Height, anchor)),
+    textLabel(std::make_unique<Label>(mw, defaultText, 20, int(x * 1.08), int(y * 1.08), anchor))
+{
 }
 
-TextEntry::TextEntry(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint, int maxCharacters) : TextEntry(mw, x, y, Width, Height, anchor, defaultText, maxCharacters) {
-    ChangeHint(hint);
+TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, Anchor anchor, std::string defaultText, std::string Hint, int maxCharacters) :
+    TextEntry(mw, X, Y, Width, Height, anchor, defaultText, maxCharacters)
+{
+    ChangeHint(Hint);
 }
 
 void TextEntry::HandleInput(const SDL_Event& ev){
@@ -64,12 +63,12 @@ void TextEntry::HandleInput(const SDL_Event& ev){
     }
 }
 
-void TextEntry::ChangePosition(int x, int y, int Width, int Height){
-    background->ChangePosition(x, y, Width, Height);
-    textLabel->ChangePosition(int(x * 1.08), int(y * 1.08));
+void TextEntry::ChangePosition(int X, int Y, int Width, int Height){
+    background->ChangePosition(X, Y, Width, Height);
+    textLabel->ChangePosition(int(X * 1.08), int(Y * 1.08));
 
-    if (hintLabel != NULL) {
-        hintLabel->ChangePosition(int(x * 1.08), int(y * 1.08));
+    if (hintLabel) {
+        hintLabel->ChangePosition(int(X * 1.08), int(Y * 1.08));
     }
 }
 
@@ -81,24 +80,24 @@ std::string TextEntry::GetText(){
     return text;
 }
 
-void TextEntry::ChangeText(std::string text){
-    textLabel->ChangeText(text);
-    this->text = text;
+void TextEntry::ChangeText(std::string Text){
+    textLabel->ChangeText(Text);
+    text = Text;
 }
 
 std::string TextEntry::GetHint(){
     return hint;
 }
 
-void TextEntry::ChangeHint(std::string hint){
-    if (hint != this->hint) {
-        if (hintLabel != NULL) {
-            hintLabel->ChangeText(hint);
+void TextEntry::ChangeHint(std::string Hint){
+    if (Hint != hint) {
+        if (hintLabel) {
+            hintLabel->ChangeText(Hint);
         } else {
-            hintLabel = std::make_unique<Label>(*main_window, hint, 20, int(x * 1.08), int(y * 1.08));
+            hintLabel = std::make_unique<Label>(*main_window, Hint, 20, int(x * 1.08), int(y * 1.08));
         }
 
-        this->hint = hint;
+        hint = Hint;
     }
 }
 
@@ -107,7 +106,7 @@ void TextEntry::pDraw(){
 
     if (text != "") {
         textLabel->Draw();
-    } else if(hintLabel != NULL) {
+    } else if(hintLabel) {
         hintLabel->Draw();
     }
 }

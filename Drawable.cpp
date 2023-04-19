@@ -56,7 +56,5 @@ void ApplyAnchor(SDL_Rect& rect, Anchor anchor) {
             rect.x -= rect.w;
             rect.y -= rect.h / 2;
             break;
-        default:
-            break;
     }
 }

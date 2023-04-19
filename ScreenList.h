@@ -53,7 +53,7 @@ public:
 
     void ApplyChanges();
 private:
-    int currentResolutionIndex;
+    unsigned currentResolutionIndex;
 
     void UpdateResolutionLabel();
 };
@@ -161,6 +161,8 @@ public:
 
     PlayerController* PCref;
 
+    static inline constexpr unsigned flagsPerLine = 12;
+
 private:
     unsigned CreateCountryButtons(PlayerController* PC);
     unsigned CreateCountryButtons(PlayerController* PC, std::string targetTag);
@@ -176,7 +178,7 @@ private:
     void UpdateAllianceState();
     void UpdateEmbargoState();
 
-    int selectedCountryIndex;
+    unsigned selectedCountryIndex;
 };
 
 class IndustryScreen : public Screen {
@@ -209,7 +211,7 @@ public:
 
 class OpenFactoryScreen : public Screen {
 public:
-    OpenFactoryScreen(MainWindow& mw, int id, PlayerController* PC, std::function<void()> fp);
+    OpenFactoryScreen(MainWindow& mw, unsigned id, PlayerController* PC, std::function<void()> fp);
 
     void FactoryTypeLumber();
     void FactoryTypeGlass();
@@ -243,13 +245,13 @@ public:
     //Factory attributes
     int cost;
     PlayerController* PCref;
-    int index;
+    unsigned index;
     char type;
 };
 
 class StatePreview : public Screen {
 public:
-    StatePreview(MainWindow& mw, int id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc);
+    StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc);
 
     void Render() override;
 
@@ -267,7 +269,7 @@ private:
 
     std::unique_ptr<OpenFactoryScreen> OFS;
 
-    int Id;
+    unsigned Id;
 
     PlayerController* PCref;
 };

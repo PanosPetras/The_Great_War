@@ -36,16 +36,16 @@ public:
 
     //Some info about the player
     std::string player_tag;
-    int player_index;
+    unsigned player_index;
 
     //The in-game date
     struct {
-            int Year;
-            int Month;
-            int Day;
-            int Speed;
-            bool bIsPaused;
-            int MonthDays[12];
+        int Year;
+        int Month;
+        int Day;
+        int Speed;
+        bool bIsPaused;
+        int MonthDays[12];
     } Date;
 
     //This is the representing the pass of a single day

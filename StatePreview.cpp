@@ -5,7 +5,12 @@
 #include "Label.h"
 #include "Image.h"
 
-StatePreview::StatePreview(MainWindow& mw, int id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc) : Screen(mw) {
+StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4],
+                           std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> changeScreenFunc) :
+    Screen(mw),
+    ChangeScreenFunc2(changeScreenFunc),
+    Id(id)
+{
         auto [Width, Height] = mw.GetWindowDimensions();
 	Controller = controller;
 	std::string str = "Flags/" + Controller;
@@ -40,8 +45,6 @@ StatePreview::StatePreview(MainWindow& mw, int id, std::string StateName, std::s
 	}
 
 	PCref = PC;
-	this->Id = id;
-	ChangeScreenFunc2 = ChangeScreenFunc;
 }
 
 void StatePreview::Render(){
@@ -93,10 +96,11 @@ void StatePreview::DeleteOFS(){
                 InputDrawableArr.resize(InputDrawableArrtop()-1);
 	}
 
-	int index = int(ImageArr.size()) - 1;
+        if(ImageArr.empty()) throw std::out_of_range("StatePreview::DeleteOFS ImageArr is empty");
+        auto index = ImageArr.size() - 1;
 	if (PCref->StatesArr[Id].State_Factories[index] != nullptr) {
 		std::string str = "Icons/Goods/" + PCref->StatesArr[Id].State_Factories[index]->Type + ".png";
-		AddImage<Image>(*main_window, str, int(Width * (0.055 + 0.0288 * index)), int(Height * 0.8999), 48, 48);
+		AddImage<Image>(*main_window, str, int(Width * (0.055L + 0.0288L * index)), int(Height * 0.8999), 48, 48);
 	}
 }
 

@@ -1,7 +1,7 @@
 #include "Factory.h"
 
 void Factory::Tick() {
-	*(TargetStockpile) += materialsProduced + materialsNeeded;
+	*TargetStockpile += materialsProduced + materialsNeeded;
 }
 
 Factory::Factory(Stockpile* Target, Market* market, std::string arg, int c = 500) {
@@ -14,8 +14,8 @@ Factory::Factory(Stockpile* Target, Market* market, std::string arg, int c = 500
 
 Factory::~Factory() {
 	if (TargetMarket == nullptr) return;
-	(*TargetMarket).Demand += materialsNeeded;
-	(*TargetMarket).Supply -= materialsProduced;
+	TargetMarket->Demand += materialsNeeded;
+	TargetMarket->Supply -= materialsProduced;
 }
 
 void Factory::ChangeOwner(Stockpile* NewStockpile) {
@@ -24,8 +24,8 @@ void Factory::ChangeOwner(Stockpile* NewStockpile) {
 
 void Factory::confirmMaterials() {
 	if (TargetMarket == nullptr) return;
-	(*TargetMarket).Demand -= materialsNeeded;
-	(*TargetMarket).Supply += materialsProduced;
+	TargetMarket->Demand -= materialsNeeded;
+	TargetMarket->Supply += materialsProduced;
 }
 
 CanningFactory::CanningFactory(Stockpile* Target, Market* market) : Factory(Target, market, "canned food", 8000) {

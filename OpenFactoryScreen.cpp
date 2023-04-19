@@ -6,7 +6,7 @@
 #include "MainWindow.h"
 #include "PlayerController.h"
 
-OpenFactoryScreen::OpenFactoryScreen(MainWindow& mw, int id, PlayerController* PC, std::function<void()> quitfunc) : Screen(mw, quitfunc){
+OpenFactoryScreen::OpenFactoryScreen(MainWindow& mw, unsigned id, PlayerController* PC, std::function<void()> quitfunc) : Screen(mw, quitfunc){
     PCref = PC;
     auto [Width, Height] = mw.GetWindowDimensions();
 
@@ -155,9 +155,9 @@ void OpenFactoryScreen::FactoryTypePlane(){
     FactoryType('v', F.cost);
 }
 
-void OpenFactoryScreen::FactoryType(char t, int cost){
+void OpenFactoryScreen::FactoryType(char t, int Cost){
     type = t;
-    std::string txt = "Factory cost: " + std::to_string(cost);
+    std::string txt = "Factory cost: " + std::to_string(Cost);
     LabelArr[2]->ChangeText(txt.c_str());
 }
 
@@ -232,7 +232,6 @@ void OpenFactoryScreen::BuildFactory(){
                 break;
         default:
                 return;
-                break;
     }
 
     if (PCref->CountriesArr.at(PCref->player_index)->Stock.Money >= NF->cost){

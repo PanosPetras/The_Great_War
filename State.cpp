@@ -37,49 +37,49 @@ State::State(std::string name, int ID, std::string owner, std::string controller
 }
 
 void State::Tick(int TaxRate, int HealthCare){
-	State_Population += State_Population * (0.00005479452 / (1.0 + TaxRate / 200.0)) * (1 + HealthCare / 160.0);
+    State_Population += State_Population * (0.00005479452 / (1.0 + TaxRate / 200.0)) * (1 + HealthCare / 160.0);
 
-	TargetStockpile->Coal += Resources.Coal;
-	TargetStockpile->Oil += Resources.Oil;
-	TargetStockpile->Timber += Resources.Timber;
-	TargetStockpile->Rubber += Resources.Rubber;
-	TargetStockpile->Cotton += Resources.Cotton;
-	TargetStockpile->Iron += Resources.Iron;
-	TargetStockpile->Grain += Resources.Grain;
-	TargetStockpile->Fruit += Resources.Fruit;
+    TargetStockpile->Coal += Resources.Coal;
+    TargetStockpile->Oil += Resources.Oil;
+    TargetStockpile->Timber += Resources.Timber;
+    TargetStockpile->Rubber += Resources.Rubber;
+    TargetStockpile->Cotton += Resources.Cotton;
+    TargetStockpile->Iron += Resources.Iron;
+    TargetStockpile->Grain += Resources.Grain;
+    TargetStockpile->Fruit += Resources.Fruit;
 
-	for (int x = 0; x < 4; x++) {
-		if (State_Factories[x] != nullptr) {
-			State_Factories[x]->Tick();
-		}
-	}
+    for (unsigned x = 0; x < 4; x++) {
+        if (State_Factories[x] != nullptr) {
+            State_Factories[x]->Tick();
+        }
+    }
 }
 
 void State::ChangeController(std::string NewOwner, Stockpile* NewStock){
-	State_Controller = NewOwner;
-	TargetStockpile = NewStock;
-	for (int x = 0; x < 4; x++) {
-		if (State_Factories[x] != nullptr) {
-			State_Factories[x]->ChangeOwner(NewStock);
-		}
-	}
+    State_Controller = NewOwner;
+    TargetStockpile = NewStock;
+    for (unsigned x = 0; x < 4; x++) {
+        if (State_Factories[x] != nullptr) {
+            State_Factories[x]->ChangeOwner(NewStock);
+        }
+    }
 }
 
 int State::AddFactory(std::unique_ptr<Factory>& NewFactory){
-	for (int x = 0; x < 4; x++) {
-		if (State_Factories[x] == nullptr) {
-			State_Factories[x] = std::move(NewFactory);
-			return 0;
-		}
-	}
-	return -1;
+    for (unsigned x = 0; x < 4; x++) {
+        if (State_Factories[x] == nullptr) {
+            State_Factories[x] = std::move(NewFactory);
+            return 0;
+        }
+    }
+    return -1;
 }
 
-int State::RemoveFactory(int index){
-	if (State_Factories[index]) {
-		State_Factories[index] = nullptr;
+int State::RemoveFactory(unsigned index){
+    if (State_Factories[index]) {
+        State_Factories[index] = nullptr;
 
-		return 0;
-	}
-	return -1;
+        return 0;
+    }
+    return -1;
 }

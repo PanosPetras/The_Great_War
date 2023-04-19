@@ -3,25 +3,27 @@
 #include <string>
 
 namespace Resolutions {
-	struct Resolution {
-	public:
-		Resolution(int width, int height);
 
-		std::string toString() const;
+    struct Resolution {
+    public:
+        constexpr Resolution(int width, int height) : w(width), h(height) {}
 
-		//Accessor functions
-		int GetWidth() const;
-		int GetHeight() const;
+        std::string toString() const;
 
-		bool operator == (const Resolution&);
+        //Accessor functions
+        int GetWidth() const;
+        int GetHeight() const;
 
-	private:
-		int w, h;
-	};
+        constexpr auto operator<=>(const Resolution&) const noexcept = default;
 
-	static const std::array<Resolution, 3> SUPPORTED_RESOLUTIONS = {Resolution(1280, 720), 
-																	Resolution(1920, 1080), 
-																	Resolution(2560, 1440)};
+    private:
+        int w, h;
+    };
 
-	int findResolutionIndex(Resolutions::Resolution&);
+    constexpr std::array<Resolution, 3> SUPPORTED_RESOLUTIONS = {Resolution(1280, 720),
+                                                                 Resolution(1920, 1080),
+                                                                 Resolution(2560, 1440)};
+
+    static inline constexpr unsigned not_found = static_cast<unsigned>(-1);
+    unsigned findResolutionIndex(Resolutions::Resolution&);
 }

@@ -41,9 +41,9 @@ ToggleButton::~ToggleButton() {
 void ToggleButton::pDraw(){
     //Drawing the toggle button
     if (!value) {
-        SDL_RenderCopy(RendererReference, inactiveTexture, NULL, &draw_rect);
+        SDL_RenderCopy(RendererReference, inactiveTexture, nullptr, &draw_rect);
     } else {
-        SDL_RenderCopy(RendererReference, activeTexture, NULL, &draw_rect);
+        SDL_RenderCopy(RendererReference, activeTexture, nullptr, &draw_rect);
     }
 }
 

@@ -46,7 +46,7 @@ void UI::Render(){
 	//Renders the country menu
 	flagbg->Draw();
 	flag->Draw();
-	for (int x = 0; x < 5; x++) {
+	for (unsigned x = 0; x < 5; x++) {
 		Buttons[x]->Draw();
 	}
 
@@ -58,7 +58,7 @@ void UI::Render(){
 	}
 	Date->Draw();
 	SpeedImg->Draw();
-	for (int x = 0; x < 2; x++) {
+	for (unsigned x = 0; x < 2; x++) {
 		DateButtons[x]->Draw();
 	}
 	PauseButton->Draw();
@@ -68,11 +68,11 @@ void UI::Handle_Input(SDL_Event& ev){
 	//Handles inputs for buttons
 	flag->HandleInput(ev);
 
-	for (int x = 0; x < 5; x++) {
+	for (unsigned x = 0; x < 5; x++) {
 		Buttons[x]->HandleInput(ev);
 	}
 
-	for (int x = 0; x < 2; x++) {
+	for (unsigned x = 0; x < 2; x++) {
 		DateButtons[x]->HandleInput(ev);
 	}
 
