@@ -178,3 +178,4 @@ public:
 } Stockpile;
 
 #endif
+

@@ -157,7 +157,7 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
 			int x = Cam_Width + int(ev.button.x / factor) - 5384;
 			int y = Cam_Height + int(ev.button.y / factor);
 
-			Color rgb = CD::getcolor(PC->provinces, x, y);
+			Color rgb(CD::getcolor(PC->provinces, x, y));
 
 			if (PC->StatesMap.contains(rgb.toString())) {
 				State* state = PC->StatesMap.find(rgb.toString())->second;
