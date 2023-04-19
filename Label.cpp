@@ -1,24 +1,27 @@
 #include "Label.h"
+
 #include "MainWindow.h"
 
-Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, Color rgb) : Label(r, Text, size, x, y, 300, top_left, rgb) {
+Label::Label(MainWindow& mw, std::string Text, int size, int x, int y, Color rgb) : Label(mw, Text, size, x, y, 300, top_left, rgb) {
 }
 
-Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, Anchor anchor, Color rgb) : Label(r, Text, size, x, y, 300, anchor, rgb) {
+Label::Label(MainWindow& mw, std::string Text, int size, int x, int y, Anchor anchor, Color rgb) : Label(mw, Text, size, x, y, 300, anchor, rgb) {
 }
 
-Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xlim, Color rgb) : Label(r, Text, size, x, y, xlim, top_left, rgb) {
+Label::Label(MainWindow& mw, std::string Text, int size, int x, int y, int xlim, Color rgb) : Label(mw, Text, size, x, y, xlim, top_left, rgb) {
 }
 
-Label::Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xlim, Anchor anchor, Color rgb) :
-    Drawable(anchor), RendererReference(r), FontSize(size), color(rgb), text(Text), x(x), y(y), xLim(xlim)
+Label::Label(MainWindow& mw, std::string Text, int size, int x, int y, int xlim, Anchor anchor, Color rgb) :
+    Drawable(anchor),
+    main_window(&mw),
+    FontSize(size), color(rgb), text(Text), x(x), y(y), xLim(xlim)
 {
     UpdateLabel();
 }
 
 void Label::pDraw() {
     //Copy the text texture to the screen
-    SDL_RenderCopy(RendererReference, texture, nullptr, &draw_rect);
+    SDL_RenderCopy(*main_window, texture, NULL, &draw_rect);
 }
 
 void Label::ChangeText(std::string Text) {
@@ -64,7 +67,7 @@ void Label::UpdateLabel() {
 
     //Convert the text to a surface and then assign the surface to a texture
     auto surface = SDL_Surface_ctx::TTF_RenderText_Blended_Wrapped(font, text, color, xLim);
-    texture = SDL_Texture_ctx(RendererReference, surface);
+    texture = SDL_Texture_ctx(*main_window, surface);
 
     ChangePosition(x, y);
 }

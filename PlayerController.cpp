@@ -1,5 +1,7 @@
-#include "Color.h"
 #include "PlayerController.h"
+
+#include "Color.h"
+#include "MainWindow.h"
 #include "SDL_ColorDetection.h"
 
 #include <SDL_image.h>
@@ -30,7 +32,7 @@ std::vector<T> LoadFromFile(const char* filename) {
 }
 } // namesapce
 
-PlayerController::PlayerController(SDL_Renderer_ctx& r, const char* tag) : RendererReference(r) {
+PlayerController::PlayerController(MainWindow& mw, const char* tag) : main_window(&mw) {
 	//Save the player's country tag
 	player_tag = tag;
 
@@ -106,7 +108,7 @@ int PlayerController::LoadMap(void* pc){
 	strect = { .x = -5616 * 2 + 232, .y = 0, .w = 5616 * 3 , .h = 2160 };
 	SDL_BlitSurface(PC.map, &strect, base, nullptr);
 
-	PC.txt = SDL_Texture_ctx(PC.RendererReference, base);
+	PC.txt = SDL_Texture_ctx(*PC.main_window, base);
 
 	return 0;
 }
@@ -117,7 +119,7 @@ int PlayerController::LoadUtilityAssets(void* pc){
 	PC.provinces = SDL_Surface_ctx::IMG_Load("map/provinces.bmp");
 
         auto base = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
-	PC.overlay = SDL_Texture_ctx(PC.RendererReference, base);
+	PC.overlay = SDL_Texture_ctx(*PC.main_window, base);
 
 	return 0;
 }

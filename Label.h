@@ -13,13 +13,15 @@
 
 #include <string>
 
+class MainWindow;
+
 class Label : public Drawable {
 public:
     //Constructor
-    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, Color rgb = Color{});
-    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, Anchor anchor, Color rgb = Color{});
-    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xLim, Color rgb = Color{});
-    Label(SDL_Renderer_ctx& r, std::string Text, int size, int x, int y, int xLim, Anchor anchor, Color rgb = Color{});
+    Label(MainWindow& mw, std::string Text, int size, int x, int y, Color rgb = Color{});
+    Label(MainWindow& mw, std::string Text, int size, int x, int y, Anchor anchor, Color rgb = Color{});
+    Label(MainWindow& mw, std::string Text, int size, int x, int y, int xLim, Color rgb = Color{});
+    Label(MainWindow& mw, std::string Text, int size, int x, int y, int xLim, Anchor anchor, Color rgb = Color{});
 
     //Get the label's text
     std::string GetText();
@@ -43,11 +45,11 @@ public:
     void UpdateLabel();
 
 protected:
+    //Reference to the main window
+    MainWindow* main_window;
+
     //Render the label on the screen
     void pDraw() override;
-
-    //Reference the the screen's renderer
-    RendererRef RendererReference;
 
     //The label's font size
     int FontSize;

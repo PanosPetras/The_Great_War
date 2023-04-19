@@ -1,7 +1,5 @@
-#ifndef Slider_H
-#define Slider_H
-
 #pragma once
+
 #include "Drawable.h"
 
 #include "SDL_ctx.h"
@@ -10,11 +8,13 @@
 
 #include <functional>
 
+class MainWindow;
+
 class Slider : public InputDrawable {
 public:
 	//Constructor, initializes the values
-	Slider(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
-	Slider(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, Anchor anchor, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
+	Slider(MainWindow& mw, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
+	Slider(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
 
 	//Handle input events
 	void HandleInput(const SDL_Event& ev) override;
@@ -36,14 +36,15 @@ public:
 	void SetActive(bool state) override;
 
 protected:
+	//A reference to the main window
+	MainWindow* main_window;
+
 	//Render the slider on the screen
 	void pDraw() override;
 
 	//Calls the function bound to this slider, when the Value changes
 	void callOnValueChanged();
 
-	//A reference to the window's renderer
-	RendererRef renderer;
 
 	//The Slider's graphical components
 	SDL_Texture_ctx Marker;
@@ -59,4 +60,3 @@ private:
 	//Called when the value of the slider changes
 	std::function<void()> onSliderValueChanged;
 };
-#endif

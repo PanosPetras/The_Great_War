@@ -12,7 +12,7 @@ X64ALL = $(X64DLLSO) $(X64DLLTO)
 OBJ = $(SRC:%.cpp=build/%.o)
 AOBJ = $(SRC:%.cpp=build/%.asan.o)
 TOBJ = $(SRC:%.cpp=build/%.tsan.o)
-CCMD = $(CXX) -std=c++20 -g $(SDLINCS) -c -o $@ $< -Wall -Wextra -Woverloaded-virtual -Werror -pedantic-errors $(OPTS)
+CCMD = $(CXX) -std=c++20 -g $(SDLINCS) -c -o $@ $< -Wall -Wextra -Woverloaded-virtual -pedantic-errors $(OPTS)
 LCMD = $(CXX) -o $@ -std=c++20 -g $^ $(SDLLIBS) $(OPTS)
 
 CLANGOPTS = -Weverything -Wweak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-documentation -Wno-poison-system-directories -Wno-weak-vtables

@@ -4,6 +4,7 @@
 #pragma once
 #include "Drawable.h"
 
+#include "MainWindow.h"
 #include "SDL_ctx.h"
 
 #include <SDL.h>
@@ -16,10 +17,10 @@
 class ToggleButton : public InputDrawable {
 public:
     //Constructor
-    ToggleButton(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f = {}, int keybind = 0);
-    ToggleButton(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f = {}, int keybind = 0);
-    ToggleButton(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, std::function<void(bool)> f = {}, int keybind = 0);
-    ToggleButton(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, bool val, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, bool val, std::function<void(bool)> f = {}, int keybind = 0);
 
     //Destructor
     ~ToggleButton() override;
@@ -55,6 +56,9 @@ public:
     void SetActive(bool state) override;
 
 protected:
+    //Reference the the main window
+    MainWindow* main_window;
+
     //Render the button on the screen
     void pDraw() override;
 
@@ -75,9 +79,6 @@ protected:
 
     //Dimensions of the button
     SDL_Rect draw_rect;
-
-    //Reference the the screen's renderer
-    RendererRef RendererReference;
 
     //Reference to the button's texture
     SDL_Texture_ctx activeTexture;

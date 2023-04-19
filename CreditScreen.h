@@ -1,6 +1,8 @@
 #include "Screen.h"
 
+class MainWindow;
+
 class CreditScreen : public Screen {
 public:
-	CreditScreen(SDL_Renderer_ctx& r, int Width, int Height);
+    CreditScreen(MainWindow& mw, int Width, int Height);
 };

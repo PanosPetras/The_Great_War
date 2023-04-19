@@ -1,10 +1,12 @@
 #include "Screen.h"
 
 #include "Button.h"
+#include "Drawable.h"
+#include "Image.h"
+#include "Label.h"
 #include "MainWindow.h"
 #include "MessageBox.h"
 #include "Label.h"
-#include "Image.h"
 
 #include <iostream>
 

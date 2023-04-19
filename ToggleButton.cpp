@@ -2,13 +2,17 @@
 #include <iostream>
 #include "Button.h"
 
-ToggleButton::ToggleButton(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f, int keybind) : ToggleButton(r, x, y, Width, Height, activeImage, inactiveImage, top_left, f, keybind) {
-}
+ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f, int keybind) :
+    ToggleButton(mw, x, y, Width, Height, activeImage, inactiveImage, top_left, f, keybind) {}
 
-ToggleButton::ToggleButton(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f, int keybind) : ToggleButton(r, x, y, Width, Height, activeImage, inactiveImage, top_left, val, f, keybind) {
-}
+ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f, int keybind) :
+    ToggleButton(mw, x, y, Width, Height, activeImage, inactiveImage, top_left, val, f, keybind) {}
 
-ToggleButton::ToggleButton(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, std::function<void(bool)> f, int keybind) : InputDrawable(anchor), RendererReference(r) {
+ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, std::function<void(bool)> f, int keybind) :
+    InputDrawable(anchor),
+    main_window(&mw),
+    music(::Mix_LoadWAV("Sounds/ButtonClick.mp3"))
+{
     //Set the default values
     bHovered = false;
     value = false;
@@ -24,12 +28,11 @@ ToggleButton::ToggleButton(SDL_Renderer_ctx& r, int x, int y, int Width, int Hei
 
     //Save the button's bind to the keyboard
     ChangeKeybind(keybind);
-
-    //Load the button's click sound
-    music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
-ToggleButton::ToggleButton(SDL_Renderer_ctx& r, [[maybe_unused]]int x, [[maybe_unused]]int y, [[maybe_unused]]int Width, [[maybe_unused]]int Height, [[maybe_unused]]std::string activeImage, [[maybe_unused]]std::string inactiveImage, [[maybe_unused]]Anchor anchor, [[maybe_unused]]bool val, [[maybe_unused]]std::function<void(bool)> f, [[maybe_unused]]int keybind) : RendererReference(r) {
+ToggleButton::ToggleButton(MainWindow& mw, [[maybe_unused]]int x, [[maybe_unused]]int y, [[maybe_unused]]int Width, [[maybe_unused]]int Height, [[maybe_unused]]std::string activeImage, [[maybe_unused]]std::string inactiveImage, [[maybe_unused]]Anchor anchor, [[maybe_unused]]bool val, [[maybe_unused]]std::function<void(bool)> f, [[maybe_unused]]int keybind) :
+    main_window(&mw)
+{
     value = val;
 }
 
@@ -41,9 +44,9 @@ ToggleButton::~ToggleButton() {
 void ToggleButton::pDraw(){
     //Drawing the toggle button
     if (!value) {
-        SDL_RenderCopy(RendererReference, inactiveTexture, nullptr, &draw_rect);
+        SDL_RenderCopy(*main_window, inactiveTexture, nullptr, &draw_rect);
     } else {
-        SDL_RenderCopy(RendererReference, activeTexture, nullptr, &draw_rect);
+        SDL_RenderCopy(*main_window, activeTexture, nullptr, &draw_rect);
     }
 }
 
@@ -95,8 +98,8 @@ void ToggleButton::ChangeImage(std::string activeImage, std::string inactiveImag
     auto inactiveImagePath = inactiveImage + ".png";
 
     //Loading the button's textures
-    activeTexture = SDL_Texture_ctx::IMG_Load(RendererReference, activeImagePath);
-    inactiveTexture = SDL_Texture_ctx::IMG_Load(RendererReference, inactiveImagePath);
+    activeTexture = SDL_Texture_ctx::IMG_Load(*main_window, activeImagePath);
+    inactiveTexture = SDL_Texture_ctx::IMG_Load(*main_window, inactiveImagePath);
 }
 
 void ToggleButton::ChangePosition(int x, int y, int Width, int Height){

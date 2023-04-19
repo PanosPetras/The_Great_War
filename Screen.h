@@ -19,7 +19,7 @@
 
 class MainWindow;
 
-class Screen{
+class Screen {
 public:
     //Constructor
     Screen(MainWindow& mw);

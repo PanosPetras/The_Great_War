@@ -1,14 +1,17 @@
 #include "Slider.h"
+
+#include "MainWindow.h"
+
 #include <SDL_image.h>
 
 #include <iostream>
 
-Slider::Slider(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged)
-    : Slider(r, x, y, Width, Height, top_left, minvalue, maxvalue, value, onSliderValueChanged)
+Slider::Slider(MainWindow& mw, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged)
+    : Slider(mw, x, y, Width, Height, top_left, minvalue, maxvalue, value, onSliderValueChanged)
 {}
 
-Slider::Slider(SDL_Renderer_ctx& r, int x, int y, int Width, int Height, Anchor anchor, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged)
-    : InputDrawable(anchor), renderer(r), Marker(SDL_Texture_ctx::IMG_Load(renderer, "Drawable/Slider/Circle.png"))
+Slider::Slider(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged)
+    : InputDrawable(anchor), main_window(&mw), Marker(SDL_Texture_ctx::IMG_Load(mw, "Drawable/Slider/Circle.png"))
 {
 	//Initialize all variables
 	ChangeValues(minvalue, maxvalue, value);
@@ -31,12 +34,12 @@ void Slider::SetActive(bool state) {
 void Slider::pDraw(){
 	//Drawing the slider
 	//Draw the slider's background
-	SDL_SetRenderDrawColor(renderer, 48, 48, 48, 255);
-	SDL_RenderFillRect(renderer, &bg_rect);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(*main_window, 48, 48, 48, 255);
+	SDL_RenderFillRect(*main_window, &bg_rect);
+	SDL_SetRenderDrawColor(*main_window, 0, 0, 0, 255);
 
 	//Draw the slider's marker
-	SDL_RenderCopy(renderer, Marker, nullptr, &marker_rect);
+	SDL_RenderCopy(*main_window, Marker, nullptr, &marker_rect);
 }
 
 void Slider::HandleInput(const SDL_Event& ev){

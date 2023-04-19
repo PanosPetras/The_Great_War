@@ -7,6 +7,7 @@
 #include "Diplomacy.h"
 #include "State.h"
 #include "Stockpile.h"
+
 #include "SDL_ctx.h"
 
 #include <SDL.h>
@@ -17,10 +18,12 @@
 #include <unordered_map>
 #include <vector>
 
+class MainWindow;
+
 class PlayerController {
 public:
     //Constructor
-    PlayerController(SDL_Renderer_ctx& r, const char* tag);
+    PlayerController(MainWindow& mw, const char* tag);
 
     ~PlayerController();
 
@@ -33,6 +36,7 @@ private:
     static int LoadUtilityAssets(void*);
 	
 public:
+    MainWindow* main_window;
 
     //Some info about the player
     std::string player_tag;
@@ -73,7 +77,6 @@ public:
     Diplomacy diplo;
 
     //Some SDL assets needed
-    RendererRef RendererReference;
     SDL_Texture_ctx txt;
     SDL_Texture_ctx overlay;
     SDL_Surface_ctx map;

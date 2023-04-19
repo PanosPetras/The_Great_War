@@ -2,7 +2,6 @@
 
 #include "Screen.h"
 
-#include "Color.h"
 #include "UI.h"
 
 #include "SDL_ctx.h"
@@ -16,8 +15,9 @@
 #include <string>
 #include <vector>
 
-class PlayerController;
+struct Color;
 class Country;
+class PlayerController;
 
 class MainMenu : public Screen {
 public:

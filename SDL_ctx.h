@@ -6,8 +6,8 @@
 #include <SDL_thread.h>
 #include <SDL_ttf.h>
 
-#include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <string>
 
 /*-----------------------------------------------------------------------------
@@ -38,41 +38,29 @@ public:
     ~promiscuous_ref() = default;
 
     operator T& () {
-        if(obj == nullptr) std::cerr << "promiscuous_ref nullptr dereferenced" << std::endl;
+        if(obj == nullptr) throw std::runtime_error("promiscuous_ref::operator T& (): nullptr dereferenced");
         return *obj;
     }
     operator const T& () const {
-        if(obj == nullptr) std::cerr << "promiscuous_ref nullptr dereferenced" << std::endl;
+        if(obj == nullptr) throw std::runtime_error("promiscuous_ref::operator const T& () const: nullptr dereferenced");
         return *obj;
     }
 
     T* operator->() {
-        if(obj == nullptr) {
-            std::cerr << "promiscuous_ref nullptr returned" << std::endl;
-            return nullptr;
-        }
+        if(obj == nullptr) throw std::runtime_error("T* promiscuous_ref::operator->(): nullptr returned");
         return obj;
     }
     const T* operator->() const {
-        if(obj == nullptr) {
-            std::cerr << "promiscuous_ref nullptr returned" << std::endl;
-            return nullptr;
-        }
+        if(obj == nullptr) throw std::runtime_error("const T* promiscuous_ref::operator->() const: nullptr returned");
         return obj;
     }
 
     operator U* () {
-        if(obj == nullptr) {
-            std::cerr << "promiscuous_ref nullptr returned" << std::endl;
-            return nullptr;
-        }
+        if(obj == nullptr) throw std::runtime_error("promiscuous_ref::operator U* (): nullptr returned");
         return *obj;
     }
     operator const U* () const {
-        if(obj == nullptr) {
-            std::cerr << "promiscuous_ref nullptr returned" << std::endl;
-            return nullptr;
-        }
+        if(obj == nullptr) throw std::runtime_error("promiscuous_ref::operator const U* () const: nullptr returned");
         return *obj;
     }
 private:
