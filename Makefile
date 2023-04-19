@@ -3,6 +3,12 @@ HEADERS := $(wildcard *.h)
 SDLINCS := $(shell pkg-config --cflags SDL2_image SDL2_ttf SDL2_mixer sdl2 | sed 's/-I/-isystem/g')
 SDLLIBS := $(shell pkg-config --libs SDL2_image SDL2_ttf SDL2_mixer sdl2)
 
+X64DLLS := $(wildcard SDL2/*/lib/x64/*.dll)
+X64DLLT := $(wildcard SDL2/*/lib/x64/*/*.dll)
+X64DLLSO = $(notdir $(X64DLLS))
+X64DLLTO = $(notdir $(X64DLLT))
+X64ALL = $(X64DLLSO) $(X64DLLTO)
+
 OBJ = $(SRC:%.cpp=build/%.o)
 AOBJ = $(SRC:%.cpp=build/%.asan.o)
 TOBJ = $(SRC:%.cpp=build/%.tsan.o)
@@ -38,5 +44,14 @@ build/%.tsan.o : %.cpp Makefile $(HEADERS) | build
 build:
 	mkdir -p build
 
+links: $(X64ALL)
+	ln -s ./x64/Release/The_Great_War.exe .
+
+%.dll : SDL2/*/lib/x64/%.dll
+	ln -s $< $@
+
+%.dll : SDL2/*/lib/x64/*/%.dll
+	ln -s $< $@
+
 clean:
-	rm -rf build The_Great_War asan tsan
+	rm -rf build The_Great_War asan tsan $(X64ALL) The_Great_War.exe
