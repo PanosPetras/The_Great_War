@@ -2,11 +2,11 @@
 #include "Diplomacy.h"
 #include "AI.h"
 
-Country::Country(std::string tag, std::string name, int Res[31], bool isPlayerControlled, Color rgb) : Country(tag, name, Res, rgb) {
+Country::Country(std::string tag, std::string name, const Stockpile& sp, bool isPlayerControlled, Color rgb) : Country(tag, name, sp, rgb) {
     isPlayer = isPlayerControlled;
 }
 
-Country::Country(std::string tag, std::string name, int Res[31], Color rgb) : color{rgb}, name{name}, tag{tag} {
+Country::Country(std::string tag, std::string name, const Stockpile& sp, Color rgb) : color{rgb}, name{name}, tag{tag}, Stock{sp} {
     population = 0;
     stateCount = 0;
     isPlayer = false;
@@ -19,38 +19,6 @@ Country::Country(std::string tag, std::string name, int Res[31], Color rgb) : co
                     .MineralOutput = 1.0f,
                     .FarmOutput = 1.0f,
                     .WoodOutput = 1.0f};
-
-    Stock = {       .Coal = Res[0],
-                    .Oil = Res[1],
-                    .Timber = Res[2],
-                    .Rubber = Res[3],
-                    .Cotton = Res[4],
-                    .Iron = Res[5],
-                    .Grain = Res[6],
-                    .Fruit = Res[7],
-                    .Electric_gear = Res[8],
-                    .Machine_parts = Res[9],
-                    .Glass = Res[10],
-                    .Lumber = Res[11],
-                    .Cement = Res[12],
-                    .Ammunition = Res[13],
-                    .Planes = Res[14],
-                    .Explosives = Res[15],
-                    .Small_arms = Res[16],
-                    .Artillery = Res[17],
-                    .Tanks = Res[18],
-                    .Canned_food = Res[19],
-                    .Furniture = Res[20],
-                    .Clothes = Res[21],
-                    .Automobiles = Res[22],
-                    .Merchant_ships = Res[23],
-                    .Radios = Res[24],
-                    .Telephones = Res[25],
-                    .Fuel = Res[26],
-                    .Paper = Res[27],
-                    .Liquor = Res[28],
-                    .Airship = Res[29],
-                    .Money = Res[30]};
 }
 
 void Country::AddState(State* state){
