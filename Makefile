@@ -1,16 +1,21 @@
 SRC := $(wildcard *.cpp)
 HEADERS := $(wildcard *.h)
-SDLINCS := $(shell pkg-config --cflags SDL2_image SDL2_ttf SDL2_mixer sdl2)
+SDLINCS := $(shell pkg-config --cflags SDL2_image SDL2_ttf SDL2_mixer sdl2 | sed 's/-I/-isystem/g')
 SDLLIBS := $(shell pkg-config --libs SDL2_image SDL2_ttf SDL2_mixer sdl2)
 
 OBJ = $(SRC:%.cpp=build/%.o)
 AOBJ = $(SRC:%.cpp=build/%.asan.o)
 TOBJ = $(SRC:%.cpp=build/%.tsan.o)
-CCMD = $(CXX) -std=c++20 -g $(SDLINCS) -c -o $@ $< -Wall -Wextra -Woverloaded-virtual -pedantic-errors $(OPTS)
+CCMD = $(CXX) -std=c++20 -g $(SDLINCS) -c -o $@ $< -Wall -Wextra -Woverloaded-virtual -Werror -pedantic-errors $(OPTS)
 LCMD = $(CXX) -o $@ -std=c++20 -g $^ $(SDLLIBS) $(OPTS)
+
+CLANGOPTS = -Weverything -Wweak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-documentation -Wno-poison-system-directories
 
 The_Great_War: $(OBJ)
 	$(LCMD)
+
+clang:
+	CXX=clang++ OPTS='$(CLANGOPTS)' make -j
 
 asan: $(AOBJ)
 	$(LCMD) -fsanitize=address,undefined,leak
