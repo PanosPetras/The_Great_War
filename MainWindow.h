@@ -113,18 +113,19 @@ private:
     MIX_ctx mix_ctx;
     SDL_Cursor_ctx cursor; //The window's cursor
 
-    std::array<bool, 322> KEYS;  // 322 is the number of SDLK_DOWN events
+    std::array<bool, 322> KEYS{};  // 322 is the number of SDLK_DOWN events
 
     bool quit = false;
 
-    //Stores a pointer to the active screen
-    std::unique_ptr<Screen> scr;
+    //Used to store the window's width and Height:
+    SDL_Point windim{};
 
     std::vector<std::function<void()>> event_queue; // deferred events
     std::unordered_map<std::string, std::vector<SDL_Texture_ctx>> file_textures;
 
-    //Used to store the window's width and Height:
-    SDL_Point windim{};
+    //Stores a pointer to the active screen - should be last since it
+    //uses the main window resources that need to be initialized first.
+    std::unique_ptr<Screen> scr;
 
     friend class MenuSettingsScreen;
 };

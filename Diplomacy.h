@@ -132,7 +132,7 @@ public:
 
     Relation& GetRelations() const;
     std::string GetSender() const;
-    int GetSenderIndex() const;
+    unsigned GetSenderIndex() const;
 
 private:
     RequestType id;

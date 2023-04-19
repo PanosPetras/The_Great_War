@@ -67,8 +67,6 @@ public:
     //Constructor, sets default values and creates all needed assets
     GameScreen(MainWindow& mw, const char* tag, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
 
-    std::unique_ptr<PlayerController> PC;
-
     void Pause();
 
     void RenderBackground() override;
@@ -76,8 +74,17 @@ public:
 
     //Handles input events
     void Handle_Input(SDL_Event& ev) override;
+    void HandleMouseMovement(SDL_Event& ev);
+    void ChangeActiveScreen(std::unique_ptr<Screen> NewScreen, std::string ID);
+    void CloseActiveScreen();
+    void CloseScreenPreview();
 
-    bool bIsPaused;
+    bool bHasActiveScreen() const { return static_cast<bool>(ActiveScreen); }
+
+private:
+    std::unique_ptr<PlayerController> PC;
+
+    bool bIsPaused = false;
 
     //This is a reference to the pausing screen
     std::unique_ptr<Screen> PM;
@@ -85,33 +92,27 @@ public:
     std::unique_ptr<UI> overlay;
 
     //This is the boolean about whether the screen is zoomable or not
-    bool bZoom;
+    bool bZoom = true;
 
     //This is the magnification factor
-    float factor;
+    double factor = 1.0;
 
     //This is the current location of the camera along the y axis
-    int Cam_Height;
+    int Cam_Height = 150;
 
     //This is the current location of the camera along the x axis
-    int Cam_Width;
+    int Cam_Width = 5384 + 2150;
 
     //Stores the dimensions of the image displayed
-    int ImgSize[2];
+    int ImgSize[2]{16383, 2160};
 
     //This is the camera's zooming speed
-    float ZoomingSpeed;
-    bool mousepressed;
-    int MouseSensitivity;
+    double ZoomingSpeed = 0.1;
+    bool mousepressed = false;
+    int MouseSensitivity = 3;
 
     std::unique_ptr<Screen> StateViewingScreen;
 
-    void HandleMouseMovement(SDL_Event& ev);
-    void ChangeActiveScreen(std::unique_ptr<Screen> NewScreen, std::string ID);
-    void CloseActiveScreen();
-    void CloseScreenPreview();
-
-    bool bHasActiveScreen() const { return static_cast<bool>(ActiveScreen); }
     std::string ScreenID;
     std::unique_ptr<Screen> ActiveScreen;
 };
@@ -127,6 +128,7 @@ public:
 class CountrySelection : public Screen {
 public:
     inline static constexpr unsigned Countries = 8;
+    inline static constexpr unsigned no_country_selected = static_cast<unsigned>(-1);
 
     CountrySelection(MainWindow& mw, std::function<void()> UnpauseF = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
 
@@ -135,7 +137,7 @@ public:
     static const std::array<const char*, Countries> tags;
     static const std::array<Color, Countries> colors;
 
-    int CountryIndex;
+    unsigned CountryIndex = no_country_selected;
 
     void SelectGER();
     void SelectENG();

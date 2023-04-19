@@ -20,8 +20,8 @@ public:
     //Constructor
     Label(MainWindow& mw, std::string Text, int size, int x, int y, Color rgb = Color{});
     Label(MainWindow& mw, std::string Text, int size, int x, int y, Anchor anchor, Color rgb = Color{});
-    Label(MainWindow& mw, std::string Text, int size, int x, int y, int xLim, Color rgb = Color{});
-    Label(MainWindow& mw, std::string Text, int size, int x, int y, int xLim, Anchor anchor, Color rgb = Color{});
+    Label(MainWindow& mw, std::string Text, int size, int x, int y, Uint32 xLim, Color rgb = Color{});
+    Label(MainWindow& mw, std::string Text, int size, int x, int y, Uint32 xLim, Anchor anchor, Color rgb = Color{});
 
     //Get the label's text
     std::string GetText();
@@ -39,7 +39,7 @@ public:
     void ChangePosition(int x, int y);
 
     //Change the label's x limit
-    void ChangeXLimit(int xLim);
+    void ChangeXLimit(Uint32 xLim);
 
     //Update the properties of the label once something is changed
     void UpdateLabel();
@@ -70,6 +70,6 @@ protected:
     int x, y;
 
     //The label's pixel limit in width before it enters a new line
-    int xLim;
+    Uint32 xLim;
 };
 #endif

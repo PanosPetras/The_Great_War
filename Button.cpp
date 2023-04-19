@@ -23,8 +23,6 @@ namespace {
     }
 }
 
-std::unordered_set<Button*> deads; // Only used for debugging
-
 Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) :
     Button(mw, x, y, Width, Height, image, top_left, f, keybind) {
 }
@@ -38,7 +36,6 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
     main_window(&mw),
     textures{Load(mw, image)}
 {
-    deads.erase(this); // if a previous Button had the same address, remove it from the dead Buttons
     std::cerr << "Button::Button image: " << image << std::endl;
 
     //Saving the button's coordinates
@@ -63,25 +60,24 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
     ChangeFunctionBinding(f, arg);
 }
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f, int keybind) : Button(mw, x, y, Width, Height, text, textSize, top_left, f, keybind) {
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, std::function<void()> f, int keybind) : Button(mw, x, y, Width, Height, Text, textSize, top_left, f, keybind) {
 }
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind) :
-    Button(mw, x, y, Width, Height, text, textSize, top_left, f, arg, keybind)
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, std::function<void(void*)> f, void* arg, int keybind) :
+    Button(mw, x, y, Width, Height, Text, textSize, top_left, f, arg, keybind)
 {
 }
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f, int keybind) :
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, Anchor anchor, std::function<void()> f, int keybind) :
     Button(mw, x, y, Width, Height, "Drawable/Button/Button", anchor, f, keybind)
 {
-    deads.erase(this); // if a previous Button had the same address, remove it from the dead Buttons
-    std::cerr << "Button::Button text: " << text << std::endl;
+    std::cerr << "Button::Button text: " << Text << std::endl;
 
     //Saving the button's coordinates
     ChangePosition(x, y, Width, Height);
 
     //Load the Button's Texture and add text on top of it
-    ChangeText(text, textSize);
+    ChangeText(Text, textSize);
 
     //Saving the bound function
     ChangeFunctionBinding(f);
@@ -90,23 +86,15 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
     ChangeKeybind(keybind);
 }
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, [[maybe_unused]] int keybind) :
-    Button(mw, x, y, Width, Height, text, textSize, anchor)
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, [[maybe_unused]] int keybind) :
+    Button(mw, x, y, Width, Height, Text, textSize, anchor)
 {
     //Saving the bound function
     ChangeFunctionBinding(f, arg);
 }
 
-void log(Button* This, const char* txt) {
-    if(deads.contains(This))
-        std::cerr << txt << " (on DEAD)\t" << static_cast<void*>(This) << std::endl;
-    else
-        std::cerr << txt << " (on live)\t" << static_cast<void*>(This) << std::endl;
-}
-
 Button::~Button() {
     std::cerr << "Button::~Button\t" << static_cast<void*>(this) << std::endl;
-    deads.emplace(this);
 
     Mix_FreeChunk(music);
 }
@@ -155,7 +143,6 @@ void Button::HandleInput(const SDL_Event& ev) {
 }
 
 void Button::Click(){
-    log(this, "Button::Click");
     //Play the sound effect
     Playsound();
 
@@ -211,10 +198,8 @@ void Button::Playsound() {
 }
 
 void Button::CallBoundFunction(){
-    log(this, "Button::CallBoundFunction 1");
     if (func) {
         main_window->AddEvent([func=func]{ func(); });
-        log(this, "Button::CallBoundFunction added func MainWindow event list");
     }
 }
 

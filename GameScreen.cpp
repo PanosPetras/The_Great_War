@@ -13,16 +13,6 @@
 
 GameScreen::GameScreen(MainWindow& mw, const char* tag,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(mw) {
 	bHasBackground = true;
-	bIsPaused = false;
-	bZoom = true;
-	factor = 1.0f;
-	Cam_Height = 150;
-	Cam_Width = 5384 + 2150;
-	ImgSize[0] = 16383;
-	ImgSize[1] = 2160;
-	ZoomingSpeed = 0.1f;
-	mousepressed = false;
-	MouseSensitivity = 3;
 	ChangeScreenFunc = fpl;
 	QuitFunc = fp;
 
@@ -163,7 +153,7 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
 				State* state = PC->StatesMap.find(rgb.toString())->second;
 
 				std::string fcs[4];
-				for (int i = 0; i < 4; i++) {
+				for (unsigned i = 0; i < 4; i++) {
 					if (state->State_Factories[i] != nullptr) {
 						fcs[i] = state->State_Factories[i]->Type;
 					}
@@ -278,7 +268,7 @@ void GameScreen::HandleMouseMovement(SDL_Event& ev) {
 
 				//Make sure we are not off the limits
 				if (factor < main_window->Width() / 3840.0) {
-					factor = float(main_window->Width() / 3840.0);
+					factor = main_window->Width() / 3840.0;
 				}
 
 				Cam_Width -= int(main_window->Width() / factor * ZoomingSpeed / 2);

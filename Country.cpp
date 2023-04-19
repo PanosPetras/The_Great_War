@@ -2,11 +2,11 @@
 #include "Diplomacy.h"
 #include "AI.h"
 
-Country::Country(std::string tag, std::string name, const Stockpile& sp, bool isPlayerControlled, Color rgb) : Country(tag, name, sp, rgb) {
+Country::Country(std::string Tag, std::string Name, const Stockpile& sp, bool isPlayerControlled, Color rgb) : Country(Tag, Name, sp, rgb) {
     isPlayer = isPlayerControlled;
 }
 
-Country::Country(std::string tag, std::string name, const Stockpile& sp, Color rgb) : color{rgb}, name{name}, tag{tag}, Stock{sp} {
+Country::Country(std::string Tag, std::string Name, const Stockpile& sp, Color rgb) : color{rgb}, name{Name}, tag{Tag}, Stock{sp} {
     population = 0;
     stateCount = 0;
     isPlayer = false;
@@ -35,7 +35,7 @@ void Country::RemoveState(State* state){
 }
 
 void Country::Tick(){
-    for (auto& [name, state] : ownedStates) {
+    for (auto& [Name, state] : ownedStates) {
         state->Tick(policy.TaxRate, policy.Healthcare);
     }
 

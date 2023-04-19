@@ -44,9 +44,9 @@ std::string CountryPair::toString() const {
 Relation::Relation() : Relation(0, false) {
 }
 
-Relation::Relation(int relations, bool allied) {
+Relation::Relation(int relations, bool Allied) {
 	relationsValue = relations;
-	this->allied = allied;
+	allied = Allied;
 }
 
 void Relation::ImproveRelations(int value) {
@@ -93,8 +93,8 @@ bool Relation::GetIfHasEmbargo(std::string Instigator) const {
 	return std::find(embargoes.begin(), embargoes.end(), Instigator) != embargoes.end();
 }
 
-Request::Request(RequestType id, unsigned senderIndex, std::string senderTag, Relation& relations) : 
-    id{id}, index{senderIndex}, rel{relations}, tag(senderTag)
+Request::Request(RequestType Id, unsigned senderIndex, std::string senderTag, Relation& relations) : 
+    id{Id}, index{senderIndex}, rel{relations}, tag(senderTag)
 {}
 
 void Request::Accept() {
@@ -129,7 +129,7 @@ std::string Request::GetSender() const {
 	return tag;
 }
 
-int Request::GetSenderIndex() const {
+unsigned Request::GetSenderIndex() const {
 	return index;
 }
 

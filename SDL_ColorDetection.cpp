@@ -31,9 +31,9 @@ Uint32 getpixel(SDL_Surface_ctx& surface, int x, int y){
 
     case 3:
         if constexpr (SDL_BYTEORDER == SDL_LIL_ENDIAN) {
-            return p[0] | p[1] << 8 | p[2] << 16;
+            return p[0] | Uint32(p[1]) << 8 | Uint32(p[2]) << 16;
         } else {
-            return p[0] << 16 | p[1] << 8 | p[2];
+            return Uint32(p[0]) << 16 | Uint32(p[1]) << 8 | p[2];
         }
 
     case 4:

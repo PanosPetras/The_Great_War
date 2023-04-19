@@ -69,8 +69,6 @@ CountrySelection::CountrySelection(MainWindow& mw, std::function<void()> Unpause
 	AddImage<Image>(mw, "Icons/right.png", -Width, -Height, 64 * Width / 1920, 64 * Height / 1080);
 
 	mousepressed = false;
-
-	CountryIndex = -1;
 }
 
 void CountrySelection::Back(){
@@ -127,7 +125,7 @@ void CountrySelection::ChangeArrow(int x, int y, int img) {
 }
 
 void CountrySelection::StartGame() {
-	if (CountryIndex != -1) {
+	if (CountryIndex != no_country_selected) {
 		ChangeScreenFunc(std::make_unique<GameScreen>(*main_window, tags[CountryIndex], QuitFunc, ChangeScreenFunc));
 	}
 }

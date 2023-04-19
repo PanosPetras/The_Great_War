@@ -13,19 +13,10 @@ MainWindow& MainWindow::Instance() {
 
 MainWindow::MainWindow():
     //sdl_init_ctx{}, window{}, renderer(window), ttf_init_ctx{}, img_init_ctx{}, mix_ctx{}, cursor{}
-    renderer(window)
+    renderer(window),
+    windim(window.GetWindowDimensions()),
+    scr(std::make_unique<MainMenu>(*this, [this]{ Quit(); }, [this](std::unique_ptr<Screen> newScreen){ ChangeScreen(std::move(newScreen)); }))
 {
-    // Ugly fix - Use static variables to avoid deadlock when MainMenu needs the dimensions.
-    // An alternative would be to supply the dimensions to screens being constructed.
-    windim = window.GetWindowDimensions();
-
-    //Initializing the input array
-    for (bool& i : KEYS) {
-        i = false;
-    }
-
-    //Creating a pointer to the active screen
-    scr = std::make_unique<MainMenu>(*this, [this]{ Quit(); }, [this](std::unique_ptr<Screen> newScreen){ ChangeScreen(std::move(newScreen)); });
 }
 
 void MainWindow::MainLoop() {
@@ -74,27 +65,31 @@ void MainWindow::ChangeScreen(std::unique_ptr<Screen> NewScreen){
 void MainWindow::Keyboard() {
     // message processing loop
     SDL_Event event;
+    const auto& keysymr = event.key.keysym.sym;
+
     while (SDL_PollEvent(&event)) {
         // check for messages
         switch (event.type) {
-        case SDL_KEYDOWN:
-            switch (event.key.keysym.sym) {
+        case SDL_KEYDOWN: {
+            switch (keysymr) {
             case SDLK_ESCAPE:
-                KEYS[event.key.keysym.sym] = true;
+                KEYS[static_cast<unsigned>(keysymr)] = true;
                 break;
             default:
                 break;
             }
             break;
-        case SDL_KEYUP:
-            switch (event.key.keysym.sym) {
+        }
+        case SDL_KEYUP: {
+            switch (keysymr) {
             case SDLK_ESCAPE:
-                KEYS[event.key.keysym.sym] = false;
+                KEYS[static_cast<unsigned>(keysymr)] = false;
                 break;
             default:
                 break;
             }
             break;
+        }
         case SDL_WINDOWEVENT:
             if (event.window.event == SDL_WINDOWEVENT_CLOSE) {
                 Quit();

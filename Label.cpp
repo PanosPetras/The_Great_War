@@ -2,26 +2,26 @@
 
 #include "MainWindow.h"
 
-Label::Label(MainWindow& mw, std::string Text, int size, int x, int y, Color rgb) : Label(mw, Text, size, x, y, 300, top_left, rgb) {
+Label::Label(MainWindow& mw, std::string Text, int size, int X, int Y, Color rgb) : Label(mw, Text, size, X, Y, 300, top_left, rgb) {
 }
 
-Label::Label(MainWindow& mw, std::string Text, int size, int x, int y, Anchor anchor, Color rgb) : Label(mw, Text, size, x, y, 300, anchor, rgb) {
+Label::Label(MainWindow& mw, std::string Text, int size, int X, int Y, Anchor anchor, Color rgb) : Label(mw, Text, size, X, Y, 300, anchor, rgb) {
 }
 
-Label::Label(MainWindow& mw, std::string Text, int size, int x, int y, int xlim, Color rgb) : Label(mw, Text, size, x, y, xlim, top_left, rgb) {
+Label::Label(MainWindow& mw, std::string Text, int size, int X, int Y, Uint32 xlim, Color rgb) : Label(mw, Text, size, X, Y, xlim, top_left, rgb) {
 }
 
-Label::Label(MainWindow& mw, std::string Text, int size, int x, int y, int xlim, Anchor anchor, Color rgb) :
+Label::Label(MainWindow& mw, std::string Text, int size, int X, int Y, Uint32 xlim, Anchor anchor, Color rgb) :
     Drawable(anchor),
     main_window(&mw),
-    FontSize(size), color(rgb), text(Text), x(x), y(y), xLim(xlim)
+    FontSize(size), color(rgb), text(Text), x(X), y(Y), xLim(xlim)
 {
     UpdateLabel();
 }
 
 void Label::pDraw() {
     //Copy the text texture to the screen
-    SDL_RenderCopy(*main_window, texture, NULL, &draw_rect);
+    SDL_RenderCopy(*main_window, texture, nullptr, &draw_rect);
 }
 
 void Label::ChangeText(std::string Text) {
@@ -56,8 +56,8 @@ void Label::ChangePosition(int X, int Y) {
     ApplyAnchor(draw_rect, dAnchor);
 }
 
-void Label::ChangeXLimit(int xLim) {
-    this->xLim = xLim;
+void Label::ChangeXLimit(Uint32 xlim) {
+    xLim = xlim;
     UpdateLabel();
 }
 

@@ -6,18 +6,16 @@
 
 #include <iostream>
 
-Slider::Slider(MainWindow& mw, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged)
-    : Slider(mw, x, y, Width, Height, top_left, minvalue, maxvalue, value, onSliderValueChanged)
+Slider::Slider(MainWindow& mw, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value, std::function<void()> OnSliderValueChanged)
+    : Slider(mw, x, y, Width, Height, top_left, minvalue, maxvalue, value, OnSliderValueChanged)
 {}
 
-Slider::Slider(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, int minvalue, int maxvalue, int value, std::function<void()> onSliderValueChanged)
-    : InputDrawable(anchor), main_window(&mw), Marker(SDL_Texture_ctx::IMG_Load(mw, "Drawable/Slider/Circle.png"))
+Slider::Slider(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, int minvalue, int maxvalue, int value, std::function<void()> OnSliderValueChanged)
+    : InputDrawable(anchor), main_window(&mw), Marker(SDL_Texture_ctx::IMG_Load(mw, "Drawable/Slider/Circle.png")), onSliderValueChanged(OnSliderValueChanged)
 {
 	//Initialize all variables
 	ChangeValues(minvalue, maxvalue, value);
 	ChangePosition(x, y, Width, Height);
-
-	this->onSliderValueChanged = onSliderValueChanged;
 }
 
 void Slider::SetActive(bool state) {
