@@ -148,6 +148,9 @@
     <ClCompile Include="Coordinate.cpp">
       <Filter>General purpose code\Source_Files</Filter>
     </ClCompile>
+    <ClCompile Include="Resolutions.cpp">
+      <Filter>General purpose code\Source_Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScreenList.h">
@@ -221,6 +224,9 @@
       <Filter>General purpose code\Header_Files</Filter>
     </ClInclude>
     <ClInclude Include="Coordinate.h">
+      <Filter>General purpose code\Header_Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resolutions.h">
       <Filter>General purpose code\Header_Files</Filter>
     </ClInclude>
   </ItemGroup>

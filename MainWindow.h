@@ -124,6 +124,8 @@ private:
 
     //Used to store the window's width and Height:
     SDL_Point windim{};
+
+    friend class MenusSettingsScreen;
 };
 
 #endif

@@ -40,6 +40,7 @@
     <ClCompile Include="OpenFactoryScreen.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="Resolutions.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -67,6 +68,7 @@
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Market.h" />
     <ClInclude Include="MessageBox.h" />
+    <ClInclude Include="Resolutions.h" />
     <ClInclude Include="Stockpile.h" />
     <ClInclude Include="SDL_ColorDetection.h" />
     <ClInclude Include="Image.h" />

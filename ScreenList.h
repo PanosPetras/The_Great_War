@@ -45,6 +45,11 @@ class MenuSettingsScreen : public BackScreen {
 public:
     //Constructor, sets default values and creates all needed assets
     MenuSettingsScreen(MainWindow& mw, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
+
+    void IncreaseResolution();
+    void DecreaseResolution();
+
+    void ApplyChanges();
 };
 
 class InGameSettingsScreen : public Screen {
