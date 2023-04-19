@@ -52,6 +52,10 @@ public:
     void DecreaseResolution();
 
     void ApplyChanges();
+private:
+    int currentResolutionIndex;
+
+    void UpdateResolutionLabel();
 };
 
 class InGameSettingsScreen : public Screen {
