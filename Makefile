@@ -15,7 +15,7 @@ TOBJ = $(SRC:%.cpp=build/%.tsan.o)
 CCMD = $(CXX) -std=c++20 -g $(SDLINCS) -c -o $@ $< -Wall -Wextra -Woverloaded-virtual -Werror -pedantic-errors $(OPTS)
 LCMD = $(CXX) -o $@ -std=c++20 -g $^ $(SDLLIBS) $(OPTS)
 
-CLANGOPTS = -Weverything -Wweak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-documentation -Wno-poison-system-directories
+CLANGOPTS = -Weverything -Wweak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-documentation -Wno-poison-system-directories -Wno-weak-vtables
 
 The_Great_War: $(OBJ)
 	$(LCMD)

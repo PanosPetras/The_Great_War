@@ -21,7 +21,7 @@ public:
     TextEntry(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint = "", int maxCharacters = 30);
 
     //Destructor
-    ~TextEntry() = default;
+    ~TextEntry() override = default;
 
     //Called when received input, to check whether the click was in this button
     void HandleInput(const SDL_Event& ev) override;
@@ -61,6 +61,7 @@ protected:
 
     //The components of the Entry
     std::unique_ptr<Image> background;
-    std::unique_ptr<Label> textLabel, hintLabel;
+    std::unique_ptr<Label> textLabel;
+    std::unique_ptr<Label> hintLabel;
 };
 #endif

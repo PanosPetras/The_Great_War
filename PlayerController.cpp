@@ -16,7 +16,6 @@ namespace {
 struct Line {
     std::string str;
 
-    operator std::string& () { return str; }
     operator std::string const& () const { return str; }
 
     friend std::istream& operator>>(std::istream& is, Line& l) {
@@ -101,11 +100,11 @@ int PlayerController::LoadMap(void* pc){
         auto base = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0, 0, 0, 0);
 
 	SDL_Rect strect = { .x = 232, .y = 0, .w = 5616 , .h = 2160 };
-	SDL_BlitSurface(PC.map, &strect, base, NULL);
+	SDL_BlitSurface(PC.map, &strect, base, nullptr);
 	strect = { .x = -5616 + 232, .y = 0, .w = 5616 * 2 , .h = 2160 };
-	SDL_BlitSurface(PC.map, &strect, base, NULL);
+	SDL_BlitSurface(PC.map, &strect, base, nullptr);
 	strect = { .x = -5616 * 2 + 232, .y = 0, .w = 5616 * 3 , .h = 2160 };
-	SDL_BlitSurface(PC.map, &strect, base, NULL);
+	SDL_BlitSurface(PC.map, &strect, base, nullptr);
 
 	PC.txt = SDL_Texture_ctx(PC.RendererReference, base);
 
@@ -140,7 +139,7 @@ void PlayerController::InitializeCountries(std::vector<std::string>& names, std:
 
 void PlayerController::InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors){
 	short int res[8] = { 50, 50, 50, 50, 50, 50, 50, 50 };
-	int target = 0;
+	unsigned target = 0;
 
         StatesArr.reserve(populations.size());
 	for (unsigned x = 0; x < owners.size(); ++x) {
@@ -206,7 +205,7 @@ void PlayerController::Pause(){
 	if (Date.bIsPaused) {
 		Date.bIsPaused = false;
 		//Create a new thread that will be running the AdvanceDate function in parallel with everything else
-		thread = SDL_CreateThread(&PlayerController::AdvanceDate, NULL, this);
+		thread = SDL_CreateThread(&PlayerController::AdvanceDate, nullptr, this);
 	} else {
 		Date.bIsPaused = true;
 		//Wait until the date thread has stopped execution

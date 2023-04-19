@@ -93,36 +93,32 @@ bool Relation::GetIfHasEmbargo(std::string Instigator) const {
 	return std::find(embargoes.begin(), embargoes.end(), Instigator) != embargoes.end();
 }
 
-Request::Request(RequestType id, int senderIndex, std::string senderTag, Relation& relations) : 
+Request::Request(RequestType id, unsigned senderIndex, std::string senderTag, Relation& relations) : 
     id{id}, index{senderIndex}, rel{relations}, tag(senderTag)
 {}
 
 void Request::Accept() {
-	switch (id) {
-		case alliance:
-			rel.CreateAlliance();
-			break;
-		case tradeDeal:
-			break;
-		case peaceTreaty:
-			break;
-		default:
-			break;
-	}
+    switch (id) {
+        case alliance:
+            rel.CreateAlliance();
+            break;
+        case tradeDeal:
+            break;
+        case peaceTreaty:
+            break;
+    }
 }
 
 void Request::Decline() {
-	switch (id) {
-		case alliance:
-			rel.WorsenRelations();
-			break;
-		case tradeDeal:
-			break;
-		case peaceTreaty:
-			break;
-		default:
-			break;
-	}
+    switch (id) {
+        case alliance:
+            rel.WorsenRelations();
+            break;
+        case tradeDeal:
+            break;
+        case peaceTreaty:
+            break;
+    }
 }
 
 Relation& Request::GetRelations() const {
@@ -166,11 +162,11 @@ void War::JoinWar(Country* newParticipant, Country* onTheSideOf) {
 	f.AddMember(newParticipant);
 }
 
-const std::set<Country*>& War::GetFaction(int i) const {
-	if (i != 0 && i != 1) {
-		throw std::runtime_error("Faction index out of bounds");
-	}
-	return factions[i].GetFaction();
+const std::set<Country*>& War::GetFaction(unsigned i) const {
+    if (i != 0 && i != 1) {
+        throw std::out_of_range("Faction index out of bounds");
+    }
+    return factions[i].GetFaction();
 }
 
 void War::AddClaim(Claim claim) {
@@ -183,11 +179,11 @@ void War::AddClaim(Claim claim) {
 	f.AddClaim(claim);
 }
 
-const std::vector<Claim>& War::GetClaims(int i) const {
-	if (i != 0 && i != 1) {
-		throw std::runtime_error("Faction index out of bounds");
-	}
-	return factions[i].GetClaims();
+const std::vector<Claim>& War::GetClaims(unsigned i) const {
+    if (i != 0 && i != 1) {
+        throw std::out_of_range("Faction index out of bounds");
+    }
+    return factions[i].GetClaims();
 }
 
 void War::AddScore(Country* instigator, int score) {

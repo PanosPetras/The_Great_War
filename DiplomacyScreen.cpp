@@ -50,7 +50,6 @@ DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, unsigned 
 
 unsigned DiplomacyScreen::CreateCountryButtons(PlayerController* PC) {
     unsigned index = 0;
-    int flagsPerLine = 12;
     auto [Width, Height] = main_window->GetWindowDimensions();
 
     for(auto& country : PC->CountriesArr) {
@@ -65,7 +64,6 @@ unsigned DiplomacyScreen::CreateCountryButtons(PlayerController* PC) {
 
 unsigned DiplomacyScreen::CreateCountryButtons(PlayerController* PC, std::string targetTag) {
     unsigned index = 0;
-    int flagsPerLine = 12;
     auto [Width, Height] = main_window->GetWindowDimensions();
 
     for(auto& country : PC->CountriesArr) {

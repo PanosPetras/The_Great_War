@@ -23,7 +23,7 @@ public:
 
     int AddFactory(std::unique_ptr<Factory>& NewFactory);
 
-    int RemoveFactory(int index);
+    int RemoveFactory(unsigned index);
 
     //This is the state's name
     std::string State_Name;
