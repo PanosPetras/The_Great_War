@@ -30,8 +30,8 @@ public:
     //Functions
 
     //Constructor
-    Country(std::string tag, std::string name, const Stockpile& sp, bool isPlayerControlled, Color rgb);
-    Country(std::string tag, std::string name, const Stockpile& sp, Color rgb = Color{});
+    Country(std::string tag, std::string name, int Res[31], bool isPlayerControlled, Color rgb);
+    Country(std::string tag, std::string name, int Res[31], Color rgb = Color{});
 
     //Handle the states of the country
     void AddState(State* state);

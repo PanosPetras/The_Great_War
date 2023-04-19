@@ -1,11 +1,8 @@
 #ifndef Stockpile_H
 #define Stockpile_H
 
-#include <istream>
-#include <sstream>
-#include <string>
-
-struct Stockpile {
+typedef struct Stockpile {
+public:
     int Coal = 0;
     int Oil = 0;
     int Timber = 0;
@@ -38,128 +35,146 @@ struct Stockpile {
     int Airship = 0;
     long long Money = 0;
 
-    inline Stockpile& operator+=(const Stockpile& obj) {
-        Coal += obj.Coal;
-        Oil += obj.Oil;
-        Timber += obj.Timber;
-        Rubber += obj.Rubber;
-        Cotton += obj.Cotton;
-        Iron += obj.Iron;
-        Grain += obj.Grain;
-        Fruit += obj.Fruit;
-        Electric_gear += obj.Electric_gear;
-        Machine_parts += obj.Machine_parts;
-        Glass += obj.Glass;
-        Lumber += obj.Lumber;
-        Cement += obj.Cement;
-        Ammunition += obj.Ammunition;
-        Planes += obj.Planes;
-        Explosives += obj.Explosives;
-        Small_arms += obj.Small_arms;
-        Artillery += obj.Artillery;
-        Tanks += obj.Tanks;
-        Canned_food += obj.Canned_food;
-        Furniture += obj.Furniture;
-        Clothes += obj.Clothes;
-        Automobiles += obj.Automobiles;
-        Merchant_ships += obj.Merchant_ships;
-        Radios += obj.Radios;
-        Telephones += obj.Telephones;
-        Fuel += obj.Fuel;
-        Paper += obj.Paper;
-        Liquor += obj.Liquor;
-        Airship += obj.Airship;
-        Money += obj.Money;
-        return *this;
+    struct Stockpile operator + (struct Stockpile const& obj) {
+        struct Stockpile stockpile = {  this->Coal + obj.Coal,
+                                        this->Oil + obj.Oil,
+                                        this->Timber + obj.Timber,
+                                        this->Rubber + obj.Rubber,
+                                        this->Cotton + obj.Cotton,
+                                        this->Iron + obj.Iron,
+                                        this->Grain + obj.Grain,
+                                        this->Fruit + obj.Fruit,
+                                        this->Electric_gear + obj.Electric_gear,
+                                        this->Machine_parts + obj.Machine_parts,
+                                        this->Glass + obj.Glass,
+                                        this->Lumber + obj.Lumber,
+                                        this->Cement + obj.Cement,
+                                        this->Ammunition + obj.Ammunition,
+                                        this->Planes + obj.Planes,
+                                        this->Explosives + obj.Explosives,
+                                        this->Small_arms + obj.Small_arms,
+                                        this->Artillery + obj.Artillery,
+                                        this->Tanks + obj.Tanks,
+                                        this->Canned_food + obj.Canned_food,
+                                        this->Furniture + obj.Furniture,
+                                        this->Clothes + obj.Clothes,
+                                        this->Automobiles + obj.Automobiles,
+                                        this->Merchant_ships + obj.Merchant_ships,
+                                        this->Radios + obj.Radios,
+                                        this->Telephones + obj.Telephones,
+                                        this->Fuel + obj.Fuel,
+                                        this->Paper + obj.Paper,
+                                        this->Liquor + obj.Liquor,
+                                        this->Airship + obj.Airship,
+                                        this->Money + obj.Money };
+
+        return stockpile;
     }
 
-    inline Stockpile& operator-=(const Stockpile& obj) {
-        Coal -= obj.Coal;
-        Oil -= obj.Oil;
-        Timber -= obj.Timber;
-        Rubber -= obj.Rubber;
-        Cotton -= obj.Cotton;
-        Iron -= obj.Iron;
-        Grain -= obj.Grain;
-        Fruit -= obj.Fruit;
-        Electric_gear -= obj.Electric_gear;
-        Machine_parts -= obj.Machine_parts;
-        Glass -= obj.Glass;
-        Lumber -= obj.Lumber;
-        Cement -= obj.Cement;
-        Ammunition -= obj.Ammunition;
-        Planes -= obj.Planes;
-        Explosives -= obj.Explosives;
-        Small_arms -= obj.Small_arms;
-        Artillery -= obj.Artillery;
-        Tanks -= obj.Tanks;
-        Canned_food -= obj.Canned_food;
-        Furniture -= obj.Furniture;
-        Clothes -= obj.Clothes;
-        Automobiles -= obj.Automobiles;
-        Merchant_ships -= obj.Merchant_ships;
-        Radios -= obj.Radios;
-        Telephones -= obj.Telephones;
-        Fuel -= obj.Fuel;
-        Paper -= obj.Paper;
-        Liquor -= obj.Liquor;
-        Airship -= obj.Airship;
-        Money -= obj.Money;
-        return *this;
+    void operator += (struct Stockpile const& obj) {
+        this->Coal += obj.Coal;
+        this->Oil += obj.Oil;
+        this->Timber += obj.Timber;
+        this->Rubber += obj.Rubber;
+        this->Cotton += obj.Cotton;
+        this->Iron += obj.Iron;
+        this->Grain += obj.Grain;
+        this->Fruit += obj.Fruit;
+        this->Electric_gear += obj.Electric_gear;
+        this->Machine_parts += obj.Machine_parts;
+        this->Glass += obj.Glass;
+        this->Lumber += obj.Lumber;
+        this->Cement += obj.Cement;
+        this->Ammunition += obj.Ammunition;
+        this->Planes += obj.Planes;
+        this->Explosives += obj.Explosives;
+        this->Small_arms += obj.Small_arms;
+        this->Artillery += obj.Artillery;
+        this->Tanks += obj.Tanks;
+        this->Canned_food += obj.Canned_food;
+        this->Furniture += obj.Furniture;
+        this->Clothes += obj.Clothes;
+        this->Automobiles += obj.Automobiles;
+        this->Merchant_ships += obj.Merchant_ships;
+        this->Radios += obj.Radios;
+        this->Telephones += obj.Telephones;
+        this->Fuel += obj.Fuel;
+        this->Paper += obj.Paper;
+        this->Liquor += obj.Liquor;
+        this->Airship += obj.Airship;
+        this->Money += obj.Money;
     }
 
-    inline friend std::istream& operator>>(std::istream& is, Stockpile& sp) {
-        if(std::string line; std::getline(is, line)) {
-            std::istringstream iss(line);
-            if(not(iss >> sp.Coal
-                       >> sp.Oil
-                       >> sp.Timber
-                       >> sp.Rubber
-                       >> sp.Cotton
-                       >> sp.Iron
-                       >> sp.Grain
-                       >> sp.Fruit
-                       >> sp.Electric_gear
-                       >> sp.Machine_parts
-                       >> sp.Glass
-                       >> sp.Lumber
-                       >> sp.Cement
-                       >> sp.Ammunition
-                       >> sp.Planes
-                       >> sp.Explosives
-                       >> sp.Small_arms
-                       >> sp.Artillery
-                       >> sp.Tanks
-                       >> sp.Canned_food
-                       >> sp.Furniture
-                       >> sp.Clothes
-                       >> sp.Automobiles
-                       >> sp.Merchant_ships
-                       >> sp.Radios
-                       >> sp.Telephones
-                       >> sp.Fuel
-                       >> sp.Paper
-                       >> sp.Liquor
-                       >> sp.Airship
-                       >> sp.Money))
-            {
-                is.setstate(std::ios::failbit);
-            }
-        }
-        return is;
+    struct Stockpile operator - (struct Stockpile const& obj) {
+        struct Stockpile stockpile = { this->Coal - obj.Coal,
+                                        this->Oil - obj.Oil,
+                                        this->Timber - obj.Timber,
+                                        this->Rubber - obj.Rubber,
+                                        this->Cotton - obj.Cotton,
+                                        this->Iron - obj.Iron,
+                                        this->Grain - obj.Grain,
+                                        this->Fruit - obj.Fruit,
+                                        this->Electric_gear - obj.Electric_gear,
+                                        this->Machine_parts - obj.Machine_parts,
+                                        this->Glass - obj.Glass,
+                                        this->Lumber - obj.Lumber,
+                                        this->Cement - obj.Cement,
+                                        this->Ammunition - obj.Ammunition,
+                                        this->Planes - obj.Planes,
+                                        this->Explosives - obj.Explosives,
+                                        this->Small_arms - obj.Small_arms,
+                                        this->Artillery - obj.Artillery,
+                                        this->Tanks - obj.Tanks,
+                                        this->Canned_food - obj.Canned_food,
+                                        this->Furniture - obj.Furniture,
+                                        this->Clothes - obj.Clothes,
+                                        this->Automobiles - obj.Automobiles,
+                                        this->Merchant_ships - obj.Merchant_ships,
+                                        this->Radios - obj.Radios,
+                                        this->Telephones - obj.Telephones,
+                                        this->Fuel - obj.Fuel,
+                                        this->Paper - obj.Paper,
+                                        this->Liquor - obj.Liquor,
+                                        this->Airship - obj.Airship,
+                                        this->Money - obj.Money };
+
+        return stockpile;
     }
-};
 
-inline Stockpile operator+(const Stockpile& lhs, const Stockpile& rhs) {
-    Stockpile rv{lhs};
-    rv += rhs;
-    return rv;
-}
+    void operator -= (struct Stockpile const& obj) {
+        this->Coal -= obj.Coal;
+        this->Oil -= obj.Oil;
+        this->Timber -= obj.Timber;
+        this->Rubber -= obj.Rubber;
+        this->Cotton -= obj.Cotton;
+        this->Iron -= obj.Iron;
+        this->Grain -= obj.Grain;
+        this->Fruit -= obj.Fruit;
+        this->Electric_gear -= obj.Electric_gear;
+        this->Machine_parts -= obj.Machine_parts;
+        this->Glass -= obj.Glass;
+        this->Lumber -= obj.Lumber;
+        this->Cement -= obj.Cement;
+        this->Ammunition -= obj.Ammunition;
+        this->Planes -= obj.Planes;
+        this->Explosives -= obj.Explosives;
+        this->Small_arms -= obj.Small_arms;
+        this->Artillery -= obj.Artillery;
+        this->Tanks -= obj.Tanks;
+        this->Canned_food -= obj.Canned_food;
+        this->Furniture -= obj.Furniture;
+        this->Clothes -= obj.Clothes;
+        this->Automobiles -= obj.Automobiles;
+        this->Merchant_ships -= obj.Merchant_ships;
+        this->Radios -= obj.Radios;
+        this->Telephones -= obj.Telephones;
+        this->Fuel -= obj.Fuel;
+        this->Paper -= obj.Paper;
+        this->Liquor -= obj.Liquor;
+        this->Airship -= obj.Airship;
+        this->Money -= obj.Money;
+    }
 
-inline Stockpile operator-(const Stockpile& lhs, const Stockpile& rhs) {
-    Stockpile rv{lhs};
-    rv -= rhs;
-    return rv;
-}
+} Stockpile;
 
 #endif
