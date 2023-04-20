@@ -31,10 +31,11 @@ const std::array<Color, CountrySelection::Countries> CountrySelection::colors{{
 
 CountrySelection::CountrySelection(MainWindow& mw, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(mw, UnpauseF, fpl) {
 	SetupBg("Backgrounds/CountrySelection.png");
-        auto [Width, Height] = mw.GetWindowDimensions();
+    auto [Width, Height] = mw.GetWindowDimensions();
+	int btnFontSize = int(Height / 33.75), nameFontSize = int(Height / 43.2);
 
-	AddDrawable<Button>(mw, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", 32, [this]{StartGame();}, SDLK_KP_ENTER);
-	AddDrawable<Button>(mw, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", 32, [this]{ Back();}, SDLK_ESCAPE);
+	AddDrawable<Button>(mw, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", btnFontSize, [this]{StartGame();}, SDLK_KP_ENTER);
+	AddDrawable<Button>(mw, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", btnFontSize, [this]{ Back();}, SDLK_ESCAPE);
 
 	AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/ger", [this]{ SelectGER();});
 	AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/fra", [this]{ SelectFRA();});
@@ -45,16 +46,16 @@ CountrySelection::CountrySelection(MainWindow& mw, std::function<void()> Unpause
 	AddDrawable<Button>(mw, int(Width * 0.635), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/ott", [this]{ SelectOTT();});
 	AddDrawable<Button>(mw, int(Width * 0.635), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/usa", [this]{ SelectUSA();});
 
-	AddLabel<Label>(mw, "The World in 1910", int(Height * 0.03), int(Width * 0.43), int(Height * 0.07));
-	AddLabel<Label>(mw, "Choose your nation", int(Height * 0.03), int(Width * 0.427), int(Height * 0.13));
-	AddLabel<Label>(mw, "German Empire", int(Height * 0.023), int(Width * 0.37), int(Height * 0.21));
-	AddLabel<Label>(mw, "French Republic", int(Height * 0.023), int(Width * 0.37), int(Height * 0.31));
-	AddLabel<Label>(mw, "British Empire", int(Height * 0.023), int(Width * 0.37), int(Height * 0.41));
-	AddLabel<Label>(mw, "Austria-Hungary", int(Height * 0.023), int(Width * 0.37), int(Height * 0.51));
-	AddLabel<Label>(mw, "United States", int(Height * 0.023), int(Width * 0.55), int(Height * 0.21));
-	AddLabel<Label>(mw, "Kingdom of Italy", int(Height * 0.023), int(Width * 0.53), int(Height * 0.31));
-	AddLabel<Label>(mw, "Russian Empire", int(Height * 0.023), int(Width * 0.538), int(Height * 0.41));
-	AddLabel<Label>(mw, "Ottoman Empire", int(Height * 0.023), int(Width * 0.53), int(Height * 0.51));
+	AddLabel<Label>(mw, "The World in 1910", btnFontSize, int(Width * 0.43), int(Height * 0.07));
+	AddLabel<Label>(mw, "Choose your nation", btnFontSize, int(Width * 0.427), int(Height * 0.13));
+	AddLabel<Label>(mw, "German Empire", nameFontSize, int(Width * 0.37), int(Height * 0.21));
+	AddLabel<Label>(mw, "French Republic", nameFontSize, int(Width * 0.37), int(Height * 0.31));
+	AddLabel<Label>(mw, "British Empire", nameFontSize, int(Width * 0.37), int(Height * 0.41));
+	AddLabel<Label>(mw, "Austria-Hungary", nameFontSize, int(Width * 0.37), int(Height * 0.51));
+	AddLabel<Label>(mw, "United States", nameFontSize, int(Width * 0.55), int(Height * 0.21));
+	AddLabel<Label>(mw, "Kingdom of Italy", nameFontSize, int(Width * 0.53), int(Height * 0.31));
+	AddLabel<Label>(mw, "Russian Empire", nameFontSize, int(Width * 0.538), int(Height * 0.41));
+	AddLabel<Label>(mw, "Ottoman Empire", nameFontSize, int(Width * 0.53), int(Height * 0.51));
 
 	AddImage<Image>(mw, "Backgrounds/FlagBg.png", int(Width * 0.428), int(Height * 0.07), int(Width * 0.14), int(Height * 0.04));
 	AddImage<Image>(mw, "Backgrounds/FlagBg.png", int(Width * 0.425), int(Height * 0.13), int(Width * 0.146), int(Height * 0.04));

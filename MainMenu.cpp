@@ -7,7 +7,7 @@ MainMenu::MainMenu(MainWindow& mw, std::function<void()> fp, std::function<void(
 	SetupBg("Backgrounds/OldMenu.png");
         auto [Width, Height] = mw.GetWindowDimensions();
 
-	int fontSize = 32;
+	int fontSize = int(Height / 33.75);
 
 	AddDrawable<Button>(mw, int(Width * 0.22), int(Height * 0.2), int(Width * 0.12), int(Height * 0.06), "New Game", fontSize, [this]{ StartGame(); });
 	AddDrawable<Button>(mw, int(Width * 0.22), int(Height * 0.3), int(Width * 0.12), int(Height * 0.06), "Load Game", fontSize, fp);

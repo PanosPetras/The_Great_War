@@ -17,6 +17,8 @@ MainWindow::MainWindow():
     windim(window.GetWindowDimensions()),
     scr(std::make_unique<MainMenu>(*this, [this]{ Quit(); }, [this](std::unique_ptr<Screen> newScreen){ ChangeScreen(std::move(newScreen)); }))
 {
+    vsync = true;
+    fullscreen = true;
 }
 
 void MainWindow::MainLoop() {

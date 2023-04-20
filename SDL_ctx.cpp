@@ -42,7 +42,7 @@ SDL_Window_ctx::SDL_Window_ctx() : window(SDL_CreateWindow(
         SDL_WINDOWPOS_UNDEFINED,          // initial y position
         1920,                             // width, in pixels
         1080,                             // height, in pixels
-        SDL_WINDOW_OPENGL //| SDL_WINDOW_FULLSCREEN                  // flags - see below
+        SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN                  // flags - see below
     ), &SDL_DestroyWindow)
     //2560x1440, 1920x1080, 1280x720
 {

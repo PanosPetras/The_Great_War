@@ -119,6 +119,9 @@ private:
 
     //Used to store the window's width and Height:
     SDL_Point windim{};
+    //Used to store some of the window's settings
+    bool vsync;
+    bool fullscreen;
 
     std::vector<std::function<void()>> event_queue; // deferred events
     std::unordered_map<std::string, std::vector<SDL_Texture_ctx>> file_textures;
