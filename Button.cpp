@@ -41,9 +41,6 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
     //Saving the button's coordinates
     ChangePosition(x, y, Width, Height);
 
-    //Loading the button texture
-    //ChangeImage(image);
-
     //Saving the bound function
     ChangeFunctionBinding(f);
 
@@ -94,8 +91,6 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
 }
 
 Button::~Button() {
-    std::cerr << "Button::~Button\t" << static_cast<void*>(this) << std::endl;
-
     Mix_FreeChunk(music);
 }
 
