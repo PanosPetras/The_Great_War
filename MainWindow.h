@@ -122,6 +122,7 @@ private:
     //Used to store some of the window's settings
     bool vsync;
     bool fullscreen;
+    int framerateCap;
 
     std::vector<std::function<void()>> event_queue; // deferred events
     std::unordered_map<std::string, std::vector<SDL_Texture_ctx>> file_textures;

@@ -24,6 +24,15 @@ namespace Resolutions {
                                                                  Resolution(1920, 1080),
                                                                  Resolution(2560, 1440)};
 
+    constexpr std::array<int, 7> SUPPORTED_FRAMERATES = {   30,
+                                                            60,
+                                                            75,
+                                                            120,
+                                                            144,
+                                                            165,
+                                                            240};
+
     static inline constexpr unsigned not_found = static_cast<unsigned>(-1);
     unsigned findResolutionIndex(Resolutions::Resolution&);
+    unsigned findFramerateIndex(int);
 }

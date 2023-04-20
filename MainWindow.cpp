@@ -19,12 +19,22 @@ MainWindow::MainWindow():
 {
     vsync = true;
     fullscreen = true;
+    framerateCap = 60;
 }
 
 void MainWindow::MainLoop() {
-    while (!quit) {            
-        Render();
-        Keyboard();
+    unsigned int a, b = SDL_GetTicks();
+    double delta = 0;
+
+    while (!quit) {
+        a = SDL_GetTicks();
+
+        if (a - b >= 1000.0 / framerateCap || vsync) {
+            b = a;
+
+            Render();
+            Keyboard();
+        }
     }
 }
 

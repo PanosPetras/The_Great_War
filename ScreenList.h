@@ -51,10 +51,19 @@ public:
     void IncreaseResolution();
     void DecreaseResolution();
 
+    void IncreaseFramerate();
+    void DecreaseFramerate();
+
     void ApplyChanges();
+
+    void onVSyncToggle(bool);
+    void onFullscreenToggle(bool);
+
 private:
     unsigned currentResolutionIndex;
+    unsigned currentFramerateIndex;
 
+    void UpdateFramerateLabel();
     void UpdateResolutionLabel();
 };
 

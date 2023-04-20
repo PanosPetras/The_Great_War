@@ -23,4 +23,13 @@ unsigned findResolutionIndex(Resolutions::Resolution& res) {
     return not_found;
 }
 
+unsigned findFramerateIndex(int f) {
+    for (unsigned i = 0; i < Resolutions::SUPPORTED_FRAMERATES.size(); i++) {
+        if (f == Resolutions::SUPPORTED_FRAMERATES[i]) {
+            return i;
+        }
+    }
+    return not_found;
+}
+
 } // namespace Resolutions

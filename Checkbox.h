@@ -58,8 +58,8 @@ protected:
 	//The Drawables that make up this Drawable
 	//std::unique_ptr<ToggleButton> toggleButton;
 	//std::unique_ptr<Label> label;
-        ToggleButton toggleButton;
-        Label label;
+    ToggleButton toggleButton;
+    Label label;
 };
 
 #endif
