@@ -141,3 +141,11 @@ int MainWindow::Height() const {
 const SDL_Point& MainWindow::GetWindowDimensions() const {
     return windim;
 }
+
+ChunkRef MainWindow::Mix_LoadWAV(const std::string& filename) {
+    if(auto it = file_chunks.find(filename); it != file_chunks.end()) {
+        return ChunkRef(it->second);
+    }
+    auto [newit, inserted] = file_chunks.emplace(filename, filename);
+    return ChunkRef(newit->second);
+}
