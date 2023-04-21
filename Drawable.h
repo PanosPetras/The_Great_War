@@ -3,35 +3,34 @@
 
 #include <SDL.h>
 
-enum Anchor {
-	top_left, top_right, bottom_left, bottom_right, center, center_top, center_bottom, center_left, center_right
-};
+enum Anchor { top_left, top_right, bottom_left, bottom_right, center, center_top, center_bottom, center_left, center_right };
 
 class Drawable {
 public:
-	Drawable(Anchor anchor = top_left);
-        virtual ~Drawable() = default;
+    Drawable(Anchor anchor = top_left);
+    virtual ~Drawable() = default;
 
-	void Draw();
+    void Draw();
 
-	bool Visibility;
+    bool Visibility;
 
 protected:
-	Anchor dAnchor;
+    Anchor dAnchor;
 
-	virtual void pDraw() = 0;
+    virtual void pDraw() = 0;
 };
 
 class InputDrawable : public Drawable {
 public:
-	InputDrawable(Anchor anchor = top_left);
+    InputDrawable(Anchor anchor = top_left);
 
-	virtual void HandleInput(const SDL_Event&) = 0;
-	virtual void SetActive(bool state);
+    virtual void HandleInput(const SDL_Event&) = 0;
+    virtual void SetActive(bool state);
 
-	bool IsActive();
+    bool IsActive();
+
 private:
-	bool active;
+    bool active;
 };
 
 void ApplyAnchor(SDL_Rect& rect, Anchor anchor);

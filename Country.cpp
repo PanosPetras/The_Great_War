@@ -1,8 +1,9 @@
 #include "Country.h"
-#include "Diplomacy.h"
 #include "AI.h"
+#include "Diplomacy.h"
 
-Country::Country(std::string Tag, std::string Name, const Stockpile& sp, bool isPlayerControlled, Color rgb) : Country(Tag, Name, sp, rgb) {
+Country::Country(std::string Tag, std::string Name, const Stockpile& sp, bool isPlayerControlled, Color rgb) :
+    Country(Tag, Name, sp, rgb) {
     isPlayer = isPlayerControlled;
 }
 
@@ -11,31 +12,31 @@ Country::Country(std::string Tag, std::string Name, const Stockpile& sp, Color r
     stateCount = 0;
     isPlayer = false;
 
-    policy = {.TaxRate = 50, .Healthcare =  30};
+    policy = {.TaxRate = 50, .Healthcare = 30};
 
-    technology = {  .FactoryInput = 1.0f,
-                    .FactoryThroughput = 1.0f,
-                    .FactoryOutput = 1.0f,
-                    .MineralOutput = 1.0f,
-                    .FarmOutput = 1.0f,
-                    .WoodOutput = 1.0f};
+    technology = {.FactoryInput = 1.0f,
+                  .FactoryThroughput = 1.0f,
+                  .FactoryOutput = 1.0f,
+                  .MineralOutput = 1.0f,
+                  .FarmOutput = 1.0f,
+                  .WoodOutput = 1.0f};
 }
 
-void Country::AddState(State* state){
+void Country::AddState(State* state) {
     ownedStates[state->State_Name] = state;
     population += int(state->State_Population);
     stateCount++;
 }
 
-void Country::RemoveState(State* state){
-    if (ownedStates.contains(state->State_Name)) {
+void Country::RemoveState(State* state) {
+    if(ownedStates.contains(state->State_Name)) {
         ownedStates.erase(state->State_Name);
         stateCount--;
     }
 }
 
-void Country::Tick(){
-    for (auto& [Name, state] : ownedStates) {
+void Country::Tick() {
+    for(auto& [Name, state] : ownedStates) {
         state->Tick(policy.TaxRate, policy.Healthcare);
     }
 
@@ -66,10 +67,9 @@ bool Country::GetIfIsPlayer() const {
 }
 
 void Country::HandleDiplomaticRequests() {
-    if (isPlayer) {
-
+    if(isPlayer) {
     } else {
-        for (auto req : requests) {
+        for(auto req : requests) {
             AI::HandleRequest(req);
         }
     }

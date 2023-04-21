@@ -11,12 +11,11 @@ MainWindow& MainWindow::Instance() {
     return inst;
 }
 
-MainWindow::MainWindow():
-    //sdl_init_ctx{}, window{}, renderer(window), ttf_init_ctx{}, img_init_ctx{}, mix_ctx{}, cursor{}
-    renderer(window),
-    windim(window.GetWindowDimensions()),
-    scr(std::make_unique<MainMenu>(*this, [this]{ Quit(); }, [this](std::unique_ptr<Screen> newScreen){ ChangeScreen(std::move(newScreen)); }))
-{
+MainWindow::MainWindow() :
+    // sdl_init_ctx{}, window{}, renderer(window), ttf_init_ctx{}, img_init_ctx{}, mix_ctx{}, cursor{}
+    renderer(window), windim(window.GetWindowDimensions()),
+    scr(std::make_unique<MainMenu>(
+        *this, [this] { Quit(); }, [this](std::unique_ptr<Screen> newScreen) { ChangeScreen(std::move(newScreen)); })) {
     vsync = true;
     fullscreen = true;
     framerateCap = 60;
@@ -26,10 +25,10 @@ void MainWindow::MainLoop() {
     unsigned int a, b = SDL_GetTicks();
     double delta = 0;
 
-    while (!quit) {
+    while(!quit) {
         a = SDL_GetTicks();
 
-        if (a - b >= 1000.0 / framerateCap || vsync) {
+        if(a - b >= 1000.0 / framerateCap || vsync) {
             b = a;
 
             Render();
@@ -39,13 +38,13 @@ void MainWindow::MainLoop() {
 }
 
 void MainWindow::Render() {
-    //Remove everything from the screen
+    // Remove everything from the screen
     SDL_RenderClear(renderer);
-    
-    //Create all textures and add them to the renderer
+
+    // Create all textures and add them to the renderer
     scr->Render();
 
-    //Render the results
+    // Render the results
     SDL_RenderPresent(renderer);
 }
 
@@ -62,15 +61,15 @@ SDL_Texture_ctx& MainWindow::IMG_Load(const std::string& filename) {
     }
 }
 
-MainWindow::operator SDL_Renderer_ctx& () {
+MainWindow::operator SDL_Renderer_ctx&() {
     return renderer;
 }
 
-MainWindow::operator SDL_Renderer* () {
+MainWindow::operator SDL_Renderer*() {
     return renderer;
 }
 
-void MainWindow::ChangeScreen(std::unique_ptr<Screen> NewScreen){
+void MainWindow::ChangeScreen(std::unique_ptr<Screen> NewScreen) {
     scr = std::move(NewScreen);
 }
 
@@ -79,11 +78,11 @@ void MainWindow::Keyboard() {
     SDL_Event event;
     const auto& keysymr = event.key.keysym.sym;
 
-    while (SDL_PollEvent(&event)) {
+    while(SDL_PollEvent(&event)) {
         // check for messages
-        switch (event.type) {
+        switch(event.type) {
         case SDL_KEYDOWN: {
-            switch (keysymr) {
+            switch(keysymr) {
             case SDLK_ESCAPE:
                 KEYS[static_cast<unsigned>(keysymr)] = true;
                 break;
@@ -93,7 +92,7 @@ void MainWindow::Keyboard() {
             break;
         }
         case SDL_KEYUP: {
-            switch (keysymr) {
+            switch(keysymr) {
             case SDLK_ESCAPE:
                 KEYS[static_cast<unsigned>(keysymr)] = false;
                 break;
@@ -103,7 +102,7 @@ void MainWindow::Keyboard() {
             break;
         }
         case SDL_WINDOWEVENT:
-            if (event.window.event == SDL_WINDOWEVENT_CLOSE) {
+            if(event.window.event == SDL_WINDOWEVENT_CLOSE) {
                 Quit();
             }
             break;
@@ -130,10 +129,16 @@ void MainWindow::Keyboard() {
 }
 
 void MainWindow::Quit() {
-    //Change the flag variable to 1 so that the main loop stops running
+    // Change the flag variable to 1 so that the main loop stops running
     quit = true;
 }
 
-int MainWindow::Width() const { return windim.x; }
-int MainWindow::Height() const { return windim.y; }
-const SDL_Point& MainWindow::GetWindowDimensions() const { return windim; }
+int MainWindow::Width() const {
+    return windim.x;
+}
+int MainWindow::Height() const {
+    return windim.y;
+}
+const SDL_Point& MainWindow::GetWindowDimensions() const {
+    return windim;
+}

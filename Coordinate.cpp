@@ -13,10 +13,11 @@ std::istream& operator>>(std::istream& is, Coordinate& c) {
             c.y = -1;
         } else {
             std::istringstream iss(std::move(line));
-            if(not(iss >> c.x >> Eater<'-','-','-'>{} >> c.y)) {
+            if(not(iss >> c.x >> Eater<'-', '-', '-'>{} >> c.y)) {
                 is.setstate(std::ios::failbit);
             }
         }
-    } else is.setstate(std::ios::failbit);
+    } else
+        is.setstate(std::ios::failbit);
     return is;
 }

@@ -21,8 +21,8 @@ class PlayerController;
 
 class MainMenu : public Screen {
 public:
-    //Constructor, sets default values and creates all needed assets
-    MainMenu(MainWindow& mw, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl );
+    // Constructor, sets default values and creates all needed assets
+    MainMenu(MainWindow& mw, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
 
     void ShowCredits();
     void ShowSettings();
@@ -31,11 +31,10 @@ public:
 
 class BackScreen : public Screen {
 public:
-    inline BackScreen(MainWindow& mw,  std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(mw, fp, fpl) {}
+    inline BackScreen(MainWindow& mw, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) :
+        Screen(mw, fp, fpl) {}
 
-    inline void Back() {
-        ChangeScreenFunc(std::make_unique<MainMenu>(*main_window, QuitFunc, ChangeScreenFunc));
-    }
+    inline void Back() { ChangeScreenFunc(std::make_unique<MainMenu>(*main_window, QuitFunc, ChangeScreenFunc)); }
 };
 
 class CreditScreen : public BackScreen {
@@ -45,7 +44,7 @@ public:
 
 class MenuSettingsScreen : public BackScreen {
 public:
-    //Constructor, sets default values and creates all needed assets
+    // Constructor, sets default values and creates all needed assets
     MenuSettingsScreen(MainWindow& mw, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
 
     void IncreaseResolution();
@@ -73,7 +72,7 @@ public:
 
 class GameScreen : public Screen {
 public:
-    //Constructor, sets default values and creates all needed assets
+    // Constructor, sets default values and creates all needed assets
     GameScreen(MainWindow& mw, const char* tag, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl);
 
     void Pause();
@@ -81,7 +80,7 @@ public:
     void RenderBackground() override;
     void Render() override;
 
-    //Handles input events
+    // Handles input events
     void Handle_Input(SDL_Event& ev) override;
     void HandleMouseMovement(SDL_Event& ev);
     void ChangeActiveScreen(std::unique_ptr<Screen> NewScreen, std::string ID);
@@ -95,27 +94,27 @@ private:
 
     bool bIsPaused = false;
 
-    //This is a reference to the pausing screen
+    // This is a reference to the pausing screen
     std::unique_ptr<Screen> PM;
 
     std::unique_ptr<UI> overlay;
 
-    //This is the boolean about whether the screen is zoomable or not
+    // This is the boolean about whether the screen is zoomable or not
     bool bZoom = true;
 
-    //This is the magnification factor
+    // This is the magnification factor
     double factor = 1.0;
 
-    //This is the current location of the camera along the y axis
+    // This is the current location of the camera along the y axis
     int Cam_Height = 150;
 
-    //This is the current location of the camera along the x axis
+    // This is the current location of the camera along the x axis
     int Cam_Width = 5384 + 2150;
 
-    //Stores the dimensions of the image displayed
+    // Stores the dimensions of the image displayed
     int ImgSize[2]{16383, 2160};
 
-    //This is the camera's zooming speed
+    // This is the camera's zooming speed
     double ZoomingSpeed = 0.1;
     bool mousepressed = false;
     int MouseSensitivity = 3;
@@ -128,8 +127,9 @@ private:
 
 class PauseMenu : public Screen {
 public:
-    //Constructor, sets default values and creates all needed assets
-    PauseMenu(MainWindow& mw, std::function<void()> fp = {}, std::function<void()> UnpauseF = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
+    // Constructor, sets default values and creates all needed assets
+    PauseMenu(MainWindow& mw, std::function<void()> fp = {}, std::function<void()> UnpauseF = {},
+              std::function<void(std::unique_ptr<Screen>)> fpl = {});
 
     void ReturnToMainMenu();
 };
@@ -157,7 +157,7 @@ public:
     void SelectOTT();
     void SelectUSA();
 
-    void ChangeArrow(int x,int y, int img);
+    void ChangeArrow(int x, int y, int img);
 
     void StartGame();
 
@@ -194,8 +194,8 @@ private:
 
 class IndustryScreen : public Screen {
 public:
-    IndustryScreen(MainWindow& mw, const int(&Stockpile)[30]);
-    void UpdateText(const int(&Stockpile)[30]);
+    IndustryScreen(MainWindow& mw, const int (&Stockpile)[30]);
+    void UpdateText(const int (&Stockpile)[30]);
 };
 
 class TradeScreen : public Screen {
@@ -253,7 +253,7 @@ public:
 
     void Close();
 
-    //Factory attributes
+    // Factory attributes
     int cost;
     PlayerController* PCref;
     unsigned index;
@@ -262,7 +262,9 @@ public:
 
 class StatePreview : public Screen {
 public:
-    StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc);
+    StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC, int res[8],
+                 int pop, std::string Factories[4], std::function<void()> CloseFunc,
+                 std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc);
 
     void Render() override;
 

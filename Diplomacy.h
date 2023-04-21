@@ -2,11 +2,11 @@
 #define DIPLOMACY_H
 
 #pragma once
-#include <vector>
-#include <string>
-#include <set>
 #include <array>
+#include <set>
+#include <string>
 #include <unordered_map>
+#include <vector>
 
 class Country;
 
@@ -14,7 +14,7 @@ struct CountryPair {
 public:
     CountryPair(Country* C1, Country* C2);
 
-    bool operator == (const CountryPair& c) const;
+    bool operator==(const CountryPair& c) const;
 
     Country* GetC1() const;
     Country* GetC2() const;
@@ -33,9 +33,7 @@ struct std::hash<CountryPair> {
     }
 };
 
-enum ClaimType {
-    territory, reparations
-};
+enum ClaimType { territory, reparations };
 
 struct Claim {
 public:
@@ -55,7 +53,7 @@ protected:
 class War {
 public:
     War(Country* aggressor, Country* defender);
-    
+
     bool GetIfTargetPairIsAtWar(const CountryPair& pair) const;
     void JoinWar(Country* newParticipant, Country* onTheSideOf);
     const std::set<Country*>& GetFaction(unsigned i) const;
@@ -119,9 +117,7 @@ private:
     bool allied;
 };
 
-enum RequestType {
-    alliance, tradeDeal, peaceTreaty
-};
+enum RequestType { alliance, tradeDeal, peaceTreaty };
 
 class Request {
 public:
@@ -137,9 +133,8 @@ public:
 private:
     RequestType id;
     unsigned index;
-    Relation &rel;
+    Relation& rel;
     std::string tag;
-
 };
 
 class Diplomacy {

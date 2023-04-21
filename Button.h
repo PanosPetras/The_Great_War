@@ -10,86 +10,94 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 
+#include <array>
 #include <functional>
 #include <string>
-#include <array>
 
 class MainWindow;
 
 class Button : public InputDrawable {
 public:
-    //Constructors
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void()> f = nullptr, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f = nullptr, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
+    // Constructors
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void()> f = nullptr,
+           int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg,
+           int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f = nullptr,
+           int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f,
+           void* arg, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f = nullptr,
+           int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f,
+           void* arg, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor,
+           std::function<void()> f = nullptr, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor,
+           std::function<void(void*)> f, void* arg, int keybind = 0);
 
-    //Destructor
+    // Destructor
     ~Button() override;
 
-    //Called when received input, to check whether the click was in this button
+    // Called when received input, to check whether the click was in this button
     void HandleInput(const SDL_Event& ev) override;
 
-    //Change the text assigned to the button
+    // Change the text assigned to the button
     void ChangeText(std::string text, int textSize);
 
-    //Change the button's position
+    // Change the button's position
     void ChangePosition(int x, int y, int Width, int Height);
 
-    //Change the function bound to this button
+    // Change the function bound to this button
     void ChangeFunctionBinding(std::function<void()> f);
     void ChangeFunctionBinding(std::function<void(void*)> f, void* arg);
 
-    //Change the keyboard key that is bound to this button
+    // Change the keyboard key that is bound to this button
     void ChangeKeybind(int keybind);
 
-    //Play the button's onClick sound
+    // Play the button's onClick sound
     void Playsound();
 
-    //Execute the function that was bound to this button
+    // Execute the function that was bound to this button
     void CallBoundFunction();
 
-    //Enable/Disable the button
+    // Enable/Disable the button
     void SetActive(bool state) override;
 
 protected:
-    //Render the button on the screen
+    // Render the button on the screen
     void pDraw() override;
 
-    //Executed when the button is clicked
+    // Executed when the button is clicked
     void Click();
 
-    //Check if the mouse is within the limits of an SDL_Rect
+    // Check if the mouse is within the limits of an SDL_Rect
     static bool CheckIfMouseInRect(const SDL_Rect& rect, const SDL_MouseButtonEvent& ev);
 
-    //Reference the the main window
+    // Reference the the main window
     MainWindow* main_window;
 
-    //The visual state of the button
+    // The visual state of the button
     bool bHovered = false;
 
-    //Stores the bound function
+    // Stores the bound function
     std::function<void()> func;
 
-    //Saves the index of the keyboard key this button is bound to
+    // Saves the index of the keyboard key this button is bound to
     int key;
 
-    //Dimensions of the button
+    // Dimensions of the button
     SDL_Rect draw_rect;
     SDL_Rect text_draw_rect;
 
-    //Reference to the button's texture
+    // Reference to the button's texture
     enum { textureIdle, textureHoovered, textureInactive };
     std::array<TextureRef, 3> textures;
     TextureRef active_texture{textures[textureIdle]};
 
     SDL_Texture_ctx text;
 
-    //The button's onClick sound
+    // The button's onClick sound
     Mix_Chunk* music = nullptr;
 
     friend class ToggleButton;
