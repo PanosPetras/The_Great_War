@@ -88,16 +88,10 @@ void MenuSettingsScreen::onVSyncToggle(bool state) {
 }
 
 void MenuSettingsScreen::ApplyChanges() {
-    auto res = Resolutions::SUPPORTED_RESOLUTIONS[currentResolutionIndex];
-    main_window->vsync = As<Checkbox>(3).GetValue();
-    main_window->fullscreen = As<Checkbox>(0).GetValue();
-    main_window->framerateCap = Resolutions::SUPPORTED_FRAMERATES[currentFramerateIndex];
-
-    SDL_SetWindowFullscreen(main_window->window, main_window->fullscreen);
-    SDL_RenderSetVSync(*main_window, main_window->vsync);
-    SDL_SetWindowSize(main_window->window, res.GetWidth(), res.GetHeight());
-
-    SDL_GetWindowSize(main_window->window, &main_window->windim.x, &main_window->windim.y);
-
-    ChangeScreenFunc(std::make_unique<MenuSettingsScreen>(*main_window, QuitFunc, ChangeScreenFunc));
+    if(main_window->SetResolution(currentResolutionIndex,
+                                  As<Checkbox>(3).GetValue(), // vsync
+                                  As<Checkbox>(0).GetValue()  // fullscreen
+                                  )) {
+        ChangeScreenFunc(std::make_unique<MenuSettingsScreen>(*main_window, QuitFunc, ChangeScreenFunc));
+    }
 }

@@ -2,6 +2,7 @@
 
 #include "Button.h"
 
+#include "Resolutions.h"
 #include "ScreenList.h"
 
 #include <iostream>
@@ -12,9 +13,8 @@ MainWindow& MainWindow::Instance() {
 }
 
 MainWindow::MainWindow() :
-    // sdl_init_ctx{}, window{}, renderer(window), ttf_init_ctx{}, img_init_ctx{}, mix_ctx{}, cursor{}
-    renderer(window), windim(window.GetWindowDimensions()), scr(std::make_unique<MainMenu>(
-                                                                *this, [this] { Quit(); }, [this](std::unique_ptr<Screen> newScreen) { ChangeScreen(std::move(newScreen)); })) {
+    renderer(window), scr(std::make_unique<MainMenu>(
+                          *this, [this] { Quit(); }, [this](std::unique_ptr<Screen> newScreen) { ChangeScreen(std::move(newScreen)); })) {
     vsync = true;
     fullscreen = true;
     framerateCap = 60;
@@ -132,14 +132,37 @@ void MainWindow::Quit() {
     quit = true;
 }
 
+const SDL_Point& MainWindow::GetWindowDimensions() const {
+    return window.GetWindowDimensions();
+}
 int MainWindow::Width() const {
-    return windim.x;
+    return GetWindowDimensions().x;
 }
 int MainWindow::Height() const {
-    return windim.y;
+    return GetWindowDimensions().y;
 }
-const SDL_Point& MainWindow::GetWindowDimensions() const {
-    return windim;
+
+bool MainWindow::SetResolution(unsigned resolution, bool Vsync, Uint32 fullscreen_flags) {
+    auto& res = Resolutions::SUPPORTED_RESOLUTIONS.at(resolution);
+
+    if(window.SetFullScreen(fullscreen_flags) == false) {
+        std::cerr << "MainWindow::SetResolution window.SetFullScreen " << fullscreen_flags << " failed\n";
+        return false;
+    }
+    if(renderer.SetVSync(Vsync) == false) {
+        std::cerr << "MainWindow::SetResolution renderer.SetVSync " << Vsync << " failed\n";
+        return false;
+    }
+    if(window.SetSize(res.GetWidth(), res.GetHeight()) == false) {
+        std::cerr << "MainWindow::SetResolution window.SetSize " << res.GetWidth() << ',' << res.GetHeight() << " failed\n";
+        return false;
+    }
+
+    vsync = Vsync;
+    fullscreen = fullscreen_flags;
+    framerateCap = Resolutions::SUPPORTED_FRAMERATES[resolution];
+
+    return true;
 }
 
 ChunkRef MainWindow::Mix_LoadWAV(const std::string& filename) {
