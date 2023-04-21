@@ -26,15 +26,19 @@ DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, std::stri
 
     AddDrawable<Button>(*main_window, int(Width * 0.4275), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Declare War", fontSize);
     AddDrawable<Button>(*main_window, int(Width * 0.4275), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Make Demands", fontSize);
+    As<Button>(InputDrawableArrtop() - 1).SetActive(false);
     AddDrawable<Button>(*main_window, int(Width * 0.4275), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Justify Claim", fontSize);
     AddDrawable<Button>(*main_window, int(Width * 0.585), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Form Alliance", fontSize, [this] { SendAllianceRequest(); });
-    AddDrawable<Button>(*main_window, int(Width * 0.585), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Non-Aggression Pact", fontSize);
+    AddDrawable<Button>(*main_window, int(Width * 0.585), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Non-Aggression Pact", fontSize, [this] { SendNonAggressionPactRequest(); });
     AddDrawable<Button>(*main_window, int(Width * 0.585), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Improve Relations", fontSize, [this] { ImproveRelations(); });
     AddDrawable<Button>(*main_window, int(Width * 0.585), int(Height * 0.74), int(Width * 0.13), int(Height * 0.04), "Worsen Relations", fontSize, [this] { WorsenRelations(); });
     AddDrawable<Button>(*main_window, int(Width * 0.7425), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Trade Deal", fontSize);
+    As<Button>(InputDrawableArrtop() - 1).SetActive(false);
     AddDrawable<Button>(*main_window, int(Width * 0.7425), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Embargo", fontSize, [this] { ImposeEmbargo(); });
     AddDrawable<Button>(*main_window, int(Width * 0.7425), int(Height * 0.66), int(Width * 0.13), int(Height * 0.04), "Request Access", fontSize);
+    As<Button>(InputDrawableArrtop() - 1).SetActive(false);
     AddDrawable<Button>(*main_window, int(Width * 0.7425), int(Height * 0.74), int(Width * 0.13), int(Height * 0.04), "Provide Access", fontSize);
+    As<Button>(InputDrawableArrtop() - 1).SetActive(false);
 
     PCref = PC;
 
@@ -89,6 +93,7 @@ void DiplomacyScreen::SelectCountry(unsigned index) {
     UpdateRelationValue();
     UpdateEmbargoState();
     UpdateAllianceState();
+    UpdateNonAggressionPactState();
 }
 
 void DiplomacyScreen::ImproveRelations() {
@@ -128,6 +133,23 @@ void DiplomacyScreen::ImposeEmbargo() {
 
     UpdateEmbargoState();
     UpdateRelationValue();
+}
+
+void DiplomacyScreen::SendNonAggressionPactRequest() {
+    Country *c1 = PCref->CountriesArr[PCref->player_index].get(), *c2 = PCref->CountriesArr[selectedCountryIndex].get();
+
+    auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
+
+    if(rel != PCref->diplo.relations.end()) {
+        if(!rel->second.GetIfHasNonAggressionPact()) {
+            PCref->CountriesArr[selectedCountryIndex]->AddRequest(Request(nonAgressionPact, PCref->player_index, PCref->CountriesArr[PCref->player_index]->GetTag(), rel->second));
+        } else {
+            rel->second.BreakNonAggressionPact();
+
+            UpdateRelationValue();
+            UpdateNonAggressionPactState();
+        }
+    }
 }
 
 void DiplomacyScreen::SendAllianceRequest() {
@@ -185,4 +207,19 @@ void DiplomacyScreen::UpdateEmbargoState() {
         }
     }
     As<Button>(InputDrawableArrtop() - 3).ChangeText("Embargo", 26);
+}
+
+void DiplomacyScreen::UpdateNonAggressionPactState() {
+    Country *c1 = PCref->CountriesArr[PCref->player_index].get(), *c2 = PCref->CountriesArr[selectedCountryIndex].get();
+
+    auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
+
+    if(rel != PCref->diplo.relations.end()) {
+        if(rel->second.GetIfHasNonAggressionPact()) {
+            As<Button>(InputDrawableArrtop() - 7).ChangeText("Cancel Pact", 26);
+            return;
+        }
+    }
+
+    As<Button>(InputDrawableArrtop() - 7).ChangeText("Non-Aggression Pact", 26);
 }

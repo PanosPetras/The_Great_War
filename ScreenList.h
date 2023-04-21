@@ -181,11 +181,14 @@ private:
     void WorsenRelations();
     void ImposeEmbargo();
 
+    void SendNonAggressionPactRequest();
+
     void SendAllianceRequest();
 
     void UpdateRelationValue();
     void UpdateAllianceState();
     void UpdateEmbargoState();
+    void UpdateNonAggressionPactState();
 
     unsigned selectedCountryIndex;
 };

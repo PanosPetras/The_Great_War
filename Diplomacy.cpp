@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <stdexcept>
 
+std::vector<War> Relation::wars;
+
 CountryPair::CountryPair(Country* C1, Country* C2) : c1(C1), c2(C2) {
     if(C1 == nullptr || C2 == nullptr) {
         throw std::runtime_error("CountryPair got a nullptr");
@@ -47,6 +49,45 @@ Relation::Relation(int relations, bool Allied) {
     allied = Allied;
 }
 
+void Relation::DeclareWar(Claim claim) {
+    wars.push_back(War(claim));
+}
+
+bool Relation::GetIfAtWar() const {
+    if(claims.size() == 0) {
+        return false;
+    }
+
+    for(auto i : wars) {
+        if(i.GetIfTargetPairIsAtWar(CountryPair(claims[0].GetOwner(), claims[0].GetTarget()))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void Relation::AddClaim(Claim claim) {
+    claims.push_back(claim);
+}
+
+const std::vector<Claim> Relation::GetClaims(Country* c) {
+    if(c == nullptr) {
+        return claims;
+    } else {
+        std::vector<Claim> vec;
+
+        for(auto i : claims) {
+            if(i.GetOwner() == c) {
+                vec.push_back(i);
+            }
+        }
+
+        return vec;
+    }
+    return std::vector<Claim>();
+}
+
 void Relation::ImproveRelations(int value) {
     relationsValue = std::min(relationsValue + value, RELATIONS_LIMIT);
 }
@@ -71,6 +112,20 @@ void Relation::BreakAlliance() {
 
 bool Relation::GetIfAllied() const {
     return allied;
+}
+
+void Relation::CreateNonAggressionPact() {
+    nonAggressionPact = true;
+    ImproveRelations(50);
+}
+
+void Relation::BreakNonAggressionPact() {
+    nonAggressionPact = false;
+    WorsenRelations(80);
+}
+
+bool Relation::GetIfHasNonAggressionPact() {
+    return nonAggressionPact;
 }
 
 void Relation::ImposeEmbargo(std::string Instigator) {
@@ -98,23 +153,14 @@ void Request::Accept() {
     case alliance:
         rel.CreateAlliance();
         break;
-    case tradeDeal:
-        break;
-    case peaceTreaty:
+    case nonAgressionPact:
+        rel.CreateNonAggressionPact();
         break;
     }
 }
 
 void Request::Decline() {
-    switch(id) {
-    case alliance:
-        rel.WorsenRelations();
-        break;
-    case tradeDeal:
-        break;
-    case peaceTreaty:
-        break;
-    }
+    rel.WorsenRelations();
 }
 
 Relation& Request::GetRelations() const {
@@ -129,7 +175,9 @@ unsigned Request::GetSenderIndex() const {
     return index;
 }
 
-War::War(Country* aggressor, Country* defender) : factions({Faction(aggressor), Faction(defender)}) {}
+War::War(Claim claim) : factions({Faction(claim.GetOwner()), Faction(claim.GetTarget())}) {
+    factions[0].AddClaim(claim);
+}
 
 bool War::GetIfTargetPairIsAtWar(const CountryPair& pair) const {
     if(factions[0].Contains(pair.GetC1())) {
@@ -242,4 +290,8 @@ Country* Claim::GetTarget() const {
 
 ClaimType Claim::GetType() const {
     return type;
+}
+
+Diplomacy::Diplomacy() {
+    Relation::wars.clear();
 }

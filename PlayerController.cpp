@@ -2,7 +2,6 @@
 
 #include "Color.h"
 #include "MainWindow.h"
-#include "SDL_ColorDetection.h"
 
 #include <SDL_image.h>
 
