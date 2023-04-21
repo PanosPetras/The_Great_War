@@ -13,8 +13,7 @@ Screen::Screen(MainWindow& mw) : main_window(&mw) {
     std::cerr << "Screen::Screen()\t" << static_cast<void*>(this) << std::endl;
 }
 
-Screen::Screen(MainWindow& mw, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf) :
-    main_window(&mw), QuitFunc(qf), ChangeScreenFunc(csf) {
+Screen::Screen(MainWindow& mw, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf) : main_window(&mw), QuitFunc(qf), ChangeScreenFunc(csf) {
     std::cerr << "Screen::Screen(...)\t" << static_cast<void*>(this) << std::endl;
 }
 

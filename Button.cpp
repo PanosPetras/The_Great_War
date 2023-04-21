@@ -23,17 +23,11 @@ std::array<TextureRef, 3> Load(MainWindow& mw, std::string image) {
 }
 } // namespace
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) :
-    Button(mw, x, y, Width, Height, image, top_left, f, keybind) {}
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) : Button(mw, x, y, Width, Height, image, top_left, f, keybind) {}
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg,
-               int keybind) :
-    Button(mw, x, y, Width, Height, image, top_left, f, arg, keybind) {}
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind) : Button(mw, x, y, Width, Height, image, top_left, f, arg, keybind) {}
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f,
-               int keybind) :
-    InputDrawable(anchor),
-    main_window(&mw), textures{Load(mw, image)} {
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f, int keybind) : InputDrawable(anchor), main_window(&mw), textures{Load(mw, image)} {
     std::cerr << "Button::Button image: " << image << std::endl;
 
     // Saving the button's coordinates
@@ -49,23 +43,17 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
     music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f,
-               void* arg, int keybind) :
-    Button(mw, x, y, Width, Height, image, anchor, nullptr, keybind) {
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind) : Button(mw, x, y, Width, Height, image, anchor, nullptr, keybind) {
     // Saving the bound function
     ChangeFunctionBinding(f, arg);
 }
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, std::function<void()> f,
-               int keybind) :
-    Button(mw, x, y, Width, Height, Text, textSize, top_left, f, keybind) {}
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, std::function<void()> f, int keybind) : Button(mw, x, y, Width, Height, Text, textSize, top_left, f, keybind) {}
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, std::function<void(void*)> f,
-               void* arg, int keybind) :
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, std::function<void(void*)> f, void* arg, int keybind) :
     Button(mw, x, y, Width, Height, Text, textSize, top_left, f, arg, keybind) {}
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, Anchor anchor,
-               std::function<void()> f, int keybind) :
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, Anchor anchor, std::function<void()> f, int keybind) :
     Button(mw, x, y, Width, Height, "Drawable/Button/Button", anchor, f, keybind) {
     std::cerr << "Button::Button text: " << Text << std::endl;
 
@@ -82,8 +70,7 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
     ChangeKeybind(keybind);
 }
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, Anchor anchor,
-               std::function<void(void*)> f, void* arg, [[maybe_unused]] int keybind) :
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, [[maybe_unused]] int keybind) :
     Button(mw, x, y, Width, Height, Text, textSize, anchor) {
     // Saving the bound function
     ChangeFunctionBinding(f, arg);
@@ -158,10 +145,7 @@ void Button::ChangeText(std::string textstr, int textSize) {
 
     int text_x = (draw_rect.w - textSur->w) / 2;
     int text_y = (draw_rect.h - textSur->h) / 3;
-    text_draw_rect = {.x = draw_rect.x + (text_x > 0 ? text_x : int(draw_rect.w * 0.1)),
-                      .y = draw_rect.y + text_y,
-                      .w = (text_x > 0 ? textSur->w : int(draw_rect.w * 0.8)),
-                      .h = textSur->h};
+    text_draw_rect = {.x = draw_rect.x + (text_x > 0 ? text_x : int(draw_rect.w * 0.1)), .y = draw_rect.y + text_y, .w = (text_x > 0 ? textSur->w : int(draw_rect.w * 0.8)), .h = textSur->h};
 
     bHovered = false;
 }

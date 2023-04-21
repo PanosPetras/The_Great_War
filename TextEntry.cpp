@@ -5,22 +5,15 @@
 #include "MainWindow.h"
 
 #include <SDL.h>
-TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, std::string defaultText, int maxCharacters) :
-    TextEntry(mw, X, Y, Width, Height, top_left, defaultText, maxCharacters) {}
+TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, std::string defaultText, int maxCharacters) : TextEntry(mw, X, Y, Width, Height, top_left, defaultText, maxCharacters) {}
 
-TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, std::string defaultText, std::string Hint,
-                     int maxCharacters) :
-    TextEntry(mw, X, Y, Width, Height, top_left, defaultText, Hint, maxCharacters) {}
+TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, std::string defaultText, std::string Hint, int maxCharacters) : TextEntry(mw, X, Y, Width, Height, top_left, defaultText, Hint, maxCharacters) {}
 
-TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, Anchor anchor, std::string defaultText,
-                     int maxCharacters) :
-    main_window(&mw),
-    x(X), y(Y), text(defaultText), maxSize(maxCharacters),
-    background(std::make_unique<Image>(mw, "Backgrounds/FlagBg.png", x, y, Width, Height, anchor)),
+TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters) :
+    main_window(&mw), x(X), y(Y), text(defaultText), maxSize(maxCharacters), background(std::make_unique<Image>(mw, "Backgrounds/FlagBg.png", x, y, Width, Height, anchor)),
     textLabel(std::make_unique<Label>(mw, defaultText, 20, int(x * 1.08), int(y * 1.08), anchor)) {}
 
-TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, Anchor anchor, std::string defaultText, std::string Hint,
-                     int maxCharacters) :
+TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, Anchor anchor, std::string defaultText, std::string Hint, int maxCharacters) :
     TextEntry(mw, X, Y, Width, Height, anchor, defaultText, maxCharacters) {
     ChangeHint(Hint);
 }
@@ -28,8 +21,8 @@ TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, Anchor
 void TextEntry::HandleInput(const SDL_Event& ev) {
     if(IsActive()) {
         if(ev.type == SDL_MOUSEBUTTONDOWN) {
-            if(ev.button.x >= background->draw_rect.x && ev.button.x <= (background->draw_rect.x + background->draw_rect.w) &&
-               ev.button.y >= background->draw_rect.y && ev.button.y <= (background->draw_rect.y + background->draw_rect.h)) {
+            if(ev.button.x >= background->draw_rect.x && ev.button.x <= (background->draw_rect.x + background->draw_rect.w) && ev.button.y >= background->draw_rect.y &&
+               ev.button.y <= (background->draw_rect.y + background->draw_rect.h)) {
                 focused = true;
             } else {
                 focused = false;

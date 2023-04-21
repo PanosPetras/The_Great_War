@@ -25,8 +25,7 @@ class ToggleButton;
 class UI {
 public:
     // Constructor
-    UI(MainWindow& mw, const char* tag, PlayerController* PC,
-       std::function<void(std::unique_ptr<Screen>, std::string)> fpl = nullptr);
+    UI(MainWindow& mw, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl = nullptr);
     ~UI() = default;
 
     // This is a reference to the main window's renderer

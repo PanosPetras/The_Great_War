@@ -13,9 +13,8 @@ MainWindow& MainWindow::Instance() {
 
 MainWindow::MainWindow() :
     // sdl_init_ctx{}, window{}, renderer(window), ttf_init_ctx{}, img_init_ctx{}, mix_ctx{}, cursor{}
-    renderer(window), windim(window.GetWindowDimensions()),
-    scr(std::make_unique<MainMenu>(
-        *this, [this] { Quit(); }, [this](std::unique_ptr<Screen> newScreen) { ChangeScreen(std::move(newScreen)); })) {
+    renderer(window), windim(window.GetWindowDimensions()), scr(std::make_unique<MainMenu>(
+                                                                *this, [this] { Quit(); }, [this](std::unique_ptr<Screen> newScreen) { ChangeScreen(std::move(newScreen)); })) {
     vsync = true;
     fullscreen = true;
     framerateCap = 60;

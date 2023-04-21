@@ -2,18 +2,14 @@
 #include "Button.h"
 #include <iostream>
 
-ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage,
-                           std::function<void(bool)> f, int keybind) :
+ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f, int keybind) :
     ToggleButton(mw, x, y, Width, Height, activeImage, inactiveImage, top_left, f, keybind) {}
 
-ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage,
-                           bool val, std::function<void(bool)> f, int keybind) :
+ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f, int keybind) :
     ToggleButton(mw, x, y, Width, Height, activeImage, inactiveImage, top_left, val, f, keybind) {}
 
-ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage,
-                           Anchor anchor, std::function<void(bool)> f, int keybind) :
-    InputDrawable(anchor),
-    main_window(&mw), music(::Mix_LoadWAV("Sounds/ButtonClick.mp3")) {
+ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, std::function<void(bool)> f, int keybind) :
+    InputDrawable(anchor), main_window(&mw), music(::Mix_LoadWAV("Sounds/ButtonClick.mp3")) {
     // Set the default values
     bHovered = false;
     value = false;
@@ -31,10 +27,8 @@ ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, 
     ChangeKeybind(keybind);
 }
 
-ToggleButton::ToggleButton(MainWindow& mw, [[maybe_unused]] int x, [[maybe_unused]] int y, [[maybe_unused]] int Width,
-                           [[maybe_unused]] int Height, [[maybe_unused]] std::string activeImage,
-                           [[maybe_unused]] std::string inactiveImage, [[maybe_unused]] Anchor anchor, [[maybe_unused]] bool val,
-                           [[maybe_unused]] std::function<void(bool)> f, [[maybe_unused]] int keybind) :
+ToggleButton::ToggleButton(MainWindow& mw, [[maybe_unused]] int x, [[maybe_unused]] int y, [[maybe_unused]] int Width, [[maybe_unused]] int Height, [[maybe_unused]] std::string activeImage,
+                           [[maybe_unused]] std::string inactiveImage, [[maybe_unused]] Anchor anchor, [[maybe_unused]] bool val, [[maybe_unused]] std::function<void(bool)> f, [[maybe_unused]] int keybind) :
     main_window(&mw) {
     value = val;
 }

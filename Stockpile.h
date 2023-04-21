@@ -111,11 +111,9 @@ struct Stockpile {
     inline friend std::istream& operator>>(std::istream& is, Stockpile& sp) {
         if(std::string line; std::getline(is, line)) {
             std::istringstream iss(line);
-            if(not(iss >> sp.Coal >> sp.Oil >> sp.Timber >> sp.Rubber >> sp.Cotton >> sp.Iron >> sp.Grain >> sp.Fruit >>
-                   sp.Electric_gear >> sp.Machine_parts >> sp.Glass >> sp.Lumber >> sp.Cement >> sp.Ammunition >> sp.Planes >>
-                   sp.Explosives >> sp.Small_arms >> sp.Artillery >> sp.Tanks >> sp.Canned_food >> sp.Furniture >> sp.Clothes >>
-                   sp.Automobiles >> sp.Merchant_ships >> sp.Radios >> sp.Telephones >> sp.Fuel >> sp.Paper >> sp.Liquor >>
-                   sp.Airship >> sp.Money)) {
+            if(not(iss >> sp.Coal >> sp.Oil >> sp.Timber >> sp.Rubber >> sp.Cotton >> sp.Iron >> sp.Grain >> sp.Fruit >> sp.Electric_gear >> sp.Machine_parts >> sp.Glass >> sp.Lumber >> sp.Cement >> sp.Ammunition >>
+                   sp.Planes >> sp.Explosives >> sp.Small_arms >> sp.Artillery >> sp.Tanks >> sp.Canned_food >> sp.Furniture >> sp.Clothes >> sp.Automobiles >> sp.Merchant_ships >> sp.Radios >> sp.Telephones >> sp.Fuel >>
+                   sp.Paper >> sp.Liquor >> sp.Airship >> sp.Money)) {
                 is.setstate(std::ios::failbit);
             }
         }

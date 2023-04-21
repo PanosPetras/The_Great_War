@@ -17,14 +17,10 @@
 class ToggleButton : public InputDrawable {
 public:
     // Constructor
-    ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage,
-                 std::function<void(bool)> f = {}, int keybind = 0);
-    ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val,
-                 std::function<void(bool)> f = {}, int keybind = 0);
-    ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage,
-                 Anchor anchor, std::function<void(bool)> f = {}, int keybind = 0);
-    ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage,
-                 Anchor anchor, bool val, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, bool val, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, std::function<void(bool)> f = {}, int keybind = 0);
+    ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, bool val, std::function<void(bool)> f = {}, int keybind = 0);
 
     // Destructor
     ~ToggleButton() override;

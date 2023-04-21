@@ -19,22 +19,14 @@ class MainWindow;
 class Button : public InputDrawable {
 public:
     // Constructors
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void()> f = nullptr,
-           int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg,
-           int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f = nullptr,
-           int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f,
-           void* arg, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f = nullptr,
-           int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f,
-           void* arg, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor,
-           std::function<void()> f = nullptr, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor,
-           std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void()> f = nullptr, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f = nullptr, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
 
     // Destructor
     ~Button() override;

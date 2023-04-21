@@ -13,10 +13,8 @@ class MainWindow;
 class Slider : public InputDrawable {
 public:
     // Constructor, initializes the values
-    Slider(MainWindow& mw, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1,
-           std::function<void()> onSliderValueChanged = {});
-    Slider(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, int minvalue = 0, int maxvalue = 100, int value = -1,
-           std::function<void()> onSliderValueChanged = {});
+    Slider(MainWindow& mw, int x, int y, int Width, int Height, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
+    Slider(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, int minvalue = 0, int maxvalue = 100, int value = -1, std::function<void()> onSliderValueChanged = {});
     ~Slider() override;
 
     // Handle input events

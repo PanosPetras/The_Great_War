@@ -31,8 +31,7 @@ public:
 
 class BackScreen : public Screen {
 public:
-    inline BackScreen(MainWindow& mw, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) :
-        Screen(mw, fp, fpl) {}
+    inline BackScreen(MainWindow& mw, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(mw, fp, fpl) {}
 
     inline void Back() { ChangeScreenFunc(std::make_unique<MainMenu>(*main_window, QuitFunc, ChangeScreenFunc)); }
 };
@@ -128,8 +127,7 @@ private:
 class PauseMenu : public Screen {
 public:
     // Constructor, sets default values and creates all needed assets
-    PauseMenu(MainWindow& mw, std::function<void()> fp = {}, std::function<void()> UnpauseF = {},
-              std::function<void(std::unique_ptr<Screen>)> fpl = {});
+    PauseMenu(MainWindow& mw, std::function<void()> fp = {}, std::function<void()> UnpauseF = {}, std::function<void(std::unique_ptr<Screen>)> fpl = {});
 
     void ReturnToMainMenu();
 };
@@ -262,8 +260,7 @@ public:
 
 class StatePreview : public Screen {
 public:
-    StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC, int res[8],
-                 int pop, std::string Factories[4], std::function<void()> CloseFunc,
+    StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc,
                  std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc);
 
     void Render() override;

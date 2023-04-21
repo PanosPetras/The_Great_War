@@ -6,8 +6,7 @@
 #include "MainWindow.h"
 #include "PlayerController.h"
 
-StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC,
-                           int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc,
+StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc,
                            std::function<void(std::unique_ptr<Screen>, std::string)> changeScreenFunc) :
     Screen(mw),
     ChangeScreenFunc2(changeScreenFunc), Id(id) {
@@ -28,10 +27,8 @@ StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, s
 
     AddImage<Image>(mw, "Backgrounds/StatePreview.png", 0, int(Height * .55), int(Width * 0.2), int(Height * 0.45));
 
-    AddDrawable<Button>(mw, 0, int(Height * .55), int(72 * Width / 1920), int(48 * Height / 1080), str,
-                        [this] { OpenDiplomacyTab(); });
-    AddDrawable<Button>(mw, int(Width * .2) - int((32 * Width / 1920) / 2), int(Height * .55) - int((32 * Height / 1080) / 2),
-                        int(32 * Width / 1920), int(32 * Height / 1080), "Buttons/UI/Close", CloseFunc);
+    AddDrawable<Button>(mw, 0, int(Height * .55), int(72 * Width / 1920), int(48 * Height / 1080), str, [this] { OpenDiplomacyTab(); });
+    AddDrawable<Button>(mw, int(Width * .2) - int((32 * Width / 1920) / 2), int(Height * .55) - int((32 * Height / 1080) / 2), int(32 * Width / 1920), int(32 * Height / 1080), "Buttons/UI/Close", CloseFunc);
 
     for(int x = 0; x < 4; x++) {
         if(Factories[x] != "") {
@@ -43,8 +40,7 @@ StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, s
     }
 
     if(Controller == PC->player_tag && Factories[3] == "") {
-        AddDrawable<Button>(mw, int(Width * .058), int(Height * 0.95), int(160 * Width / 1920), int(38 * Height / 1080),
-                            "Open Factory", 24, [this] { OpenOFS(); });
+        AddDrawable<Button>(mw, int(Width * .058), int(Height * 0.95), int(160 * Width / 1920), int(38 * Height / 1080), "Open Factory", 24, [this] { OpenOFS(); });
     }
 
     PCref = PC;

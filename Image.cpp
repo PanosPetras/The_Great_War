@@ -3,8 +3,7 @@
 #include "MainWindow.h"
 
 Image::Image(MainWindow& mw, std::string img, int x, int y, int Width, int Height, Anchor anchor) :
-    Drawable(anchor), main_window(&mw), imagepath(img), draw_rect{.x = x, .y = y, .w = Width, .h = Height},
-    texture(main_window->IMG_Load(imagepath)) {
+    Drawable(anchor), main_window(&mw), imagepath(img), draw_rect{.x = x, .y = y, .w = Width, .h = Height}, texture(main_window->IMG_Load(imagepath)) {
     ApplyAnchor(draw_rect, dAnchor);
 }
 

@@ -11,17 +11,13 @@
 #include <iostream>
 #include <memory>
 
-GameScreen::GameScreen(MainWindow& mw, const char* tag, std::function<void()> fp,
-                       std::function<void(std::unique_ptr<Screen>)> fpl) :
-    Screen(mw) {
+GameScreen::GameScreen(MainWindow& mw, const char* tag, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(mw) {
     bHasBackground = true;
     ChangeScreenFunc = fpl;
     QuitFunc = fp;
 
     PC = std::make_unique<PlayerController>(*main_window, tag);
-    overlay = std::make_unique<UI>(*main_window, tag, PC.get(), [this](std::unique_ptr<Screen> scr, std::string ID) {
-        ChangeActiveScreen(std::move(scr), std::move(ID));
-    });
+    overlay = std::make_unique<UI>(*main_window, tag, PC.get(), [this](std::unique_ptr<Screen> scr, std::string ID) { ChangeActiveScreen(std::move(scr), std::move(ID)); });
 }
 
 void GameScreen::Pause() {
@@ -54,8 +50,7 @@ void GameScreen::RenderBackground() {
     appropriate dimensions, based on the magnification
     factor reiceived from user input*/
     if(bZoom == true) {
-        SDL_Rect dstrect = {int(Cam_Width * -1 * factor), int(Cam_Height * -1 * factor), int(ImgSize[0] * factor),
-                            int(factor * ImgSize[1])};
+        SDL_Rect dstrect = {int(Cam_Width * -1 * factor), int(Cam_Height * -1 * factor), int(ImgSize[0] * factor), int(factor * ImgSize[1])};
         SDL_RenderCopy(*main_window, PC->txt, nullptr, &dstrect);
         SDL_RenderCopy(*main_window, PC->overlay, nullptr, &dstrect);
     }
@@ -67,36 +62,16 @@ void GameScreen::Render() {
         this->RenderBackground();
     } else {
         if(/*overlay->bDateUpdated == true && */ ScreenID == "IndustryScreen") {
-            int Res[30] = {PC->CountriesArr.at(PC->player_index)->Stock.Coal,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Oil,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Timber,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Rubber,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Cotton,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Iron,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Grain,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Fruit,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Electric_gear,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Machine_parts,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Glass,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Lumber,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Cement,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Ammunition,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Planes,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Explosives,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Small_arms,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Artillery,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Tanks,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Canned_food,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Furniture,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Clothes,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Automobiles,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Merchant_ships,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Radios,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Telephones,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Fuel,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Paper,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Liquor,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Airship};
+            int Res[30] = {PC->CountriesArr.at(PC->player_index)->Stock.Coal,          PC->CountriesArr.at(PC->player_index)->Stock.Oil,         PC->CountriesArr.at(PC->player_index)->Stock.Timber,
+                           PC->CountriesArr.at(PC->player_index)->Stock.Rubber,        PC->CountriesArr.at(PC->player_index)->Stock.Cotton,      PC->CountriesArr.at(PC->player_index)->Stock.Iron,
+                           PC->CountriesArr.at(PC->player_index)->Stock.Grain,         PC->CountriesArr.at(PC->player_index)->Stock.Fruit,       PC->CountriesArr.at(PC->player_index)->Stock.Electric_gear,
+                           PC->CountriesArr.at(PC->player_index)->Stock.Machine_parts, PC->CountriesArr.at(PC->player_index)->Stock.Glass,       PC->CountriesArr.at(PC->player_index)->Stock.Lumber,
+                           PC->CountriesArr.at(PC->player_index)->Stock.Cement,        PC->CountriesArr.at(PC->player_index)->Stock.Ammunition,  PC->CountriesArr.at(PC->player_index)->Stock.Planes,
+                           PC->CountriesArr.at(PC->player_index)->Stock.Explosives,    PC->CountriesArr.at(PC->player_index)->Stock.Small_arms,  PC->CountriesArr.at(PC->player_index)->Stock.Artillery,
+                           PC->CountriesArr.at(PC->player_index)->Stock.Tanks,         PC->CountriesArr.at(PC->player_index)->Stock.Canned_food, PC->CountriesArr.at(PC->player_index)->Stock.Furniture,
+                           PC->CountriesArr.at(PC->player_index)->Stock.Clothes,       PC->CountriesArr.at(PC->player_index)->Stock.Automobiles, PC->CountriesArr.at(PC->player_index)->Stock.Merchant_ships,
+                           PC->CountriesArr.at(PC->player_index)->Stock.Radios,        PC->CountriesArr.at(PC->player_index)->Stock.Telephones,  PC->CountriesArr.at(PC->player_index)->Stock.Fuel,
+                           PC->CountriesArr.at(PC->player_index)->Stock.Paper,         PC->CountriesArr.at(PC->player_index)->Stock.Liquor,      PC->CountriesArr.at(PC->player_index)->Stock.Airship};
             static_cast<IndustryScreen*>(ActiveScreen.get())->UpdateText(Res);
         } else if(ScreenID == "EconomyScreen") {
             static_cast<EconomyScreen*>(ActiveScreen.get())->Update();
@@ -146,8 +121,7 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
 
     // Handle clicks on the map
     if(ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT) {
-        if(bHasActiveScreen() == false && flag == false && ev.button.y > main_window->Height() * 0.07 && bIsPaused == false &&
-           !StateViewingScreen) {
+        if(bHasActiveScreen() == false && flag == false && ev.button.y > main_window->Height() * 0.07 && bIsPaused == false && !StateViewingScreen) {
             int x = Cam_Width + int(ev.button.x / factor) - 5384;
             int y = Cam_Height + int(ev.button.y / factor);
 
@@ -166,17 +140,12 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
                 }
 
                 // Access the state's resources
-                int res[8] = {state->Resources.Coal, state->Resources.Cotton, state->Resources.Fruit,  state->Resources.Grain,
-                              state->Resources.Iron, state->Resources.Oil,    state->Resources.Rubber, state->Resources.Timber};
+                int res[8] = {state->Resources.Coal, state->Resources.Cotton, state->Resources.Fruit, state->Resources.Grain, state->Resources.Iron, state->Resources.Oil, state->Resources.Rubber, state->Resources.Timber};
                 auto close = [this] { Pause(); };
-                auto change = [this](std::unique_ptr<Screen> NewScreen, std::string ID) {
-                    ChangeActiveScreen(std::move(NewScreen), std::move(ID));
-                };
+                auto change = [this](std::unique_ptr<Screen> NewScreen, std::string ID) { ChangeActiveScreen(std::move(NewScreen), std::move(ID)); };
 
                 // Create the StatePreview screen
-                StateViewingScreen =
-                    std::make_unique<StatePreview>(*main_window, state->State_ID - 1, state->State_Name, state->State_Controller,
-                                                   PC.get(), res, int(state->State_Population), fcs, close, change);
+                StateViewingScreen = std::make_unique<StatePreview>(*main_window, state->State_ID - 1, state->State_Name, state->State_Controller, PC.get(), res, int(state->State_Population), fcs, close, change);
             }
 
             auto base = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);

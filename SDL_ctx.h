@@ -195,12 +195,10 @@ public:
     operator SDL_Surface*();
     inline explicit operator bool() const { return static_cast<bool>(surface); }
 
-    static SDL_Surface_ctx CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask,
-                                            Uint32 Bmask, Uint32 Amask);
+    static SDL_Surface_ctx CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask);
     static SDL_Surface_ctx IMG_Load(const std::string& filename);
     static SDL_Surface_ctx TTF_RenderText_Blended(TTF_Font_ctx& cont, const std::string& text, SDL_Color fg);
-    static SDL_Surface_ctx TTF_RenderText_Blended_Wrapped(TTF_Font_ctx& font, const std::string& text, SDL_Color fg,
-                                                          Uint32 wrapLength);
+    static SDL_Surface_ctx TTF_RenderText_Blended_Wrapped(TTF_Font_ctx& font, const std::string& text, SDL_Color fg, Uint32 wrapLength);
 
 private:
     SDL_Surface_ctx(SDL_Surface*); // take ownership of a raw pointer

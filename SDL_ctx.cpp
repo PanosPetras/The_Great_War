@@ -59,8 +59,7 @@ SDL_Window_ctx::operator SDL_Window*() {
     return window.get();
 }
 //-----------------------------------------------------------------------------
-SDL_Renderer_ctx::SDL_Renderer_ctx(SDL_Window_ctx& window) :
-    renderer(SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), &SDL_DestroyRenderer) {
+SDL_Renderer_ctx::SDL_Renderer_ctx(SDL_Window_ctx& window) : renderer(SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), &SDL_DestroyRenderer) {
     if(not renderer) throw std::runtime_error("SDL_Renderer_ctx");
 }
 
@@ -90,8 +89,7 @@ SDL_Surface_ctx::operator SDL_Surface*() {
     return Check("operator SDL_Surface*", surface.get());
 }
 
-SDL_Surface_ctx SDL_Surface_ctx::CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask,
-                                                  Uint32 Bmask, Uint32 Amask) {
+SDL_Surface_ctx SDL_Surface_ctx::CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask) {
     return Check("CreateRGBSurface", ::SDL_CreateRGBSurface(flags, width, height, depth, Rmask, Gmask, Bmask, Amask));
 }
 SDL_Surface_ctx SDL_Surface_ctx::IMG_Load(const std::string& filename) {
@@ -100,8 +98,7 @@ SDL_Surface_ctx SDL_Surface_ctx::IMG_Load(const std::string& filename) {
 SDL_Surface_ctx SDL_Surface_ctx::TTF_RenderText_Blended(TTF_Font_ctx& font, const std::string& text, SDL_Color fg) {
     return Check("TTF_RenderText_Blended", ::TTF_RenderText_Blended(font, text.c_str(), fg));
 }
-SDL_Surface_ctx SDL_Surface_ctx::TTF_RenderText_Blended_Wrapped(TTF_Font_ctx& font, const std::string& text, SDL_Color fg,
-                                                                Uint32 wrapLength) {
+SDL_Surface_ctx SDL_Surface_ctx::TTF_RenderText_Blended_Wrapped(TTF_Font_ctx& font, const std::string& text, SDL_Color fg, Uint32 wrapLength) {
     return Check("TTF_RenderText_Blended_Wrapped", ::TTF_RenderText_Blended_Wrapped(font, text.c_str(), fg, wrapLength));
 }
 //-----------------------------------------------------------------------------
@@ -124,8 +121,7 @@ SDL_Cursor_ctx::operator SDL_Cursor*() {
 }
 //-----------------------------------------------------------------------------
 SDL_Texture_ctx::SDL_Texture_ctx() : texture(nullptr, &SDL_DestroyTexture) {}
-SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Surface_ctx& s) :
-    texture(SDL_CreateTextureFromSurface(r, s), &SDL_DestroyTexture) {
+SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Surface_ctx& s) : texture(SDL_CreateTextureFromSurface(r, s), &SDL_DestroyTexture) {
     if(not texture) throw std::runtime_error("SDL_Texture_ctx");
 }
 

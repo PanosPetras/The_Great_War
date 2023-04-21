@@ -29,10 +29,8 @@ public:
 
 private:
     // Loading data functions
-    void InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag,
-                             const std::vector<Stockpile>& balance);
-    void InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords,
-                          const std::vector<int>& populations, std::vector<Color>& colors);
+    void InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, const std::vector<Stockpile>& balance);
+    void InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors);
 
     static int LoadMap(void*);
     static int LoadUtilityAssets(void*);

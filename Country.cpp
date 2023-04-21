@@ -2,8 +2,7 @@
 #include "AI.h"
 #include "Diplomacy.h"
 
-Country::Country(std::string Tag, std::string Name, const Stockpile& sp, bool isPlayerControlled, Color rgb) :
-    Country(Tag, Name, sp, rgb) {
+Country::Country(std::string Tag, std::string Name, const Stockpile& sp, bool isPlayerControlled, Color rgb) : Country(Tag, Name, sp, rgb) {
     isPlayer = isPlayerControlled;
 }
 
@@ -14,12 +13,7 @@ Country::Country(std::string Tag, std::string Name, const Stockpile& sp, Color r
 
     policy = {.TaxRate = 50, .Healthcare = 30};
 
-    technology = {.FactoryInput = 1.0f,
-                  .FactoryThroughput = 1.0f,
-                  .FactoryOutput = 1.0f,
-                  .MineralOutput = 1.0f,
-                  .FarmOutput = 1.0f,
-                  .WoodOutput = 1.0f};
+    technology = {.FactoryInput = 1.0f, .FactoryThroughput = 1.0f, .FactoryOutput = 1.0f, .MineralOutput = 1.0f, .FarmOutput = 1.0f, .WoodOutput = 1.0f};
 }
 
 void Country::AddState(State* state) {

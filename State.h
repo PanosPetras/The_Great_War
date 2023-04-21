@@ -13,8 +13,7 @@
 class State {
 public:
     // Constructor
-    State(std::string name, int ID, std::string owner, std::string controller, int pop, Coordinate Coords, Color C,
-          short int Res[8], Stockpile* stock);
+    State(std::string name, int ID, std::string owner, std::string controller, int pop, Coordinate Coords, Color C, short int Res[8], Stockpile* stock);
 
     // This is the representing the pass of a single day
     void Tick(int TaxRate, int HealthCare);

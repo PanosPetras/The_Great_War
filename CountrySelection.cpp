@@ -7,42 +7,28 @@
 #include "PlayerController.h"
 #include "UI.h"
 
-const std::array<const char*, CountrySelection::Countries> CountrySelection::tags{"ger", "fra", "eng", "kuk",
-                                                                                  "ita", "rus", "ott", "usa"};
+const std::array<const char*, CountrySelection::Countries> CountrySelection::tags{"ger", "fra", "eng", "kuk", "ita", "rus", "ott", "usa"};
 
-const std::array<Color, CountrySelection::Countries> CountrySelection::colors{
-    {{42, 42, 42}, {18, 30, 152}, {128, 0, 32}, {255, 255, 255}, {38, 160, 64}, {64, 160, 96}, {160, 144, 96}, {0, 96, 128}}};
+const std::array<Color, CountrySelection::Countries> CountrySelection::colors{{{42, 42, 42}, {18, 30, 152}, {128, 0, 32}, {255, 255, 255}, {38, 160, 64}, {64, 160, 96}, {160, 144, 96}, {0, 96, 128}}};
 
-CountrySelection::CountrySelection(MainWindow& mw, std::function<void()> UnpauseF,
-                                   std::function<void(std::unique_ptr<Screen>)> fpl) :
-    Screen(mw, UnpauseF, fpl) {
+CountrySelection::CountrySelection(MainWindow& mw, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(mw, UnpauseF, fpl) {
     SetupBg("Backgrounds/CountrySelection.png");
     auto [Width, Height] = mw.GetWindowDimensions();
     int btnFontSize = int(Height / 33.75), nameFontSize = int(Height / 43.2);
 
     AddDrawable<Button>(
-        mw, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", btnFontSize,
-        [this] { StartGame(); }, SDLK_KP_ENTER);
+        mw, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", btnFontSize, [this] { StartGame(); }, SDLK_KP_ENTER);
     AddDrawable<Button>(
-        mw, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", btnFontSize, [this] { Back(); },
-        SDLK_ESCAPE);
+        mw, int(Width * 0.1), int(Height * 0.85), int(Width * 0.08), int(Height * 0.06), "Back", btnFontSize, [this] { Back(); }, SDLK_ESCAPE);
 
-    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/ger",
-                        [this] { SelectGER(); });
-    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/fra",
-                        [this] { SelectFRA(); });
-    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/eng",
-                        [this] { SelectENG(); });
-    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/kuk",
-                        [this] { SelectKUK(); });
-    AddDrawable<Button>(mw, int(Width * 0.635), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/ita",
-                        [this] { SelectITA(); });
-    AddDrawable<Button>(mw, int(Width * 0.635), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/rus",
-                        [this] { SelectRUS(); });
-    AddDrawable<Button>(mw, int(Width * 0.635), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/ott",
-                        [this] { SelectOTT(); });
-    AddDrawable<Button>(mw, int(Width * 0.635), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/usa",
-                        [this] { SelectUSA(); });
+    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/ger", [this] { SelectGER(); });
+    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/fra", [this] { SelectFRA(); });
+    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/eng", [this] { SelectENG(); });
+    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/kuk", [this] { SelectKUK(); });
+    AddDrawable<Button>(mw, int(Width * 0.635), int(Height * 0.3), int(Width * 0.06), int(Height * 0.06), "Flags/ita", [this] { SelectITA(); });
+    AddDrawable<Button>(mw, int(Width * 0.635), int(Height * 0.4), int(Width * 0.06), int(Height * 0.06), "Flags/rus", [this] { SelectRUS(); });
+    AddDrawable<Button>(mw, int(Width * 0.635), int(Height * 0.5), int(Width * 0.06), int(Height * 0.06), "Flags/ott", [this] { SelectOTT(); });
+    AddDrawable<Button>(mw, int(Width * 0.635), int(Height * 0.2), int(Width * 0.06), int(Height * 0.06), "Flags/usa", [this] { SelectUSA(); });
 
     AddLabel<Label>(mw, "The World in 1910", btnFontSize, int(Width * 0.43), int(Height * 0.07));
     AddLabel<Label>(mw, "Choose your nation", btnFontSize, int(Width * 0.427), int(Height * 0.13));

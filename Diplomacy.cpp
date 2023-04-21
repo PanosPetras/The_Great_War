@@ -91,8 +91,7 @@ bool Relation::GetIfHasEmbargo(std::string Instigator) const {
     return std::find(embargoes.begin(), embargoes.end(), Instigator) != embargoes.end();
 }
 
-Request::Request(RequestType Id, unsigned senderIndex, std::string senderTag, Relation& relations) :
-    id{Id}, index{senderIndex}, rel{relations}, tag(senderTag) {}
+Request::Request(RequestType Id, unsigned senderIndex, std::string senderTag, Relation& relations) : id{Id}, index{senderIndex}, rel{relations}, tag(senderTag) {}
 
 void Request::Accept() {
     switch(id) {

@@ -16,11 +16,9 @@ class TextEntry : public InputDrawable {
 public:
     // Constructor
     TextEntry(MainWindow& mw, int x, int y, int Width, int Height, std::string defaultText, int maxCharacters = 30);
-    TextEntry(MainWindow& mw, int x, int y, int Width, int Height, std::string defaultText, std::string hint = "",
-              int maxCharacters = 30);
+    TextEntry(MainWindow& mw, int x, int y, int Width, int Height, std::string defaultText, std::string hint = "", int maxCharacters = 30);
     TextEntry(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters = 30);
-    TextEntry(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint = "",
-              int maxCharacters = 30);
+    TextEntry(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, std::string defaultText, std::string hint = "", int maxCharacters = 30);
 
     // Destructor
     ~TextEntry() override = default;

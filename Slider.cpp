@@ -6,14 +6,11 @@
 
 #include <iostream>
 
-Slider::Slider(MainWindow& mw, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value,
-               std::function<void()> OnSliderValueChanged) :
+Slider::Slider(MainWindow& mw, int x, int y, int Width, int Height, int minvalue, int maxvalue, int value, std::function<void()> OnSliderValueChanged) :
     Slider(mw, x, y, Width, Height, top_left, minvalue, maxvalue, value, OnSliderValueChanged) {}
 
-Slider::Slider(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, int minvalue, int maxvalue, int value,
-               std::function<void()> OnSliderValueChanged) :
-    InputDrawable(anchor),
-    main_window(&mw), Marker(SDL_Texture_ctx::IMG_Load(mw, "Drawable/Slider/Circle.png")) {
+Slider::Slider(MainWindow& mw, int x, int y, int Width, int Height, Anchor anchor, int minvalue, int maxvalue, int value, std::function<void()> OnSliderValueChanged) :
+    InputDrawable(anchor), main_window(&mw), Marker(SDL_Texture_ctx::IMG_Load(mw, "Drawable/Slider/Circle.png")) {
     std::cout << "Slider " << this << '\n';
     // Initialize all variables
     ChangeValues(minvalue, maxvalue, value);
@@ -50,8 +47,7 @@ void Slider::HandleInput(const SDL_Event& ev) {
     if(IsActive()) {
         // Check if the user is handling the slider
         if(ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT && bmousepressed == false) {
-            if(ev.button.x >= marker_rect.x && ev.button.x <= marker_rect.x + marker_rect.w && ev.button.y > marker_rect.y &&
-               ev.button.y < marker_rect.h + marker_rect.y) {
+            if(ev.button.x >= marker_rect.x && ev.button.x <= marker_rect.x + marker_rect.w && ev.button.y > marker_rect.y && ev.button.y < marker_rect.h + marker_rect.y) {
                 bmousepressed = true;
             }
         } else if(ev.type == SDL_MOUSEBUTTONUP && ev.button.button == SDL_BUTTON_LEFT && bmousepressed == true) {

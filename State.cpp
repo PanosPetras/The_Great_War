@@ -1,10 +1,7 @@
 #include "State.h"
 
-State::State(std::string name, int ID, std::string owner, std::string controller, int pop, Coordinate Coords, Color C,
-             short int Res[8], Stockpile* stock) :
-    State_Name{std::move(name)},
-    State_ID{ID}, State_Owner{std::move(owner)}, State_Controller{std::move(controller)},
-    State_Population{static_cast<double>(pop)}, State_Coords{Coords}, color{C} {
+State::State(std::string name, int ID, std::string owner, std::string controller, int pop, Coordinate Coords, Color C, short int Res[8], Stockpile* stock) :
+    State_Name{std::move(name)}, State_ID{ID}, State_Owner{std::move(owner)}, State_Controller{std::move(controller)}, State_Population{static_cast<double>(pop)}, State_Coords{Coords}, color{C} {
     // These variables might change during the game's flow
     Pop_needs = {.Telephones = short(pop * 0.04),
                  .Fuel = short(pop * 0.02),
@@ -18,14 +15,7 @@ State::State(std::string name, int ID, std::string owner, std::string controller
                  .Lumber = short(pop * 0.1),
                  .Fruit = short(pop * 0.024)};
 
-    Resources = {.Coal = Res[0],
-                 .Oil = Res[1],
-                 .Timber = Res[2],
-                 .Rubber = Res[3],
-                 .Cotton = Res[4],
-                 .Iron = Res[5],
-                 .Grain = Res[6],
-                 .Fruit = Res[7]};
+    Resources = {.Coal = Res[0], .Oil = Res[1], .Timber = Res[2], .Rubber = Res[3], .Cotton = Res[4], .Iron = Res[5], .Grain = Res[6], .Fruit = Res[7]};
 
     TargetStockpile = stock;
 }

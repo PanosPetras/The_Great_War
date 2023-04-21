@@ -2,17 +2,13 @@
 
 #include "MainWindow.h"
 
-Label::Label(MainWindow& mw, std::string Text, int size, int X, int Y, Color rgb) :
-    Label(mw, Text, size, X, Y, 300, top_left, rgb) {}
+Label::Label(MainWindow& mw, std::string Text, int size, int X, int Y, Color rgb) : Label(mw, Text, size, X, Y, 300, top_left, rgb) {}
 
-Label::Label(MainWindow& mw, std::string Text, int size, int X, int Y, Anchor anchor, Color rgb) :
-    Label(mw, Text, size, X, Y, 300, anchor, rgb) {}
+Label::Label(MainWindow& mw, std::string Text, int size, int X, int Y, Anchor anchor, Color rgb) : Label(mw, Text, size, X, Y, 300, anchor, rgb) {}
 
-Label::Label(MainWindow& mw, std::string Text, int size, int X, int Y, Uint32 xlim, Color rgb) :
-    Label(mw, Text, size, X, Y, xlim, top_left, rgb) {}
+Label::Label(MainWindow& mw, std::string Text, int size, int X, int Y, Uint32 xlim, Color rgb) : Label(mw, Text, size, X, Y, xlim, top_left, rgb) {}
 
-Label::Label(MainWindow& mw, std::string Text, int size, int X, int Y, Uint32 xlim, Anchor anchor, Color rgb) :
-    Drawable(anchor), main_window(&mw), FontSize(size), color(rgb), text(Text), x(X), y(Y), xLim(xlim) {
+Label::Label(MainWindow& mw, std::string Text, int size, int X, int Y, Uint32 xlim, Anchor anchor, Color rgb) : Drawable(anchor), main_window(&mw), FontSize(size), color(rgb), text(Text), x(X), y(Y), xLim(xlim) {
     UpdateLabel();
 }
 

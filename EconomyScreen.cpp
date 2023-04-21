@@ -11,16 +11,12 @@ EconomyScreen::EconomyScreen(MainWindow& mw, Country* Pl) : Screen(mw), Player(P
 
     AddLabel<Label>(*main_window, "Current Funds: " + std::to_string(Pl->Stock.Money), 32, int(0.1 * Width), int(0.1 * Height));
     AddLabel<Label>(*main_window, "Tax Rate: " + std::to_string(Pl->policy.TaxRate) + '%', 32, int(0.1 * Width), int(0.2 * Height));
-    AddLabel<Label>(*main_window, "Healthcare: " + std::to_string(Pl->policy.Healthcare) + '%', 32, int(0.4 * Width),
-                    int(0.2 * Height));
-    AddLabel<Label>(*main_window, "Education: " + std::to_string(Pl->policy.TaxRate) + '%', 32, int(0.4 * Width),
-                    int(0.4 * Height));
+    AddLabel<Label>(*main_window, "Healthcare: " + std::to_string(Pl->policy.Healthcare) + '%', 32, int(0.4 * Width), int(0.2 * Height));
+    AddLabel<Label>(*main_window, "Education: " + std::to_string(Pl->policy.TaxRate) + '%', 32, int(0.4 * Width), int(0.4 * Height));
     AddLabel<Label>(*main_window, "Research: " + std::to_string(Pl->policy.TaxRate) + '%', 32, int(0.4 * Width), int(0.6 * Height));
 
-    AddDrawable<Slider>(*main_window, int(0.11 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100,
-                        Pl->policy.TaxRate, [this] { OnTaxRateChanged(); });
-    AddDrawable<Slider>(*main_window, int(0.41 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100,
-                        Pl->policy.Healthcare, [this] { OnHealthcareChanged(); });
+    AddDrawable<Slider>(*main_window, int(0.11 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.TaxRate, [this] { OnTaxRateChanged(); });
+    AddDrawable<Slider>(*main_window, int(0.41 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.Healthcare, [this] { OnHealthcareChanged(); });
 }
 
 void EconomyScreen::Update() {

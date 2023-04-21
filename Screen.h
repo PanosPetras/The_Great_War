@@ -59,10 +59,8 @@ protected:
 
     template<class T>
     T& As(std::size_t idx) {
-        if(idx >= InputDrawableArr.size())
-            std::cerr << "Screen::As out of bounds: " << idx << " >= " << InputDrawableArr.size() << std::endl;
-        if(InputDrawableArr[idx].get() == nullptr)
-            std::cerr << "Screen::As on nullptr: " << idx << " >= " << InputDrawableArr.size() << std::endl;
+        if(idx >= InputDrawableArr.size()) std::cerr << "Screen::As out of bounds: " << idx << " >= " << InputDrawableArr.size() << std::endl;
+        if(InputDrawableArr[idx].get() == nullptr) std::cerr << "Screen::As on nullptr: " << idx << " >= " << InputDrawableArr.size() << std::endl;
         return *static_cast<T*>(InputDrawableArr[idx].get());
     }
 

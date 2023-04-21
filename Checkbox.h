@@ -15,10 +15,8 @@
 class Checkbox : public InputDrawable {
 public:
     // Constructor
-    Checkbox(MainWindow& mw, int x, int y, int Height, std::string text, int textSize, std::function<void(bool)> f = nullptr,
-             int keybind = 0);
-    Checkbox(MainWindow& mw, int x, int y, int Height, std::string text, int textSize, Anchor anchor,
-             std::function<void(bool)> f = nullptr, int keybind = 0);
+    Checkbox(MainWindow& mw, int x, int y, int Height, std::string text, int textSize, std::function<void(bool)> f = nullptr, int keybind = 0);
+    Checkbox(MainWindow& mw, int x, int y, int Height, std::string text, int textSize, Anchor anchor, std::function<void(bool)> f = nullptr, int keybind = 0);
 
     // Called when received input, to check whether the click was in this button
     void HandleInput(const SDL_Event& ev) override;

@@ -67,10 +67,8 @@ PlayerController::PlayerController(MainWindow& mw, const char* tag) : main_windo
     // Load all the state's populations
     auto populations = LoadFromFile<int>("map/States/StatePopulations.txt");
 
-    if(stateNames.size() != owners.size() || stateNames.size() != colors.size() || stateNames.size() != coords.size() ||
-       stateNames.size() != populations.size()) {
-        std::cerr << "State data mismatch " << stateNames.size() << ',' << owners.size() << ',' << colors.size() << ','
-                  << coords.size() << ',' << populations.size() << std::endl;
+    if(stateNames.size() != owners.size() || stateNames.size() != colors.size() || stateNames.size() != coords.size() || stateNames.size() != populations.size()) {
+        std::cerr << "State data mismatch " << stateNames.size() << ',' << owners.size() << ',' << colors.size() << ',' << coords.size() << ',' << populations.size() << std::endl;
         std::terminate();
     }
 
@@ -81,12 +79,7 @@ PlayerController::PlayerController(MainWindow& mw, const char* tag) : main_windo
     InitializeStates(owners, stateNames, coords, populations, colors);
 
     // Initialize the date
-    Date = {.Year = 1910,
-            .Month = 1,
-            .Day = 1,
-            .Speed = 1,
-            .bIsPaused = true,
-            .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
+    Date = {.Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .bIsPaused = true, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
 
     // Wait for the map to be loaded
     SDL_WaitThread(AssetsThread, nullptr);
@@ -129,8 +122,7 @@ int PlayerController::LoadUtilityAssets(void* pc) {
     return 0;
 }
 
-void PlayerController::InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag,
-                                           const std::vector<Stockpile>& balance) {
+void PlayerController::InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, const std::vector<Stockpile>& balance) {
     for(unsigned x = 0; x < tags.size(); x++) {
         CountriesArr.push_back(std::make_unique<Country>(tags[x], names[x], balance[x]));
         if(tag == tags[x]) {
@@ -145,9 +137,7 @@ void PlayerController::InitializeCountries(std::vector<std::string>& names, std:
     }
 }
 
-void PlayerController::InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names,
-                                        std::vector<Coordinate>& coords, const std::vector<int>& populations,
-                                        std::vector<Color>& colors) {
+void PlayerController::InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors) {
     short int res[8] = {50, 50, 50, 50, 50, 50, 50, 50};
     unsigned target = 0;
 
@@ -160,8 +150,7 @@ void PlayerController::InitializeStates(std::vector<std::string>& owners, std::v
             }
         }
 
-        StatesArr.emplace_back(names[x], x + 1, owners[x], owners[x], populations[x], coords[x], colors[x], res,
-                               &CountriesArr.at(target)->Stock);
+        StatesArr.emplace_back(names[x], x + 1, owners[x], owners[x], populations[x], coords[x], colors[x], res, &CountriesArr.at(target)->Stock);
 
         StatesMap.insert(std::pair(StatesArr.back().color.toString(), &StatesArr.back()));
 
