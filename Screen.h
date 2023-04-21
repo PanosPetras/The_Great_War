@@ -23,25 +23,25 @@ class MainWindow;
 
 class Screen {
 public:
-    //Constructor
+    // Constructor
     Screen(MainWindow& mw);
     Screen(MainWindow& mw, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf = {});
 
     virtual ~Screen() = default;
 
-    //Renders all of the screen's components
+    // Renders all of the screen's components
     virtual void Render();
 
-    //Handles input events
+    // Handles input events
     virtual void Handle_Input(SDL_Event& ev);
 
     void DeleteMessageBox(void* p);
 
 protected:
-    //This is a reference to the main window
+    // This is a reference to the main window
     MainWindow* main_window;
 
-    //Allows the creation of Images on the screen
+    // Allows the creation of Images on the screen
     std::vector<std::unique_ptr<Image>> ImageArr;
 
     template<class T, class... Args>
@@ -49,7 +49,7 @@ protected:
         ImageArr.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
     }
 
-    //Allows the creation of Drawable elements on the screen
+    // Allows the creation of Drawable elements on the screen
     inline std::size_t InputDrawableArrtop() const { return InputDrawableArr.size(); }
 
     template<class T, class... Args>
@@ -59,12 +59,14 @@ protected:
 
     template<class T>
     T& As(std::size_t idx) {
-        if(idx >= InputDrawableArr.size()) std::cerr << "Screen::As out of bounds: " << idx << " >= " << InputDrawableArr.size() << std::endl;
-        if(InputDrawableArr[idx].get() == nullptr) std::cerr << "Screen::As on nullptr: " << idx << " >= " << InputDrawableArr.size() << std::endl;
+        if(idx >= InputDrawableArr.size())
+            std::cerr << "Screen::As out of bounds: " << idx << " >= " << InputDrawableArr.size() << std::endl;
+        if(InputDrawableArr[idx].get() == nullptr)
+            std::cerr << "Screen::As on nullptr: " << idx << " >= " << InputDrawableArr.size() << std::endl;
         return *static_cast<T*>(InputDrawableArr[idx].get());
     }
 
-    //Allows the creation of Labels on the screen
+    // Allows the creation of Labels on the screen
     std::vector<std::unique_ptr<Label>> LabelArr;
 
     template<class T, class... Args>
@@ -79,13 +81,13 @@ protected:
 
     bool bHasBackground = false;
 
-    //Stores the image's texture
+    // Stores the image's texture
     SDL_Texture_ctx texture;
 
     std::function<void()> QuitFunc;
     std::function<void(std::unique_ptr<Screen>)> ChangeScreenFunc;
 
-    //Sets the screen's background
+    // Sets the screen's background
     virtual void RenderBackground();
 
     void SetupBg(const char* bg);
@@ -94,6 +96,5 @@ protected:
 
 private:
     std::vector<std::unique_ptr<MessageBox>> messageBoxes;
-
 };
 #endif

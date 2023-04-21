@@ -7,4 +7,3 @@ struct Coordinate {
 
     friend std::istream& operator>>(std::istream&, Coordinate&);
 };
-

@@ -15,8 +15,8 @@ int Resolutions::Resolution::GetHeight() const {
 }
 
 unsigned findResolutionIndex(Resolutions::Resolution& res) {
-    for (unsigned i = 0; i < Resolutions::SUPPORTED_RESOLUTIONS.size(); i++) {
-        if (res == Resolutions::SUPPORTED_RESOLUTIONS[i]) {
+    for(unsigned i = 0; i < Resolutions::SUPPORTED_RESOLUTIONS.size(); i++) {
+        if(res == Resolutions::SUPPORTED_RESOLUTIONS[i]) {
             return i;
         }
     }
@@ -24,8 +24,8 @@ unsigned findResolutionIndex(Resolutions::Resolution& res) {
 }
 
 unsigned findFramerateIndex(int f) {
-    for (unsigned i = 0; i < Resolutions::SUPPORTED_FRAMERATES.size(); i++) {
-        if (f == Resolutions::SUPPORTED_FRAMERATES[i]) {
+    for(unsigned i = 0; i < Resolutions::SUPPORTED_FRAMERATES.size(); i++) {
+        if(f == Resolutions::SUPPORTED_FRAMERATES[i]) {
             return i;
         }
     }

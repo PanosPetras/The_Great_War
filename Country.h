@@ -1,11 +1,11 @@
 #ifndef COUNTRY_H
 #define COUNTRY_H
 
-#include <unordered_map>
-#include <string>
-#include <vector>
 #include "State.h"
 #include "Stockpile.h"
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 class Request;
 
@@ -27,22 +27,22 @@ public:
 
 class Country {
 public:
-    //Functions
+    // Functions
 
-    //Constructor
+    // Constructor
     Country(std::string tag, std::string name, const Stockpile& sp, bool isPlayerControlled, Color rgb);
     Country(std::string tag, std::string name, const Stockpile& sp, Color rgb = Color{});
 
-    //Handle the states of the country
+    // Handle the states of the country
     void AddState(State* state);
     void RemoveState(State* state);
 
-    //This is the representing the pass of a single day
+    // This is the representing the pass of a single day
     void Tick();
 
     void AddRequest(Request request);
 
-    //Accessor Functions
+    // Accessor Functions
     std::string GetName() const;
     std::string GetTag() const;
     int GetPopulation() const;
@@ -51,7 +51,7 @@ public:
 private:
     Color color;
 
-    //Basic Properties
+    // Basic Properties
     bool isPlayer;
     std::string name;
     std::string tag;
@@ -62,7 +62,7 @@ private:
 
     Technology technology;
 
-    //The diplomatic requests that a country receives
+    // The diplomatic requests that a country receives
     std::vector<Request> requests;
 
     void HandleDiplomaticRequests();
@@ -70,7 +70,7 @@ private:
 public:
     Policy policy;
 
-    //A country's currently stockpiled resources
+    // A country's currently stockpiled resources
     Stockpile Stock;
 };
 

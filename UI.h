@@ -24,20 +24,21 @@ class ToggleButton;
 
 class UI {
 public:
-    //Constructor
-    UI(MainWindow& mw, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl = nullptr);
+    // Constructor
+    UI(MainWindow& mw, const char* tag, PlayerController* PC,
+       std::function<void(std::unique_ptr<Screen>, std::string)> fpl = nullptr);
     ~UI() = default;
 
-    //This is a reference to the main window's renderer
+    // This is a reference to the main window's renderer
     MainWindow* main_window;
 
-    //Stores the main window's dimensions
+    // Stores the main window's dimensions
     int WindowSize[2];
 
-    //Renders all of the screen's components
+    // Renders all of the screen's components
     void Render();
 
-    //Handles input events
+    // Handles input events
     void Handle_Input(SDL_Event& ev);
 
     std::unique_ptr<Label> Date;
@@ -56,9 +57,9 @@ public:
 
     std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc;
 
-    //Functions
+    // Functions
 
-    //Date related
+    // Date related
     void IncreaseSpeed();
     void DecreaseSpeed();
     void PauseDate(bool);

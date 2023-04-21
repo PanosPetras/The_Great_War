@@ -29,7 +29,10 @@ public:
     promiscuous_ref() noexcept = default;
 
     explicit promiscuous_ref(T& o) noexcept : obj(&o) {}
-    promiscuous_ref& operator=(T& o) noexcept { obj = &o; return *this; }
+    promiscuous_ref& operator=(T& o) noexcept {
+        obj = &o;
+        return *this;
+    }
 
     promiscuous_ref(const promiscuous_ref& other) noexcept = default;
     promiscuous_ref(promiscuous_ref&& other) = delete;
@@ -37,11 +40,11 @@ public:
     promiscuous_ref& operator=(promiscuous_ref&& other) = delete;
     ~promiscuous_ref() = default;
 
-    operator T& () {
+    operator T&() {
         if(obj == nullptr) throw std::runtime_error("promiscuous_ref::operator T& (): nullptr dereferenced");
         return *obj;
     }
-    operator const T& () const {
+    operator const T&() const {
         if(obj == nullptr) throw std::runtime_error("promiscuous_ref::operator const T& () const: nullptr dereferenced");
         return *obj;
     }
@@ -55,14 +58,15 @@ public:
         return obj;
     }
 
-    operator U* () {
+    operator U*() {
         if(obj == nullptr) throw std::runtime_error("promiscuous_ref::operator U* (): nullptr returned");
         return *obj;
     }
-    operator const U* () const {
+    operator const U*() const {
         if(obj == nullptr) throw std::runtime_error("promiscuous_ref::operator const U* () const: nullptr returned");
         return *obj;
     }
+
 private:
     T* obj = nullptr;
 };
@@ -120,7 +124,8 @@ public:
     ~TTF_Font_ctx() = default;
 
     TTF_Font* operator->();
-    operator TTF_Font* ();
+    operator TTF_Font*();
+
 private:
     std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> font;
 };
@@ -137,7 +142,8 @@ public:
     inline const SDL_Point& GetWindowDimensions() const { return windim; }
 
     SDL_Window* operator->();
-    operator SDL_Window* ();
+    operator SDL_Window*();
+
 private:
     std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window;
     SDL_Point windim;
@@ -153,7 +159,8 @@ public:
     ~SDL_Renderer_ctx() = default;
 
     SDL_Renderer* operator->();
-    operator SDL_Renderer* ();
+    operator SDL_Renderer*();
+
 private:
     std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> renderer;
 };
@@ -169,7 +176,8 @@ public:
     ~SDL_Cursor_ctx() = default;
 
     SDL_Cursor* operator->();
-    operator SDL_Cursor* ();
+    operator SDL_Cursor*();
+
 private:
     std::unique_ptr<SDL_Cursor, decltype(&SDL_FreeCursor)> cursor;
 };
@@ -184,13 +192,16 @@ public:
     ~SDL_Surface_ctx() = default;
 
     SDL_Surface* operator->();
-    operator SDL_Surface* ();
-    inline explicit operator bool () const { return static_cast<bool>(surface); }
+    operator SDL_Surface*();
+    inline explicit operator bool() const { return static_cast<bool>(surface); }
 
-    static SDL_Surface_ctx CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask);
+    static SDL_Surface_ctx CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask,
+                                            Uint32 Bmask, Uint32 Amask);
     static SDL_Surface_ctx IMG_Load(const std::string& filename);
     static SDL_Surface_ctx TTF_RenderText_Blended(TTF_Font_ctx& cont, const std::string& text, SDL_Color fg);
-    static SDL_Surface_ctx TTF_RenderText_Blended_Wrapped(TTF_Font_ctx& font, const std::string& text, SDL_Color fg, Uint32 wrapLength);
+    static SDL_Surface_ctx TTF_RenderText_Blended_Wrapped(TTF_Font_ctx& font, const std::string& text, SDL_Color fg,
+                                                          Uint32 wrapLength);
+
 private:
     SDL_Surface_ctx(SDL_Surface*); // take ownership of a raw pointer
 
@@ -209,9 +220,10 @@ public:
     ~SDL_Texture_ctx() = default;
 
     SDL_Texture* operator->();
-    operator SDL_Texture* ();
+    operator SDL_Texture*();
 
     static SDL_Texture_ctx IMG_Load(SDL_Renderer_ctx& r, const std::string& filename);
+
 private:
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture;
 };

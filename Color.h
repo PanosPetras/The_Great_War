@@ -13,7 +13,7 @@ struct Color {
 
     std::string toString() const;
 
-    explicit operator SDL_Color () const noexcept;
+    explicit operator SDL_Color() const noexcept;
 
     friend std::istream& operator>>(std::istream& is, Color& c);
     friend std::ostream& operator<<(std::ostream& os, const Color& c);
