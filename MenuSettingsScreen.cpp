@@ -15,13 +15,12 @@ MenuSettingsScreen::MenuSettingsScreen(MainWindow& mw, std::function<void()> fp,
     currentResolutionIndex = Resolutions::findResolutionIndex(res);
     currentFramerateIndex = Resolutions::findFramerateIndex(main_window->framerateCap);
 
-    AddDrawable<Checkbox>(mw, (int)(Width * 0.18), (int)(Height * 0.2), (int)(Height * 0.06), "Fullscreen", fontSize, [this](bool state) { onFullscreenToggle(state); });
+    AddDrawable<Checkbox>(mw, (int)(Width * 0.18), (int)(Height * 0.2), (int)(Height * 0.06), "Fullscreen", fontSize);
     As<Checkbox>(0).ChangeValue(main_window->fullscreen);
 
     AddDrawable<Button>(mw, int(Width * 0.18), int(Height * 0.3), int(Width * 0.02), int(Height * 0.06), "<", fontSize, [this] { DecreaseResolution(); });
     AddLabel<Label>(mw, res.toString(), fontSize, int(Width * 0.25), int(Height * 0.33), center);
     AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.3), int(Width * 0.02), int(Height * 0.06), ">", fontSize, [this] { IncreaseResolution(); });
-    onFullscreenToggle(main_window->fullscreen);
 
     AddDrawable<Checkbox>(mw, (int)(Width * 0.18), (int)(Height * 0.4), (int)(Height * 0.06), "VSync", fontSize, [this](bool state) { onVSyncToggle(state); });
     As<Checkbox>(3).ChangeValue(main_window->vsync);
@@ -85,17 +84,6 @@ void MenuSettingsScreen::onVSyncToggle(bool state) {
         LabelArr[1]->ChangeColor({70, 70, 70});
     } else {
         LabelArr[1]->ChangeColor({0, 0, 0});
-    }
-}
-
-void MenuSettingsScreen::onFullscreenToggle(bool state) {
-    As<Button>(1).SetActive(!state);
-    As<Button>(2).SetActive(!state);
-
-    if(state) {
-        LabelArr[0]->ChangeColor({70, 70, 70});
-    } else {
-        LabelArr[0]->ChangeColor({0, 0, 0});
     }
 }
 
