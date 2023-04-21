@@ -139,7 +139,7 @@ SDL_Cursor_ctx::operator SDL_Cursor*() {
 //-----------------------------------------------------------------------------
 SDL_Texture_ctx::SDL_Texture_ctx() : texture(nullptr, &SDL_DestroyTexture) {}
 SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Surface_ctx& s) : texture(SDL_CreateTextureFromSurface(r, s), &SDL_DestroyTexture) {
-    //if(not texture) throw std::runtime_error("SDL_Texture_ctx");
+    if(not texture) throw std::runtime_error("SDL_Texture_ctx");
 }
 
 SDL_Texture* SDL_Texture_ctx::operator->() {
