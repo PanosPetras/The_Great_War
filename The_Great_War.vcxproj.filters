@@ -229,6 +229,9 @@
     <ClInclude Include="Resolutions.h">
       <Filter>General purpose code\Header_Files</Filter>
     </ClInclude>
+    <ClInclude Include="Eater.h">
+      <Filter>General purpose code\Header_Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="The_Great_War.rc" />
