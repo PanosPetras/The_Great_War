@@ -52,7 +52,7 @@ protected:
 
 class War {
 public:
-    War(Claim claim);
+    War(Country* aggressor, Country* defender);
 
     bool GetIfTargetPairIsAtWar(const CountryPair& pair) const;
     void JoinWar(Country* newParticipant, Country* onTheSideOf);
@@ -95,11 +95,6 @@ public:
     Relation();
     Relation(int relations, bool allied = false);
 
-    void DeclareWar(Claim c);
-
-    void AddClaim(Claim c);
-    const std::vector<Claim> GetClaims(Country* c = nullptr);
-
     void ImproveRelations(int value = 15);
     void WorsenRelations(int value = 15);
     int GetRelationsValue() const;
@@ -116,14 +111,10 @@ public:
 private:
     static constexpr int RELATIONS_LIMIT = 300;
 
-    static std::vector<War> wars;
-
-    std::vector<Claim> claims;
     std::vector<std::string> embargoes;
+
     int relationsValue;
     bool allied;
-
-    friend class Diplomacy;
 };
 
 enum RequestType { alliance, tradeDeal, peaceTreaty };
@@ -148,8 +139,7 @@ private:
 
 class Diplomacy {
 public:
-    Diplomacy();
-
     std::unordered_map<CountryPair, Relation> relations;
+    std::vector<War> wars;
 };
 #endif

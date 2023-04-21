@@ -47,30 +47,6 @@ Relation::Relation(int relations, bool Allied) {
     allied = Allied;
 }
 
-void Relation::DeclareWar(Claim c) {
-    wars.push_back(War(c));
-}
-
-void Relation::AddClaim(Claim c) {
-    claims.push_back(c);
-}
-
-const std::vector<Claim> Relation::GetClaims(Country* c) {
-    if(c == nullptr) {
-        return claims;
-    } else {
-        std::vector<Claim> vec;
-
-        for(auto i : claims) {
-            if(i.GetOwner() == c) {
-                vec.push_back(i);
-            }
-        }
-
-        return vec;
-    }
-}
-
 void Relation::ImproveRelations(int value) {
     relationsValue = std::min(relationsValue + value, RELATIONS_LIMIT);
 }
@@ -153,9 +129,7 @@ unsigned Request::GetSenderIndex() const {
     return index;
 }
 
-War::War(Claim c) : factions({Faction(c.GetOwner()), Faction(c.GetTarget())}) {
-    factions[0].AddClaim(c);
-}
+War::War(Country* aggressor, Country* defender) : factions({Faction(aggressor), Faction(defender)}) {}
 
 bool War::GetIfTargetPairIsAtWar(const CountryPair& pair) const {
     if(factions[0].Contains(pair.GetC1())) {
@@ -268,8 +242,4 @@ Country* Claim::GetTarget() const {
 
 ClaimType Claim::GetType() const {
     return type;
-}
-
-Diplomacy::Diplomacy() {
-    Relation::wars = std::vector<War>();
 }
