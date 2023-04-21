@@ -27,7 +27,8 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
 
 Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind) : Button(mw, x, y, Width, Height, image, top_left, f, arg, keybind) {}
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f, int keybind) : InputDrawable(anchor), main_window(&mw), textures{Load(mw, image)} {
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f, int keybind) :
+    InputDrawable(anchor), main_window(&mw), textures{Load(mw, image)}, music{mw.Mix_LoadWAV("Sounds/ButtonClick.mp3")} {
     std::cerr << "Button::Button image: " << image << std::endl;
 
     // Saving the button's coordinates
@@ -38,9 +39,6 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
 
     // Save the button's bind to the keyboard
     ChangeKeybind(keybind);
-
-    // Load the button's click sound
-    music = Mix_LoadWAV("Sounds/ButtonClick.mp3");
 }
 
 Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind) : Button(mw, x, y, Width, Height, image, anchor, nullptr, keybind) {
@@ -74,10 +72,6 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
     Button(mw, x, y, Width, Height, Text, textSize, anchor) {
     // Saving the bound function
     ChangeFunctionBinding(f, arg);
-}
-
-Button::~Button() {
-    Mix_FreeChunk(music);
 }
 
 void Button::pDraw() {
@@ -172,7 +166,7 @@ void Button::ChangeKeybind(int keybind) {
 }
 
 void Button::Playsound() {
-    Mix_PlayChannel(1, music, 0);
+    music->PlayChannel(1, 0);
 }
 
 void Button::CallBoundFunction() {
