@@ -65,6 +65,7 @@
     <ClInclude Include="Coordinate.h" />
     <ClInclude Include="Diplomacy.h" />
     <ClInclude Include="Drawable.h" />
+    <ClInclude Include="Eater.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Market.h" />
     <ClInclude Include="MessageBox.h" />
