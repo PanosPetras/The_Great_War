@@ -140,6 +140,8 @@ public:
     ~SDL_Window_ctx() = default;
 
     inline const SDL_Point& GetWindowDimensions() const { return windim; }
+    bool SetFullScreen(Uint32 flags); // SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP or 0
+    bool SetSize(int width, int height);
 
     SDL_Window* operator->();
     operator SDL_Window*();
@@ -157,6 +159,8 @@ public:
     SDL_Renderer_ctx& operator=(const SDL_Renderer_ctx&) = delete;
     SDL_Renderer_ctx& operator=(SDL_Renderer_ctx&&) noexcept = default;
     ~SDL_Renderer_ctx() = default;
+
+    bool SetVSync(bool on);
 
     SDL_Renderer* operator->();
     operator SDL_Renderer*();
@@ -217,6 +221,7 @@ public:
     SDL_Texture_ctx& operator=(SDL_Texture_ctx&&) noexcept = default;
     ~SDL_Texture_ctx() = default;
 
+    inline explicit operator bool () const { return static_cast<bool>(texture); }
     SDL_Texture* operator->();
     operator SDL_Texture*();
 

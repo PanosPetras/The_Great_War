@@ -51,7 +51,18 @@ SDL_Window_ctx::SDL_Window_ctx() :
 {
     if(not window) throw std::runtime_error("SDL_Window_ctx");
     // Get dimensions of the screen
-    SDL_GetWindowSize(*this, &windim.x, &windim.y);
+    ::SDL_GetWindowSize(*this, &windim.x, &windim.y);
+}
+
+bool SDL_Window_ctx::SetFullScreen(Uint32 flags) {
+    return ::SDL_SetWindowFullscreen(*this, flags);
+}
+
+bool SDL_Window_ctx::SetSize(int width, int height) {
+    if(width < 1 || height < 1) return false;
+    ::SDL_SetWindowSize(*this, width, height);
+    ::SDL_GetWindowSize(*this, &windim.x, &windim.y);
+    return width == windim.x && height == windim.y;
 }
 
 SDL_Window* SDL_Window_ctx::operator->() {
@@ -63,6 +74,10 @@ SDL_Window_ctx::operator SDL_Window*() {
 //-----------------------------------------------------------------------------
 SDL_Renderer_ctx::SDL_Renderer_ctx(SDL_Window_ctx& window) : renderer(SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), &SDL_DestroyRenderer) {
     if(not renderer) throw std::runtime_error("SDL_Renderer_ctx");
+}
+
+bool SDL_Renderer_ctx::SetVSync(bool on) {
+    return ::SDL_RenderSetVSync(*this, on);
 }
 
 SDL_Renderer* SDL_Renderer_ctx::operator->() {
@@ -124,7 +139,7 @@ SDL_Cursor_ctx::operator SDL_Cursor*() {
 //-----------------------------------------------------------------------------
 SDL_Texture_ctx::SDL_Texture_ctx() : texture(nullptr, &SDL_DestroyTexture) {}
 SDL_Texture_ctx::SDL_Texture_ctx(SDL_Renderer_ctx& r, SDL_Surface_ctx& s) : texture(SDL_CreateTextureFromSurface(r, s), &SDL_DestroyTexture) {
-    if(not texture) throw std::runtime_error("SDL_Texture_ctx");
+    //if(not texture) throw std::runtime_error("SDL_Texture_ctx");
 }
 
 SDL_Texture* SDL_Texture_ctx::operator->() {
