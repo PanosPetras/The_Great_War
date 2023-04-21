@@ -14,6 +14,7 @@ const std::array<Color, CountrySelection::Countries> CountrySelection::colors{{{
 CountrySelection::CountrySelection(MainWindow& mw, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(mw, UnpauseF, fpl) {
     SetupBg("Backgrounds/CountrySelection.png");
     auto [Width, Height] = mw.GetWindowDimensions();
+
     int btnFontSize = int(Height / 33.75), nameFontSize = int(Height / 43.2);
 
     AddDrawable<Button>(

@@ -5,7 +5,6 @@
 #include "SDL_ColorDetection.h"
 
 #include <SDL_image.h>
-#include <SDL_thread.h>
 
 #include <fstream>
 #include <iostream>
@@ -30,13 +29,10 @@ std::vector<T> LoadFromFile(const char* filename) {
 }
 } // namespace
 
-PlayerController::PlayerController(MainWindow& mw, const char* tag) : main_window(&mw) {
-    // Save the player's country tag
-    player_tag = tag;
-
-    // Create the map on a separate thread
-    SDL_Thread* MapThread = SDL_CreateThread(&PlayerController::LoadMap, nullptr, this);
-    SDL_Thread* AssetsThread = SDL_CreateThread(&PlayerController::LoadUtilityAssets, nullptr, this);
+PlayerController::PlayerController(MainWindow& mw, const char* tag) : main_window(&mw), player_tag(tag) {
+    // Create the map and assets in separate threads
+    auto MapThread = std::jthread(&PlayerController::LoadMap, this);
+    auto AssetsThread = std::jthread(&PlayerController::LoadUtilityAssets, this);
 
     // Load the Countries' Names
     auto countryNames = LoadFromFile<std::string, Line>("map/Countries/CountryNames.txt");
@@ -79,47 +75,35 @@ PlayerController::PlayerController(MainWindow& mw, const char* tag) : main_windo
     InitializeStates(owners, stateNames, coords, populations, colors);
 
     // Initialize the date
-    Date = {.Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .bIsPaused = true, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
-
-    // Wait for the map to be loaded
-    SDL_WaitThread(AssetsThread, nullptr);
-    SDL_WaitThread(MapThread, nullptr);
+    Date = {.Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
 }
 
 PlayerController::~PlayerController() {
     // Stop the date thread if the game is not paused
-    if(Date.bIsPaused == false) {
+    if(bIsPaused == false) {
         Pause();
     }
 }
 
-int PlayerController::LoadMap(void* pc) {
-    PlayerController& PC = *static_cast<PlayerController*>(pc);
-
-    PC.map = SDL_Surface_ctx::IMG_Load("map/1910.png");
+void PlayerController::LoadMap() {
+    map = SDL_Surface_ctx::IMG_Load("map/1910.png");
     auto base = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0, 0, 0, 0);
 
     SDL_Rect strect = {.x = 232, .y = 0, .w = 5616, .h = 2160};
-    SDL_BlitSurface(PC.map, &strect, base, nullptr);
+    SDL_BlitSurface(map, &strect, base, nullptr);
     strect = {.x = -5616 + 232, .y = 0, .w = 5616 * 2, .h = 2160};
-    SDL_BlitSurface(PC.map, &strect, base, nullptr);
+    SDL_BlitSurface(map, &strect, base, nullptr);
     strect = {.x = -5616 * 2 + 232, .y = 0, .w = 5616 * 3, .h = 2160};
-    SDL_BlitSurface(PC.map, &strect, base, nullptr);
+    SDL_BlitSurface(map, &strect, base, nullptr);
 
-    PC.txt = SDL_Texture_ctx(*PC.main_window, base);
-
-    return 0;
+    txt = SDL_Texture_ctx(*main_window, base);
 }
 
-int PlayerController::LoadUtilityAssets(void* pc) {
-    PlayerController& PC = *static_cast<PlayerController*>(pc);
-
-    PC.provinces = SDL_Surface_ctx::IMG_Load("map/provinces.bmp");
+void PlayerController::LoadUtilityAssets() {
+    provinces = SDL_Surface_ctx::IMG_Load("map/provinces.bmp");
 
     auto base = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
-    PC.overlay = SDL_Texture_ctx(*PC.main_window, base);
-
-    return 0;
+    overlay = SDL_Texture_ctx(*main_window, base);
 }
 
 void PlayerController::InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, const std::vector<Stockpile>& balance) {
@@ -158,40 +142,38 @@ void PlayerController::InitializeStates(std::vector<std::string>& owners, std::v
     }
 }
 
-int PlayerController::AdvanceDate(void* ref) {
-    PlayerController* reference = static_cast<PlayerController*>(ref);
-
-    while(true) {
-        for(int i = 0; i < 10 && reference->Date.bIsPaused == false; i++) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(260 - reference->Date.Speed * 60));
+void PlayerController::AdvanceDate() {
+    while(bIsPaused == false) {
+        for(int i = 0; i < 10 && bIsPaused == false; i++) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(260 - Date.Speed * 60));
         }
 
         // Stop if the game is paused
-        if(reference->Date.bIsPaused) {
-            return 0;
+        if(bIsPaused) {
+            return;
         }
 
         // Advance by one day
-        reference->Date.Day++;
+        Date.Day++;
 
         // Execute the tick function
-        reference->Tick();
+        Tick();
 
         // Check whether the month has changed
-        if(reference->Date.Day == reference->Date.MonthDays[reference->Date.Month - 1] + 1) {
-            reference->Date.Month++;
-            reference->Date.Day = 1;
+        if(Date.Day == Date.MonthDays[Date.Month - 1] + 1) {
+            Date.Month++;
+            Date.Day = 1;
 
             // Check whether the year has changed
-            if(reference->Date.Month == 13) {
-                reference->Date.Year++;
-                reference->Date.Month = 1;
+            if(Date.Month == 13) {
+                Date.Year++;
+                Date.Month = 1;
 
                 // Check whether the current year is a leap year
-                if(reference->Date.Year % 4 == 0) {
-                    reference->Date.MonthDays[1] = 29;
+                if(Date.Year % 4 == 0) {
+                    Date.MonthDays[1] = 29;
                 } else {
-                    reference->Date.MonthDays[1] = 28;
+                    Date.MonthDays[1] = 28;
                 }
             }
         }
@@ -202,14 +184,18 @@ void PlayerController::Pause() {
     /*Pause or unpause the game when this function is executed.
     It will always change the state of the Date.bIsPaused and
     set it to the opposite value.*/
-    if(Date.bIsPaused) {
-        Date.bIsPaused = false;
+
+    if(bIsPaused) {
+        bIsPaused = false;
         // Create a new thread that will be running the AdvanceDate function in parallel with everything else
-        thread = SDL_CreateThread(&PlayerController::AdvanceDate, nullptr, this);
+        std::cerr << "PlayerController::Pause: Starting thread\n";
+        thread = std::jthread(&PlayerController::AdvanceDate, this);
     } else {
-        Date.bIsPaused = true;
+        bIsPaused = true;
         // Wait until the date thread has stopped execution
-        SDL_WaitThread(thread, nullptr);
+        std::cerr << "PlayerController::Pause: Waiting for thread\n";
+        thread.join();
+        std::cerr << "PlayerController::Pause: Thread done\n";
     }
 }
 
