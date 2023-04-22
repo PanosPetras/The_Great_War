@@ -92,6 +92,6 @@ void MenuSettingsScreen::ApplyChanges() {
                                   As<Checkbox>(3).GetValue(), // vsync
                                   As<Checkbox>(0).GetValue()  // fullscreen
                                   )) {
-        ChangeScreenFunc(std::make_unique<MenuSettingsScreen>(*main_window, QuitFunc, ChangeScreenFunc));
     }
+    ChangeScreenFunc(std::make_unique<MenuSettingsScreen>(*main_window, QuitFunc, ChangeScreenFunc));
 }
