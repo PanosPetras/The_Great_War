@@ -74,18 +74,16 @@ void Relation::AddClaim(Claim claim) {
 const std::vector<Claim> Relation::GetClaims(Country* c) {
     if(c == nullptr) {
         return claims;
-    } else {
-        std::vector<Claim> vec;
-
-        for(auto i : claims) {
-            if(i.GetOwner() == c) {
-                vec.push_back(i);
-            }
-        }
-
-        return vec;
     }
-    return std::vector<Claim>();
+    std::vector<Claim> vec;
+
+    for(auto i : claims) {
+        if(i.GetOwner() == c) {
+            vec.push_back(i);
+        }
+    }
+
+    return vec;
 }
 
 void Relation::ImproveRelations(int value) {
