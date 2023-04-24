@@ -55,7 +55,7 @@ SDL_Window_ctx::SDL_Window_ctx() :
 }
 
 bool SDL_Window_ctx::SetFullScreen(Uint32 flags) {
-    return ::SDL_SetWindowFullscreen(*this, flags);
+    return ::SDL_SetWindowFullscreen(*this, flags) == 0;
 }
 
 bool SDL_Window_ctx::SetSize(int width, int height) {
