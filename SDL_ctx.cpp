@@ -77,7 +77,7 @@ SDL_Renderer_ctx::SDL_Renderer_ctx(SDL_Window_ctx& window) : renderer(SDL_Create
 }
 
 bool SDL_Renderer_ctx::SetVSync(bool on) {
-    return ::SDL_RenderSetVSync(*this, on);
+    return ::SDL_RenderSetVSync(*this, on) == 0;
 }
 
 SDL_Renderer* SDL_Renderer_ctx::operator->() {

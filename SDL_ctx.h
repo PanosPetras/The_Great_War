@@ -221,7 +221,7 @@ public:
     SDL_Texture_ctx& operator=(SDL_Texture_ctx&&) noexcept = default;
     ~SDL_Texture_ctx() = default;
 
-    inline explicit operator bool () const { return static_cast<bool>(texture); }
+    inline explicit operator bool() const { return static_cast<bool>(texture); }
     SDL_Texture* operator->();
     operator SDL_Texture*();
 
