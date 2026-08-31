@@ -15,6 +15,7 @@
 #include <string>
 
 class Button;
+class Country;
 class Image;
 class Label;
 class MainWindow;
@@ -67,6 +68,10 @@ public:
     void OpenIndustryScreen();
     void OpenEconomyScreen();
     void OpenTradeScreen();
+
+private:
+    // The country the player is running, which every management tab reports on
+    Country* Player() const;
 };
 
 #endif

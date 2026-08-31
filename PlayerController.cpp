@@ -29,10 +29,20 @@ std::vector<T> LoadFromFile(const char* filename) {
 } // namespace
 
 PlayerController::PlayerController(MainWindow& mw, const char* tag) : main_window(&mw), player_tag(tag) {
-    // Create the map and assets in separate threads
-    auto MapThread = std::jthread(&PlayerController::LoadMap, this);
-    auto AssetsThread = std::jthread(&PlayerController::LoadUtilityAssets, this);
+    /*Decode the map assets while the game data files are being read. The
+    threads are scoped so that they are joined before UploadAssets runs -
+    the GPU upload has to happen on this thread.*/
+    {
+        auto MapThread = std::jthread(&PlayerController::LoadMap, this);
+        auto AssetsThread = std::jthread(&PlayerController::LoadUtilityAssets, this);
 
+        LoadGameData(tag);
+    }
+
+    UploadAssets();
+}
+
+void PlayerController::LoadGameData(const char* tag) {
     // Load the Countries' Names
     auto countryNames = LoadFromFile<std::string, Line>("map/Countries/CountryNames.txt");
 
@@ -77,32 +87,31 @@ PlayerController::PlayerController(MainWindow& mw, const char* tag) : main_windo
     Date = {.Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
 }
 
-PlayerController::~PlayerController() {
-    // Stop the date thread if the game is not paused
-    if(bIsPaused == false) {
-        Pause();
-    }
-}
-
 void PlayerController::LoadMap() {
     map = SDL_Surface_ctx::IMG_Load("map/1910.png");
-    auto base = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0, 0, 0, 0);
+    mapCanvas = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0, 0, 0, 0);
 
     SDL_Rect strect = {.x = 232, .y = 0, .w = 5616, .h = 2160};
-    SDL_BlitSurface(map, &strect, base, nullptr);
+    SDL_BlitSurface(map, &strect, mapCanvas, nullptr);
     strect = {.x = -5616 + 232, .y = 0, .w = 5616 * 2, .h = 2160};
-    SDL_BlitSurface(map, &strect, base, nullptr);
+    SDL_BlitSurface(map, &strect, mapCanvas, nullptr);
     strect = {.x = -5616 * 2 + 232, .y = 0, .w = 5616 * 3, .h = 2160};
-    SDL_BlitSurface(map, &strect, base, nullptr);
-
-    txt = SDL_Texture_ctx(*main_window, base);
+    SDL_BlitSurface(map, &strect, mapCanvas, nullptr);
 }
 
 void PlayerController::LoadUtilityAssets() {
     provinces = SDL_Surface_ctx::IMG_Load("map/provinces.bmp");
 
-    auto base = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
-    overlay = SDL_Texture_ctx(*main_window, base);
+    overlayCanvas = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
+}
+
+void PlayerController::UploadAssets() {
+    txt = SDL_Texture_ctx(*main_window, mapCanvas);
+    overlay = SDL_Texture_ctx(*main_window, overlayCanvas);
+
+    // The staging surfaces are ~140 MB each and are dead weight once uploaded
+    mapCanvas = SDL_Surface_ctx{};
+    overlayCanvas = SDL_Surface_ctx{};
 }
 
 void PlayerController::InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, const std::vector<Stockpile>& balance) {
@@ -141,61 +150,64 @@ void PlayerController::InitializeStates(std::vector<std::string>& owners, std::v
     }
 }
 
-void PlayerController::AdvanceDate() {
-    while(bIsPaused == false) {
-        for(int i = 0; i < 10 && bIsPaused == false; i++) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(260 - Date.Speed * 60));
-        }
+Uint32 PlayerController::MillisecondsPerDay() const {
+    // Speed runs from 1 (slowest) to 4: 2000 ms per in-game day down to 200 ms
+    return 10u * static_cast<Uint32>(260 - Date.Speed * 60);
+}
 
-        // Stop if the game is paused
-        if(bIsPaused) {
-            return;
-        }
+void PlayerController::AdvanceOneDay() {
+    Date.Day++;
 
-        // Advance by one day
-        Date.Day++;
+    if(Date.Day <= Date.MonthDays[Date.Month - 1]) {
+        return;
+    }
 
-        // Execute the tick function
+    // The month has rolled over
+    Date.Day = 1;
+    Date.Month++;
+
+    if(Date.Month <= 12) {
+        return;
+    }
+
+    // And so has the year
+    Date.Month = 1;
+    Date.Year++;
+
+    // February gains a day on a leap year
+    Date.MonthDays[1] = (Date.Year % 4 == 0) ? 29 : 28;
+}
+
+void PlayerController::Update(Uint32 elapsedMs) {
+    if(bIsPaused) {
+        return;
+    }
+
+    const Uint32 msPerDay = MillisecondsPerDay();
+
+    dayAccumulator += elapsedMs;
+
+    // Discard anything beyond the catch-up budget rather than tick it all at once
+    if(dayAccumulator > msPerDay * MaxCatchUpDays) {
+        dayAccumulator = msPerDay * MaxCatchUpDays;
+    }
+
+    while(dayAccumulator >= msPerDay) {
+        dayAccumulator -= msPerDay;
+
+        AdvanceOneDay();
         Tick();
-
-        // Check whether the month has changed
-        if(Date.Day == Date.MonthDays[Date.Month - 1] + 1) {
-            Date.Month++;
-            Date.Day = 1;
-
-            // Check whether the year has changed
-            if(Date.Month == 13) {
-                Date.Year++;
-                Date.Month = 1;
-
-                // Check whether the current year is a leap year
-                if(Date.Year % 4 == 0) {
-                    Date.MonthDays[1] = 29;
-                } else {
-                    Date.MonthDays[1] = 28;
-                }
-            }
-        }
     }
 }
 
 void PlayerController::Pause() {
     /*Pause or unpause the game when this function is executed.
-    It will always change the state of the Date.bIsPaused and
-    set it to the opposite value.*/
+    It will always change the state of bIsPaused and set it to
+    the opposite value.*/
+    bIsPaused = not bIsPaused;
 
-    if(bIsPaused) {
-        bIsPaused = false;
-        // Create a new thread that will be running the AdvanceDate function in parallel with everything else
-        std::cerr << "PlayerController::Pause: Starting thread\n";
-        thread = std::jthread(&PlayerController::AdvanceDate, this);
-    } else {
-        bIsPaused = true;
-        // Wait until the date thread has stopped execution
-        std::cerr << "PlayerController::Pause: Waiting for thread\n";
-        thread.join();
-        std::cerr << "PlayerController::Pause: Thread done\n";
-    }
+    // Drop the part-elapsed day so that unpausing does not tick immediately
+    dayAccumulator = 0;
 }
 
 void PlayerController::ChangeSpeed(bool change) {

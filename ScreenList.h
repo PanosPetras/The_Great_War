@@ -76,6 +76,7 @@ public:
 
     void Pause();
 
+    void Update(Uint32 elapsedMs) override;
     void RenderBackground() override;
     void Render() override;
 
@@ -195,14 +196,19 @@ private:
 
 class IndustryScreen : public Screen {
 public:
-    IndustryScreen(MainWindow& mw, const int (&Stockpile)[30]);
-    void UpdateText(const int (&Stockpile)[30]);
+    IndustryScreen(MainWindow& mw, Country* Pl);
+
+    void Update(Uint32 elapsedMs) override;
+
+private:
+    Country* Player;
 };
 
 class TradeScreen : public Screen {
 public:
     TradeScreen(MainWindow& mw, Country* Pl);
-    void Update();
+
+    void Update(Uint32 elapsedMs) override;
 
 private:
     Country* Player;
@@ -212,7 +218,7 @@ class EconomyScreen : public Screen {
 public:
     EconomyScreen(MainWindow& mw, Country* Pl);
 
-    void Update();
+    void Update(Uint32 elapsedMs) override;
 
     void OnTaxRateChanged();
 

@@ -1,74 +1,58 @@
 #include "ScreenList.h"
 
 #include "Button.h"
+#include "Country.h"
 #include "Label.h"
 #include "MainWindow.h"
 
-IndustryScreen::IndustryScreen(MainWindow& mw, const int (&Stockpile)[30]) : Screen(mw) {
+#include <array>
+#include <cstddef>
+
+namespace {
+struct StockpileLabel {
+    // Which entry of the snapshot below this label displays
+    std::size_t resource;
+
+    // Position, as a fraction of the window's dimensions
+    double x;
+    double y;
+};
+
+/*Where each resource is shown on the industry background. This is the single
+place that knows the layout - both the initial labels and every refresh walk
+this table, so the two can no longer drift apart.*/
+constexpr std::array<StockpileLabel, 30> Layout{{
+    {0, 0.24, 0.165},   {5, 0.365, 0.165}, {2, 0.49, 0.165},   {4, 0.615, 0.165}, {3, 0.24, 0.26},    {1, 0.365, 0.26},  {11, 0.49, 0.26},   {10, 0.615, 0.26}, {6, 0.74, 0.21},  {19, 0.24, 0.395},
+    {21, 0.365, 0.395}, {28, 0.49, 0.395}, {20, 0.615, 0.395}, {27, 0.24, 0.49},  {25, 0.365, 0.49},  {7, 0.49, 0.49},   {24, 0.615, 0.49},  {22, 0.74, 0.44},  {9, 0.24, 0.63},  {8, 0.365, 0.63},
+    {26, 0.49, 0.63},   {12, 0.615, 0.63}, {23, 0.74, 0.63},   {16, 0.24, 0.765}, {13, 0.365, 0.765}, {17, 0.49, 0.765}, {15, 0.615, 0.765}, {18, 0.74, 0.765}, {14, 0.49, 0.86}, {29, 0.365, 0.86},
+}};
+
+/*The country's stockpile flattened into the order the Layout table indexes by.
+This is the last place the 30 fields are spelled out by hand; it goes away once
+Stockpile itself becomes indexable.*/
+std::array<int, Layout.size()> Snapshot(const Country& country) {
+    const Stockpile& s = country.Stock;
+
+    return {s.Coal,       s.Oil,        s.Timber,    s.Rubber, s.Cotton,      s.Iron,      s.Grain,   s.Fruit,       s.Electric_gear,  s.Machine_parts, s.Glass,      s.Lumber, s.Cement, s.Ammunition, s.Planes,
+            s.Explosives, s.Small_arms, s.Artillery, s.Tanks,  s.Canned_food, s.Furniture, s.Clothes, s.Automobiles, s.Merchant_ships, s.Radios,        s.Telephones, s.Fuel,   s.Paper,  s.Liquor,     s.Airship};
+}
+} // namespace
+
+IndustryScreen::IndustryScreen(MainWindow& mw, Country* Pl) : Screen(mw), Player(Pl) {
     SetupBg("Backgrounds/Industry1.png");
     auto [Width, Height] = mw.GetWindowDimensions();
 
-    AddLabel<Label>(mw, std::to_string(Stockpile[0]), 32, int(Width * 0.24), int(Height * 0.165));
-    AddLabel<Label>(mw, std::to_string(Stockpile[5]), 32, int(Width * 0.365), int(Height * 0.165));
-    AddLabel<Label>(mw, std::to_string(Stockpile[2]), 32, int(Width * 0.49), int(Height * 0.165));
-    AddLabel<Label>(mw, std::to_string(Stockpile[4]), 32, int(Width * 0.615), int(Height * 0.165));
-    AddLabel<Label>(mw, std::to_string(Stockpile[3]), 32, int(Width * 0.24), int(Height * 0.26));
-    AddLabel<Label>(mw, std::to_string(Stockpile[1]), 32, int(Width * 0.365), int(Height * 0.26));
-    AddLabel<Label>(mw, std::to_string(Stockpile[11]), 32, int(Width * 0.49), int(Height * 0.26));
-    AddLabel<Label>(mw, std::to_string(Stockpile[10]), 32, int(Width * 0.615), int(Height * 0.26));
-    AddLabel<Label>(mw, std::to_string(Stockpile[6]), 32, int(Width * 0.74), int(Height * 0.21));
-    AddLabel<Label>(mw, std::to_string(Stockpile[19]), 32, int(Width * 0.24), int(Height * 0.395));
-    AddLabel<Label>(mw, std::to_string(Stockpile[21]), 32, int(Width * 0.365), int(Height * 0.395));
-    AddLabel<Label>(mw, std::to_string(Stockpile[28]), 32, int(Width * 0.49), int(Height * 0.395));
-    AddLabel<Label>(mw, std::to_string(Stockpile[20]), 32, int(Width * 0.615), int(Height * 0.395));
-    AddLabel<Label>(mw, std::to_string(Stockpile[27]), 32, int(Width * 0.24), int(Height * 0.49));
-    AddLabel<Label>(mw, std::to_string(Stockpile[25]), 32, int(Width * 0.365), int(Height * 0.49));
-    AddLabel<Label>(mw, std::to_string(Stockpile[7]), 32, int(Width * 0.49), int(Height * 0.49));
-    AddLabel<Label>(mw, std::to_string(Stockpile[24]), 32, int(Width * 0.615), int(Height * 0.49));
-    AddLabel<Label>(mw, std::to_string(Stockpile[22]), 32, int(Width * 0.74), int(Height * 0.44));
-    AddLabel<Label>(mw, std::to_string(Stockpile[9]), 32, int(Width * 0.24), int(Height * 0.63));
-    AddLabel<Label>(mw, std::to_string(Stockpile[8]), 32, int(Width * 0.365), int(Height * 0.63));
-    AddLabel<Label>(mw, std::to_string(Stockpile[26]), 32, int(Width * 0.49), int(Height * 0.63));
-    AddLabel<Label>(mw, std::to_string(Stockpile[12]), 32, int(Width * 0.615), int(Height * 0.63));
-    AddLabel<Label>(mw, std::to_string(Stockpile[23]), 32, int(Width * 0.74), int(Height * 0.63));
-    AddLabel<Label>(mw, std::to_string(Stockpile[16]), 32, int(Width * 0.24), int(Height * 0.765));
-    AddLabel<Label>(mw, std::to_string(Stockpile[13]), 32, int(Width * 0.365), int(Height * 0.765));
-    AddLabel<Label>(mw, std::to_string(Stockpile[17]), 32, int(Width * 0.49), int(Height * 0.765));
-    AddLabel<Label>(mw, std::to_string(Stockpile[15]), 32, int(Width * 0.615), int(Height * 0.765));
-    AddLabel<Label>(mw, std::to_string(Stockpile[18]), 32, int(Width * 0.74), int(Height * 0.765));
-    AddLabel<Label>(mw, std::to_string(Stockpile[14]), 32, int(Width * 0.49), int(Height * 0.86));
-    AddLabel<Label>(mw, std::to_string(Stockpile[29]), 32, int(Width * 0.365), int(Height * 0.86));
+    const auto stock = Snapshot(*Player);
+
+    for(const auto& [resource, x, y] : Layout) {
+        AddLabel<Label>(mw, std::to_string(stock[resource]), 32, int(Width * x), int(Height * y));
+    }
 }
 
-void IndustryScreen::UpdateText(const int (&Stockpile)[30]) {
-    LabelArr[0]->ChangeText(std::to_string(Stockpile[0]));
-    LabelArr[1]->ChangeText(std::to_string(Stockpile[5]));
-    LabelArr[2]->ChangeText(std::to_string(Stockpile[2]));
-    LabelArr[3]->ChangeText(std::to_string(Stockpile[4]));
-    LabelArr[4]->ChangeText(std::to_string(Stockpile[3]));
-    LabelArr[5]->ChangeText(std::to_string(Stockpile[1]));
-    LabelArr[6]->ChangeText(std::to_string(Stockpile[11]));
-    LabelArr[7]->ChangeText(std::to_string(Stockpile[10]));
-    LabelArr[8]->ChangeText(std::to_string(Stockpile[6]));
-    LabelArr[9]->ChangeText(std::to_string(Stockpile[19]));
-    LabelArr[10]->ChangeText(std::to_string(Stockpile[21]));
-    LabelArr[11]->ChangeText(std::to_string(Stockpile[28]));
-    LabelArr[12]->ChangeText(std::to_string(Stockpile[20]));
-    LabelArr[13]->ChangeText(std::to_string(Stockpile[27]));
-    LabelArr[14]->ChangeText(std::to_string(Stockpile[25]));
-    LabelArr[15]->ChangeText(std::to_string(Stockpile[7]));
-    LabelArr[16]->ChangeText(std::to_string(Stockpile[24]));
-    LabelArr[17]->ChangeText(std::to_string(Stockpile[22]));
-    LabelArr[18]->ChangeText(std::to_string(Stockpile[9]));
-    LabelArr[19]->ChangeText(std::to_string(Stockpile[8]));
-    LabelArr[20]->ChangeText(std::to_string(Stockpile[26]));
-    LabelArr[21]->ChangeText(std::to_string(Stockpile[12]));
-    LabelArr[22]->ChangeText(std::to_string(Stockpile[23]));
-    LabelArr[23]->ChangeText(std::to_string(Stockpile[16]));
-    LabelArr[24]->ChangeText(std::to_string(Stockpile[13]));
-    LabelArr[25]->ChangeText(std::to_string(Stockpile[17]));
-    LabelArr[26]->ChangeText(std::to_string(Stockpile[15]));
-    LabelArr[27]->ChangeText(std::to_string(Stockpile[18]));
-    LabelArr[28]->ChangeText(std::to_string(Stockpile[14]));
-    LabelArr[29]->ChangeText(std::to_string(Stockpile[29]));
+void IndustryScreen::Update(Uint32) {
+    const auto stock = Snapshot(*Player);
+
+    for(std::size_t i = 0; i < Layout.size(); ++i) {
+        LabelArr[i]->ChangeText(std::to_string(stock[Layout[i].resource]));
+    }
 }

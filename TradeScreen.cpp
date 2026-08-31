@@ -7,4 +7,4 @@ TradeScreen::TradeScreen(MainWindow& mw, Country* Pl) : Screen(mw) {
     Player = Pl;
 }
 
-void TradeScreen::Update() {}
+void TradeScreen::Update(Uint32) {}

@@ -32,14 +32,33 @@ void GameScreen::Pause() {
             bIsPaused = false;
             PM.reset();
         } else {
-            PM = std::make_unique<PauseMenu>(
-                *main_window, QuitFunc, [this] { Pause(); }, ChangeScreenFunc);
+            PM = std::make_unique<PauseMenu>(*main_window, QuitFunc, [this] { Pause(); }, ChangeScreenFunc);
             bIsPaused = true;
             if(PC->bIsPaused == false) {
                 overlay->PauseDate(true);
             }
             overlay->Buttons[0]->Playsound();
         }
+    }
+}
+
+void GameScreen::Update(Uint32 elapsedMs) {
+    // The pause menu freezes the whole game, not just the calendar
+    if(bIsPaused) {
+        return;
+    }
+
+    PC->Update(elapsedMs);
+
+    /*Let whichever screens are open refresh themselves against the state the
+    tick above produced. Each one knows what it displays, so there is nothing
+    to dispatch on here.*/
+    if(ActiveScreen) {
+        ActiveScreen->Update(elapsedMs);
+    }
+
+    if(StateViewingScreen) {
+        StateViewingScreen->Update(elapsedMs);
     }
 }
 
@@ -61,22 +80,6 @@ void GameScreen::Render() {
     if(bHasActiveScreen() == false) {
         this->RenderBackground();
     } else {
-        if(/*overlay->bDateUpdated == true && */ ScreenID == "IndustryScreen") {
-            int Res[30] = {PC->CountriesArr.at(PC->player_index)->Stock.Coal,          PC->CountriesArr.at(PC->player_index)->Stock.Oil,         PC->CountriesArr.at(PC->player_index)->Stock.Timber,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Rubber,        PC->CountriesArr.at(PC->player_index)->Stock.Cotton,      PC->CountriesArr.at(PC->player_index)->Stock.Iron,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Grain,         PC->CountriesArr.at(PC->player_index)->Stock.Fruit,       PC->CountriesArr.at(PC->player_index)->Stock.Electric_gear,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Machine_parts, PC->CountriesArr.at(PC->player_index)->Stock.Glass,       PC->CountriesArr.at(PC->player_index)->Stock.Lumber,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Cement,        PC->CountriesArr.at(PC->player_index)->Stock.Ammunition,  PC->CountriesArr.at(PC->player_index)->Stock.Planes,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Explosives,    PC->CountriesArr.at(PC->player_index)->Stock.Small_arms,  PC->CountriesArr.at(PC->player_index)->Stock.Artillery,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Tanks,         PC->CountriesArr.at(PC->player_index)->Stock.Canned_food, PC->CountriesArr.at(PC->player_index)->Stock.Furniture,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Clothes,       PC->CountriesArr.at(PC->player_index)->Stock.Automobiles, PC->CountriesArr.at(PC->player_index)->Stock.Merchant_ships,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Radios,        PC->CountriesArr.at(PC->player_index)->Stock.Telephones,  PC->CountriesArr.at(PC->player_index)->Stock.Fuel,
-                           PC->CountriesArr.at(PC->player_index)->Stock.Paper,         PC->CountriesArr.at(PC->player_index)->Stock.Liquor,      PC->CountriesArr.at(PC->player_index)->Stock.Airship};
-            static_cast<IndustryScreen*>(ActiveScreen.get())->UpdateText(Res);
-        } else if(ScreenID == "EconomyScreen") {
-            static_cast<EconomyScreen*>(ActiveScreen.get())->Update();
-        }
-
         ActiveScreen->Render();
     }
 

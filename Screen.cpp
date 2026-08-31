@@ -7,6 +7,7 @@
 #include "MainWindow.h"
 #include "MessageBox.h"
 
+#include <algorithm>
 #include <iostream>
 
 Screen::Screen(MainWindow& mw) : main_window(&mw) {
@@ -15,6 +16,10 @@ Screen::Screen(MainWindow& mw) : main_window(&mw) {
 
 Screen::Screen(MainWindow& mw, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf) : main_window(&mw), QuitFunc(qf), ChangeScreenFunc(csf) {
     std::cerr << "Screen::Screen(...)\t" << static_cast<void*>(this) << std::endl;
+}
+
+void Screen::Update(Uint32) {
+    // Most screens are static and have nothing to advance
 }
 
 void Screen::RenderBackground() {
