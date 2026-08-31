@@ -13,10 +13,8 @@
 #include <SDL.h>
 
 #include <array>
-#include <atomic>
 #include <cstdint>
 #include <memory>
-#include <thread>
 #include <unordered_map>
 #include <vector>
 
@@ -27,15 +25,42 @@ public:
     // Constructor
     PlayerController(MainWindow& mw, const char* tag);
 
-    ~PlayerController();
-
 private:
+    // Reads every game data file and builds the countries and states from them
+    void LoadGameData(const char* tag);
+
     // Loading data functions
     void InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, const std::vector<Stockpile>& balance);
     void InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors);
 
+    /*Decode the map assets. These are safe to run off the main thread because
+    they only touch SDL_Surfaces, which are plain CPU memory. They must never
+    touch the renderer - see UploadAssets.*/
     void LoadMap();
     void LoadUtilityAssets();
+
+    /*Hand the decoded surfaces to the GPU. SDL_Renderer is main-thread only
+    (SDL_render.h: "These functions must be called from the main thread"), so
+    this runs after the loading threads have been joined.*/
+    void UploadAssets();
+
+    // Advances the calendar by a single day, rolling the month and year over
+    void AdvanceOneDay();
+
+    // How long a single in-game day lasts, in real milliseconds, at the current speed
+    Uint32 MillisecondsPerDay() const;
+
+    /*Never simulate more than this many days in one frame. Without the cap a
+    long stall - loading a screen, dragging the window - would be paid back as
+    a burst of ticks that stutters the frame it lands on.*/
+    static constexpr Uint32 MaxCatchUpDays = 4;
+
+    // Real time that has elapsed but not yet been converted into game days
+    Uint32 dayAccumulator = 0;
+
+    // Decoded but not yet uploaded map assets. Released by UploadAssets.
+    SDL_Surface_ctx mapCanvas;
+    SDL_Surface_ctx overlayCanvas;
 
 public:
     MainWindow* main_window;
@@ -53,15 +78,17 @@ public:
         int MonthDays[12];
     } Date;
 
-    std::atomic<bool> bIsPaused{true};
+    bool bIsPaused = true;
 
     // This is the representing the pass of a single day
     void Tick();
 
-    // Advances the date by one day
-    void AdvanceDate();
+    /*Advances the simulation by however much real time has passed since the
+    previous frame. Called from the main loop, so all game state is only ever
+    touched by the thread that renders it.*/
+    void Update(Uint32 elapsedMs);
 
-    // Pauses the flow of time
+    // Pauses or resumes the flow of time
     void Pause();
 
     // Changes the game speed
@@ -84,8 +111,5 @@ public:
     SDL_Texture_ctx overlay;
     SDL_Surface_ctx map;
     SDL_Surface_ctx provinces;
-
-    // Used to run the time-functionality of the game
-    std::jthread thread;
 };
 #endif

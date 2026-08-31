@@ -19,7 +19,7 @@ EconomyScreen::EconomyScreen(MainWindow& mw, Country* Pl) : Screen(mw), Player(P
     AddDrawable<Slider>(*main_window, int(0.41 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.Healthcare, [this] { OnHealthcareChanged(); });
 }
 
-void EconomyScreen::Update() {
+void EconomyScreen::Update(Uint32) {
     std::string l1 = "Current Funds: " + std::to_string(Player->Stock.Money);
     LabelArr[0]->ChangeText(l1.c_str());
 }

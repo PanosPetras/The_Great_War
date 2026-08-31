@@ -12,27 +12,35 @@ MainWindow& MainWindow::Instance() {
     return inst;
 }
 
-MainWindow::MainWindow() :
-    renderer(window), scr(std::make_unique<MainMenu>(
-                          *this, [this] { Quit(); }, [this](std::unique_ptr<Screen> newScreen) { ChangeScreen(std::move(newScreen)); })) {
+MainWindow::MainWindow() : renderer(window), scr(std::make_unique<MainMenu>(*this, [this] { Quit(); }, [this](std::unique_ptr<Screen> newScreen) { ChangeScreen(std::move(newScreen)); })) {
     vsync = true;
     fullscreen = true;
     framerateCap = 60;
 }
 
 void MainWindow::MainLoop() {
-    unsigned int a, b = SDL_GetTicks();
-    double delta = 0;
+    Uint32 previous = SDL_GetTicks();
 
     while(!quit) {
-        a = SDL_GetTicks();
+        const Uint32 now = SDL_GetTicks();
+        const Uint32 elapsed = now - previous;
 
-        if(a - b >= 1000.0 / framerateCap || vsync) {
-            b = a;
-
-            Render();
-            Keyboard();
+        /*With vsync on, SDL_RenderPresent does the waiting for us. Without it
+        we have to honour the framerate cap ourselves, and yield rather than
+        spin so that we are not burning a core doing nothing.*/
+        if(not vsync && elapsed < 1000u / static_cast<Uint32>(framerateCap)) {
+            SDL_Delay(1);
+            continue;
         }
+        previous = now;
+
+        /*Advance the game by the time this frame took before drawing it. The
+        simulation therefore runs on this thread, which is what makes it safe
+        to read game state while rendering.*/
+        scr->Update(elapsed);
+
+        Render();
+        Keyboard();
     }
 }
 

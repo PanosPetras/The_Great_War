@@ -17,28 +17,21 @@ UI::UI(MainWindow& mw, const char* tag, PlayerController* PC, std::function<void
     flag = std::make_unique<Button>(mw, int(Width * 0.005), int(Height * 0.005), int(Width * 0.05), int(Height * 0.05), flg.c_str(), nullptr, SDLK_q);
 
     Buttons[0] = std::make_unique<Button>(mw, int(Width * 0.1), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Technology", nullptr, SDLK_w);
-    Buttons[1] = std::make_unique<Button>(
-        mw, int(Width * 0.15), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Economy", [this] { OpenEconomyScreen(); }, SDLK_e);
-    Buttons[3] = std::make_unique<Button>(
-        mw, int(Width * 0.2), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Industry", [this] { OpenIndustryScreen(); }, SDLK_r);
-    Buttons[2] = std::make_unique<Button>(
-        mw, int(Width * 0.25), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Trade", [this] { OpenTradeScreen(); }, SDLK_t);
-    Buttons[4] = std::make_unique<Button>(
-        mw, int(Width * 0.3), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Diplomacy", [this] { OpenDiplomacyScreen(); }, SDLK_y);
+    Buttons[1] = std::make_unique<Button>(mw, int(Width * 0.15), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Economy", [this] { OpenEconomyScreen(); }, SDLK_e);
+    Buttons[3] = std::make_unique<Button>(mw, int(Width * 0.2), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Industry", [this] { OpenIndustryScreen(); }, SDLK_r);
+    Buttons[2] = std::make_unique<Button>(mw, int(Width * 0.25), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Trade", [this] { OpenTradeScreen(); }, SDLK_t);
+    Buttons[4] = std::make_unique<Button>(mw, int(Width * 0.3), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Diplomacy", [this] { OpenDiplomacyScreen(); }, SDLK_y);
     Buttons[5] = std::make_unique<Button>(mw, int(Width * 0.35), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Military", nullptr, SDLK_u);
 
     flagbg = std::make_unique<Image>(mw, "Backgrounds/FlagBg.png", 0, 0, int(Width * 0.06), int(Height * 0.06));
 
     // The date tab
     Date = std::make_unique<Label>(mw, "1/1/1910", 32, int(Width * 0.81), 0);
-    DateButtons[0] = std::make_unique<Button>(
-        mw, int(Width * 0.7), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/Subtract", [this] { DecreaseSpeed(); }, SDLK_KP_MINUS);
+    DateButtons[0] = std::make_unique<Button>(mw, int(Width * 0.7), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/Subtract", [this] { DecreaseSpeed(); }, SDLK_KP_MINUS);
 
-    DateButtons[1] = std::make_unique<Button>(
-        mw, int(Width * 0.9), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/Increment", [this] { IncreaseSpeed(); }, SDLK_KP_PLUS);
+    DateButtons[1] = std::make_unique<Button>(mw, int(Width * 0.9), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/Increment", [this] { IncreaseSpeed(); }, SDLK_KP_PLUS);
 
-    PauseButton = std::make_unique<ToggleButton>(
-        mw, int(Width * 0.77), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/pause", "Buttons/UI/play", [this](bool p) { PauseDate(p); }, SDLK_SPACE);
+    PauseButton = std::make_unique<ToggleButton>(mw, int(Width * 0.77), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/pause", "Buttons/UI/play", [this](bool p) { PauseDate(p); }, SDLK_SPACE);
 
     SpeedBg = std::make_unique<Image>(mw, "Backgrounds/FlagBg.png", int(Width * 0.7), 0, int(Width * 0.222), int(Height * 0.04));
     SpeedImg = std::make_unique<Image>(mw, "Icons/1-Speed.png", int(Width * 0.735), 0, int(Width * 0.022), int(Height * 0.04));
@@ -102,28 +95,22 @@ void UI::PauseDate(bool) {
     PCref->Pause();
 }
 
+Country* UI::Player() const {
+    return PCref->CountriesArr.at(PCref->player_index).get();
+}
+
 void UI::OpenDiplomacyScreen() {
     ChangeScreenFunc(std::make_unique<DiplomacyScreen>(*main_window, PCref), "DiplomacyScreen");
 }
 
 void UI::OpenIndustryScreen() {
-    int Res[30] = {PCref->CountriesArr.at(PCref->player_index)->Stock.Coal,          PCref->CountriesArr.at(PCref->player_index)->Stock.Oil,         PCref->CountriesArr.at(PCref->player_index)->Stock.Timber,
-                   PCref->CountriesArr.at(PCref->player_index)->Stock.Rubber,        PCref->CountriesArr.at(PCref->player_index)->Stock.Cotton,      PCref->CountriesArr.at(PCref->player_index)->Stock.Iron,
-                   PCref->CountriesArr.at(PCref->player_index)->Stock.Grain,         PCref->CountriesArr.at(PCref->player_index)->Stock.Fruit,       PCref->CountriesArr.at(PCref->player_index)->Stock.Electric_gear,
-                   PCref->CountriesArr.at(PCref->player_index)->Stock.Machine_parts, PCref->CountriesArr.at(PCref->player_index)->Stock.Glass,       PCref->CountriesArr.at(PCref->player_index)->Stock.Lumber,
-                   PCref->CountriesArr.at(PCref->player_index)->Stock.Cement,        PCref->CountriesArr.at(PCref->player_index)->Stock.Ammunition,  PCref->CountriesArr.at(PCref->player_index)->Stock.Planes,
-                   PCref->CountriesArr.at(PCref->player_index)->Stock.Explosives,    PCref->CountriesArr.at(PCref->player_index)->Stock.Small_arms,  PCref->CountriesArr.at(PCref->player_index)->Stock.Artillery,
-                   PCref->CountriesArr.at(PCref->player_index)->Stock.Tanks,         PCref->CountriesArr.at(PCref->player_index)->Stock.Canned_food, PCref->CountriesArr.at(PCref->player_index)->Stock.Furniture,
-                   PCref->CountriesArr.at(PCref->player_index)->Stock.Clothes,       PCref->CountriesArr.at(PCref->player_index)->Stock.Automobiles, PCref->CountriesArr.at(PCref->player_index)->Stock.Merchant_ships,
-                   PCref->CountriesArr.at(PCref->player_index)->Stock.Radios,        PCref->CountriesArr.at(PCref->player_index)->Stock.Telephones,  PCref->CountriesArr.at(PCref->player_index)->Stock.Fuel,
-                   PCref->CountriesArr.at(PCref->player_index)->Stock.Paper,         PCref->CountriesArr.at(PCref->player_index)->Stock.Liquor,      PCref->CountriesArr.at(PCref->player_index)->Stock.Airship};
-    ChangeScreenFunc(std::make_unique<IndustryScreen>(*main_window, Res), "IndustryScreen");
+    ChangeScreenFunc(std::make_unique<IndustryScreen>(*main_window, Player()), "IndustryScreen");
 }
 
 void UI::OpenEconomyScreen() {
-    ChangeScreenFunc(std::make_unique<EconomyScreen>(*main_window, PCref->CountriesArr.at(PCref->player_index).get()), "EconomyScreen");
+    ChangeScreenFunc(std::make_unique<EconomyScreen>(*main_window, Player()), "EconomyScreen");
 }
 
 void UI::OpenTradeScreen() {
-    ChangeScreenFunc(std::make_unique<TradeScreen>(*main_window, PCref->CountriesArr.at(PCref->player_index).get()), "TradeScreen");
+    ChangeScreenFunc(std::make_unique<TradeScreen>(*main_window, Player()), "TradeScreen");
 }

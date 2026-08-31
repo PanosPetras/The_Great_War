@@ -29,6 +29,11 @@ public:
 
     virtual ~Screen() = default;
 
+    /*Advances anything time-dependent on the screen, where elapsedMs is the
+    real time since the previous frame. Called once per frame, before Render,
+    so that simulation and rendering stay on the same thread.*/
+    virtual void Update(Uint32 elapsedMs);
+
     // Renders all of the screen's components
     virtual void Render();
 
