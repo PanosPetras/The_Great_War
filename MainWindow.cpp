@@ -6,6 +6,7 @@
 #include "ScreenList.h"
 
 #include <iostream>
+#include <tuple>
 
 MainWindow& MainWindow::Instance() {
     static MainWindow inst;
@@ -171,6 +172,25 @@ bool MainWindow::SetResolution(unsigned resolution, bool Vsync, Uint32 fullscree
     framerateCap = Resolutions::SUPPORTED_FRAMERATES[resolution];
 
     return true;
+}
+
+FontRef MainWindow::TTF_OpenFont(FontSize size) {
+    return TTF_OpenFont(Pt(size, Height()));
+}
+
+FontRef MainWindow::TTF_OpenFont(int ptsize) {
+    return TTF_OpenFont(TTF_Font_ctx::DefaultFile, ptsize);
+}
+
+FontRef MainWindow::TTF_OpenFont(const std::string& filename, int ptsize) {
+    auto key = std::pair(filename, ptsize);
+
+    if(auto it = file_fonts.find(key); it != file_fonts.end()) {
+        return FontRef(it->second);
+    }
+
+    auto [newit, inserted] = file_fonts.emplace(std::piecewise_construct, std::forward_as_tuple(std::move(key)), std::forward_as_tuple(filename, ptsize));
+    return FontRef(newit->second);
 }
 
 ChunkRef MainWindow::Mix_LoadWAV(const std::string& filename) {

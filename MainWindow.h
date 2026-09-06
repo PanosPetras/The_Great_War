@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "FontSize.h"
 #include "Screen.h"
 
 #include "SDL_ctx.h"
@@ -13,6 +14,7 @@
 #include <array>
 #include <functional>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <unordered_map>
 #include <utility>
@@ -96,6 +98,14 @@ public:
 
     ChunkRef Mix_LoadWAV(const std::string& filename);
 
+    /*Hands out a font kept open for the lifetime of the window. A TTF_Font
+    bakes its point size in at open time, so there is one per (file, size)
+    rather than one overall - but the handful of sizes the UI uses are opened
+    once each, instead of on every single text change.*/
+    FontRef TTF_OpenFont(FontSize size);
+    FontRef TTF_OpenFont(int ptsize);
+    FontRef TTF_OpenFont(const std::string& filename, int ptsize);
+
     operator SDL_Renderer* ();
     operator SDL_Renderer_ctx& ();
 
@@ -128,6 +138,8 @@ private:
     std::vector<std::function<void()>> event_queue; // deferred events
     std::unordered_map<std::string, std::vector<SDL_Texture_ctx>> file_textures;
     std::unordered_map<std::string, MIX_Chunk_ctx> file_chunks;
+    // Declared after ttf_init_ctx so that every font is closed before TTF_Quit
+    std::map<std::pair<std::string, int>, TTF_Font_ctx> file_fonts;
 
     //Stores a pointer to the active screen - should be last since it
     //uses the main window resources that need to be initialized first.

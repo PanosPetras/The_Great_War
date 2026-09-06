@@ -4,6 +4,8 @@
 #pragma once
 #include "Drawable.h"
 
+#include "FontSize.h"
+
 #include "SDL_ctx.h"
 
 #include <SDL.h>
@@ -23,16 +25,16 @@ public:
     Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind = 0);
     Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
     Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void()> f = nullptr, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, std::function<void(void*)> f, void* arg, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
-    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, FontSize textSize, std::function<void()> f = nullptr, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, FontSize textSize, std::function<void(void*)> f, void* arg, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, FontSize textSize, Anchor anchor, std::function<void()> f = nullptr, int keybind = 0);
+    Button(MainWindow& mw, int x, int y, int Width, int Height, std::string text, FontSize textSize, Anchor anchor, std::function<void(void*)> f, void* arg, int keybind = 0);
 
     // Called when received input, to check whether the click was in this button
     void HandleInput(const SDL_Event& ev) override;
 
     // Change the text assigned to the button
-    void ChangeText(std::string text, int textSize);
+    void ChangeText(std::string text, FontSize textSize);
 
     // Change the button's position
     void ChangePosition(int x, int y, int Width, int Height);

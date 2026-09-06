@@ -9,7 +9,7 @@
 MenuSettingsScreen::MenuSettingsScreen(MainWindow& mw, std::function<void()> fp, std::function<void(std::unique_ptr<Screen>)> fpl) : BackScreen(mw, fp, fpl) {
     SetupBg("Backgrounds/OldMenu.png");
     auto [Width, Height] = mw.GetWindowDimensions();
-    int fontSize = int(Height / 33.75);
+    constexpr auto fontSize = FontSize::Heading;
 
     auto res = Resolutions::Resolution(mw.Width(), mw.Height());
     currentResolutionIndex = Resolutions::findResolutionIndex(res);

@@ -6,7 +6,7 @@
 PauseMenu::PauseMenu(MainWindow& mw, std::function<void()> fp, std::function<void()> UnpauseF, std::function<void(std::unique_ptr<Screen>)> fpl) : Screen(mw) {
     auto [Width, Height] = mw.GetWindowDimensions();
 
-    int fontSize = 32;
+    constexpr auto fontSize = FontSize::Heading;
     auto change = std::bind(&PauseMenu::ReturnToMainMenu, this);
 
     AddImage<Image>(mw, "Backgrounds/Pause_Menu.png", int(Width * 0.25), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));

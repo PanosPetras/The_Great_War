@@ -45,7 +45,7 @@ IndustryScreen::IndustryScreen(MainWindow& mw, Country* Pl) : Screen(mw), Player
     const auto stock = Snapshot(*Player);
 
     for(const auto& [resource, x, y] : Layout) {
-        AddLabel<Label>(mw, std::to_string(stock[resource]), 32, int(Width * x), int(Height * y));
+        AddLabel<Label>(mw, std::to_string(stock[resource]), FontSize::Heading, int(Width * x), int(Height * y));
     }
 }
 

@@ -46,12 +46,12 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
     ChangeFunctionBinding(f, arg);
 }
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, std::function<void()> f, int keybind) : Button(mw, x, y, Width, Height, Text, textSize, top_left, f, keybind) {}
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, FontSize textSize, std::function<void()> f, int keybind) : Button(mw, x, y, Width, Height, Text, textSize, top_left, f, keybind) {}
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, std::function<void(void*)> f, void* arg, int keybind) :
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, FontSize textSize, std::function<void(void*)> f, void* arg, int keybind) :
     Button(mw, x, y, Width, Height, Text, textSize, top_left, f, arg, keybind) {}
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, Anchor anchor, std::function<void()> f, int keybind) :
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, FontSize textSize, Anchor anchor, std::function<void()> f, int keybind) :
     Button(mw, x, y, Width, Height, "Drawable/Button/Button", anchor, f, keybind) {
     std::cerr << "Button::Button text: " << Text << std::endl;
 
@@ -68,7 +68,7 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
     ChangeKeybind(keybind);
 }
 
-Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, int textSize, Anchor anchor, std::function<void(void*)> f, void* arg, [[maybe_unused]] int keybind) :
+Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, FontSize textSize, Anchor anchor, std::function<void(void*)> f, void* arg, [[maybe_unused]] int keybind) :
     Button(mw, x, y, Width, Height, Text, textSize, anchor) {
     // Saving the bound function
     ChangeFunctionBinding(f, arg);
@@ -129,9 +129,9 @@ bool Button::CheckIfMouseInRect(const SDL_Rect& rect, const SDL_MouseButtonEvent
     return (ev.x >= rect.x) && (ev.x <= rect.x + rect.w) && (ev.y >= rect.y) && (ev.y <= rect.y + rect.h);
 }
 
-void Button::ChangeText(std::string textstr, int textSize) {
-    // Loading the font from the file
-    TTF_Font_ctx font(textSize);
+void Button::ChangeText(std::string textstr, FontSize textSize) {
+    // The window keeps every font open, so this does not touch the disk
+    FontRef font = main_window->TTF_OpenFont(textSize);
 
     // Convert the text to a surface
     auto textSur = SDL_Surface_ctx::TTF_RenderText_Blended(font, textstr, SDL_Color{.r = 255, .g = 255, .b = 255, .a = 0});

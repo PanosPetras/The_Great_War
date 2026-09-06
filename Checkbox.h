@@ -3,6 +3,8 @@
 
 #pragma once
 #include "Drawable.h"
+
+#include "FontSize.h"
 #include "Label.h"
 #include "ToggleButton.h"
 
@@ -15,8 +17,8 @@
 class Checkbox : public InputDrawable {
 public:
     // Constructor
-    Checkbox(MainWindow& mw, int x, int y, int Height, std::string text, int textSize, std::function<void(bool)> f = {}, int keybind = 0);
-    Checkbox(MainWindow& mw, int x, int y, int Height, std::string text, int textSize, Anchor anchor, std::function<void(bool)> f = nullptr, int keybind = 0);
+    Checkbox(MainWindow& mw, int x, int y, int Height, std::string text, FontSize textSize, std::function<void(bool)> f = {}, int keybind = 0);
+    Checkbox(MainWindow& mw, int x, int y, int Height, std::string text, FontSize textSize, Anchor anchor, std::function<void(bool)> f = nullptr, int keybind = 0);
 
     // Called when received input, to check whether the click was in this button
     void HandleInput(const SDL_Event& ev) override;
@@ -34,7 +36,7 @@ public:
     void ChangeText(std::string text);
 
     // Change the Checkboxes text size
-    void ChangeTextSize(int size);
+    void ChangeTextSize(FontSize size);
 
     // Change the current value of the button
     void ChangeValue(bool val);

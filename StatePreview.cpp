@@ -14,16 +14,16 @@ StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, s
     Controller = controller;
     std::string str = "Flags/" + Controller;
 
-    AddLabel<Label>(mw, StateName.c_str(), 32, int(0.04 * Width), int(Height * .55), Width);
-    AddLabel<Label>(mw, std::to_string(res[7]).c_str(), 32, int(Width * 0.03), int(Height * 0.6));
-    AddLabel<Label>(mw, std::to_string(res[1]).c_str(), 32, int(Width * 0.03), int(Height * 0.65));
-    AddLabel<Label>(mw, std::to_string(res[2]).c_str(), 32, int(Width * 0.03), int(Height * 0.7));
-    AddLabel<Label>(mw, std::to_string(res[3]).c_str(), 32, int(Width * 0.03), int(Height * 0.75));
-    AddLabel<Label>(mw, std::to_string(res[0]).c_str(), 32, int(Width * 0.13), int(Height * 0.6));
-    AddLabel<Label>(mw, std::to_string(res[4]).c_str(), 32, int(Width * 0.13), int(Height * 0.65));
-    AddLabel<Label>(mw, std::to_string(res[5]).c_str(), 32, int(Width * 0.13), int(Height * 0.7));
-    AddLabel<Label>(mw, std::to_string(res[6]).c_str(), 32, int(Width * 0.13), int(Height * 0.75));
-    AddLabel<Label>(mw, std::to_string(pop).c_str(), 32, int(Width * 0.03), int(Height * 0.8));
+    AddLabel<Label>(mw, StateName.c_str(), FontSize::Heading, int(0.04 * Width), int(Height * .55), Width);
+    AddLabel<Label>(mw, std::to_string(res[7]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.6));
+    AddLabel<Label>(mw, std::to_string(res[1]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.65));
+    AddLabel<Label>(mw, std::to_string(res[2]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.7));
+    AddLabel<Label>(mw, std::to_string(res[3]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.75));
+    AddLabel<Label>(mw, std::to_string(res[0]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.6));
+    AddLabel<Label>(mw, std::to_string(res[4]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.65));
+    AddLabel<Label>(mw, std::to_string(res[5]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.7));
+    AddLabel<Label>(mw, std::to_string(res[6]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.75));
+    AddLabel<Label>(mw, std::to_string(pop).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.8));
 
     AddImage<Image>(mw, "Backgrounds/StatePreview.png", 0, int(Height * .55), int(Width * 0.2), int(Height * 0.45));
 
@@ -40,7 +40,7 @@ StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, s
     }
 
     if(Controller == PC->player_tag && Factories[3] == "") {
-        AddDrawable<Button>(mw, int(Width * .058), int(Height * 0.95), int(160 * Width / 1920), int(38 * Height / 1080), "Open Factory", 24, [this] { OpenOFS(); });
+        AddDrawable<Button>(mw, int(Width * .058), int(Height * 0.95), int(160 * Width / 1920), int(38 * Height / 1080), "Open Factory", FontSize::Caption, [this] { OpenOFS(); });
     }
 
     PCref = PC;

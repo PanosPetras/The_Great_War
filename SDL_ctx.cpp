@@ -156,7 +156,7 @@ SDL_Texture_ctx SDL_Texture_ctx::IMG_Load(SDL_Renderer_ctx& r, const std::string
 //=============================================================================
 // TTF
 //=============================================================================
-TTF_Font_ctx::TTF_Font_ctx(int ptsize) : TTF_Font_ctx("Fonts/segoeui.ttf", ptsize) {}
+TTF_Font_ctx::TTF_Font_ctx(int ptsize) : TTF_Font_ctx(DefaultFile, ptsize) {}
 TTF_Font_ctx::TTF_Font_ctx(const std::string& filename, int ptsize) : font(TTF_OpenFont(filename.data(), ptsize), &TTF_CloseFont) {
     if(not font) throw std::runtime_error("TTF_Font_ctx");
 }
