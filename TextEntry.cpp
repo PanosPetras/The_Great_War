@@ -11,7 +11,7 @@ TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, std::s
 
 TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, Anchor anchor, std::string defaultText, int maxCharacters) :
     main_window(&mw), x(X), y(Y), text(defaultText), maxSize(maxCharacters), background(std::make_unique<Image>(mw, "Backgrounds/FlagBg.png", x, y, Width, Height, anchor)),
-    textLabel(std::make_unique<Label>(mw, defaultText, 20, int(x * 1.08), int(y * 1.08), anchor)) {}
+    textLabel(std::make_unique<Label>(mw, defaultText, FontSize::Input, int(x * 1.08), int(y * 1.08), anchor)) {}
 
 TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, Anchor anchor, std::string defaultText, std::string Hint, int maxCharacters) :
     TextEntry(mw, X, Y, Width, Height, anchor, defaultText, maxCharacters) {
@@ -82,7 +82,7 @@ void TextEntry::ChangeHint(std::string Hint) {
         if(hintLabel) {
             hintLabel->ChangeText(Hint);
         } else {
-            hintLabel = std::make_unique<Label>(*main_window, Hint, 20, int(x * 1.08), int(y * 1.08));
+            hintLabel = std::make_unique<Label>(*main_window, Hint, FontSize::Input, int(x * 1.08), int(y * 1.08));
         }
 
         hint = Hint;

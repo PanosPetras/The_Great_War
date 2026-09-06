@@ -4,6 +4,7 @@
 #include "Drawable.h"
 
 #include "Color.h"
+#include "FontSize.h"
 
 #include "SDL_ctx.h"
 
@@ -18,10 +19,10 @@ class MainWindow;
 class Label : public Drawable {
 public:
     // Constructor
-    Label(MainWindow& mw, std::string Text, int size, int x, int y, Color rgb = Color{});
-    Label(MainWindow& mw, std::string Text, int size, int x, int y, Anchor anchor, Color rgb = Color{});
-    Label(MainWindow& mw, std::string Text, int size, int x, int y, Uint32 xLim, Color rgb = Color{});
-    Label(MainWindow& mw, std::string Text, int size, int x, int y, Uint32 xLim, Anchor anchor, Color rgb = Color{});
+    Label(MainWindow& mw, std::string Text, FontSize size, int x, int y, Color rgb = Color{});
+    Label(MainWindow& mw, std::string Text, FontSize size, int x, int y, Anchor anchor, Color rgb = Color{});
+    Label(MainWindow& mw, std::string Text, FontSize size, int x, int y, Uint32 xLim, Color rgb = Color{});
+    Label(MainWindow& mw, std::string Text, FontSize size, int x, int y, Uint32 xLim, Anchor anchor, Color rgb = Color{});
 
     // Get the label's text
     std::string GetText();
@@ -30,7 +31,7 @@ public:
     void ChangeText(std::string Text);
 
     /// Change the size of the label's text
-    void ChangeTextSize(int size);
+    void ChangeTextSize(FontSize size);
 
     // Change the label's color
     void ChangeColor(Color rgb);
@@ -52,7 +53,7 @@ protected:
     void pDraw() override;
 
     // The label's font size
-    int FontSize;
+    FontSize fontSize;
 
     // The color of the text displayed by the label
     SDL_Color color;

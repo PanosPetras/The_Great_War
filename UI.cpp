@@ -26,7 +26,7 @@ UI::UI(MainWindow& mw, const char* tag, PlayerController* PC, std::function<void
     flagbg = std::make_unique<Image>(mw, "Backgrounds/FlagBg.png", 0, 0, int(Width * 0.06), int(Height * 0.06));
 
     // The date tab
-    Date = std::make_unique<Label>(mw, "1/1/1910", 32, int(Width * 0.81), 0);
+    Date = std::make_unique<Label>(mw, "1/1/1910", FontSize::Heading, int(Width * 0.81), 0);
     DateButtons[0] = std::make_unique<Button>(mw, int(Width * 0.7), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/Subtract", [this] { DecreaseSpeed(); }, SDLK_KP_MINUS);
 
     DateButtons[1] = std::make_unique<Button>(mw, int(Width * 0.9), 0, int(Width * 0.022), int(Height * 0.04), "Buttons/UI/Increment", [this] { IncreaseSpeed(); }, SDLK_KP_PLUS);
@@ -52,10 +52,7 @@ void UI::Render() {
 
     // Renders the date menu
     SpeedBg->Draw();
-    std::string str = std::to_string(PCref->Date.Day) + "-" + std::to_string(PCref->Date.Month) + "-" + std::to_string(PCref->Date.Year);
-    if(Date->GetText() != str) {
-        Date->ChangeText(str.c_str());
-    }
+    Date->ChangeText(std::to_string(PCref->Date.Day) + "-" + std::to_string(PCref->Date.Month) + "-" + std::to_string(PCref->Date.Year));
     Date->Draw();
     SpeedImg->Draw();
     for(unsigned x = 0; x < 2; x++) {

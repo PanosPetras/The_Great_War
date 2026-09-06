@@ -11,14 +11,14 @@ OpenFactoryScreen::OpenFactoryScreen(MainWindow& mw, unsigned id, PlayerControll
     auto [Width, Height] = mw.GetWindowDimensions();
 
     AddImage<Image>(mw, "Backgrounds/factory1.png", int(Width * 0.25), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
-    AddLabel<Label>(mw, "Open Factory", 32, int(Width * 0.45), int(Height * 0.22));
+    AddLabel<Label>(mw, "Open Factory", FontSize::Heading, int(Width * 0.45), int(Height * 0.22));
     std::string lbl1txt = "Current Funds: " + std::to_string(PC->CountriesArr.at(PC->player_index)->Stock.Money);
-    AddLabel<Label>(mw, lbl1txt.c_str(), 32, int(Width * 0.55), int(Height * 0.35));
+    AddLabel<Label>(mw, lbl1txt.c_str(), FontSize::Heading, int(Width * 0.55), int(Height * 0.35));
     lbl1txt = "Factory cost: " + std::to_string(10);
-    AddLabel<Label>(mw, lbl1txt.c_str(), 32, int(Width * 0.55), int(Height * 0.41));
+    AddLabel<Label>(mw, lbl1txt.c_str(), FontSize::Heading, int(Width * 0.55), int(Height * 0.41));
 
-    AddDrawable<Button>(mw, int(Width * 0.32), int(Height * 0.7), int(Width * 0.08), int(Height * 0.06), "Back", 32, [this] { Close(); });
-    AddDrawable<Button>(mw, int(Width * 0.59), int(Height * 0.7), int(Width * 0.1), int(Height * 0.06), "Confirm", 32, [this] { BuildFactory(); });
+    AddDrawable<Button>(mw, int(Width * 0.32), int(Height * 0.7), int(Width * 0.08), int(Height * 0.06), "Back", FontSize::Heading, [this] { Close(); });
+    AddDrawable<Button>(mw, int(Width * 0.59), int(Height * 0.7), int(Width * 0.1), int(Height * 0.06), "Confirm", FontSize::Heading, [this] { BuildFactory(); });
     AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/lumber", [this] { FactoryTypeLumber(); });
     AddDrawable<Button>(mw, int(Width * 0.35), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/glass", [this] { FactoryTypeGlass(); });
     AddDrawable<Button>(mw, int(Width * 0.4), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/canned food", [this] { FactoryTypeFood(); });

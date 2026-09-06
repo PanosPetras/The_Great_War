@@ -10,7 +10,7 @@ DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, std::stri
     SetupBg("Backgrounds/Industry.png");
 
     auto [Width, Height] = mw.GetWindowDimensions();
-    int fontSize = 26;
+    constexpr auto fontSize = FontSize::Control;
 
     AddImage<Image>(*main_window, "Backgrounds/old_paper.png", int(Width * 0.4), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
 
@@ -20,9 +20,9 @@ DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, std::stri
 
     CreateCountryButtons(PC, targetTag);
 
-    AddLabel<Label>(*main_window, PC->CountriesArr[selectedCountryIndex]->GetName(), 32, int(Width * 0.48), int(Height * 0.218), Width);
-    AddLabel<Label>(*main_window, std::to_string(PC->CountriesArr[selectedCountryIndex]->GetPopulation()), 24, int(Width * 0.465), int(Height * 0.31));
-    AddLabel<Label>(*main_window, "N/A", 28, int(Width * 0.8), int(Height * 0.225));
+    AddLabel<Label>(*main_window, PC->CountriesArr[selectedCountryIndex]->GetName(), FontSize::Heading, int(Width * 0.48), int(Height * 0.218), Width);
+    AddLabel<Label>(*main_window, std::to_string(PC->CountriesArr[selectedCountryIndex]->GetPopulation()), FontSize::Caption, int(Width * 0.465), int(Height * 0.31));
+    AddLabel<Label>(*main_window, "N/A", FontSize::Body, int(Width * 0.8), int(Height * 0.225));
 
     AddDrawable<Button>(*main_window, int(Width * 0.4275), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Declare War", fontSize);
     AddDrawable<Button>(*main_window, int(Width * 0.4275), int(Height * 0.58), int(Width * 0.13), int(Height * 0.04), "Make Demands", fontSize);
@@ -188,11 +188,11 @@ void DiplomacyScreen::UpdateAllianceState() {
 
     if(rel != PCref->diplo.relations.end()) {
         if(rel->second.GetIfAllied()) {
-            As<Button>(InputDrawableArrtop() - 8).ChangeText("Break Alliance", 26);
+            As<Button>(InputDrawableArrtop() - 8).ChangeText("Break Alliance", FontSize::Control);
             return;
         }
     }
-    As<Button>(InputDrawableArrtop() - 8).ChangeText("Form Alliance", 26);
+    As<Button>(InputDrawableArrtop() - 8).ChangeText("Form Alliance", FontSize::Control);
 }
 
 void DiplomacyScreen::UpdateEmbargoState() {
@@ -202,11 +202,11 @@ void DiplomacyScreen::UpdateEmbargoState() {
 
     if(rel != PCref->diplo.relations.end()) {
         if(rel->second.GetIfHasEmbargo(PCref->player_tag)) {
-            As<Button>(InputDrawableArrtop() - 3).ChangeText("Lift Embargo", 26);
+            As<Button>(InputDrawableArrtop() - 3).ChangeText("Lift Embargo", FontSize::Control);
             return;
         }
     }
-    As<Button>(InputDrawableArrtop() - 3).ChangeText("Embargo", 26);
+    As<Button>(InputDrawableArrtop() - 3).ChangeText("Embargo", FontSize::Control);
 }
 
 void DiplomacyScreen::UpdateNonAggressionPactState() {
@@ -216,10 +216,10 @@ void DiplomacyScreen::UpdateNonAggressionPactState() {
 
     if(rel != PCref->diplo.relations.end()) {
         if(rel->second.GetIfHasNonAggressionPact()) {
-            As<Button>(InputDrawableArrtop() - 7).ChangeText("Cancel Pact", 26);
+            As<Button>(InputDrawableArrtop() - 7).ChangeText("Cancel Pact", FontSize::Control);
             return;
         }
     }
 
-    As<Button>(InputDrawableArrtop() - 7).ChangeText("Non-Aggression Pact", 26);
+    As<Button>(InputDrawableArrtop() - 7).ChangeText("Non-Aggression Pact", FontSize::Control);
 }

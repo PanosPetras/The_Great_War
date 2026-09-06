@@ -15,7 +15,7 @@ CountrySelection::CountrySelection(MainWindow& mw, std::function<void()> Unpause
     SetupBg("Backgrounds/CountrySelection.png");
     auto [Width, Height] = mw.GetWindowDimensions();
 
-    int btnFontSize = int(Height / 33.75), nameFontSize = int(Height / 43.2);
+    constexpr auto btnFontSize = FontSize::Heading, nameFontSize = FontSize::Caption;
 
     AddDrawable<Button>(
         mw, int(Width * 0.85), int(Height * 0.85), int(Width * 0.09), int(Height * 0.06), "Confirm", btnFontSize, [this] { StartGame(); }, SDLK_KP_ENTER);

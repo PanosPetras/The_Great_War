@@ -114,6 +114,9 @@ public:
 //-----------------------------------------------------------------------------
 class TTF_Font_ctx {
 public:
+    // The font every part of the UI draws with, unless it asks for another one
+    inline static constexpr const char* DefaultFile = "Fonts/segoeui.ttf";
+
     TTF_Font_ctx(int ptsize); // use the default
     explicit TTF_Font_ctx(const std::string& filename, int ptsize);
 
@@ -129,6 +132,7 @@ public:
 private:
     std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> font;
 };
+using FontRef = promiscuous_ref<TTF_Font_ctx, TTF_Font>;
 //-----------------------------------------------------------------------------
 class SDL_Window_ctx {
 public:
