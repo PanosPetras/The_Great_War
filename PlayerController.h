@@ -65,9 +65,9 @@ private:
 public:
     MainWindow* main_window;
 
-    // Some info about the player
-    std::string player_tag;
-    unsigned player_index;
+    /*The country the player is in control of. Non-owning - the Country itself
+    lives in Countries, which outlives every screen that looks at it.*/
+    Country* player = nullptr;
 
     // The in-game date
     struct {
@@ -100,8 +100,8 @@ public:
     std::vector<State> StatesArr;
     std::unordered_map<std::string, State*> StatesMap;
 
-    // Reference to every country
-    std::vector<std::unique_ptr<Country>> CountriesArr;
+    // Owns every country in the game. Country pointers elsewhere point in here.
+    std::vector<std::unique_ptr<Country>> Countries;
 
     // The state of the diplomatic relations between every country
     Diplomacy diplo;

@@ -39,7 +39,7 @@ StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, s
         }
     }
 
-    if(Controller == PC->player_tag && Factories[3] == "") {
+    if(Controller == PC->player->GetTag() && Factories[3] == "") {
         AddDrawable<Button>(mw, int(Width * .058), int(Height * 0.95), int(160 * Width / 1920), int(38 * Height / 1080), "Open Factory", FontSize::Caption, [this] { OpenOFS(); });
     }
 

@@ -136,18 +136,16 @@ enum RequestType { alliance, nonAgressionPact, tradeDeal, peaceTreaty };
 
 class Request {
 public:
-    Request(RequestType id, unsigned senderIndex, std::string senderTag, Relation& rel);
+    Request(RequestType id, std::string senderTag, Relation& rel);
 
     void Accept();
     void Decline();
 
     Relation& GetRelations() const;
     std::string GetSender() const;
-    unsigned GetSenderIndex() const;
 
 private:
     RequestType id;
-    unsigned index;
     Relation& rel;
     std::string tag;
 };

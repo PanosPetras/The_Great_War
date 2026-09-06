@@ -20,8 +20,8 @@ DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, std::stri
 
     CreateCountryButtons(PC, targetTag);
 
-    AddLabel<Label>(*main_window, PC->CountriesArr[selectedCountryIndex]->GetName(), FontSize::Heading, int(Width * 0.48), int(Height * 0.218), Width);
-    AddLabel<Label>(*main_window, std::to_string(PC->CountriesArr[selectedCountryIndex]->GetPopulation()), FontSize::Caption, int(Width * 0.465), int(Height * 0.31));
+    AddLabel<Label>(*main_window, PC->Countries[selectedCountryIndex]->GetName(), FontSize::Heading, int(Width * 0.48), int(Height * 0.218), Width);
+    AddLabel<Label>(*main_window, std::to_string(PC->Countries[selectedCountryIndex]->GetPopulation()), FontSize::Caption, int(Width * 0.465), int(Height * 0.31));
     AddLabel<Label>(*main_window, "N/A", FontSize::Body, int(Width * 0.8), int(Height * 0.225));
 
     AddDrawable<Button>(*main_window, int(Width * 0.4275), int(Height * 0.5), int(Width * 0.13), int(Height * 0.04), "Declare War", fontSize);
@@ -46,7 +46,7 @@ DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, std::stri
     UpdateAllianceState();
 }
 
-DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC) : DiplomacyScreen(mw, PC, PC->player_tag) {}
+DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC) : DiplomacyScreen(mw, PC, PC->player->GetTag()) {}
 
 DiplomacyScreen::DiplomacyScreen(MainWindow& mw, PlayerController* PC, unsigned index) : DiplomacyScreen(mw, PC) {
     SelectCountry(index);
@@ -56,7 +56,7 @@ unsigned DiplomacyScreen::CreateCountryButtons(PlayerController* PC) {
     unsigned index = 0;
     auto [Width, Height] = main_window->GetWindowDimensions();
 
-    for(auto& country : PC->CountriesArr) {
+    for(auto& country : PC->Countries) {
         AddDrawable<Button>(*main_window, int(Width * (0.1 + (index / flagsPerLine) * 0.05)), int(Height * (0.17 + (index % flagsPerLine) * 0.06)), 60, 40, "Flags/" + country->GetTag(),
                             [this, index] { SelectCountry(index); });
         index++;
@@ -69,7 +69,7 @@ unsigned DiplomacyScreen::CreateCountryButtons(PlayerController* PC, std::string
     unsigned index = 0;
     auto [Width, Height] = main_window->GetWindowDimensions();
 
-    for(auto& country : PC->CountriesArr) {
+    for(auto& country : PC->Countries) {
         AddDrawable<Button>(*main_window, int(Width * (0.1 + (index / flagsPerLine) * 0.05)), int(Height * (0.17 + (index % flagsPerLine) * 0.06)), 60, 40, "Flags/" + country->GetTag(),
                             [this, index] { SelectCountry(index); });
         if(country->GetTag() == targetTag) {
@@ -84,9 +84,9 @@ unsigned DiplomacyScreen::CreateCountryButtons(PlayerController* PC, std::string
 void DiplomacyScreen::SelectCountry(unsigned index) {
     std::cerr << "DiplomacyScreen::SelectCountry\n";
 
-    ImageArr[1]->ChangeImage(std::string("Flags/") + PCref->CountriesArr[index]->GetTag() + ".png");
-    LabelArr[0]->ChangeText(PCref->CountriesArr[index]->GetName());
-    LabelArr[1]->ChangeText(std::to_string(PCref->CountriesArr[index]->GetPopulation()));
+    ImageArr[1]->ChangeImage(std::string("Flags/") + PCref->Countries[index]->GetTag() + ".png");
+    LabelArr[0]->ChangeText(PCref->Countries[index]->GetName());
+    LabelArr[1]->ChangeText(std::to_string(PCref->Countries[index]->GetPopulation()));
 
     selectedCountryIndex = index;
 
@@ -97,7 +97,7 @@ void DiplomacyScreen::SelectCountry(unsigned index) {
 }
 
 void DiplomacyScreen::ImproveRelations() {
-    Country *c1 = PCref->CountriesArr[PCref->player_index].get(), *c2 = PCref->CountriesArr[selectedCountryIndex].get();
+    Country *c1 = PCref->player, *c2 = PCref->Countries[selectedCountryIndex].get();
     auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
     if(rel != PCref->diplo.relations.end()) {
@@ -108,7 +108,7 @@ void DiplomacyScreen::ImproveRelations() {
 }
 
 void DiplomacyScreen::WorsenRelations() {
-    Country *c1 = PCref->CountriesArr[PCref->player_index].get(), *c2 = PCref->CountriesArr[selectedCountryIndex].get();
+    Country *c1 = PCref->player, *c2 = PCref->Countries[selectedCountryIndex].get();
     auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
     if(rel != PCref->diplo.relations.end()) {
@@ -119,15 +119,15 @@ void DiplomacyScreen::WorsenRelations() {
 }
 
 void DiplomacyScreen::ImposeEmbargo() {
-    Country *c1 = PCref->CountriesArr[PCref->player_index].get(), *c2 = PCref->CountriesArr[selectedCountryIndex].get();
+    Country *c1 = PCref->player, *c2 = PCref->Countries[selectedCountryIndex].get();
 
     auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
     if(rel != PCref->diplo.relations.end()) {
-        if(!rel->second.GetIfHasEmbargo(PCref->player_tag)) {
-            rel->second.ImposeEmbargo(PCref->player_tag);
+        if(!rel->second.GetIfHasEmbargo(PCref->player->GetTag())) {
+            rel->second.ImposeEmbargo(PCref->player->GetTag());
         } else {
-            rel->second.LiftEmbargo(PCref->player_tag);
+            rel->second.LiftEmbargo(PCref->player->GetTag());
         }
     }
 
@@ -136,13 +136,13 @@ void DiplomacyScreen::ImposeEmbargo() {
 }
 
 void DiplomacyScreen::SendNonAggressionPactRequest() {
-    Country *c1 = PCref->CountriesArr[PCref->player_index].get(), *c2 = PCref->CountriesArr[selectedCountryIndex].get();
+    Country *c1 = PCref->player, *c2 = PCref->Countries[selectedCountryIndex].get();
 
     auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
     if(rel != PCref->diplo.relations.end()) {
         if(!rel->second.GetIfHasNonAggressionPact()) {
-            PCref->CountriesArr[selectedCountryIndex]->AddRequest(Request(nonAgressionPact, PCref->player_index, PCref->CountriesArr[PCref->player_index]->GetTag(), rel->second));
+            PCref->Countries[selectedCountryIndex]->AddRequest(Request(nonAgressionPact, PCref->player->GetTag(), rel->second));
         } else {
             rel->second.BreakNonAggressionPact();
 
@@ -153,13 +153,13 @@ void DiplomacyScreen::SendNonAggressionPactRequest() {
 }
 
 void DiplomacyScreen::SendAllianceRequest() {
-    Country *c1 = PCref->CountriesArr[PCref->player_index].get(), *c2 = PCref->CountriesArr[selectedCountryIndex].get();
+    Country *c1 = PCref->player, *c2 = PCref->Countries[selectedCountryIndex].get();
 
     auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
     if(rel != PCref->diplo.relations.end()) {
         if(!rel->second.GetIfAllied()) {
-            PCref->CountriesArr[selectedCountryIndex]->AddRequest(Request(alliance, PCref->player_index, PCref->CountriesArr[PCref->player_index]->GetTag(), rel->second));
+            PCref->Countries[selectedCountryIndex]->AddRequest(Request(alliance, PCref->player->GetTag(), rel->second));
         } else {
             rel->second.BreakAlliance();
 
@@ -170,7 +170,7 @@ void DiplomacyScreen::SendAllianceRequest() {
 }
 
 void DiplomacyScreen::UpdateRelationValue() {
-    Country *c1 = PCref->CountriesArr[PCref->player_index].get(), *c2 = PCref->CountriesArr[selectedCountryIndex].get();
+    Country *c1 = PCref->player, *c2 = PCref->Countries[selectedCountryIndex].get();
 
     auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
@@ -182,7 +182,7 @@ void DiplomacyScreen::UpdateRelationValue() {
 }
 
 void DiplomacyScreen::UpdateAllianceState() {
-    Country *c1 = PCref->CountriesArr[PCref->player_index].get(), *c2 = PCref->CountriesArr[selectedCountryIndex].get();
+    Country *c1 = PCref->player, *c2 = PCref->Countries[selectedCountryIndex].get();
 
     auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
@@ -196,12 +196,12 @@ void DiplomacyScreen::UpdateAllianceState() {
 }
 
 void DiplomacyScreen::UpdateEmbargoState() {
-    Country *c1 = PCref->CountriesArr[PCref->player_index].get(), *c2 = PCref->CountriesArr[selectedCountryIndex].get();
+    Country *c1 = PCref->player, *c2 = PCref->Countries[selectedCountryIndex].get();
 
     auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 
     if(rel != PCref->diplo.relations.end()) {
-        if(rel->second.GetIfHasEmbargo(PCref->player_tag)) {
+        if(rel->second.GetIfHasEmbargo(PCref->player->GetTag())) {
             As<Button>(InputDrawableArrtop() - 3).ChangeText("Lift Embargo", FontSize::Control);
             return;
         }
@@ -210,7 +210,7 @@ void DiplomacyScreen::UpdateEmbargoState() {
 }
 
 void DiplomacyScreen::UpdateNonAggressionPactState() {
-    Country *c1 = PCref->CountriesArr[PCref->player_index].get(), *c2 = PCref->CountriesArr[selectedCountryIndex].get();
+    Country *c1 = PCref->player, *c2 = PCref->Countries[selectedCountryIndex].get();
 
     auto rel = PCref->diplo.relations.find(CountryPair(c1, c2));
 

@@ -93,7 +93,7 @@ void UI::PauseDate(bool) {
 }
 
 Country* UI::Player() const {
-    return PCref->CountriesArr.at(PCref->player_index).get();
+    return PCref->player;
 }
 
 void UI::OpenDiplomacyScreen() {
