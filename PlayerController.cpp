@@ -116,9 +116,9 @@ void PlayerController::UploadAssets() {
 
 void PlayerController::InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, const std::vector<Stockpile>& balance) {
     for(unsigned x = 0; x < tags.size(); x++) {
-        CountriesArr.push_back(std::make_unique<Country>(tags[x], names[x], balance[x]));
+        Countries.push_back(std::make_unique<Country>(tags[x], names[x], balance[x]));
         if(tag == tags[x]) {
-            player = CountriesArr.back().get();
+            player = Countries.back().get();
         }
     }
 
@@ -127,9 +127,9 @@ void PlayerController::InitializeCountries(std::vector<std::string>& names, std:
         std::terminate();
     }
 
-    for(unsigned c1 = 0; c1 < CountriesArr.size(); c1++) {
-        for(unsigned c2 = c1 + 1; c2 < CountriesArr.size(); c2++) {
-            diplo.relations.emplace(CountryPair{CountriesArr[c1].get(), CountriesArr[c2].get()}, Relation{100});
+    for(unsigned c1 = 0; c1 < Countries.size(); c1++) {
+        for(unsigned c2 = c1 + 1; c2 < Countries.size(); c2++) {
+            diplo.relations.emplace(CountryPair{Countries[c1].get(), Countries[c2].get()}, Relation{100});
         }
     }
 }
@@ -140,18 +140,18 @@ void PlayerController::InitializeStates(std::vector<std::string>& owners, std::v
 
     StatesArr.reserve(populations.size());
     for(unsigned x = 0; x < owners.size(); ++x) {
-        for(unsigned y = 0; y < CountriesArr.size(); y++) {
-            if(owners[x] == CountriesArr[y]->GetTag()) {
+        for(unsigned y = 0; y < Countries.size(); y++) {
+            if(owners[x] == Countries[y]->GetTag()) {
                 target = y;
                 break;
             }
         }
 
-        StatesArr.emplace_back(names[x], x + 1, owners[x], owners[x], populations[x], coords[x], colors[x], res, &CountriesArr.at(target)->Stock);
+        StatesArr.emplace_back(names[x], x + 1, owners[x], owners[x], populations[x], coords[x], colors[x], res, &Countries.at(target)->Stock);
 
         StatesMap.insert(std::pair(StatesArr.back().color.toString(), &StatesArr.back()));
 
-        CountriesArr.at(target)->AddState(&StatesArr.back());
+        Countries.at(target)->AddState(&StatesArr.back());
     }
 }
 
@@ -227,7 +227,7 @@ void PlayerController::ChangeSpeed(bool change) {
 
 void PlayerController::Tick() {
     // Execute the tick function for all countries (and all states)
-    for(auto& i : CountriesArr) {
+    for(auto& i : Countries) {
         i->Tick();
     }
 }
