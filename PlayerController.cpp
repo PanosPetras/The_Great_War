@@ -28,7 +28,7 @@ std::vector<T> LoadFromFile(const char* filename) {
 }
 } // namespace
 
-PlayerController::PlayerController(MainWindow& mw, const char* tag) : main_window(&mw), player_tag(tag) {
+PlayerController::PlayerController(MainWindow& mw, const char* tag) : main_window(&mw) {
     /*Decode the map assets while the game data files are being read. The
     threads are scoped so that they are joined before UploadAssets runs -
     the GPU upload has to happen on this thread.*/
@@ -118,8 +118,13 @@ void PlayerController::InitializeCountries(std::vector<std::string>& names, std:
     for(unsigned x = 0; x < tags.size(); x++) {
         CountriesArr.push_back(std::make_unique<Country>(tags[x], names[x], balance[x]));
         if(tag == tags[x]) {
-            player_index = x;
+            player = CountriesArr.back().get();
         }
+    }
+
+    if(player == nullptr) {
+        std::cerr << "No country matches the player tag " << tag << std::endl;
+        std::terminate();
     }
 
     for(unsigned c1 = 0; c1 < CountriesArr.size(); c1++) {

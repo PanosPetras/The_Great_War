@@ -65,9 +65,9 @@ private:
 public:
     MainWindow* main_window;
 
-    // Some info about the player
-    std::string player_tag;
-    unsigned player_index;
+    /*The country the player is in control of. Non-owning - the Country itself
+    lives in CountriesArr, which outlives every screen that looks at it.*/
+    Country* player = nullptr;
 
     // The in-game date
     struct {

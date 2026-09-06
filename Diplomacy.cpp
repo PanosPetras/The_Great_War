@@ -144,7 +144,7 @@ bool Relation::GetIfHasEmbargo(std::string Instigator) const {
     return std::find(embargoes.begin(), embargoes.end(), Instigator) != embargoes.end();
 }
 
-Request::Request(RequestType Id, unsigned senderIndex, std::string senderTag, Relation& relations) : id{Id}, index{senderIndex}, rel{relations}, tag(senderTag) {}
+Request::Request(RequestType Id, std::string senderTag, Relation& relations) : id{Id}, rel{relations}, tag(senderTag) {}
 
 void Request::Accept() {
     switch(id) {
@@ -167,10 +167,6 @@ Relation& Request::GetRelations() const {
 
 std::string Request::GetSender() const {
     return tag;
-}
-
-unsigned Request::GetSenderIndex() const {
-    return index;
 }
 
 War::War(Claim claim) : factions({Faction(claim.GetOwner()), Faction(claim.GetTarget())}) {
