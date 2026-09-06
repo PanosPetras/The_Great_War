@@ -5,6 +5,7 @@
 
 #include <SDL_image.h>
 
+#include <array>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -130,7 +131,9 @@ void PlayerController::InitializeCountries(std::vector<std::string>& names, std:
 }
 
 void PlayerController::InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors) {
-    short int res[8] = {50, 50, 50, 50, 50, 50, 50, 50};
+    // Every state starts out producing the same placeholder amount of each raw resource
+    std::array<short int, RawGoodCount> res;
+    res.fill(50);
     unsigned target = 0;
 
     StatesArr.reserve(populations.size());

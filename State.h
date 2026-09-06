@@ -13,7 +13,7 @@
 class State {
 public:
     // Constructor
-    State(std::string name, int ID, std::string owner, std::string controller, int pop, Coordinate Coords, Color C, short int Res[8], Stockpile* stock);
+    State(std::string name, int ID, std::string owner, std::string controller, int pop, Coordinate Coords, Color C, const std::array<short int, RawGoodCount>& Res, Stockpile* stock);
 
     // This is the representing the pass of a single day
     void Tick(int TaxRate, int HealthCare);
@@ -50,17 +50,10 @@ public:
     // This is the state's unique color
     Color color;
 
-    // This is the resources contained within one state
-    struct {
-        short int Coal;
-        short int Oil;
-        short int Timber;
-        short int Rubber;
-        short int Cotton;
-        short int Iron;
-        short int Grain;
-        short int Fruit;
-    } Resources;
+    /*What the state produces each day, indexed by Good. Only raw resources come
+    out of the ground, and those are the leading run of the enum, so the array
+    stops there rather than carrying a slot for every manufactured good.*/
+    std::array<short int, RawGoodCount> Resources{};
 
     // These are the resources that the population of the state requires in order to maintain a good standard of living
     struct {
