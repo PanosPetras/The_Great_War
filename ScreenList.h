@@ -5,6 +5,7 @@
 #include "UI.h"
 
 #include "SDL_ctx.h"
+#include "Stockpile.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -269,8 +270,8 @@ public:
 
 class StatePreview : public Screen {
 public:
-    StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc,
-                 std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc);
+    StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC, const std::array<short int, RawGoodCount>& res, int pop, std::string Factories[4],
+                 std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> ChangeScreenFunc);
 
     void Render() override;
 

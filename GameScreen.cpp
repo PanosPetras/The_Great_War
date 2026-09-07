@@ -142,13 +142,12 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
                     }
                 }
 
-                // Access the state's resources
-                int res[8] = {state->Resources.Coal, state->Resources.Cotton, state->Resources.Fruit, state->Resources.Grain, state->Resources.Iron, state->Resources.Oil, state->Resources.Rubber, state->Resources.Timber};
                 auto close = [this] { Pause(); };
                 auto change = [this](std::unique_ptr<Screen> NewScreen, std::string ID) { ChangeActiveScreen(std::move(NewScreen), std::move(ID)); };
 
                 // Create the StatePreview screen
-                StateViewingScreen = std::make_unique<StatePreview>(*main_window, state->State_ID - 1, state->State_Name, state->State_Controller, PC.get(), res, int(state->State_Population), fcs, close, change);
+                StateViewingScreen =
+                    std::make_unique<StatePreview>(*main_window, state->State_ID - 1, state->State_Name, state->State_Controller, PC.get(), state->Resources, int(state->State_Population), fcs, close, change);
             }
 
             auto base = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);

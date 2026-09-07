@@ -1,6 +1,6 @@
 #include "State.h"
 
-State::State(std::string name, int ID, std::string owner, std::string controller, int pop, Coordinate Coords, Color C, short int Res[8], Stockpile* stock) :
+State::State(std::string name, int ID, std::string owner, std::string controller, int pop, Coordinate Coords, Color C, const std::array<short int, RawGoodCount>& Res, Stockpile* stock) :
     State_Name{std::move(name)}, State_ID{ID}, State_Owner{std::move(owner)}, State_Controller{std::move(controller)}, State_Population{static_cast<double>(pop)}, State_Coords{Coords}, color{C} {
     // These variables might change during the game's flow
     Pop_needs = {.Telephones = short(pop * 0.04),
@@ -15,7 +15,7 @@ State::State(std::string name, int ID, std::string owner, std::string controller
                  .Lumber = short(pop * 0.1),
                  .Fruit = short(pop * 0.024)};
 
-    Resources = {.Coal = Res[0], .Oil = Res[1], .Timber = Res[2], .Rubber = Res[3], .Cotton = Res[4], .Iron = Res[5], .Grain = Res[6], .Fruit = Res[7]};
+    Resources = Res;
 
     TargetStockpile = stock;
 }
@@ -23,14 +23,9 @@ State::State(std::string name, int ID, std::string owner, std::string controller
 void State::Tick(int TaxRate, int HealthCare) {
     State_Population += State_Population * (0.00005479452 / (1.0 + TaxRate / 200.0)) * (1 + HealthCare / 160.0);
 
-    TargetStockpile->Coal += Resources.Coal;
-    TargetStockpile->Oil += Resources.Oil;
-    TargetStockpile->Timber += Resources.Timber;
-    TargetStockpile->Rubber += Resources.Rubber;
-    TargetStockpile->Cotton += Resources.Cotton;
-    TargetStockpile->Iron += Resources.Iron;
-    TargetStockpile->Grain += Resources.Grain;
-    TargetStockpile->Fruit += Resources.Fruit;
+    for(std::size_t good = 0; good < Resources.size(); ++good) {
+        (*TargetStockpile)[Good(good)] += Resources[good];
+    }
 
     for(unsigned x = 0; x < 4; x++) {
         if(State_Factories[x] != nullptr) {

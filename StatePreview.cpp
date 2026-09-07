@@ -6,23 +6,21 @@
 #include "MainWindow.h"
 #include "PlayerController.h"
 
-StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC, int res[8], int pop, std::string Factories[4], std::function<void()> CloseFunc,
-                           std::function<void(std::unique_ptr<Screen>, std::string)> changeScreenFunc) :
-    Screen(mw),
-    ChangeScreenFunc2(changeScreenFunc), Id(id) {
+StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC, const std::array<short int, RawGoodCount>& res, int pop, std::string Factories[4],
+                           std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> changeScreenFunc) : Screen(mw), ChangeScreenFunc2(changeScreenFunc), Id(id) {
     auto [Width, Height] = mw.GetWindowDimensions();
     Controller = controller;
     std::string str = "Flags/" + Controller;
 
     AddLabel<Label>(mw, StateName.c_str(), FontSize::Heading, int(0.04 * Width), int(Height * .55), Width);
-    AddLabel<Label>(mw, std::to_string(res[7]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.6));
-    AddLabel<Label>(mw, std::to_string(res[1]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.65));
-    AddLabel<Label>(mw, std::to_string(res[2]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.7));
-    AddLabel<Label>(mw, std::to_string(res[3]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.75));
-    AddLabel<Label>(mw, std::to_string(res[0]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.6));
-    AddLabel<Label>(mw, std::to_string(res[4]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.65));
-    AddLabel<Label>(mw, std::to_string(res[5]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.7));
-    AddLabel<Label>(mw, std::to_string(res[6]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.75));
+    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Timber)]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.6));
+    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Cotton)]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.65));
+    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Fruit)]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.7));
+    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Grain)]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.75));
+    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Coal)]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.6));
+    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Iron)]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.65));
+    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Oil)]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.7));
+    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Rubber)]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.75));
     AddLabel<Label>(mw, std::to_string(pop).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.8));
 
     AddImage<Image>(mw, "Backgrounds/StatePreview.png", 0, int(Height * .55), int(Width * 0.2), int(Height * 0.45));
