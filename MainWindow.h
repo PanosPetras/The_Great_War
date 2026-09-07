@@ -6,10 +6,9 @@
 
 #include "SDL_ctx.h"
 
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include <array>
 #include <functional>
@@ -96,7 +95,8 @@ public:
         }(std::make_index_sequence<sizeof...(Mods)>{});
     }
 
-    ChunkRef Mix_LoadWAV(const std::string& filename);
+    // Hands out a sound kept loaded for the lifetime of the window
+    SoundRef LoadSound(const std::string& filename);
 
     /*Hands out a font kept open for the lifetime of the window. A TTF_Font
     bakes its point size in at open time, so there is one per (file, size)
@@ -122,10 +122,14 @@ private:
     SDL_Renderer_ctx renderer; //The window's renderer
     TTF_Init_ctx ttf_init_ctx;
     IMG_Init_ctx img_init_ctx;
-    MIX_ctx mix_ctx;
+    SDL_Audio_ctx audio_ctx;
     SDL_Cursor_ctx cursor; //The window's cursor
 
-    std::array<bool, 322> KEYS{};  // 322 is the number of SDLK_DOWN events
+    /*Indexed by scancode. SDL2's keycodes were small enough to index an array
+    with; SDL3's are Unicode codepoints for printable keys and carry a high bit
+    otherwise, so a keycode is no longer an array index. Scancodes still are,
+    and SDL_SCANCODE_COUNT is how many there are.*/
+    std::array<bool, SDL_SCANCODE_COUNT> KEYS{};
 
     bool quit = false;
 
@@ -133,11 +137,12 @@ private:
     bool vsync;
     bool fullscreen;
     int framerateCap;
-    bool SetResolution(unsigned resolution, bool vsync, Uint32 fullscreen_flags);
+    bool SetResolution(unsigned resolution, bool vsync, bool fullscreen);
 
     std::vector<std::function<void()>> event_queue; // deferred events
     std::unordered_map<std::string, std::vector<SDL_Texture_ctx>> file_textures;
-    std::unordered_map<std::string, MIX_Chunk_ctx> file_chunks;
+    // Declared after audio_ctx so that every sound is torn down before the device
+    std::unordered_map<std::string, SDL_Sound_ctx> file_sounds;
     // Declared after ttf_init_ctx so that every font is closed before TTF_Quit
     std::map<std::pair<std::string, int>, TTF_Font_ctx> file_fonts;
 

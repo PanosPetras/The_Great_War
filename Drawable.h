@@ -1,7 +1,7 @@
 #ifndef DRAWABLE_H
 #define DRAWABLE_H
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 enum Anchor { top_left, top_right, bottom_left, bottom_right, center, center_top, center_bottom, center_left, center_right };
 

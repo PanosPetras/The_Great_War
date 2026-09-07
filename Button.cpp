@@ -1,7 +1,7 @@
 #include "Button.h"
 #include "MainWindow.h"
 
-#include <SDL_ttf.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include <iostream>
 #include <unordered_set>
@@ -28,7 +28,7 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
 Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind) : Button(mw, x, y, Width, Height, image, top_left, f, arg, keybind) {}
 
 Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f, int keybind) :
-    InputDrawable(anchor), main_window(&mw), textures{Load(mw, image)}, music{mw.Mix_LoadWAV("Sounds/ButtonClick.mp3")} {
+    InputDrawable(anchor), main_window(&mw), textures{Load(mw, image)}, music{mw.LoadSound("Sounds/ButtonClick.wav")} {
     std::cerr << "Button::Button image: " << image << std::endl;
 
     // Saving the button's coordinates
@@ -76,11 +76,11 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
 
 void Button::pDraw() {
     // Drawing the button
-    SDL_RenderCopy(*main_window, active_texture, nullptr, &draw_rect);
+    RenderTexture(*main_window, active_texture, draw_rect);
 
     if(text != nullptr) {
         // Add text on top of Button background
-        SDL_RenderCopy(*main_window, text, nullptr, &text_draw_rect);
+        RenderTexture(*main_window, text, text_draw_rect);
     }
 }
 
@@ -96,7 +96,7 @@ void Button::HandleInput(const SDL_Event& ev) {
             }
 
             // react on mouse click within button rectangle
-            if(ev.type == SDL_MOUSEBUTTONDOWN) {
+            if(ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
                 Click();
             }
         }
@@ -108,7 +108,7 @@ void Button::HandleInput(const SDL_Event& ev) {
         }
 
         if(key) {
-            if(ev.type == SDL_KEYDOWN && ev.key.keysym.sym == key) {
+            if(ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == static_cast<SDL_Keycode>(key)) {
                 Click();
             }
         }
@@ -166,7 +166,7 @@ void Button::ChangeKeybind(int keybind) {
 }
 
 void Button::Playsound() {
-    music->PlayChannel(1, 0);
+    if(music) music->Play();
 }
 
 void Button::CallBoundFunction() {

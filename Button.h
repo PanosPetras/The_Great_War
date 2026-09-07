@@ -8,9 +8,8 @@
 
 #include "SDL_ctx.h"
 
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 #include <array>
 #include <functional>
@@ -89,7 +88,7 @@ protected:
     SDL_Texture_ctx text;
 
     // The button's onClick sound
-    ChunkRef music;
+    SoundRef music = nullptr;
 
     friend class ToggleButton;
 };

@@ -1,10 +1,10 @@
 SRC := $(wildcard *.cpp)
 HEADERS := $(wildcard *.h)
-SDLINCS := $(shell pkg-config --cflags SDL2_image SDL2_ttf SDL2_mixer sdl2 | sed 's/-I/-isystem/g')
-SDLLIBS := $(shell pkg-config --libs SDL2_image SDL2_ttf SDL2_mixer sdl2)
+SDLINCS := $(shell pkg-config --cflags sdl3 sdl3-image sdl3-ttf | sed 's/-I/-isystem/g')
+SDLLIBS := $(shell pkg-config --libs sdl3 sdl3-image sdl3-ttf)
 
-X64DLLS := $(wildcard SDL2/*/lib/x64/*.dll)
-X64DLLT := $(wildcard SDL2/*/lib/x64/*/*.dll)
+X64DLLS := $(wildcard SDL3/*/lib/x64/*.dll)
+X64DLLT := $(wildcard SDL3/*/lib/x64/*/*.dll)
 X64DLLSO = $(notdir $(X64DLLS))
 X64DLLTO = $(notdir $(X64DLLT))
 X64ALL = $(X64DLLSO) $(X64DLLTO)
@@ -47,10 +47,10 @@ build:
 links: $(X64ALL)
 	ln -s ./x64/Release/The_Great_War.exe .
 
-%.dll : SDL2/*/lib/x64/%.dll
+%.dll : SDL3/*/lib/x64/%.dll
 	ln -s $< $@
 
-%.dll : SDL2/*/lib/x64/*/%.dll
+%.dll : SDL3/*/lib/x64/*/%.dll
 	ln -s $< $@
 
 clean:

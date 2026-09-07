@@ -9,7 +9,7 @@ Image::Image(MainWindow& mw, std::string img, int x, int y, int Width, int Heigh
 
 void Image::pDraw() {
     // Drawing the Image
-    SDL_RenderCopy(*main_window, texture, nullptr, &draw_rect);
+    RenderTexture(*main_window, texture, draw_rect);
 }
 
 void Image::ChangeImage(std::string img) {

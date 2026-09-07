@@ -29,7 +29,7 @@ void Screen::RenderBackground() {
     appropriate dimensions, based on the magnification
     factor reiceived from user input*/
     if(texture) {
-        SDL_RenderCopy(*main_window, texture, nullptr, nullptr);
+        SDL_RenderTexture(*main_window, texture, nullptr, nullptr);
     }
 }
 

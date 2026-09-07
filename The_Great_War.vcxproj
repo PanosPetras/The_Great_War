@@ -150,14 +150,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.3\include;$(SolutionDir)\SDL2\SDL2_ttf-2.20.2\include;$(SolutionDir)\SDL2\SDL2_image-2.6.3\include;$(SolutionDir)\SDL2\SDL2-2.26.5\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.3\lib\x64;$(SolutionDir)\SDL2\SDL2_ttf-2.20.2\lib\x64;$(SolutionDir)\SDL2\SDL2_image-2.6.3\lib\x64;$(SolutionDir)\SDL2\SDL2-2.26.5\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(SolutionDir)\SDL3\SDL3_ttf-3.2.2\include;$(SolutionDir)\SDL3\SDL3_image-3.4.4\include;$(SolutionDir)\SDL3\SDL3-3.4.16\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\SDL3\SDL3_ttf-3.2.2\lib\x64;$(SolutionDir)\SDL3\SDL3_image-3.4.4\lib\x64;$(SolutionDir)\SDL3\SDL3-3.4.16\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
     <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.3\include;$(SolutionDir)\SDL2\SDL2_ttf-2.20.2\include;$(SolutionDir)\SDL2\SDL2_image-2.6.3\include;$(SolutionDir)\SDL2\SDL2-2.26.5\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\SDL2\SDL2_mixer-2.6.3\lib\x64;$(SolutionDir)\SDL2\SDL2_ttf-2.20.2\lib\x64;$(SolutionDir)\SDL2\SDL2_image-2.6.3\lib\x64;$(SolutionDir)\SDL2\SDL2-2.26.5\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(SolutionDir)\SDL3\SDL3_ttf-3.2.2\include;$(SolutionDir)\SDL3\SDL3_image-3.4.4\include;$(SolutionDir)\SDL3\SDL3-3.4.16\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\SDL3\SDL3_ttf-3.2.2\lib\x64;$(SolutionDir)\SDL3\SDL3_image-3.4.4\lib\x64;$(SolutionDir)\SDL3\SDL3-3.4.16\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -196,13 +196,13 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/analyze:stacksize30388. %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\SDL2\SDL2_mixer-2.6.2\include;$(SolutionDir)\SDL2\SDL2_ttf-2.20.1\include;$(SolutionDir)\SDL2\SDL2_image-2.6.2\include;$(SolutionDir)\SDL2\SDL2-2.26.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\SDL3\SDL3_ttf-3.2.2\include;$(SolutionDir)\SDL3\SDL3_image-3.4.4\include;$(SolutionDir)\SDL3\SDL3-3.4.16\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>SDL2.lib;SDL2main.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>SDL3.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL3.lib;SDL3_image.lib;SDL3_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -221,7 +221,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL3.lib;SDL3_image.lib;SDL3_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

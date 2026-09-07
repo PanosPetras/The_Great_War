@@ -149,7 +149,7 @@ void GameScreen::RenderMap() {
         const int left = ScreenX(copy * MapWidth), right = ScreenX((copy + 1) * MapWidth);
 
         SDL_Rect dstrect = {left, top, right - left, bottom - top};
-        SDL_RenderCopy(*main_window, PC->txt, nullptr, &dstrect);
+        RenderTexture(*main_window, PC->txt, dstrect);
     }
 }
 
@@ -180,7 +180,7 @@ void GameScreen::RenderPin() {
     can see. The renderer clips away the ones that fall off the screen.*/
     for(int copy = 0; copy < VisibleCopies(); ++copy) {
         SDL_Rect dstrect = {ScreenX(pin->x + copy * MapWidth - PinPointX), y, size, size};
-        SDL_RenderCopy(*main_window, pinTexture, nullptr, &dstrect);
+        RenderTexture(*main_window, pinTexture, dstrect);
     }
 }
 
@@ -232,7 +232,7 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
     }
 
     // Handle clicks on the map
-    if(ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT) {
+    if(ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_LEFT) {
         if(bHasActiveScreen() == false && flag == false && ev.button.y > main_window->Height() * 0.07 && bIsPaused == false && !StateViewingScreen && OnMap(ev.button.y)) {
             /*The province surface is read directly, so the click has to land on
             it. Wrapping x does that for free; y has nowhere to wrap to, which
@@ -268,7 +268,7 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
     }
 
     // Pause game if esc is pressed
-    if(ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE) {
+    if(ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == SDLK_ESCAPE) {
         this->Pause();
         SDL_Delay(200);
     }
@@ -294,13 +294,13 @@ void GameScreen::HandleMouseMovement(SDL_Event& ev) {
     if(bHasActiveScreen() == false) {
         /*Checks whether the mouse is pressed or not so that we
         can move the camera when it is pressed*/
-        if(ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_MIDDLE && mousepressed == false) {
+        if(ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_MIDDLE && mousepressed == false) {
             mousepressed = true;
-        } else if(ev.type == SDL_MOUSEBUTTONUP && ev.button.button == SDL_BUTTON_MIDDLE && mousepressed == true) {
+        } else if(ev.type == SDL_EVENT_MOUSE_BUTTON_UP && ev.button.button == SDL_BUTTON_MIDDLE && mousepressed == true) {
             mousepressed = false;
         }
-        // Requests the mouse movement
-        int x, y;
+        // Requests the mouse movement - reported in floats since SDL3
+        float x, y;
         SDL_GetRelativeMouseState(&x, &y);
 
         /*Dragging holds onto the map and pulls it along with the pointer, so
@@ -310,18 +310,70 @@ void GameScreen::HandleMouseMovement(SDL_Event& ev) {
         }
 
         // Scrolling either pans the map or changes its magnification
-        if(ev.type == SDL_MOUSEWHEEL) {
+        if(ev.type == SDL_EVENT_MOUSE_WHEEL) {
             HandleScroll(ev.wheel);
         }
 
-        /*Pinching to zoom. SDL builds this event out of finger events, so it
-        arrives only from a device it counts as a touch device - a touchscreen,
-        or a precision touchpad on Windows. A touchpad under Wayland is a
-        pointer rather than a touch device and never produces it, which is what
-        Ctrl and a scroll are for.*/
-        if(ev.type == SDL_MULTIGESTURE && ev.mgesture.numFingers == 2) {
-            Zoom(ev.mgesture.dDist * PinchingSpeed);
+        // Pinching to zoom
+        HandlePinch(ev);
+    }
+}
+
+/*Pinching to zoom. SDL2 rolled finger events up into a multi-gesture event
+that reported how much the pinch had spread; SDL3 removed the gesture API, so
+the two fingers are tracked here and the spread measured directly.
+
+This only ever fires for a device SDL counts as a touch device - a touchscreen,
+or a precision touchpad on Windows. A touchpad under Wayland is a pointer
+rather than a touch device and produces no finger events at all, which is what
+Ctrl and a scroll are for.*/
+void GameScreen::HandlePinch(const SDL_Event& ev) {
+    const auto distance = [this] {
+        const float dx = fingers[0].x - fingers[1].x;
+        const float dy = fingers[0].y - fingers[1].y;
+        return std::hypot(dx, dy);
+    };
+
+    switch(ev.type) {
+    case SDL_EVENT_FINGER_DOWN:
+        // Only the first two fingers down take part; any others are ignored
+        if(fingerCount < 2) {
+            fingers[fingerCount] = {ev.tfinger.fingerID, ev.tfinger.x, ev.tfinger.y};
+            if(++fingerCount == 2) PinchDistance = distance();
         }
+        break;
+
+    case SDL_EVENT_FINGER_MOTION:
+        for(int i = 0; i < fingerCount; ++i) {
+            if(fingers[i].id != ev.tfinger.fingerID) continue;
+
+            fingers[i].x = ev.tfinger.x;
+            fingers[i].y = ev.tfinger.y;
+
+            if(fingerCount == 2) {
+                /*Finger positions are a fraction of the window, so the spread
+                is too. Scaling it by the same factor the old dDist carried
+                keeps a pinch feeling the way it always did.*/
+                const float spread = distance();
+                Zoom((spread - PinchDistance) * PinchingSpeed);
+                PinchDistance = spread;
+            }
+            break;
+        }
+        break;
+
+    case SDL_EVENT_FINGER_UP:
+        // Lifting either finger ends the pinch rather than re-pairing mid-gesture
+        for(int i = 0; i < fingerCount; ++i) {
+            if(fingers[i].id == ev.tfinger.fingerID) {
+                fingerCount = 0;
+                break;
+            }
+        }
+        break;
+
+    default:
+        break;
     }
 }
 
@@ -329,19 +381,19 @@ bool GameScreen::IsTrackpadScroll(const SDL_MouseWheelEvent& wheel) {
     /*A wheel turns in notches, so it reports whole steps, straight up or down.
     A trackpad reports a fraction of a step at a time, and reports sideways
     movement that a wheel has no way to produce.*/
-    if(wheel.preciseX != 0 || wheel.preciseY != std::trunc(wheel.preciseY)) {
-        LastTrackpadScrollMs = wheel.timestamp;
+    if(wheel.x != 0 || wheel.y != std::trunc(wheel.y)) {
+        LastTrackpadScrollNs = wheel.timestamp;
         return true;
     }
 
     /*Part way through a flick those numbers can land on a whole step and look
     like a wheel, which would zoom the map mid-pan. A device that was scrolling
     like a trackpad a moment ago is taken to still be one.*/
-    return wheel.timestamp - LastTrackpadScrollMs < TrackpadScrollMemoryMs;
+    return wheel.timestamp - LastTrackpadScrollNs < TrackpadScrollMemoryNs;
 }
 
 void GameScreen::HandleScroll(const SDL_MouseWheelEvent& wheel) {
-    float x = wheel.preciseX, y = wheel.preciseY;
+    float x = wheel.x, y = wheel.y;
 
     // Some systems report a scroll the other way up, and say so
     if(wheel.direction == SDL_MOUSEWHEEL_FLIPPED) {
@@ -354,7 +406,7 @@ void GameScreen::HandleScroll(const SDL_MouseWheelEvent& wheel) {
     what it is good for. Ctrl zooms whichever device it is, so that zooming is
     still reachable when a device is mistaken for the other one.*/
     const bool trackpad = IsTrackpadScroll(wheel);
-    if(trackpad && not(SDL_GetModState() & KMOD_CTRL)) {
+    if(trackpad && not(SDL_GetModState() & SDL_KMOD_CTRL)) {
         // The view follows the fingers: scrolling up looks further up the map
         PanCamera(x * ScrollingSpeed / factor, -y * ScrollingSpeed / factor);
     } else {
@@ -363,7 +415,8 @@ void GameScreen::HandleScroll(const SDL_MouseWheelEvent& wheel) {
 }
 
 void GameScreen::HandleKeyboardPanning(Uint32 elapsedMs) {
-    const Uint8* keys = SDL_GetKeyboardState(nullptr);
+    // SDL3 reports the keyboard as bools rather than as bytes
+    const bool* keys = SDL_GetKeyboardState(nullptr);
 
     const int x = keys[SDL_SCANCODE_RIGHT] - keys[SDL_SCANCODE_LEFT];
     const int y = keys[SDL_SCANCODE_DOWN] - keys[SDL_SCANCODE_UP];

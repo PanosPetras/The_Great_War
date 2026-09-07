@@ -7,9 +7,8 @@
 #include "MainWindow.h"
 #include "SDL_ctx.h"
 
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 #include <functional>
 #include <string>
@@ -85,7 +84,7 @@ protected:
     SDL_Texture_ctx inactiveTexture;
 
     // The button's onClick sound
-    Mix_Chunk* music = nullptr;
+    SoundRef music = nullptr;
 };
 
 #endif
