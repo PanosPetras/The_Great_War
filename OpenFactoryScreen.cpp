@@ -13,11 +13,12 @@
 namespace {
 /*The grid the factory icons sit on, as fractions of the window's dimensions.
 The kinds fill it left to right, a row at a time.*/
-constexpr double ButtonColumns[]{0.3, 0.35, 0.4, 0.45};
+constexpr double ButtonColumns[]{0.3, 0.35, 0.4, 0.45, 0.5};
 constexpr double ButtonRows[]{0.3, 0.36, 0.42, 0.48, 0.54, 0.6};
 
 /*The kinds the screen offers, which are the leading run of the factory table.
-Synthetic rubber sits past the end because no button has been drawn for it.*/
+The synthetic refineries sit past the end: they are the way round a blockade
+rather than something to build on day one, so they wait on Technology.*/
 constexpr std::size_t OfferedKinds = std::size_t(FactoryType::SyntheticRubberRefinery);
 static_assert(OfferedKinds <= std::size(ButtonColumns) * std::size(ButtonRows));
 } // namespace
