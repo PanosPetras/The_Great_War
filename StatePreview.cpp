@@ -98,7 +98,7 @@ void StatePreview::DeleteOFS() {
     if(ImageArr.empty()) throw std::out_of_range("StatePreview::DeleteOFS ImageArr is empty");
     auto index = ImageArr.size() - 1;
     if(PCref->StatesArr[Id].State_Factories[index] != nullptr) {
-        std::string str = "Icons/Goods/" + PCref->StatesArr[Id].State_Factories[index]->Type + ".png";
+        std::string str = "Icons/Goods/" + std::string(PCref->StatesArr[Id].State_Factories[index]->Kind.name) + ".png";
         AddImage<Image>(*main_window, str, int(Width * (0.055L + 0.0288L * index)), int(Height * 0.8999), 48, 48);
     }
 }

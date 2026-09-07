@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Factory.h"
+
 #include "Screen.h"
 
 #include "UI.h"
@@ -12,6 +14,7 @@
 #include <array>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -231,40 +234,18 @@ class OpenFactoryScreen : public Screen {
 public:
     OpenFactoryScreen(MainWindow& mw, unsigned id, PlayerController* PC, std::function<void()> fp);
 
-    void FactoryTypeLumber();
-    void FactoryTypeGlass();
-    void FactoryTypeFood();
-    void FactoryTypeClothes();
-    void FactoryTypeLiquor();
-    void FactoryTypeFurniture();
-    void FactoryTypeAutomobile();
-    void FactoryTypePaper();
-    void FactoryTypeTelephone();
-    void FactoryTypeRadio();
-    void FactoryTypeMachineParts();
-    void FactoryTypeElectricGear();
-    void FactoryTypeFuel();
-    void FactoryTypeCement();
-    void FactoryTypeMerchantShip();
-    void FactoryTypeSmallArms();
-    void FactoryTypeAmmunition();
-    void FactoryTypeArtillery();
-    void FactoryTypeExplosives();
-    void FactoryTypeTank();
-    void FactoryTypeAirship();
-    void FactoryTypePlane();
-
-    void FactoryType(char t, int cost);
+    // Picks the kind the Confirm button will build, and shows what it costs
+    void SelectFactory(FactoryType kind);
 
     void BuildFactory();
 
     void Close();
 
-    // Factory attributes
-    int cost;
     PlayerController* PCref;
     unsigned index;
-    char type;
+
+    // The kind picked so far, once the player has picked one
+    std::optional<FactoryType> selected;
 };
 
 class StatePreview : public Screen {

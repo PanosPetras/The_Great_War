@@ -6,6 +6,22 @@
 #include "MainWindow.h"
 #include "PlayerController.h"
 
+#include <cstddef>
+#include <iterator>
+#include <string>
+
+namespace {
+/*The grid the factory icons sit on, as fractions of the window's dimensions.
+The kinds fill it left to right, a row at a time.*/
+constexpr double ButtonColumns[]{0.3, 0.35, 0.4, 0.45};
+constexpr double ButtonRows[]{0.3, 0.36, 0.42, 0.48, 0.54, 0.6};
+
+/*The kinds the screen offers, which are the leading run of the factory table.
+Synthetic rubber sits past the end because no button has been drawn for it.*/
+constexpr std::size_t OfferedKinds = std::size_t(FactoryType::SyntheticRubberRefinery);
+static_assert(OfferedKinds <= std::size(ButtonColumns) * std::size(ButtonRows));
+} // namespace
+
 OpenFactoryScreen::OpenFactoryScreen(MainWindow& mw, unsigned id, PlayerController* PC, std::function<void()> quitfunc) : Screen(mw, quitfunc) {
     PCref = PC;
     auto [Width, Height] = mw.GetWindowDimensions();
@@ -19,227 +35,38 @@ OpenFactoryScreen::OpenFactoryScreen(MainWindow& mw, unsigned id, PlayerControll
 
     AddDrawable<Button>(mw, int(Width * 0.32), int(Height * 0.7), int(Width * 0.08), int(Height * 0.06), "Back", FontSize::Heading, [this] { Close(); });
     AddDrawable<Button>(mw, int(Width * 0.59), int(Height * 0.7), int(Width * 0.1), int(Height * 0.06), "Confirm", FontSize::Heading, [this] { BuildFactory(); });
-    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/lumber", [this] { FactoryTypeLumber(); });
-    AddDrawable<Button>(mw, int(Width * 0.35), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/glass", [this] { FactoryTypeGlass(); });
-    AddDrawable<Button>(mw, int(Width * 0.4), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/canned food", [this] { FactoryTypeFood(); });
-    AddDrawable<Button>(mw, int(Width * 0.45), int(Height * 0.3), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/Clothes", [this] { FactoryTypeClothes(); });
-    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.36), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/liquor", [this] { FactoryTypeLiquor(); });
-    AddDrawable<Button>(mw, int(Width * 0.35), int(Height * 0.36), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/furniture", [this] { FactoryTypeFurniture(); });
-    AddDrawable<Button>(mw, int(Width * 0.4), int(Height * 0.36), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/automobile", [this] { FactoryTypeAutomobile(); });
-    AddDrawable<Button>(mw, int(Width * 0.45), int(Height * 0.36), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/paper", [this] { FactoryTypePaper(); });
-    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.42), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/telephone", [this] { FactoryTypeTelephone(); });
-    AddDrawable<Button>(mw, int(Width * 0.35), int(Height * 0.42), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/radio", [this] { FactoryTypeRadio(); });
-    AddDrawable<Button>(mw, int(Width * 0.4), int(Height * 0.42), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/machine parts", [this] { FactoryTypeMachineParts(); });
-    AddDrawable<Button>(mw, int(Width * 0.45), int(Height * 0.42), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/electric gear", [this] { FactoryTypeElectricGear(); });
-    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.48), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/fuel", [this] { FactoryTypeFuel(); });
-    AddDrawable<Button>(mw, int(Width * 0.35), int(Height * 0.48), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/cement", [this] { FactoryTypeCement(); });
-    AddDrawable<Button>(mw, int(Width * 0.4), int(Height * 0.48), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/merchant ship", [this] { FactoryTypeMerchantShip(); });
-    AddDrawable<Button>(mw, int(Width * 0.45), int(Height * 0.48), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/small arms", [this] { FactoryTypeSmallArms(); });
-    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/ammunition", [this] { FactoryTypeAmmunition(); });
-    AddDrawable<Button>(mw, int(Width * 0.35), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/artillery", [this] { FactoryTypeArtillery(); });
-    AddDrawable<Button>(mw, int(Width * 0.4), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/explosives", [this] { FactoryTypeExplosives(); });
-    AddDrawable<Button>(mw, int(Width * 0.45), int(Height * 0.54), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/tank", [this] { FactoryTypeTank(); });
-    AddDrawable<Button>(mw, int(Width * 0.3), int(Height * 0.6), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/airship", [this] { FactoryTypeAirship(); });
-    AddDrawable<Button>(mw, int(Width * 0.35), int(Height * 0.6), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/plane", [this] { FactoryTypePlane(); });
+
+    // One icon per kind on offer, each one picking the kind it stands for
+    for(std::size_t i = 0; i < OfferedKinds; i++) {
+        const FactoryKind& kind = FactoryKinds[i];
+        const double x = ButtonColumns[i % std::size(ButtonColumns)];
+        const double y = ButtonRows[i / std::size(ButtonColumns)];
+
+        AddDrawable<Button>(mw, int(Width * x), int(Height * y), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/" + std::string(kind.name), [this, type = kind.type] { SelectFactory(type); });
+    }
 
     index = id;
 }
 
-void OpenFactoryScreen::FactoryTypeLumber() {
-    LumberMill F(nullptr, nullptr);
-    FactoryType('a', F.cost);
-}
+void OpenFactoryScreen::SelectFactory(FactoryType kind) {
+    selected = kind;
 
-void OpenFactoryScreen::FactoryTypeGlass() {
-    GlassFactory F(nullptr, nullptr);
-    FactoryType('b', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeFood() {
-    CanningFactory F(nullptr, nullptr);
-    FactoryType('c', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeClothes() {
-    ClothesFactory F(nullptr, nullptr);
-    FactoryType('d', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeLiquor() {
-    LiquorDistillery F(nullptr, nullptr);
-    FactoryType('e', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeFurniture() {
-    FurnitureFactory F(nullptr, nullptr);
-    FactoryType('f', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeAutomobile() {
-    AutomobileFactory F(nullptr, nullptr);
-    FactoryType('g', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypePaper() {
-    PaperMill F(nullptr, nullptr);
-    FactoryType('h', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeTelephone() {
-    TelephoneFactory F(nullptr, nullptr);
-    FactoryType('i', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeRadio() {
-    RadioFactory F(nullptr, nullptr);
-    FactoryType('j', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeMachineParts() {
-    MachinePartFactory F(nullptr, nullptr);
-    FactoryType('k', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeElectricGear() {
-    ElectricGearFactory F(nullptr, nullptr);
-    FactoryType('l', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeFuel() {
-    FuelRefinery F(nullptr, nullptr);
-    FactoryType('m', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeCement() {
-    CementFactory F(nullptr, nullptr);
-    FactoryType('n', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeMerchantShip() {
-    Shipyard F(nullptr, nullptr);
-    FactoryType('o', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeSmallArms() {
-    SmallArmsFactory F(nullptr, nullptr);
-    FactoryType('p', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeAmmunition() {
-    AmmunitionFactory F(nullptr, nullptr);
-    FactoryType('q', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeArtillery() {
-    ArtilleryFactory F(nullptr, nullptr);
-    FactoryType('r', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeExplosives() {
-    ExplosivesFactory F(nullptr, nullptr);
-    FactoryType('s', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeTank() {
-    TankFactory F(nullptr, nullptr);
-    FactoryType('t', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypeAirship() {
-    AirshipFactory F(nullptr, nullptr);
-    FactoryType('u', F.cost);
-}
-
-void OpenFactoryScreen::FactoryTypePlane() {
-    PlaneFactory F(nullptr, nullptr);
-    FactoryType('v', F.cost);
-}
-
-void OpenFactoryScreen::FactoryType(char t, int Cost) {
-    type = t;
-    std::string txt = "Factory cost: " + std::to_string(Cost);
+    std::string txt = "Factory cost: " + std::to_string(KindOf(kind).cost);
     LabelArr[2]->ChangeText(txt.c_str());
 }
 
 void OpenFactoryScreen::BuildFactory() {
-    std::unique_ptr<Factory> NF;
-    switch(type) {
-    case 'a':
-        NF = std::make_unique<LumberMill>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'b':
-        NF = std::make_unique<GlassFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'c':
-        NF = std::make_unique<CanningFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'd':
-        NF = std::make_unique<ClothesFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'e':
-        NF = std::make_unique<LiquorDistillery>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'f':
-        NF = std::make_unique<FurnitureFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'g':
-        NF = std::make_unique<AutomobileFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'h':
-        NF = std::make_unique<PaperMill>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'i':
-        NF = std::make_unique<TelephoneFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'j':
-        NF = std::make_unique<RadioFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'k':
-        NF = std::make_unique<MachinePartFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'l':
-        NF = std::make_unique<ElectricGearFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'm':
-        NF = std::make_unique<FuelRefinery>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'n':
-        NF = std::make_unique<CementFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'o':
-        NF = std::make_unique<Shipyard>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'p':
-        NF = std::make_unique<SmallArmsFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'q':
-        NF = std::make_unique<AmmunitionFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'r':
-        NF = std::make_unique<ArtilleryFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 's':
-        NF = std::make_unique<ExplosivesFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 't':
-        NF = std::make_unique<TankFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'u':
-        NF = std::make_unique<AirshipFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    case 'v':
-        NF = std::make_unique<PlaneFactory>(&PCref->player->Stock, &PCref->WorldMarket);
-        break;
-    default:
-        return;
-    }
+    if(!selected) return;
 
-    if(PCref->player->Stock.Money >= NF->cost) {
-        PCref->player->Stock.Money -= NF->cost;
-        PCref->StatesArr[index].AddFactory(NF);
+    const FactoryKind& kind = KindOf(*selected);
+    if(PCref->player->Stock.Money < kind.cost) return;
 
-        QuitFunc();
-    }
+    auto NF = std::make_unique<Factory>(*selected, &PCref->player->Stock, &PCref->WorldMarket);
+
+    PCref->player->Stock.Money -= kind.cost;
+    PCref->StatesArr[index].AddFactory(NF);
+
+    QuitFunc();
 }
 
 void OpenFactoryScreen::Close() {
