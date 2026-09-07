@@ -69,6 +69,14 @@ vsync moved off creation onto the renderer, so it is set right afterwards.*/
 SDL_Renderer_ctx::SDL_Renderer_ctx(SDL_Window_ctx& window) : renderer(SDL_CreateRenderer(window, nullptr), &SDL_DestroyRenderer) {
     if(not renderer) throw std::runtime_error(std::string("SDL_Renderer_ctx: ") + SDL_GetError());
     SetVSync(true);
+
+    /*SDL2 scaled with nearest unless SDL_HINT_RENDER_SCALE_QUALITY said
+    otherwise, and nothing here ever set it. SDL3 defaults a renderer to
+    SDL_SCALEMODE_LINEAR instead, which softens the province borders as the map
+    is magnified. Setting the default here rather than on each texture means a
+    texture created without going through SDL_Texture_ctx cannot quietly come
+    back blurred.*/
+    SDL_SetDefaultTextureScaleMode(*this, SDL_SCALEMODE_NEAREST);
 }
 
 bool SDL_Renderer_ctx::SetVSync(bool on) {

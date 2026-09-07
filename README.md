@@ -46,7 +46,7 @@ Created with Visual Studio 2019/2022
 C++ version: C++/20
 
 This project makes use the following libraries:
-- SDL 3.4.16(Link: https://github.com/libsdl-org/SDL)
+- SDL 3.4.16, 3.4 or newer required(Link: https://github.com/libsdl-org/SDL)
 - SDL Image 3.4.4(Link: https://github.com/libsdl-org/SDL_image)
 - SDL ttf 3.2.2(Link: https://github.com/libsdl-org/SDL_ttf)
 
