@@ -90,14 +90,6 @@ void PlayerController::LoadGameData(const char* tag) {
 
 void PlayerController::LoadMap() {
     map = SDL_Surface_ctx::IMG_Load("map/1910.png");
-    mapCanvas = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0, 0, 0, 0);
-
-    SDL_Rect strect = {.x = 232, .y = 0, .w = 5616, .h = 2160};
-    SDL_BlitSurface(map, &strect, mapCanvas, nullptr);
-    strect = {.x = -5616 + 232, .y = 0, .w = 5616 * 2, .h = 2160};
-    SDL_BlitSurface(map, &strect, mapCanvas, nullptr);
-    strect = {.x = -5616 * 2 + 232, .y = 0, .w = 5616 * 3, .h = 2160};
-    SDL_BlitSurface(map, &strect, mapCanvas, nullptr);
 }
 
 void PlayerController::LoadUtilityAssets() {
@@ -105,10 +97,10 @@ void PlayerController::LoadUtilityAssets() {
 }
 
 void PlayerController::UploadAssets() {
-    txt = SDL_Texture_ctx(*main_window, mapCanvas);
+    txt = SDL_Texture_ctx(*main_window, map);
 
-    // The staging surface is ~140 MB and is dead weight once uploaded
-    mapCanvas = SDL_Surface_ctx{};
+    // ~48 MB of decoded pixels, dead weight once the GPU has its own copy
+    map = SDL_Surface_ctx{};
 }
 
 void PlayerController::InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, const std::vector<Stockpile>& balance) {

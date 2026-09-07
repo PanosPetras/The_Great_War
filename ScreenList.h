@@ -112,18 +112,38 @@ private:
     // This is the current location of the camera along the y axis
     int Cam_Height = 150;
 
-    // This is the current location of the camera along the x axis
-    int Cam_Width = 5384 + 2150;
+    /*The camera's position along the x axis, as a world x. The map wraps, so
+    this is kept in [0, MapWidth) rather than clamped - see WrapX.*/
+    int Cam_Width = 2150;
 
-    // Stores the dimensions of the image displayed
-    int ImgSize[2]{16383, 2160};
-
-    // How wide one copy of the world is. The map texture holds three of them side by side.
+    /*The size of the world in map pixels. The map texture holds exactly one
+    copy of it and RenderMap repeats the texture to wrap it horizontally, so
+    these are the dimensions of both the texture and the province surface.*/
     static constexpr int MapWidth = 5616;
+    static constexpr int MapHeight = 2160;
 
-    /*Where the player last clicked, in the coordinates of the map texture, or
-    nothing while no pin is placed. The pin is drawn as one small quad over the
-    map, so placing and clearing it costs nothing.*/
+    // Brings a world x back into [0, MapWidth), wrapping across the date line
+    static int WrapX(int x);
+
+    /*How many copies of the world the camera can currently see. Anything drawn
+    on the map is drawn once per copy; the renderer clips the ones that miss.*/
+    int VisibleCopies() const;
+
+    /*Screen position of a point on the map. ScreenX measures against the copy
+    of the world the camera is sitting in; add a multiple of MapWidth for the
+    copies either side of it.*/
+    int ScreenX(int worldX) const;
+    int ScreenY(int worldY) const;
+
+    // Whether a screen y falls on the map at all, rather than past its edge
+    bool OnMap(int screenY) const;
+
+    // Draws the map itself, repeated across as much of the screen as it takes
+    void RenderMap();
+
+    /*Where the player last clicked, in world coordinates, or nothing while no
+    pin is placed. The pin is drawn as one small quad over the map, so placing
+    and clearing it costs nothing.*/
     std::optional<SDL_Point> pin;
 
     // The pin sprite. Its point is the pixel at (PinPointX, PinPointY) within it.
