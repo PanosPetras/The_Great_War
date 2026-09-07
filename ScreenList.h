@@ -118,6 +118,23 @@ private:
     // Stores the dimensions of the image displayed
     int ImgSize[2]{16383, 2160};
 
+    // How wide one copy of the world is. The map texture holds three of them side by side.
+    static constexpr int MapWidth = 5616;
+
+    /*Where the player last clicked, in the coordinates of the map texture, or
+    nothing while no pin is placed. The pin is drawn as one small quad over the
+    map, so placing and clearing it costs nothing.*/
+    std::optional<SDL_Point> pin;
+
+    // The pin sprite. Its point is the pixel at (PinPointX, PinPointY) within it.
+    TextureRef pinTexture;
+    static constexpr int PinSize = 32;
+    static constexpr int PinPointX = 7;
+    static constexpr int PinPointY = 24;
+
+    // Draws the pin, if one is placed, over the map that has just been drawn
+    void RenderPin();
+
     // This is the camera's zooming speed
     double ZoomingSpeed = 0.1;
     bool mousepressed = false;

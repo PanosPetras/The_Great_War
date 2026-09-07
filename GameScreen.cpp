@@ -17,6 +17,10 @@ GameScreen::GameScreen(MainWindow& mw, const char* tag, std::function<void()> fp
     QuitFunc = fp;
 
     PC = std::make_unique<PlayerController>(*main_window, tag);
+
+    // Decoded once for the life of the window, rather than on every click
+    pinTexture = main_window->IMG_Load("Icons/pin1.png");
+
     overlay = std::make_unique<UI>(*main_window, tag, PC.get(), [this](std::unique_ptr<Screen> scr, std::string ID) { ChangeActiveScreen(std::move(scr), std::move(ID)); });
 }
 
@@ -71,7 +75,27 @@ void GameScreen::RenderBackground() {
     if(bZoom == true) {
         SDL_Rect dstrect = {int(Cam_Width * -1 * factor), int(Cam_Height * -1 * factor), int(ImgSize[0] * factor), int(factor * ImgSize[1])};
         SDL_RenderCopy(*main_window, PC->txt, nullptr, &dstrect);
-        SDL_RenderCopy(*main_window, PC->overlay, nullptr, &dstrect);
+        RenderPin();
+    }
+}
+
+void GameScreen::RenderPin() {
+    if(not pin) {
+        return;
+    }
+
+    /*The pin belongs to the map rather than to the screen, so it is measured in
+    map pixels and scales with the zoom, and its point lands on the pixel that
+    was clicked.*/
+    const int size = int(PinSize * factor);
+    const int y = int((pin->y - PinPointY - Cam_Height) * factor);
+
+    /*The map texture is three copies of the world side by side and the camera
+    wraps between them, so the pin is drawn against each copy. The renderer
+    clips away the two that are off screen.*/
+    for(int copy = -1; copy <= 1; ++copy) {
+        SDL_Rect dstrect = {int((pin->x + copy * MapWidth - PinPointX - Cam_Width) * factor), y, size, size};
+        SDL_RenderCopy(*main_window, pinTexture, nullptr, &dstrect);
     }
 }
 
@@ -150,13 +174,8 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
                     std::make_unique<StatePreview>(*main_window, state->State_ID - 1, state->State_Name, state->State_Controller, PC.get(), state->Resources, int(state->State_Population), fcs, close, change);
             }
 
-            auto base = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
-            auto Marker = SDL_Surface_ctx::IMG_Load("Icons/pin1.png");
-
-            SDL_Rect strect = {.x = -x - 5384 + 7, .y = -y + 24, .w = 5616 * 3, .h = 2160};
-            SDL_BlitSurface(Marker, &strect, base, nullptr);
-
-            PC->overlay = SDL_Texture_ctx(*main_window, base);
+            // Drop the pin on the clicked pixel, in the map texture's coordinates
+            pin = SDL_Point{x + 5384, y};
         }
     }
 
@@ -290,8 +309,5 @@ void GameScreen::CloseActiveScreen() {
 
 void GameScreen::CloseScreenPreview() {
     StateViewingScreen.reset();
-
-    auto base = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
-
-    PC->overlay = SDL_Texture_ctx(*main_window, base);
+    pin.reset();
 }

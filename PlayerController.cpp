@@ -102,17 +102,13 @@ void PlayerController::LoadMap() {
 
 void PlayerController::LoadUtilityAssets() {
     provinces = SDL_Surface_ctx::IMG_Load("map/provinces.bmp");
-
-    overlayCanvas = SDL_Surface_ctx::CreateRGBSurface(0, 16383, 2160, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
 }
 
 void PlayerController::UploadAssets() {
     txt = SDL_Texture_ctx(*main_window, mapCanvas);
-    overlay = SDL_Texture_ctx(*main_window, overlayCanvas);
 
-    // The staging surfaces are ~140 MB each and are dead weight once uploaded
+    // The staging surface is ~140 MB and is dead weight once uploaded
     mapCanvas = SDL_Surface_ctx{};
-    overlayCanvas = SDL_Surface_ctx{};
 }
 
 void PlayerController::InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, const std::vector<Stockpile>& balance) {
