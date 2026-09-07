@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <sstream>
 #include <string>
 #include <thread>
 #include <vector>
@@ -20,6 +21,26 @@ struct Line {
     operator std::string const&() const { return str; }
 
     friend std::istream& operator>>(std::istream& is, Line& l) { return std::getline(is, l.str); }
+};
+
+/*One state's daily output of the raw resources, in the order Stockpile.h lists
+them. A line that names fewer than all of them leaves the rest at zero.*/
+struct RawResources {
+    std::array<short int, RawGoodCount> amounts{};
+
+    operator std::array<short int, RawGoodCount> const&() const { return amounts; }
+
+    friend std::istream& operator>>(std::istream& is, RawResources& r) {
+        if(std::string line; std::getline(is, line)) {
+            std::istringstream iss(std::move(line));
+            for(auto& amount : r.amounts) {
+                iss >> amount;
+            }
+        } else {
+            is.setstate(std::ios::failbit);
+        }
+        return is;
+    }
 };
 
 template<class T, class Adapter = T>
@@ -73,8 +94,11 @@ void PlayerController::LoadGameData(const char* tag) {
     // Load all the state's populations
     auto populations = LoadFromFile<int>("map/States/StatePopulations.txt");
 
-    if(stateNames.size() != owners.size() || stateNames.size() != colors.size() || stateNames.size() != coords.size() || stateNames.size() != populations.size()) {
-        std::cerr << "State data mismatch " << stateNames.size() << ',' << owners.size() << ',' << colors.size() << ',' << coords.size() << ',' << populations.size() << std::endl;
+    // Load what each state pulls out of the ground in a day
+    auto resources = LoadFromFile<std::array<short int, RawGoodCount>, RawResources>("map/States/StateResources.txt");
+
+    if(stateNames.size() != owners.size() || stateNames.size() != colors.size() || stateNames.size() != coords.size() || stateNames.size() != populations.size() || stateNames.size() != resources.size()) {
+        std::cerr << "State data mismatch " << stateNames.size() << ',' << owners.size() << ',' << colors.size() << ',' << coords.size() << ',' << populations.size() << ',' << resources.size() << std::endl;
         std::terminate();
     }
 
@@ -82,7 +106,7 @@ void PlayerController::LoadGameData(const char* tag) {
     InitializeCountries(countryNames, tags, tag, balance);
 
     // Create all the states
-    InitializeStates(owners, stateNames, coords, populations, colors);
+    InitializeStates(owners, stateNames, coords, populations, colors, resources);
 
     // Initialize the date
     Date = {.Year = 1910, .Month = 1, .Day = 1, .Speed = 1, .MonthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
@@ -123,10 +147,7 @@ void PlayerController::InitializeCountries(std::vector<std::string>& names, std:
     }
 }
 
-void PlayerController::InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors) {
-    // Every state starts out producing the same placeholder amount of each raw resource
-    std::array<short int, RawGoodCount> res;
-    res.fill(50);
+void PlayerController::InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors, const std::vector<std::array<short int, RawGoodCount>>& resources) {
     unsigned target = 0;
 
     StatesArr.reserve(populations.size());
@@ -138,7 +159,7 @@ void PlayerController::InitializeStates(std::vector<std::string>& owners, std::v
             }
         }
 
-        StatesArr.emplace_back(names[x], x + 1, owners[x], owners[x], populations[x], coords[x], colors[x], res, &Countries.at(target)->Stock);
+        StatesArr.emplace_back(names[x], x + 1, owners[x], owners[x], populations[x], coords[x], colors[x], resources[x], &Countries.at(target)->Stock);
 
         StatesMap.insert(std::pair(StatesArr.back().color.toString(), &StatesArr.back()));
 
