@@ -7,6 +7,7 @@
 #include "ScreenList.h"
 #include "UI.h"
 
+#include <algorithm>
 #include <cmath>
 #include <iostream>
 #include <memory>
@@ -64,6 +65,10 @@ void GameScreen::Update(Uint32 elapsedMs) {
     if(StateViewingScreen) {
         StateViewingScreen->Update(elapsedMs);
     }
+
+    if(bHasActiveScreen() == false) {
+        HandleKeyboardPanning(elapsedMs);
+    }
 }
 
 int GameScreen::WrapX(int x) {
@@ -82,6 +87,51 @@ int GameScreen::ScreenY(int worldY) const {
 bool GameScreen::OnMap(int screenY) const {
     const int y = Cam_Height + int(screenY / factor);
     return y >= 0 && y < MapHeight;
+}
+
+int GameScreen::MaxCamHeight() const {
+    return int((std::trunc(MapHeight * factor) - main_window->Height()) / factor);
+}
+
+void GameScreen::ClampCamHeight() {
+    /*The world is a cylinder, so x wraps around and never runs out. y has
+    nowhere to wrap to, so it stops at the poles.*/
+    if(Cam_Height < 0) {
+        Cam_Height = 0;
+    } else if(Cam_Height > MaxCamHeight()) {
+        Cam_Height = MaxCamHeight();
+    }
+}
+
+void GameScreen::PanCamera(double dx, double dy) {
+    PanRemainderX += dx;
+    PanRemainderY += dy;
+
+    // Whole map pixels move the camera; the fractions wait for the next call
+    const int x = int(PanRemainderX), y = int(PanRemainderY);
+    PanRemainderX -= x;
+    PanRemainderY -= y;
+
+    Cam_Width = WrapX(Cam_Width + x);
+    Cam_Height += y;
+    ClampCamHeight();
+}
+
+void GameScreen::Zoom(double steps) {
+    /*Each step multiplies the magnification rather than adding to it, so a map
+    zoomed in and back out by the same number of steps ends up where it began.*/
+    const double previous = factor;
+    factor = std::clamp(factor * std::pow(1 + ZoomingSpeed, steps), main_window->Width() / 3840.0, main_window->Width() / 480.0);
+
+    if(factor == previous) {
+        return;
+    }
+
+    /*Zooming changes how much of the world fits on the screen. Moving the
+    camera by half of that change leaves the middle of the screen looking at
+    the same place it was looking at before.*/
+    const double centre = 1 / previous - 1 / factor;
+    PanCamera(main_window->Width() / 2.0 * centre, main_window->Height() / 2.0 * centre);
 }
 
 int GameScreen::VisibleCopies() const {
@@ -253,60 +303,79 @@ void GameScreen::HandleMouseMovement(SDL_Event& ev) {
         int x, y;
         SDL_GetRelativeMouseState(&x, &y);
 
-        // Moves the camera upwards
-        int lim1 = int((int(MapHeight * factor) - main_window->Height()) / factor);
-
+        /*Dragging holds onto the map and pulls it along with the pointer, so
+        the camera moves against the pointer rather than with it.*/
         if(mousepressed) {
-            if(y > 0 && Cam_Height > 0) {
-                Cam_Height -= int((MouseSensitivity * y) / factor);
-                if(Cam_Height < 0) {
-                    Cam_Height = 0;
-                }
-            }
-            // Moves the camera downwards
-            else if(y < 0 && Cam_Height < lim1) {
-                Cam_Height += int((MouseSensitivity * y * -1) / factor);
-                if(Cam_Height > lim1) {
-                    Cam_Height = lim1;
-                }
-            }
-
-            /*Moves the camera sideways. There is no limit to run into: the
-            world is a cylinder, so the camera just wraps around it.*/
-            Cam_Width = WrapX(Cam_Width - int((MouseSensitivity * x) / factor));
+            PanCamera(-MouseSensitivity * x / factor, -MouseSensitivity * y / factor);
         }
 
-        // Change the screen's magnification, albeit the zoom factor
+        // Scrolling either pans the map or changes its magnification
         if(ev.type == SDL_MOUSEWHEEL) {
-            // Zoom in
-            if(ev.wheel.y > 0 && factor < main_window->Width() / 480.0) {
-                factor += ZoomingSpeed * factor;
-                Cam_Width = WrapX(Cam_Width + int(main_window->Width() / factor * ZoomingSpeed / 2));
-                Cam_Height += int(main_window->Height() / factor * ZoomingSpeed / 2);
-            }
-            // Zoom out
-            else if(factor > main_window->Width() / 3840.0 && ev.wheel.y < 0) {
-                factor -= ZoomingSpeed * factor;
+            HandleScroll(ev.wheel);
+        }
 
-                // Make sure we are not off the limits
-                if(factor < main_window->Width() / 3840.0) {
-                    factor = main_window->Width() / 3840.0;
-                }
-
-                Cam_Width = WrapX(Cam_Width - int(main_window->Width() / factor * ZoomingSpeed / 2));
-                Cam_Height -= int(main_window->Height() / factor * ZoomingSpeed / 2);
-
-                /*Zooming out can pull the view past the top or bottom edge of
-                the map, which - unlike the sides - does not wrap.*/
-                const int lim = int((std::trunc(MapHeight * factor) - main_window->Height()) / factor);
-                if(Cam_Height < 0) {
-                    Cam_Height = 0;
-                } else if(Cam_Height > lim) {
-                    Cam_Height = lim;
-                }
-            }
+        /*Pinching to zoom. SDL builds this event out of finger events, so it
+        arrives only from a device it counts as a touch device - a touchscreen,
+        or a precision touchpad on Windows. A touchpad under Wayland is a
+        pointer rather than a touch device and never produces it, which is what
+        Ctrl and a scroll are for.*/
+        if(ev.type == SDL_MULTIGESTURE && ev.mgesture.numFingers == 2) {
+            Zoom(ev.mgesture.dDist * PinchingSpeed);
         }
     }
+}
+
+bool GameScreen::IsTrackpadScroll(const SDL_MouseWheelEvent& wheel) {
+    /*A wheel turns in notches, so it reports whole steps, straight up or down.
+    A trackpad reports a fraction of a step at a time, and reports sideways
+    movement that a wheel has no way to produce.*/
+    if(wheel.preciseX != 0 || wheel.preciseY != std::trunc(wheel.preciseY)) {
+        LastTrackpadScrollMs = wheel.timestamp;
+        return true;
+    }
+
+    /*Part way through a flick those numbers can land on a whole step and look
+    like a wheel, which would zoom the map mid-pan. A device that was scrolling
+    like a trackpad a moment ago is taken to still be one.*/
+    return wheel.timestamp - LastTrackpadScrollMs < TrackpadScrollMemoryMs;
+}
+
+void GameScreen::HandleScroll(const SDL_MouseWheelEvent& wheel) {
+    float x = wheel.preciseX, y = wheel.preciseY;
+
+    // Some systems report a scroll the other way up, and say so
+    if(wheel.direction == SDL_MOUSEWHEEL_FLIPPED) {
+        x = -x;
+        y = -y;
+    }
+
+    /*A trackpad has no middle button to drag the map with, so scrolling on one
+    pans instead. A wheel keeps zooming, which is what it has always done and
+    what it is good for. Ctrl zooms whichever device it is, so that zooming is
+    still reachable when a device is mistaken for the other one.*/
+    const bool trackpad = IsTrackpadScroll(wheel);
+    if(trackpad && not(SDL_GetModState() & KMOD_CTRL)) {
+        // The view follows the fingers: scrolling up looks further up the map
+        PanCamera(x * ScrollingSpeed / factor, -y * ScrollingSpeed / factor);
+    } else {
+        Zoom(y);
+    }
+}
+
+void GameScreen::HandleKeyboardPanning(Uint32 elapsedMs) {
+    const Uint8* keys = SDL_GetKeyboardState(nullptr);
+
+    const int x = keys[SDL_SCANCODE_RIGHT] - keys[SDL_SCANCODE_LEFT];
+    const int y = keys[SDL_SCANCODE_DOWN] - keys[SDL_SCANCODE_UP];
+
+    if(x == 0 && y == 0) {
+        return;
+    }
+
+    /*The keys pan for as long as they are held, so how far the map moves is
+    measured against how long the frame took rather than against the frame.*/
+    const double distance = KeyboardSpeed * elapsedMs / factor;
+    PanCamera(x * distance, y * distance);
 }
 
 void GameScreen::ChangeActiveScreen(std::unique_ptr<Screen> NewScreen, std::string ID) {

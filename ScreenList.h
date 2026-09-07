@@ -87,6 +87,7 @@ public:
     // Handles input events
     void Handle_Input(SDL_Event& ev) override;
     void HandleMouseMovement(SDL_Event& ev);
+    void HandleKeyboardPanning(Uint32 elapsedMs);
     void ChangeActiveScreen(std::unique_ptr<Screen> NewScreen, std::string ID);
     void CloseActiveScreen();
     void CloseScreenPreview();
@@ -138,6 +139,36 @@ private:
     // Whether a screen y falls on the map at all, rather than past its edge
     bool OnMap(int screenY) const;
 
+    /*How far down the camera can sit before the bottom of the map would lift
+    off the bottom of the screen, and the check that keeps it there.*/
+    int MaxCamHeight() const;
+    void ClampCamHeight();
+
+    /*Moves the camera by a distance in map pixels. Every way of moving it -
+    dragging, scrolling, the arrow keys, zooming - goes through here.*/
+    void PanCamera(double dx, double dy);
+
+    /*Leftovers from PanCamera. The camera sits on whole map pixels, but a
+    trackpad moves it by fractions of one at a time, and truncating each of
+    those away would leave fine scrolling moving nothing at all.*/
+    double PanRemainderX = 0;
+    double PanRemainderY = 0;
+
+    /*Changes the magnification, keeping whatever is in the middle of the
+    screen in the middle of the screen. A step is one notch of a mouse wheel,
+    but it is fractional: a trackpad and a pinch both arrive in slices.*/
+    void Zoom(double steps);
+
+    /*A scroll either pans or zooms depending on where it came from, since a
+    trackpad has no other way to reach the map and a wheel has always zoomed.*/
+    void HandleScroll(const SDL_MouseWheelEvent& wheel);
+    bool IsTrackpadScroll(const SDL_MouseWheelEvent& wheel);
+
+    /*When a scroll last looked like it came from a trackpad, and how long a
+    device is taken to still be one - see IsTrackpadScroll.*/
+    Uint32 LastTrackpadScrollMs = 0;
+    static constexpr Uint32 TrackpadScrollMemoryMs = 600;
+
     // Draws the map itself, repeated across as much of the screen as it takes
     void RenderMap();
 
@@ -159,6 +190,15 @@ private:
     double ZoomingSpeed = 0.1;
     bool mousepressed = false;
     int MouseSensitivity = 3;
+
+    // How far one step of scrolling pans the map, in screen pixels
+    double ScrollingSpeed = 40;
+
+    // How far the arrow keys pan the map, in screen pixels per millisecond
+    double KeyboardSpeed = 0.8;
+
+    // How many steps of zoom a pinch is worth, per unit of the distance closed
+    double PinchingSpeed = 60;
 
     std::unique_ptr<Screen> StateViewingScreen;
 
