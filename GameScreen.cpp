@@ -136,7 +136,7 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
                 std::string fcs[4];
                 for(unsigned i = 0; i < 4; i++) {
                     if(state->State_Factories[i] != nullptr) {
-                        fcs[i] = state->State_Factories[i]->Type;
+                        fcs[i] = state->State_Factories[i]->Kind.name;
                     } else {
                         fcs[i] = "";
                     }
