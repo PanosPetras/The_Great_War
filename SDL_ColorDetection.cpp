@@ -6,11 +6,18 @@
 
 namespace CD {
 
+/*SDL3 turned SDL_Surface::format from a pointer to a description struct into a
+plain enum, and moved the description behind SDL_GetPixelFormatDetails.*/
+static const SDL_PixelFormatDetails& Details(SDL_Surface_ctx& surface) {
+    const SDL_PixelFormatDetails* fmt = ::SDL_GetPixelFormatDetails(surface->format);
+    if(not fmt) throw std::runtime_error(std::string("CD::Details: ") + SDL_GetError());
+    return *fmt;
+}
+
 Uint32 getpixel(SDL_Surface_ctx& surface, int x, int y) {
     static_assert(SDL_BYTEORDER == SDL_LIL_ENDIAN || SDL_BYTEORDER == SDL_BIG_ENDIAN, "Unsupported endianess");
-    const SDL_PixelFormat& fmt = *surface->format;
     // Get the bit depth of the surface
-    int bpp = fmt.BytesPerPixel;
+    int bpp = Details(surface).bytes_per_pixel;
 
     /* Here p is the address to the pixel we want to retrieve */
     auto p = static_cast<Uint8*>(surface->pixels) + y * surface->pitch + x * bpp;
@@ -51,7 +58,9 @@ SDL_Color getcolor(SDL_Surface_ctx& surface, int x, int y) {
     Uint32 pixel = getpixel(surface, x, y);
 
     // Extract the color
-    ::SDL_GetRGBA(pixel, surface->format, &rgb.r, &rgb.g, &rgb.b, &rgb.a);
+    /*SDL3 takes the format description and the palette separately. Nothing
+    here loads a paletted image, so there is no palette to pass.*/
+    ::SDL_GetRGBA(pixel, &Details(surface), ::SDL_GetSurfacePalette(surface), &rgb.r, &rgb.g, &rgb.b, &rgb.a);
 
     return rgb;
 }

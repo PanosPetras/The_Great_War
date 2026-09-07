@@ -20,11 +20,11 @@ MainWindow::MainWindow() : renderer(window), scr(std::make_unique<MainMenu>(*thi
 }
 
 void MainWindow::MainLoop() {
-    Uint32 previous = SDL_GetTicks();
+    Uint64 previous = SDL_GetTicks();
 
     while(!quit) {
-        const Uint32 now = SDL_GetTicks();
-        const Uint32 elapsed = now - previous;
+        const Uint64 now = SDL_GetTicks();
+        const Uint32 elapsed = static_cast<Uint32>(now - previous);
 
         /*With vsync on, SDL_RenderPresent does the waiting for us. Without it
         we have to honour the framerate cap ourselves, and yield rather than
@@ -84,39 +84,39 @@ void MainWindow::ChangeScreen(std::unique_ptr<Screen> NewScreen) {
 void MainWindow::Keyboard() {
     // message processing loop
     SDL_Event event;
-    const auto& keysymr = event.key.keysym.sym;
+    const auto& scancode = event.key.scancode;
 
     while(SDL_PollEvent(&event)) {
         // check for messages
         switch(event.type) {
-        case SDL_KEYDOWN: {
-            switch(keysymr) {
-            case SDLK_ESCAPE:
-                KEYS[static_cast<unsigned>(keysymr)] = true;
+        case SDL_EVENT_KEY_DOWN: {
+            switch(scancode) {
+            case SDL_SCANCODE_ESCAPE:
+                KEYS[scancode] = true;
                 break;
             default:
                 break;
             }
             break;
         }
-        case SDL_KEYUP: {
-            switch(keysymr) {
-            case SDLK_ESCAPE:
-                KEYS[static_cast<unsigned>(keysymr)] = false;
+        case SDL_EVENT_KEY_UP: {
+            switch(scancode) {
+            case SDL_SCANCODE_ESCAPE:
+                KEYS[scancode] = false;
                 break;
             default:
                 break;
             }
             break;
         }
-        case SDL_WINDOWEVENT:
-            if(event.window.event == SDL_WINDOWEVENT_CLOSE) {
-                Quit();
-            }
+        /*SDL3 split SDL_WINDOWEVENT into an event type per window event, so
+        the close request arrives as its own type rather than as a field.*/
+        case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
+            Quit();
             break;
         // exit if the window is closed
-        case SDL_QUIT:
-            KEYS[SDLK_ESCAPE] = true;
+        case SDL_EVENT_QUIT:
+            KEYS[SDL_SCANCODE_ESCAPE] = true;
             break;
         default:
             break;
@@ -151,11 +151,11 @@ int MainWindow::Height() const {
     return GetWindowDimensions().y;
 }
 
-bool MainWindow::SetResolution(unsigned resolution, bool Vsync, Uint32 fullscreen_flags) {
+bool MainWindow::SetResolution(unsigned resolution, bool Vsync, bool Fullscreen) {
     auto& res = Resolutions::SUPPORTED_RESOLUTIONS.at(resolution);
 
-    if(window.SetFullScreen(fullscreen_flags) == false) {
-        std::cerr << "MainWindow::SetResolution window.SetFullScreen " << fullscreen_flags << " failed\n";
+    if(window.SetFullScreen(Fullscreen) == false) {
+        std::cerr << "MainWindow::SetResolution window.SetFullScreen " << Fullscreen << " failed\n";
         return false;
     }
     if(renderer.SetVSync(Vsync) == false) {
@@ -168,7 +168,7 @@ bool MainWindow::SetResolution(unsigned resolution, bool Vsync, Uint32 fullscree
     }
 
     vsync = Vsync;
-    fullscreen = fullscreen_flags;
+    fullscreen = Fullscreen;
     framerateCap = Resolutions::SUPPORTED_FRAMERATES[resolution];
 
     return true;
@@ -193,10 +193,10 @@ FontRef MainWindow::TTF_OpenFont(const std::string& filename, int ptsize) {
     return FontRef(newit->second);
 }
 
-ChunkRef MainWindow::Mix_LoadWAV(const std::string& filename) {
-    if(auto it = file_chunks.find(filename); it != file_chunks.end()) {
-        return ChunkRef(it->second);
+SoundRef MainWindow::LoadSound(const std::string& filename) {
+    if(auto it = file_sounds.find(filename); it != file_sounds.end()) {
+        return &it->second;
     }
-    auto [newit, inserted] = file_chunks.emplace(filename, filename);
-    return ChunkRef(newit->second);
+    auto [newit, inserted] = file_sounds.emplace(std::piecewise_construct, std::forward_as_tuple(filename), std::forward_as_tuple(audio_ctx, filename));
+    return &newit->second;
 }

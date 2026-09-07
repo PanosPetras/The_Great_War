@@ -4,7 +4,7 @@
 #include "Label.h"
 #include "MainWindow.h"
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, std::string defaultText, int maxCharacters) : TextEntry(mw, X, Y, Width, Height, top_left, defaultText, maxCharacters) {}
 
 TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, std::string defaultText, std::string Hint, int maxCharacters) : TextEntry(mw, X, Y, Width, Height, top_left, defaultText, Hint, maxCharacters) {}
@@ -20,7 +20,7 @@ TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, Anchor
 
 void TextEntry::HandleInput(const SDL_Event& ev) {
     if(IsActive()) {
-        if(ev.type == SDL_MOUSEBUTTONDOWN) {
+        if(ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
             if(ev.button.x >= background->draw_rect.x && ev.button.x <= (background->draw_rect.x + background->draw_rect.w) && ev.button.y >= background->draw_rect.y &&
                ev.button.y <= (background->draw_rect.y + background->draw_rect.h)) {
                 focused = true;
@@ -30,16 +30,16 @@ void TextEntry::HandleInput(const SDL_Event& ev) {
         }
 
         if(focused) {
-            if(ev.type == SDL_KEYDOWN) {
-                if(ev.key.keysym.sym >= SDLK_a && ev.key.keysym.sym <= SDLK_z) {
-                    text += char('a' + ev.key.keysym.sym - SDLK_a);
+            if(ev.type == SDL_EVENT_KEY_DOWN) {
+                if(ev.key.key >= SDLK_A && ev.key.key <= SDLK_Z) {
+                    text += char('a' + ev.key.key - SDLK_A);
 
                     ChangeText(text);
-                } else if(ev.key.keysym.sym >= SDLK_0 && ev.key.keysym.sym <= SDLK_9) {
-                    text += char('0' + ev.key.keysym.sym - SDLK_0);
+                } else if(ev.key.key >= SDLK_0 && ev.key.key <= SDLK_9) {
+                    text += char('0' + ev.key.key - SDLK_0);
 
                     ChangeText(text);
-                } else if(ev.key.keysym.sym == SDLK_BACKSPACE) {
+                } else if(ev.key.key == SDLK_BACKSPACE) {
                     if(text.size() > 0) {
                         text.pop_back();
 

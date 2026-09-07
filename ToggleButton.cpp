@@ -9,7 +9,7 @@ ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, 
     ToggleButton(mw, x, y, Width, Height, activeImage, inactiveImage, top_left, val, f, keybind) {}
 
 ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, std::function<void(bool)> f, int keybind) :
-    InputDrawable(anchor), main_window(&mw), music(::Mix_LoadWAV("Sounds/ButtonClick.mp3")) {
+    InputDrawable(anchor), main_window(&mw), music(mw.LoadSound("Sounds/ButtonClick.wav")) {
     // Set the default values
     bHovered = false;
     value = false;
@@ -33,17 +33,16 @@ ToggleButton::ToggleButton(MainWindow& mw, [[maybe_unused]] int x, [[maybe_unuse
     value = val;
 }
 
-ToggleButton::~ToggleButton() {
-    // Free up the memory
-    Mix_FreeChunk(music);
-}
+/*The window owns every sound and hands out non-owning references to them, so
+there is nothing here left to free.*/
+ToggleButton::~ToggleButton() = default;
 
 void ToggleButton::pDraw() {
     // Drawing the toggle button
     if(!value) {
-        SDL_RenderCopy(*main_window, inactiveTexture, nullptr, &draw_rect);
+        RenderTexture(*main_window, inactiveTexture, draw_rect);
     } else {
-        SDL_RenderCopy(*main_window, activeTexture, nullptr, &draw_rect);
+        RenderTexture(*main_window, activeTexture, draw_rect);
     }
 }
 
@@ -59,7 +58,7 @@ void ToggleButton::HandleInput(const SDL_Event& ev) {
             }
 
             // react on mouse click within button rectangle
-            if(ev.type == SDL_MOUSEBUTTONDOWN) {
+            if(ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
                 Click();
             }
         }
@@ -70,7 +69,7 @@ void ToggleButton::HandleInput(const SDL_Event& ev) {
             SDL_SetTextureColorMod(activeTexture, 255, 255, 255);
         }
         if(key) {
-            if(ev.type == SDL_KEYDOWN && ev.key.keysym.sym == key) {
+            if(ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == static_cast<SDL_Keycode>(key)) {
                 Click();
             }
         }
@@ -118,7 +117,7 @@ void ToggleButton::ChangeValue(bool val) {
 }
 
 void ToggleButton::Playsound() {
-    Mix_PlayChannel(1, music, 0);
+    if(music) music->Play();
 }
 
 void ToggleButton::CallBoundFunction() {

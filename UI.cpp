@@ -14,14 +14,14 @@ UI::UI(MainWindow& mw, const char* tag, PlayerController* PC, std::function<void
 
     // The country management tabs
     std::string flg = std::string("Flags/") + tag;
-    flag = std::make_unique<Button>(mw, int(Width * 0.005), int(Height * 0.005), int(Width * 0.05), int(Height * 0.05), flg.c_str(), nullptr, SDLK_q);
+    flag = std::make_unique<Button>(mw, int(Width * 0.005), int(Height * 0.005), int(Width * 0.05), int(Height * 0.05), flg.c_str(), nullptr, SDLK_Q);
 
-    Buttons[0] = std::make_unique<Button>(mw, int(Width * 0.1), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Technology", nullptr, SDLK_w);
-    Buttons[1] = std::make_unique<Button>(mw, int(Width * 0.15), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Economy", [this] { OpenEconomyScreen(); }, SDLK_e);
-    Buttons[3] = std::make_unique<Button>(mw, int(Width * 0.2), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Industry", [this] { OpenIndustryScreen(); }, SDLK_r);
-    Buttons[2] = std::make_unique<Button>(mw, int(Width * 0.25), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Trade", [this] { OpenTradeScreen(); }, SDLK_t);
-    Buttons[4] = std::make_unique<Button>(mw, int(Width * 0.3), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Diplomacy", [this] { OpenDiplomacyScreen(); }, SDLK_y);
-    Buttons[5] = std::make_unique<Button>(mw, int(Width * 0.35), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Military", nullptr, SDLK_u);
+    Buttons[0] = std::make_unique<Button>(mw, int(Width * 0.1), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Technology", nullptr, SDLK_W);
+    Buttons[1] = std::make_unique<Button>(mw, int(Width * 0.15), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Economy", [this] { OpenEconomyScreen(); }, SDLK_E);
+    Buttons[3] = std::make_unique<Button>(mw, int(Width * 0.2), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Industry", [this] { OpenIndustryScreen(); }, SDLK_R);
+    Buttons[2] = std::make_unique<Button>(mw, int(Width * 0.25), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Trade", [this] { OpenTradeScreen(); }, SDLK_T);
+    Buttons[4] = std::make_unique<Button>(mw, int(Width * 0.3), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Diplomacy", [this] { OpenDiplomacyScreen(); }, SDLK_Y);
+    Buttons[5] = std::make_unique<Button>(mw, int(Width * 0.35), 0, int(Width * 0.032), int(Height * 0.05), "Buttons/UI/Military", nullptr, SDLK_U);
 
     flagbg = std::make_unique<Image>(mw, "Backgrounds/FlagBg.png", 0, 0, int(Width * 0.06), int(Height * 0.06));
 

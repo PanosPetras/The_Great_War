@@ -1,10 +1,8 @@
 #pragma once
 
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <SDL_thread.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include <memory>
 #include <stdexcept>
@@ -102,14 +100,21 @@ public:
     ~IMG_Init_ctx();
 };
 
-class MIX_ctx {
+/*The playback device every sound is mixed into. SDL mixes the streams bound
+to a device for us, so this replaces what SDL_mixer's channels used to do.*/
+class SDL_Audio_ctx {
 public:
-    MIX_ctx();
-    MIX_ctx(const MIX_ctx&) = delete;
-    MIX_ctx(MIX_ctx&&) noexcept = default;
-    MIX_ctx& operator=(const MIX_ctx&) = delete;
-    MIX_ctx& operator=(MIX_ctx&&) noexcept = default;
-    ~MIX_ctx();
+    SDL_Audio_ctx();
+    SDL_Audio_ctx(const SDL_Audio_ctx&) = delete;
+    SDL_Audio_ctx(SDL_Audio_ctx&&) noexcept = default;
+    SDL_Audio_ctx& operator=(const SDL_Audio_ctx&) = delete;
+    SDL_Audio_ctx& operator=(SDL_Audio_ctx&&) noexcept = default;
+    ~SDL_Audio_ctx();
+
+    inline SDL_AudioDeviceID Device() const { return device; }
+
+private:
+    SDL_AudioDeviceID device;
 };
 //-----------------------------------------------------------------------------
 class TTF_Font_ctx {
@@ -144,7 +149,10 @@ public:
     ~SDL_Window_ctx() = default;
 
     inline const SDL_Point& GetWindowDimensions() const { return windim; }
-    bool SetFullScreen(Uint32 flags); // SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP or 0
+    /*SDL3 has a single fullscreen mode - a window is either fullscreen at the
+    display's current mode or it is not, so this takes a bool rather than the
+    SDL_WINDOW_FULLSCREEN / SDL_WINDOW_FULLSCREEN_DESKTOP flags SDL2 wanted.*/
+    bool SetFullScreen(bool on);
     bool SetSize(int width, int height);
 
     SDL_Window* operator->();
@@ -187,7 +195,7 @@ public:
     operator SDL_Cursor*();
 
 private:
-    std::unique_ptr<SDL_Cursor, decltype(&SDL_FreeCursor)> cursor;
+    std::unique_ptr<SDL_Cursor, decltype(&SDL_DestroyCursor)> cursor;
 };
 
 class SDL_Surface_ctx {
@@ -203,7 +211,6 @@ public:
     operator SDL_Surface*();
     inline explicit operator bool() const { return static_cast<bool>(surface); }
 
-    static SDL_Surface_ctx CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask);
     static SDL_Surface_ctx IMG_Load(const std::string& filename);
     static SDL_Surface_ctx TTF_RenderText_Blended(TTF_Font_ctx& cont, const std::string& text, SDL_Color fg);
     static SDL_Surface_ctx TTF_RenderText_Blended_Wrapped(TTF_Font_ctx& font, const std::string& text, SDL_Color fg, Uint32 wrapLength);
@@ -211,7 +218,7 @@ public:
 private:
     SDL_Surface_ctx(SDL_Surface*); // take ownership of a raw pointer
 
-    std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surface;
+    std::unique_ptr<SDL_Surface, decltype(&SDL_DestroySurface)> surface;
 };
 
 class SDL_Texture_ctx {
@@ -236,24 +243,44 @@ private:
 };
 using TextureRef = promiscuous_ref<SDL_Texture_ctx, SDL_Texture>;
 //-----------------------------------------------------------------------------
-class MIX_Chunk_ctx {
+/*A sound effect, decoded once and kept in memory. Each one owns the stream it
+plays through, which is what lets two sounds overlap without SDL_mixer's fixed
+set of channels to allocate them out of.*/
+class SDL_Sound_ctx {
 public:
-    MIX_Chunk_ctx(); // no sound loaded
-    explicit MIX_Chunk_ctx(std::string_view filename);
+    SDL_Sound_ctx(); // no sound loaded
+    SDL_Sound_ctx(SDL_Audio_ctx& audio, const std::string& filename);
 
-    MIX_Chunk_ctx(const MIX_Chunk_ctx&) = delete;
-    MIX_Chunk_ctx(MIX_Chunk_ctx&&) noexcept = default;
-    MIX_Chunk_ctx& operator=(const MIX_Chunk_ctx&) = delete;
-    MIX_Chunk_ctx& operator=(MIX_Chunk_ctx&&) noexcept = default;
-    ~MIX_Chunk_ctx() = default;
+    SDL_Sound_ctx(const SDL_Sound_ctx&) = delete;
+    SDL_Sound_ctx(SDL_Sound_ctx&&) noexcept = default;
+    SDL_Sound_ctx& operator=(const SDL_Sound_ctx&) = delete;
+    SDL_Sound_ctx& operator=(SDL_Sound_ctx&&) noexcept = default;
+    ~SDL_Sound_ctx() = default;
 
-    int PlayChannel(int channel, int loops);
-
-    Mix_Chunk* operator->();
-    operator Mix_Chunk*();
+    /*Plays the sound from the start, cutting short whatever was left of a
+    previous play of this same sound - the button click SDL_mixer used to
+    restart on its one channel behaves the same way.*/
+    bool Play();
 
 private:
-    std::unique_ptr<Mix_Chunk, decltype(&Mix_FreeChunk)> music;
+    struct Free {
+        void operator()(Uint8* p) const { SDL_free(p); }
+    };
+
+    std::unique_ptr<Uint8, Free> buffer;
+    Uint32 length = 0;
+    std::unique_ptr<SDL_AudioStream, decltype(&SDL_DestroyAudioStream)> stream;
 };
-using ChunkRef = promiscuous_ref<MIX_Chunk_ctx, Mix_Chunk>;
+/*Sounds have no raw SDL counterpart to convert to any more, so a plain
+non-owning pointer is all a reference to one needs to be.*/
+using SoundRef = SDL_Sound_ctx*;
+//-----------------------------------------------------------------------------
+/*SDL3 draws into float rectangles. The UI lays itself out in whole pixels, so
+these convert at the point of drawing rather than spreading floats through it.*/
+inline SDL_FRect ToFRect(const SDL_Rect& r) {
+    return SDL_FRect{static_cast<float>(r.x), static_cast<float>(r.y), static_cast<float>(r.w), static_cast<float>(r.h)};
+}
+
+// SDL_RenderCopy's replacement, taking the integer rectangle the UI holds
+bool RenderTexture(SDL_Renderer* renderer, SDL_Texture* texture, const SDL_Rect& dst);
 //-----------------------------------------------------------------------------

@@ -9,8 +9,8 @@
 #include "SDL_ctx.h"
 #include "Stockpile.h"
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 #include <array>
 #include <functional>
@@ -164,10 +164,26 @@ private:
     void HandleScroll(const SDL_MouseWheelEvent& wheel);
     bool IsTrackpadScroll(const SDL_MouseWheelEvent& wheel);
 
+    /*Zooming by pinch. SDL3 has no gesture API, so the fingers that make up a
+    pinch are followed here - see the definition.*/
+    void HandlePinch(const SDL_Event& ev);
+
+    // The two fingers a pinch is measured between, and how far apart they were
+    struct Finger {
+        SDL_FingerID id;
+        float x;
+        float y;
+    };
+    std::array<Finger, 2> fingers{};
+    int fingerCount = 0;
+    float PinchDistance = 0;
+
     /*When a scroll last looked like it came from a trackpad, and how long a
-    device is taken to still be one - see IsTrackpadScroll.*/
-    Uint32 LastTrackpadScrollMs = 0;
-    static constexpr Uint32 TrackpadScrollMemoryMs = 600;
+    device is taken to still be one - see IsTrackpadScroll. SDL3 stamps events
+    in nanoseconds rather than the milliseconds SDL2 used, so both are kept in
+    nanoseconds to compare against an event's timestamp directly.*/
+    Uint64 LastTrackpadScrollNs = 0;
+    static constexpr Uint64 TrackpadScrollMemoryNs = 600 * SDL_NS_PER_MS;
 
     // Draws the map itself, repeated across as much of the screen as it takes
     void RenderMap();

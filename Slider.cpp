@@ -2,7 +2,7 @@
 
 #include "MainWindow.h"
 
-#include <SDL_image.h>
+#include <SDL3_image/SDL_image.h>
 
 #include <iostream>
 
@@ -32,21 +32,22 @@ void Slider::pDraw() {
     // Drawing the slider
     // Draw the slider's background
     SDL_SetRenderDrawColor(*main_window, 48, 48, 48, 255);
-    SDL_RenderFillRect(*main_window, &bg_rect);
+    const SDL_FRect bg_frect = ToFRect(bg_rect);
+    SDL_RenderFillRect(*main_window, &bg_frect);
     SDL_SetRenderDrawColor(*main_window, 0, 0, 0, 255);
 
     // Draw the slider's marker
-    SDL_RenderCopy(*main_window, Marker, nullptr, &marker_rect);
+    RenderTexture(*main_window, Marker, marker_rect);
 }
 
 void Slider::HandleInput(const SDL_Event& ev) {
     if(IsActive()) {
         // Check if the user is handling the slider
-        if(ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT && bmousepressed == false) {
+        if(ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN && ev.button.button == SDL_BUTTON_LEFT && bmousepressed == false) {
             if(ev.button.x >= marker_rect.x && ev.button.x <= marker_rect.x + marker_rect.w && ev.button.y > marker_rect.y && ev.button.y < marker_rect.h + marker_rect.y) {
                 bmousepressed = true;
             }
-        } else if(ev.type == SDL_MOUSEBUTTONUP && ev.button.button == SDL_BUTTON_LEFT && bmousepressed == true) {
+        } else if(ev.type == SDL_EVENT_MOUSE_BUTTON_UP && ev.button.button == SDL_BUTTON_LEFT && bmousepressed == true) {
             bmousepressed = false;
         }
 

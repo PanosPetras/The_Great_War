@@ -14,7 +14,7 @@ Label::Label(MainWindow& mw, std::string Text, FontSize size, int X, int Y, Uint
 
 void Label::pDraw() {
     // Copy the text texture to the screen
-    SDL_RenderCopy(*main_window, texture, nullptr, &draw_rect);
+    RenderTexture(*main_window, texture, draw_rect);
 }
 
 void Label::ChangeText(std::string Text) {
@@ -48,12 +48,12 @@ void Label::ChangePosition(int X, int Y) {
     x = X;
     y = Y;
 
-    // Setting the texture size
-    int texW, texH;
-
-    // Create the rectangle that will express the size of the texture we created
-    SDL_QueryTexture(texture, nullptr, nullptr, &texW, &texH);
-    draw_rect = {x, y, texW, texH};
+    /*Setting the texture size. SDL3 replaced SDL_QueryTexture with a call
+    that reports the size in floats, but a rendered glyph run is a whole
+    number of pixels, so the layout stays in integers.*/
+    float texW, texH;
+    SDL_GetTextureSize(texture, &texW, &texH);
+    draw_rect = {x, y, static_cast<int>(texW), static_cast<int>(texH)};
 
     ApplyAnchor(draw_rect, dAnchor);
 }

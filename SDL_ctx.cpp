@@ -4,7 +4,7 @@
 
 //-----------------------------------------------------------------------------
 SDL_Init_ctx::SDL_Init_ctx() {
-    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+    if(not SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) throw std::runtime_error(std::string("SDL_Init_ctx: ") + SDL_GetError());
 }
 
 SDL_Init_ctx::~SDL_Init_ctx() {
@@ -12,39 +12,38 @@ SDL_Init_ctx::~SDL_Init_ctx() {
 }
 //-----------------------------------------------------------------------------
 TTF_Init_ctx::TTF_Init_ctx() {
-    TTF_Init();
+    if(not TTF_Init()) throw std::runtime_error(std::string("TTF_Init_ctx: ") + SDL_GetError());
 }
 
 TTF_Init_ctx::~TTF_Init_ctx() {
     TTF_Quit();
 }
 //-----------------------------------------------------------------------------
-IMG_Init_ctx::IMG_Init_ctx() {
-    IMG_Init(0);
-}
+/*SDL3_image loads its decoders on demand, so IMG_Init and IMG_Quit are gone.
+The class stays so that the order of initialisation in MainWindow still reads
+the same, and so that a future need to preload a decoder has a home.*/
+IMG_Init_ctx::IMG_Init_ctx() = default;
 
-IMG_Init_ctx::~IMG_Init_ctx() {
-    IMG_Quit();
-}
+IMG_Init_ctx::~IMG_Init_ctx() = default;
 //-----------------------------------------------------------------------------
-MIX_ctx::MIX_ctx() {
-    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    Mix_AllocateChannels(2);
+SDL_Audio_ctx::SDL_Audio_ctx() : device(SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr)) {
+    if(device == 0) throw std::runtime_error(std::string("SDL_Audio_ctx: ") + SDL_GetError());
+
+    // Harmless if it is already playing, and spares us depending on the default
+    SDL_ResumeAudioDevice(device);
 }
 
-MIX_ctx::~MIX_ctx() {
-    Mix_Quit();
+SDL_Audio_ctx::~SDL_Audio_ctx() {
+    SDL_CloseAudioDevice(device);
 }
 //=============================================================================
 // SDL
 //=============================================================================
 SDL_Window_ctx::SDL_Window_ctx() :
-    window(SDL_CreateWindow("The Great War",         // window title
-                            SDL_WINDOWPOS_UNDEFINED, // initial x position
-                            SDL_WINDOWPOS_UNDEFINED, // initial y position
-                            1920,                    // width, in pixels
-                            1080,                    // height, in pixels
-                            SDL_WINDOW_OPENGL        //| SDL_WINDOW_FULLSCREEN                  // flags - see below
+    window(SDL_CreateWindow("The Great War", // window title
+                            1920,           // width, in pixels
+                            1080,           // height, in pixels
+                            SDL_WINDOW_OPENGL //| SDL_WINDOW_FULLSCREEN            // flags - see below
                             ),
            &SDL_DestroyWindow)
 // 2560x1440, 1920x1080, 1280x720
@@ -54,13 +53,13 @@ SDL_Window_ctx::SDL_Window_ctx() :
     ::SDL_GetWindowSize(*this, &windim.x, &windim.y);
 }
 
-bool SDL_Window_ctx::SetFullScreen(Uint32 flags) {
-    return ::SDL_SetWindowFullscreen(*this, flags) == 0;
+bool SDL_Window_ctx::SetFullScreen(bool on) {
+    return ::SDL_SetWindowFullscreen(*this, on);
 }
 
 bool SDL_Window_ctx::SetSize(int width, int height) {
     if(width < 1 || height < 1) return false;
-    ::SDL_SetWindowSize(*this, width, height);
+    if(not ::SDL_SetWindowSize(*this, width, height)) return false;
     ::SDL_GetWindowSize(*this, &windim.x, &windim.y);
     return width == windim.x && height == windim.y;
 }
@@ -72,12 +71,15 @@ SDL_Window_ctx::operator SDL_Window*() {
     return window.get();
 }
 //-----------------------------------------------------------------------------
-SDL_Renderer_ctx::SDL_Renderer_ctx(SDL_Window_ctx& window) : renderer(SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), &SDL_DestroyRenderer) {
-    if(not renderer) throw std::runtime_error("SDL_Renderer_ctx");
+/*SDL3 picks the driver itself - there is no accelerated flag to ask for, and
+vsync moved off creation onto the renderer, so it is set right afterwards.*/
+SDL_Renderer_ctx::SDL_Renderer_ctx(SDL_Window_ctx& window) : renderer(SDL_CreateRenderer(window, nullptr), &SDL_DestroyRenderer) {
+    if(not renderer) throw std::runtime_error(std::string("SDL_Renderer_ctx: ") + SDL_GetError());
+    SetVSync(true);
 }
 
 bool SDL_Renderer_ctx::SetVSync(bool on) {
-    return ::SDL_RenderSetVSync(*this, on) == 0;
+    return ::SDL_SetRenderVSync(*this, on ? 1 : SDL_RENDERER_VSYNC_DISABLED);
 }
 
 SDL_Renderer* SDL_Renderer_ctx::operator->() {
@@ -92,9 +94,9 @@ inline static SDL_Surface* Check(const std::string& txt, SDL_Surface* p) {
     return p;
 }
 
-SDL_Surface_ctx::SDL_Surface_ctx() : surface(nullptr, &SDL_FreeSurface) {}
+SDL_Surface_ctx::SDL_Surface_ctx() : surface(nullptr, &SDL_DestroySurface) {}
 SDL_Surface_ctx::SDL_Surface_ctx(SDL_Surface* s) : // private...
-    surface(s, &SDL_FreeSurface)                   // ...so no Check needed
+    surface(s, &SDL_DestroySurface)                   // ...so no Check needed
 {}
 
 // The two operators need to be check since we need to be able to default construct
@@ -106,17 +108,14 @@ SDL_Surface_ctx::operator SDL_Surface*() {
     return Check("operator SDL_Surface*", surface.get());
 }
 
-SDL_Surface_ctx SDL_Surface_ctx::CreateRGBSurface(Uint32 flags, int width, int height, int depth, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask) {
-    return Check("CreateRGBSurface", ::SDL_CreateRGBSurface(flags, width, height, depth, Rmask, Gmask, Bmask, Amask));
-}
 SDL_Surface_ctx SDL_Surface_ctx::IMG_Load(const std::string& filename) {
     return Check("IMG_Load(" + filename + ')', ::IMG_Load(filename.c_str()));
 }
 SDL_Surface_ctx SDL_Surface_ctx::TTF_RenderText_Blended(TTF_Font_ctx& font, const std::string& text, SDL_Color fg) {
-    return Check("TTF_RenderText_Blended", ::TTF_RenderText_Blended(font, text.c_str(), fg));
+    return Check("TTF_RenderText_Blended", ::TTF_RenderText_Blended(font, text.data(), text.size(), fg));
 }
 SDL_Surface_ctx SDL_Surface_ctx::TTF_RenderText_Blended_Wrapped(TTF_Font_ctx& font, const std::string& text, SDL_Color fg, Uint32 wrapLength) {
-    return Check("TTF_RenderText_Blended_Wrapped", ::TTF_RenderText_Blended_Wrapped(font, text.c_str(), fg, wrapLength));
+    return Check("TTF_RenderText_Blended_Wrapped", ::TTF_RenderText_Blended_Wrapped(font, text.data(), text.size(), fg, static_cast<int>(wrapLength)));
 }
 //-----------------------------------------------------------------------------
 SDL_Cursor_ctx::SDL_Cursor_ctx() :
@@ -125,7 +124,7 @@ SDL_Cursor_ctx::SDL_Cursor_ctx() :
             auto surface = SDL_Surface_ctx::IMG_Load("Icons/mouse.png");
             return ::SDL_CreateColorCursor(surface, 1, 1);
         }(),
-        &SDL_FreeCursor) {
+        &SDL_DestroyCursor) {
     if(not cursor) throw std::runtime_error("SDL_Cursor_ctx");
     SDL_SetCursor(*this);
 }
@@ -168,19 +167,41 @@ TTF_Font_ctx::operator TTF_Font*() {
     return font.get();
 }
 //=============================================================================
-// MIX
+// Audio
 //=============================================================================
-MIX_Chunk_ctx::MIX_Chunk_ctx() : music(nullptr, &Mix_FreeChunk) {}
-MIX_Chunk_ctx::MIX_Chunk_ctx(std::string_view filename) : music(Mix_LoadWAV(filename.data()), &Mix_FreeChunk) {}
+SDL_Sound_ctx::SDL_Sound_ctx() : stream(nullptr, &SDL_DestroyAudioStream) {}
 
-int MIX_Chunk_ctx::PlayChannel(int channel, int loops) {
-    return Mix_PlayChannel(channel, music.get(), loops);
+SDL_Sound_ctx::SDL_Sound_ctx(SDL_Audio_ctx& audio, const std::string& filename) : buffer(nullptr), stream(nullptr, &SDL_DestroyAudioStream) {
+    SDL_AudioSpec spec;
+    Uint8* buf = nullptr;
+
+    if(not SDL_LoadWAV(filename.c_str(), &spec, &buf, &length)) {
+        throw std::runtime_error("SDL_Sound_ctx: SDL_LoadWAV(" + filename + "): " + SDL_GetError());
+    }
+    buffer.reset(buf);
+
+    /*Binding the stream to the device is what makes SDL convert the sound to
+    whatever format the device actually wants, so the source format is all we
+    have to describe here.*/
+    stream.reset(SDL_CreateAudioStream(&spec, &spec));
+    if(not stream) throw std::runtime_error(std::string("SDL_Sound_ctx: SDL_CreateAudioStream: ") + SDL_GetError());
+
+    if(not SDL_BindAudioStream(audio.Device(), stream.get())) {
+        throw std::runtime_error(std::string("SDL_Sound_ctx: SDL_BindAudioStream: ") + SDL_GetError());
+    }
 }
 
-Mix_Chunk* MIX_Chunk_ctx::operator->() {
-    return music.get();
+bool SDL_Sound_ctx::Play() {
+    if(not stream) return false;
+
+    // Drop whatever is still queued, so a rapid second click restarts the sound
+    if(not SDL_ClearAudioStream(stream.get())) return false;
+
+    return SDL_PutAudioStreamData(stream.get(), buffer.get(), static_cast<int>(length));
 }
-MIX_Chunk_ctx::operator Mix_Chunk*() {
-    return music.get();
+//-----------------------------------------------------------------------------
+bool RenderTexture(SDL_Renderer* renderer, SDL_Texture* texture, const SDL_Rect& dst) {
+    const SDL_FRect frect = ToFRect(dst);
+    return SDL_RenderTexture(renderer, texture, nullptr, &frect);
 }
 //-----------------------------------------------------------------------------
