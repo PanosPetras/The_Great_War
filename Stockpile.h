@@ -14,9 +14,9 @@ lives in. A name that matches no field fails to compile.*/
 // clang-format off
 #define STOCKPILE_GOODS(X)                                               \
     X(Coal) X(Oil) X(Timber) X(Rubber) X(Cotton) X(Iron) X(Copper)       \
-    X(Nitrates) X(Grain) X(Fruit)                                        \
+    X(Bauxite) X(Nitrates) X(Grain) X(Fruit)                             \
     X(Steel) X(Aluminum) X(Electric_gear) X(Machine_parts) X(Engines)    \
-    X(Boilers) X(Glass) X(Lumber) X(Cement)                              \
+    X(Boilers) X(Glass) X(Lumber) X(Cement) X(Canvas)                    \
     X(Ammunition) X(Planes) X(Explosives) X(Small_arms) X(Artillery)     \
     X(Tanks) X(Canned_food) X(Furniture) X(Clothes) X(Automobiles)       \
     X(Merchant_ships) X(Radios) X(Telephones) X(Fuel) X(Paper) X(Liquor) \
@@ -27,7 +27,7 @@ lives in. A name that matches no field fails to compile.*/
 file lists them. Money is deliberately not one of them: it is not produced,
 consumed or priced the way a good is, so it stays a field of its own.
 
-The first ten are what comes out of the ground. States produce only those, so
+The first eleven are what comes out of the ground. States produce only those, so
 they lead the list and a state's output can be an array that stops at Fruit.*/
 enum class Good {
 #define STOCKPILE_GOOD_ENUMERATOR(name) name,
@@ -51,6 +51,7 @@ struct Stockpile {
     int Cotton = 0;
     int Iron = 0;
     int Copper = 0;
+    int Bauxite = 0;
     int Nitrates = 0;
     int Grain = 0;
     int Fruit = 0;
@@ -63,6 +64,7 @@ struct Stockpile {
     int Glass = 0;
     int Lumber = 0;
     int Cement = 0;
+    int Canvas = 0;
     int Ammunition = 0;
     int Planes = 0;
     int Explosives = 0;
