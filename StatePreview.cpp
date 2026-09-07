@@ -6,6 +6,34 @@
 #include "MainWindow.h"
 #include "PlayerController.h"
 
+#include <cstddef>
+
+namespace {
+/*Backgrounds/StatePreview.png is painted at 384x486 and hung in the bottom
+left corner of a 1920x1080 window, so a pixel on the parchment is a pixel on
+that window. The numbers below are in those pixels and are scaled to whatever
+the window is, which keeps them on the icons they belong to.*/
+constexpr int ArtWidth = 1920;
+constexpr int ArtHeight = 1080;
+
+// Where the top of the parchment lands, 0.55 of the way down the window
+constexpr int PanelTop = 594;
+
+/*The raw goods a state produces, painted as three columns of icons with the
+amount beside each. The order is the order of the enum, so a raw good added to
+the leading run of Good only needs its icon painted into the next free slot.*/
+constexpr int GridLeft = 16;
+constexpr int GridTop = 54;
+constexpr int GridColumns = 3;
+constexpr int ColumnPitch = 120;
+constexpr int RowPitch = 54;
+constexpr int IconSize = 48;
+constexpr int NumberGap = 10;
+
+// The population is counted under the grid, in line with its first column
+constexpr int PopulationTop = 270;
+} // namespace
+
 StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC, const std::array<short int, RawGoodCount>& res, int pop, std::string Factories[4],
                            std::function<void()> CloseFunc, std::function<void(std::unique_ptr<Screen>, std::string)> changeScreenFunc) : Screen(mw), ChangeScreenFunc2(changeScreenFunc), Id(id) {
     auto [Width, Height] = mw.GetWindowDimensions();
@@ -13,15 +41,16 @@ StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, s
     std::string str = "Flags/" + Controller;
 
     AddLabel<Label>(mw, StateName.c_str(), FontSize::Heading, int(0.04 * Width), int(Height * .55), Width);
-    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Timber)]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.6));
-    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Cotton)]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.65));
-    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Fruit)]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.7));
-    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Grain)]).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.75));
-    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Coal)]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.6));
-    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Iron)]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.65));
-    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Oil)]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.7));
-    AddLabel<Label>(mw, std::to_string(res[GoodIndex(Good::Rubber)]).c_str(), FontSize::Heading, int(Width * 0.13), int(Height * 0.75));
-    AddLabel<Label>(mw, std::to_string(pop).c_str(), FontSize::Heading, int(Width * 0.03), int(Height * 0.8));
+
+    // The number beside every raw good's icon, walking the grid a row at a time
+    constexpr int NumberLeft = GridLeft + IconSize + NumberGap;
+    for(std::size_t i = 0; i < RawGoodCount; ++i) {
+        const int x = NumberLeft + int(i % GridColumns) * ColumnPitch;
+        const int y = PanelTop + GridTop + int(i / GridColumns) * RowPitch;
+        AddLabel<Label>(mw, std::to_string(res[i]).c_str(), FontSize::Heading, Width * x / ArtWidth, Height * y / ArtHeight);
+    }
+
+    AddLabel<Label>(mw, std::to_string(pop).c_str(), FontSize::Heading, Width * NumberLeft / ArtWidth, Height * (PanelTop + PopulationTop) / ArtHeight);
 
     AddImage<Image>(mw, "Backgrounds/StatePreview.png", 0, int(Height * .55), int(Width * 0.2), int(Height * 0.45));
 

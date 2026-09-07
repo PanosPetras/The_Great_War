@@ -9,24 +9,37 @@
 #include <cstddef>
 
 namespace {
+/*Backgrounds/Industry1.png is painted at this size, with a wooden plaque per
+good and the right half of every plaque left blank for its number. Positions
+below are in the art's own pixels and are scaled to the window, so a number
+stays on its plaque whatever the window is.*/
+constexpr int ArtWidth = 1920;
+constexpr int ArtHeight = 1080;
+
 struct StockpileLabel {
     // Which good this label displays
     Good good;
 
-    // Position, as a fraction of the window's dimensions
-    double x;
-    double y;
+    // Where its number sits on the background art
+    int x;
+    int y;
 };
 
 /*Where each good is shown on the industry background. This is the single place
 that knows the layout - both the initial labels and every refresh walk this
-table, so the two can no longer drift apart.*/
-constexpr std::array<StockpileLabel, 30> Layout{{
-    {Good::Coal, 0.24, 0.165},         {Good::Iron, 0.365, 0.165},         {Good::Timber, 0.49, 0.165},      {Good::Cotton, 0.615, 0.165},     {Good::Rubber, 0.24, 0.26},         {Good::Oil, 0.365, 0.26},
-    {Good::Lumber, 0.49, 0.26},        {Good::Glass, 0.615, 0.26},         {Good::Grain, 0.74, 0.21},        {Good::Canned_food, 0.24, 0.395}, {Good::Clothes, 0.365, 0.395},      {Good::Liquor, 0.49, 0.395},
-    {Good::Furniture, 0.615, 0.395},   {Good::Paper, 0.24, 0.49},          {Good::Telephones, 0.365, 0.49},  {Good::Fruit, 0.49, 0.49},        {Good::Radios, 0.615, 0.49},        {Good::Automobiles, 0.74, 0.44},
-    {Good::Machine_parts, 0.24, 0.63}, {Good::Electric_gear, 0.365, 0.63}, {Good::Fuel, 0.49, 0.63},         {Good::Cement, 0.615, 0.63},      {Good::Merchant_ships, 0.74, 0.63}, {Good::Small_arms, 0.24, 0.765},
-    {Good::Ammunition, 0.365, 0.765},  {Good::Artillery, 0.49, 0.765},     {Good::Explosives, 0.615, 0.765}, {Good::Tanks, 0.74, 0.765},       {Good::Planes, 0.49, 0.86},         {Good::Airship, 0.365, 0.86},
+table, so the two can no longer drift apart. The rows below are the rows on the
+screen: the raw materials, then what industry makes of them, then what the
+population buys, then what the army takes. A good added here also needs its
+plaque painted onto the background.*/
+constexpr std::array<StockpileLabel, 38> Layout{{
+    {Good::Coal, 341, 78}, {Good::Oil, 581, 78}, {Good::Timber, 821, 78}, {Good::Rubber, 1061, 78}, {Good::Cotton, 1301, 78}, {Good::Iron, 1541, 78},
+    {Good::Copper, 461, 178}, {Good::Bauxite, 701, 178}, {Good::Nitrates, 941, 178}, {Good::Grain, 1181, 178}, {Good::Fruit, 1421, 178},
+    {Good::Steel, 461, 328}, {Good::Aluminum, 701, 328}, {Good::Electric_gear, 941, 328}, {Good::Machine_parts, 1181, 328}, {Good::Engines, 1421, 328},
+    {Good::Boilers, 461, 428}, {Good::Glass, 701, 428}, {Good::Lumber, 941, 428}, {Good::Cement, 1181, 428}, {Good::Canvas, 1421, 428},
+    {Good::Canned_food, 461, 578}, {Good::Clothes, 701, 578}, {Good::Liquor, 941, 578}, {Good::Furniture, 1181, 578}, {Good::Paper, 1421, 578},
+    {Good::Telephones, 461, 678}, {Good::Radios, 701, 678}, {Good::Automobiles, 941, 678}, {Good::Merchant_ships, 1181, 678}, {Good::Fuel, 1421, 678},
+    {Good::Small_arms, 581, 828}, {Good::Ammunition, 821, 828}, {Good::Artillery, 1061, 828}, {Good::Explosives, 1301, 828},
+    {Good::Tanks, 701, 928}, {Good::Planes, 941, 928}, {Good::Airship, 1181, 928},
 }};
 } // namespace
 
@@ -35,7 +48,7 @@ IndustryScreen::IndustryScreen(MainWindow& mw, Country* Pl) : Screen(mw), Player
     auto [Width, Height] = mw.GetWindowDimensions();
 
     for(const auto& [good, x, y] : Layout) {
-        AddLabel<Label>(mw, std::to_string(Player->Stock[good]), FontSize::Heading, int(Width * x), int(Height * y));
+        AddLabel<Label>(mw, std::to_string(Player->Stock[good]), FontSize::Heading, Width * x / ArtWidth, Height * y / ArtHeight);
     }
 }
 
