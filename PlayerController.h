@@ -31,7 +31,7 @@ private:
 
     // Loading data functions
     void InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, const std::vector<Stockpile>& balance);
-    void InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors);
+    void InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors, const std::vector<std::array<short int, RawGoodCount>>& resources);
 
     /*Decode the map assets. These are safe to run off the main thread because
     they only touch SDL_Surfaces, which are plain CPU memory. They must never
