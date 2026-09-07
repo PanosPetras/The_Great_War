@@ -58,8 +58,9 @@ private:
     // Real time that has elapsed but not yet been converted into game days
     Uint32 dayAccumulator = 0;
 
-    // Decoded but not yet uploaded map asset. Released by UploadAssets.
-    SDL_Surface_ctx mapCanvas;
+    /*The decoded map, waiting to be handed to the GPU. Released by
+    UploadAssets - nothing reads the map off the CPU once the texture exists.*/
+    SDL_Surface_ctx map;
 
 public:
     MainWindow* main_window;
@@ -105,9 +106,11 @@ public:
     // The state of the diplomatic relations between every country
     Diplomacy diplo;
 
-    // Some SDL assets needed
+    /*One copy of the world, 5616x2160. GameScreen repeats it to wrap the map
+    horizontally, so there is no need to store the repeats.*/
     SDL_Texture_ctx txt;
-    SDL_Surface_ctx map;
+
+    // Colour-keyed province ids, aligned pixel for pixel with the map above
     SDL_Surface_ctx provinces;
 };
 #endif

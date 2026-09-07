@@ -66,6 +66,43 @@ void GameScreen::Update(Uint32 elapsedMs) {
     }
 }
 
+int GameScreen::WrapX(int x) {
+    x %= MapWidth;
+    return x < 0 ? x + MapWidth : x;
+}
+
+int GameScreen::ScreenX(int worldX) const {
+    return int(std::lround((worldX - Cam_Width) * factor));
+}
+
+int GameScreen::ScreenY(int worldY) const {
+    return int(std::lround((worldY - Cam_Height) * factor));
+}
+
+bool GameScreen::OnMap(int screenY) const {
+    const int y = Cam_Height + int(screenY / factor);
+    return y >= 0 && y < MapHeight;
+}
+
+int GameScreen::VisibleCopies() const {
+    /*The camera starts somewhere inside copy 0, so covering the screen takes
+    one more copy than the view is wide.*/
+    return int(std::ceil(main_window->Width() / factor / MapWidth)) + 1;
+}
+
+void GameScreen::RenderMap() {
+    const int top = ScreenY(0), bottom = ScreenY(MapHeight);
+
+    for(int copy = 0; copy < VisibleCopies(); ++copy) {
+        /*A copy's right edge is the next copy's left edge, computed the same
+        way, so neighbours meet on the exact same pixel and leave no seam.*/
+        const int left = ScreenX(copy * MapWidth), right = ScreenX((copy + 1) * MapWidth);
+
+        SDL_Rect dstrect = {left, top, right - left, bottom - top};
+        SDL_RenderCopy(*main_window, PC->txt, nullptr, &dstrect);
+    }
+}
+
 void GameScreen::RenderBackground() {
     /*Check if the rendered Image must be zoomed.
     If it musn't, then we just cope the image to the surface.
@@ -73,8 +110,7 @@ void GameScreen::RenderBackground() {
     appropriate dimensions, based on the magnification
     factor reiceived from user input*/
     if(bZoom == true) {
-        SDL_Rect dstrect = {int(Cam_Width * -1 * factor), int(Cam_Height * -1 * factor), int(ImgSize[0] * factor), int(factor * ImgSize[1])};
-        SDL_RenderCopy(*main_window, PC->txt, nullptr, &dstrect);
+        RenderMap();
         RenderPin();
     }
 }
@@ -88,13 +124,12 @@ void GameScreen::RenderPin() {
     map pixels and scales with the zoom, and its point lands on the pixel that
     was clicked.*/
     const int size = int(PinSize * factor);
-    const int y = int((pin->y - PinPointY - Cam_Height) * factor);
+    const int y = ScreenY(pin->y - PinPointY);
 
-    /*The map texture is three copies of the world side by side and the camera
-    wraps between them, so the pin is drawn against each copy. The renderer
-    clips away the two that are off screen.*/
-    for(int copy = -1; copy <= 1; ++copy) {
-        SDL_Rect dstrect = {int((pin->x + copy * MapWidth - PinPointX - Cam_Width) * factor), y, size, size};
+    /*The world wraps, so the pin is drawn against every copy of it the camera
+    can see. The renderer clips away the ones that fall off the screen.*/
+    for(int copy = 0; copy < VisibleCopies(); ++copy) {
+        SDL_Rect dstrect = {ScreenX(pin->x + copy * MapWidth - PinPointX), y, size, size};
         SDL_RenderCopy(*main_window, pinTexture, nullptr, &dstrect);
     }
 }
@@ -148,9 +183,12 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
 
     // Handle clicks on the map
     if(ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT) {
-        if(bHasActiveScreen() == false && flag == false && ev.button.y > main_window->Height() * 0.07 && bIsPaused == false && !StateViewingScreen) {
-            int x = Cam_Width + int(ev.button.x / factor) - 5384;
-            int y = Cam_Height + int(ev.button.y / factor);
+        if(bHasActiveScreen() == false && flag == false && ev.button.y > main_window->Height() * 0.07 && bIsPaused == false && !StateViewingScreen && OnMap(ev.button.y)) {
+            /*The province surface is read directly, so the click has to land on
+            it. Wrapping x does that for free; y has nowhere to wrap to, which
+            is what OnMap above checks.*/
+            const int x = WrapX(Cam_Width + int(ev.button.x / factor));
+            const int y = Cam_Height + int(ev.button.y / factor);
 
             Color rgb(CD::getcolor(PC->provinces, x, y));
 
@@ -174,8 +212,8 @@ void GameScreen::Handle_Input(SDL_Event& ev) {
                     std::make_unique<StatePreview>(*main_window, state->State_ID - 1, state->State_Name, state->State_Controller, PC.get(), state->Resources, int(state->State_Population), fcs, close, change);
             }
 
-            // Drop the pin on the clicked pixel, in the map texture's coordinates
-            pin = SDL_Point{x + 5384, y};
+            // Drop the pin on the clicked pixel, in world coordinates
+            pin = SDL_Point{x, y};
         }
     }
 
@@ -216,7 +254,7 @@ void GameScreen::HandleMouseMovement(SDL_Event& ev) {
         SDL_GetRelativeMouseState(&x, &y);
 
         // Moves the camera upwards
-        int lim1 = int((int(ImgSize[1] * factor) - main_window->Height()) / factor);
+        int lim1 = int((int(MapHeight * factor) - main_window->Height()) / factor);
 
         if(mousepressed) {
             if(y > 0 && Cam_Height > 0) {
@@ -233,22 +271,9 @@ void GameScreen::HandleMouseMovement(SDL_Event& ev) {
                 }
             }
 
-            // Moves the camera to the left
-            if(x > 0 && Cam_Width > 0) {
-                Cam_Width -= int((MouseSensitivity * x) / factor);
-                if(Cam_Width < 5384) {
-                    Cam_Width += 5616;
-                }
-            }
-            // Moves the camera to the right
-            else if(x < 0 && Cam_Width) {
-                lim1 = int(11000 - main_window->Width() / 2 / factor);
-
-                Cam_Width += int((MouseSensitivity * x * -1) / factor);
-                if(Cam_Width > lim1) {
-                    Cam_Width -= 5616;
-                }
-            }
+            /*Moves the camera sideways. There is no limit to run into: the
+            world is a cylinder, so the camera just wraps around it.*/
+            Cam_Width = WrapX(Cam_Width - int((MouseSensitivity * x) / factor));
         }
 
         // Change the screen's magnification, albeit the zoom factor
@@ -256,7 +281,7 @@ void GameScreen::HandleMouseMovement(SDL_Event& ev) {
             // Zoom in
             if(ev.wheel.y > 0 && factor < main_window->Width() / 480.0) {
                 factor += ZoomingSpeed * factor;
-                Cam_Width += int(main_window->Width() / factor * ZoomingSpeed / 2);
+                Cam_Width = WrapX(Cam_Width + int(main_window->Width() / factor * ZoomingSpeed / 2));
                 Cam_Height += int(main_window->Height() / factor * ZoomingSpeed / 2);
             }
             // Zoom out
@@ -268,22 +293,16 @@ void GameScreen::HandleMouseMovement(SDL_Event& ev) {
                     factor = main_window->Width() / 3840.0;
                 }
 
-                Cam_Width -= int(main_window->Width() / factor * ZoomingSpeed / 2);
+                Cam_Width = WrapX(Cam_Width - int(main_window->Width() / factor * ZoomingSpeed / 2));
                 Cam_Height -= int(main_window->Height() / factor * ZoomingSpeed / 2);
 
-                /*If the zoomed out image extends out of the rendered image's bounds,
-                then we move the camera towards the center of the rendered image*/
-                int lim = int((std::trunc(ImgSize[1] * factor) - main_window->Height()) / factor);
+                /*Zooming out can pull the view past the top or bottom edge of
+                the map, which - unlike the sides - does not wrap.*/
+                const int lim = int((std::trunc(MapHeight * factor) - main_window->Height()) / factor);
                 if(Cam_Height < 0) {
                     Cam_Height = 0;
                 } else if(Cam_Height > lim) {
                     Cam_Height = lim;
-                }
-                lim = int((trunc(ImgSize[0] * factor) - main_window->Width()) / factor);
-                if(Cam_Width < 0) {
-                    Cam_Width = 0;
-                } else if(Cam_Width > lim) {
-                    Cam_Width = lim;
                 }
             }
         }
