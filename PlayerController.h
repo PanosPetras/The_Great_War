@@ -58,9 +58,8 @@ private:
     // Real time that has elapsed but not yet been converted into game days
     Uint32 dayAccumulator = 0;
 
-    // Decoded but not yet uploaded map assets. Released by UploadAssets.
+    // Decoded but not yet uploaded map asset. Released by UploadAssets.
     SDL_Surface_ctx mapCanvas;
-    SDL_Surface_ctx overlayCanvas;
 
 public:
     MainWindow* main_window;
@@ -108,7 +107,6 @@ public:
 
     // Some SDL assets needed
     SDL_Texture_ctx txt;
-    SDL_Texture_ctx overlay;
     SDL_Surface_ctx map;
     SDL_Surface_ctx provinces;
 };
