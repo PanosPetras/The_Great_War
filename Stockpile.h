@@ -12,12 +12,14 @@ members further down are generated from this list, so the two cannot drift out
 of order, and a new good is added by naming it here and declaring the field it
 lives in. A name that matches no field fails to compile.*/
 // clang-format off
-#define STOCKPILE_GOODS(X)                                                 \
-    X(Coal) X(Oil) X(Timber) X(Rubber) X(Cotton) X(Iron) X(Grain) X(Fruit) \
-    X(Electric_gear) X(Machine_parts) X(Glass) X(Lumber) X(Cement)         \
-    X(Ammunition) X(Planes) X(Explosives) X(Small_arms) X(Artillery)       \
-    X(Tanks) X(Canned_food) X(Furniture) X(Clothes) X(Automobiles)         \
-    X(Merchant_ships) X(Radios) X(Telephones) X(Fuel) X(Paper) X(Liquor)   \
+#define STOCKPILE_GOODS(X)                                               \
+    X(Coal) X(Oil) X(Timber) X(Rubber) X(Cotton) X(Iron) X(Copper)       \
+    X(Nitrates) X(Grain) X(Fruit)                                        \
+    X(Steel) X(Aluminum) X(Electric_gear) X(Machine_parts) X(Engines)    \
+    X(Boilers) X(Glass) X(Lumber) X(Cement)                              \
+    X(Ammunition) X(Planes) X(Explosives) X(Small_arms) X(Artillery)     \
+    X(Tanks) X(Canned_food) X(Furniture) X(Clothes) X(Automobiles)       \
+    X(Merchant_ships) X(Radios) X(Telephones) X(Fuel) X(Paper) X(Liquor) \
     X(Airship)
 // clang-format on
 
@@ -25,7 +27,7 @@ lives in. A name that matches no field fails to compile.*/
 file lists them. Money is deliberately not one of them: it is not produced,
 consumed or priced the way a good is, so it stays a field of its own.
 
-The first eight are what comes out of the ground. States produce only those, so
+The first ten are what comes out of the ground. States produce only those, so
 they lead the list and a state's output can be an array that stops at Fruit.*/
 enum class Good {
 #define STOCKPILE_GOOD_ENUMERATOR(name) name,
@@ -48,10 +50,16 @@ struct Stockpile {
     int Rubber = 0;
     int Cotton = 0;
     int Iron = 0;
+    int Copper = 0;
+    int Nitrates = 0;
     int Grain = 0;
     int Fruit = 0;
+    int Steel = 0;
+    int Aluminum = 0;
     int Electric_gear = 0;
     int Machine_parts = 0;
+    int Engines = 0;
+    int Boilers = 0;
     int Glass = 0;
     int Lumber = 0;
     int Cement = 0;
