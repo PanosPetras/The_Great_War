@@ -35,7 +35,16 @@ enum class FactoryType {
     TankFactory,
     AirshipFactory,
     PlaneFactory,
+    SteelMill,
+    AluminumSmelter,
+    EngineFactory,
+    BoilerFactory,
+    CanvasMill,
+
+    /*The two ways round a blockade. They come last because the Open Factory
+    screen offers the kinds up to here and no further.*/
     SyntheticRubberRefinery,
+    SyntheticNitratePlant,
 
     // Not a kind of factory: how many there are, so the table can be checked
     Count
@@ -88,7 +97,15 @@ inline constexpr std::array FactoryKinds{
     FactoryKind{FactoryType::TankFactory, "tank", 30000, 1, {.Tanks = 1}, {.Coal = 2, .Iron = 4, .Small_arms = 2, .Artillery = 1}},
     FactoryKind{FactoryType::AirshipFactory, "airship", 40000, 200, {.Airship = 1}, {.Coal = 2, .Cotton = 12, .Iron = 10, .Electric_gear = 2}},
     FactoryKind{FactoryType::PlaneFactory, "plane", 24000, 1, {.Planes = 2}, {.Coal = 2, .Rubber = 2, .Iron = 1, .Lumber = 4}},
+    FactoryKind{FactoryType::SteelMill, "steel", 18000, 1, {.Steel = 10}, {.Coal = 6, .Iron = 12}},
+    /*A smelter is really an appetite for electricity with a factory attached.
+    Until power is metered on its own the coal stands in for it.*/
+    FactoryKind{FactoryType::AluminumSmelter, "aluminum", 26000, 1, {.Aluminum = 4}, {.Coal = 14, .Bauxite = 8}},
+    FactoryKind{FactoryType::EngineFactory, "engine", 24000, 1, {.Engines = 3}, {.Coal = 2, .Copper = 2, .Steel = 6, .Machine_parts = 4}},
+    FactoryKind{FactoryType::BoilerFactory, "boiler", 21000, 1, {.Boilers = 2}, {.Coal = 3, .Steel = 12, .Machine_parts = 2}},
+    FactoryKind{FactoryType::CanvasMill, "canvas", 10000, 1, {.Canvas = 12}, {.Coal = 2, .Cotton = 10}},
     FactoryKind{FactoryType::SyntheticRubberRefinery, "rubber", 14000, 1, {.Rubber = 6}, {.Coal = 5}},
+    FactoryKind{FactoryType::SyntheticNitratePlant, "nitrates", 20000, 1, {.Nitrates = 5}, {.Coal = 8}},
 };
 
 /*The table is subscripted by FactoryType, so every row has to sit at its own
