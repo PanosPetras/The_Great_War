@@ -19,13 +19,6 @@ TTF_Init_ctx::~TTF_Init_ctx() {
     TTF_Quit();
 }
 //-----------------------------------------------------------------------------
-/*SDL3_image loads its decoders on demand, so IMG_Init and IMG_Quit are gone.
-The class stays so that the order of initialisation in MainWindow still reads
-the same, and so that a future need to preload a decoder has a home.*/
-IMG_Init_ctx::IMG_Init_ctx() = default;
-
-IMG_Init_ctx::~IMG_Init_ctx() = default;
-//-----------------------------------------------------------------------------
 SDL_Audio_ctx::SDL_Audio_ctx() : device(SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr)) {
     if(device == 0) throw std::runtime_error(std::string("SDL_Audio_ctx: ") + SDL_GetError());
 

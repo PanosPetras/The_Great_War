@@ -90,16 +90,6 @@ public:
     ~TTF_Init_ctx();
 };
 
-class IMG_Init_ctx {
-public:
-    IMG_Init_ctx();
-    IMG_Init_ctx(const IMG_Init_ctx&) = delete;
-    IMG_Init_ctx(IMG_Init_ctx&&) noexcept = default;
-    IMG_Init_ctx& operator=(const IMG_Init_ctx&) = delete;
-    IMG_Init_ctx& operator=(IMG_Init_ctx&&) noexcept = default;
-    ~IMG_Init_ctx();
-};
-
 /*The playback device every sound is mixed into. SDL mixes the streams bound
 to a device for us, so this replaces what SDL_mixer's channels used to do.*/
 class SDL_Audio_ctx {

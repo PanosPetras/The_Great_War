@@ -121,7 +121,6 @@ private:
     SDL_Window_ctx window; //The game's main window
     SDL_Renderer_ctx renderer; //The window's renderer
     TTF_Init_ctx ttf_init_ctx;
-    IMG_Init_ctx img_init_ctx;
     SDL_Audio_ctx audio_ctx;
     SDL_Cursor_ctx cursor; //The window's cursor
 
