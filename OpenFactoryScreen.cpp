@@ -29,7 +29,7 @@ OpenFactoryScreen::OpenFactoryScreen(MainWindow& mw, unsigned id, PlayerControll
 
     AddImage<Image>(mw, "Backgrounds/factory1.png", int(Width * 0.25), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
     AddLabel<Label>(mw, "Open Factory", FontSize::Heading, int(Width * 0.45), int(Height * 0.22));
-    std::string lbl1txt = "Current Funds: " + std::to_string(PC->player->Stock.Money);
+    std::string lbl1txt = "Current Funds: " + std::to_string(PC->player->Money);
     AddLabel<Label>(mw, lbl1txt.c_str(), FontSize::Heading, int(Width * 0.55), int(Height * 0.35));
     lbl1txt = "Factory cost: " + std::to_string(10);
     AddLabel<Label>(mw, lbl1txt.c_str(), FontSize::Heading, int(Width * 0.55), int(Height * 0.41));
@@ -60,11 +60,11 @@ void OpenFactoryScreen::BuildFactory() {
     if(!selected) return;
 
     const FactoryKind& kind = KindOf(*selected);
-    if(PCref->player->Stock.Money < kind.cost) return;
+    if(PCref->player->Money < kind.cost) return;
 
     auto NF = std::make_unique<Factory>(*selected, &PCref->player->Stock, &PCref->WorldMarket);
 
-    PCref->player->Stock.Money -= kind.cost;
+    PCref->player->Money -= kind.cost;
     PCref->StatesArr[index].AddFactory(NF);
 
     QuitFunc();

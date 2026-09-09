@@ -55,19 +55,8 @@ public:
     stops there rather than carrying a slot for every manufactured good.*/
     std::array<short int, RawGoodCount> Resources{};
 
-    // These are the resources that the population of the state requires in order to maintain a good standard of living
-    struct {
-        short int Telephones;
-        short int Fuel;
-        short int Paper;
-        short int Canned_food;
-        short int Furniture;
-        short int Clothes;
-        short int Automobiles;
-        short int Cement;
-        short int Glass;
-        short int Lumber;
-        short int Fruit;
-    } Pop_needs;
+    /*What the state's population wants each day to keep a good standard of
+    living. A population runs to millions, which a short int cannot hold.*/
+    PerGood<int> Pop_needs;
 };
 #endif

@@ -50,6 +50,28 @@ std::vector<T> LoadFromFile(const char* filename) {
 }
 } // namespace
 
+/*One country's opening position: an amount of every good, in the order
+PerGood.h lists them, and then the money it has in the bank.*/
+struct StartingBalance {
+    Stockpile stock;
+    long long money = 0;
+
+    friend std::istream& operator>>(std::istream& is, StartingBalance& b) {
+        if(std::string line; std::getline(is, line)) {
+            std::istringstream iss(std::move(line));
+            for(auto good : GoodMembers<int>) {
+                iss >> b.stock.*good;
+            }
+            if(not(iss >> b.money)) {
+                is.setstate(std::ios::failbit);
+            }
+        } else {
+            is.setstate(std::ios::failbit);
+        }
+        return is;
+    }
+};
+
 PlayerController::PlayerController(MainWindow& mw, const char* tag) : main_window(&mw) {
     /*Decode the map assets while the game data files are being read. The
     threads are scoped so that they are joined before UploadAssets runs -
@@ -72,7 +94,7 @@ void PlayerController::LoadGameData(const char* tag) {
     auto tags = LoadFromFile<std::string, Line>("map/Countries/CountryTags.txt");
 
     // Load the countries' budget at the start of the game
-    auto balance = LoadFromFile<Stockpile>("map/Countries/CountryStockpiles.txt");
+    auto balance = LoadFromFile<StartingBalance>("map/Countries/CountryStockpiles.txt");
 
     if(countryNames.size() != tags.size() || countryNames.size() != balance.size()) {
         std::cerr << "Country data mismatch " << countryNames.size() << ',' << tags.size() << ',' << balance.size() << std::endl;
@@ -127,9 +149,9 @@ void PlayerController::UploadAssets() {
     map = SDL_Surface_ctx{};
 }
 
-void PlayerController::InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, const std::vector<Stockpile>& balance) {
+void PlayerController::InitializeCountries(std::vector<std::string>& names, std::vector<std::string>& tags, const char* tag, const std::vector<StartingBalance>& balance) {
     for(unsigned x = 0; x < tags.size(); x++) {
-        Countries.push_back(std::make_unique<Country>(tags[x], names[x], balance[x]));
+        Countries.push_back(std::make_unique<Country>(tags[x], names[x], balance[x].stock, balance[x].money));
         if(tag == tags[x]) {
             player = Countries.back().get();
         }
@@ -147,7 +169,8 @@ void PlayerController::InitializeCountries(std::vector<std::string>& names, std:
     }
 }
 
-void PlayerController::InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors, const std::vector<std::array<short int, RawGoodCount>>& resources) {
+void PlayerController::InitializeStates(std::vector<std::string>& owners, std::vector<std::string>& names, std::vector<Coordinate>& coords, const std::vector<int>& populations, std::vector<Color>& colors,
+                                        const std::vector<std::array<short int, RawGoodCount>>& resources) {
     unsigned target = 0;
 
     StatesArr.reserve(populations.size());

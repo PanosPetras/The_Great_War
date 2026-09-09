@@ -30,8 +30,8 @@ public:
     // Functions
 
     // Constructor
-    Country(std::string tag, std::string name, const Stockpile& sp, bool isPlayerControlled, Color rgb);
-    Country(std::string tag, std::string name, const Stockpile& sp, Color rgb = Color{});
+    Country(std::string tag, std::string name, const Stockpile& sp, long long money, bool isPlayerControlled, Color rgb);
+    Country(std::string tag, std::string name, const Stockpile& sp, long long money, Color rgb = Color{});
 
     // Handle the states of the country
     void AddState(State* state);
@@ -72,6 +72,9 @@ public:
 
     // A country's currently stockpiled resources
     Stockpile Stock;
+
+    // What it has in the bank
+    long long Money;
 };
 
 #endif
