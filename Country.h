@@ -67,6 +67,14 @@ private:
 
     void HandleDiplomaticRequests();
 
+    /*A day of work in every factory the country runs. The whole country draws
+    on one set of warehouses, so the factories cannot be run one at a time: the
+    day's demand is added up first, then each good's stock is divided among
+    everything that wants it, and only then does any factory take anything. A
+    factory that cannot have all of its inputs runs at the rate of its
+    scarcest one instead of stopping, and nothing can be spent twice.*/
+    void RunFactories();
+
 public:
     Policy policy;
 

@@ -26,22 +26,11 @@ void State::Tick(int TaxRate, int HealthCare) {
     for(std::size_t good = 0; good < Resources.size(); ++good) {
         (*TargetStockpile)[Good(good)] += Resources[good];
     }
-
-    for(unsigned x = 0; x < 4; x++) {
-        if(State_Factories[x] != nullptr) {
-            State_Factories[x]->Tick();
-        }
-    }
 }
 
 void State::ChangeController(std::string NewOwner, Stockpile* NewStock) {
     State_Controller = NewOwner;
     TargetStockpile = NewStock;
-    for(unsigned x = 0; x < 4; x++) {
-        if(State_Factories[x] != nullptr) {
-            State_Factories[x]->ChangeOwner(NewStock);
-        }
-    }
 }
 
 int State::AddFactory(std::unique_ptr<Factory>& NewFactory) {

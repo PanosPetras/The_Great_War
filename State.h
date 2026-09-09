@@ -15,7 +15,10 @@ public:
     // Constructor
     State(std::string name, int ID, std::string owner, std::string controller, int pop, Coordinate Coords, Color C, const std::array<short int, RawGoodCount>& Res, Stockpile* stock);
 
-    // This is the representing the pass of a single day
+    /*A single day for the state itself: the population grows and the mines,
+    fields and forests hand over the day's output. The state's factories are
+    not run from here - they draw on a stockpile that is shared with every
+    other factory in the country, so the country runs them all together.*/
     void Tick(int TaxRate, int HealthCare);
 
     void ChangeController(std::string NewOwner, Stockpile* NewStock);

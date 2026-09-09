@@ -5,6 +5,7 @@
 #include "Coordinate.h"
 #include "Country.h"
 #include "Diplomacy.h"
+#include "Market.h"
 #include "State.h"
 #include "Stockpile.h"
 

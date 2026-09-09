@@ -1,38 +1,43 @@
 #include "Factory.h"
 
-Factory::Factory(FactoryType type, Stockpile* Target, Market* market) : Kind{KindOf(type)}, size{1}, TargetStockpile{Target}, TargetMarket{market}, days{0} {
-    // Every batch the factory runs at once yields another copy of the output
-    for(int batch = 0; batch < size; batch++) {
-        materialsProduced += Kind.produces;
+#include <algorithm>
+
+Factory::Factory(FactoryType type) : Kind{KindOf(type)}, size{1}, progress{0} {}
+
+Stockpile Factory::Consumption() const {
+    return Kind.consumes * size;
+}
+
+int Factory::Throughput(const PerGood<int>& share) const {
+    int throughput = FullThroughput;
+
+    for(auto good : AllGoods) {
+        if(Kind.consumes[good] > 0) {
+            throughput = std::min(throughput, share[good]);
+        }
     }
 
-    // The inputs leave the stockpile, so they are held as what they take away
-    materialsNeeded -= Kind.consumes;
-
-    confirmMaterials();
+    return throughput;
 }
 
-Factory::~Factory() {
-    if(TargetMarket == nullptr) return;
-    TargetMarket->Demand += materialsNeeded;
-    TargetMarket->Supply -= materialsProduced;
-}
+void Factory::Work(int throughput, Stockpile& stock) {
+    if(throughput <= 0) return;
 
-void Factory::Tick() {
-    *TargetStockpile += materialsNeeded;
-
-    if(++days == Kind.daysToProduce) {
-        days = 0;
-        *TargetStockpile += materialsProduced;
+    /*Take the share of a full day's inputs that the day's work used. The share
+    was worked out so that everything claiming a good together claims no more
+    than there is, so this can never take the stockpile below zero.*/
+    const Stockpile wanted = Consumption();
+    for(auto good : AllGoods) {
+        stock[good] -= wanted[good] * throughput / FullThroughput;
     }
-}
 
-void Factory::ChangeOwner(Stockpile* NewStockpile) {
-    TargetStockpile = NewStockpile;
-}
+    /*A batch is finished once daysToProduce full days of work have gone into
+    it. What is left over carries into the next one, so a shortage makes a
+    factory slow rather than throwing the part-built batch away.*/
+    progress += throughput;
 
-void Factory::confirmMaterials() {
-    if(TargetMarket == nullptr) return;
-    TargetMarket->Demand -= materialsNeeded;
-    TargetMarket->Supply += materialsProduced;
+    if(const int batch = FullThroughput * Kind.daysToProduce; progress >= batch) {
+        progress -= batch;
+        stock += Kind.produces * size;
+    }
 }
