@@ -110,7 +110,7 @@ private:
 class TTF_Font_ctx {
 public:
     // The font every part of the UI draws with, unless it asks for another one
-    inline static constexpr const char* DefaultFile = "Fonts/segoeui.ttf";
+    inline static constexpr const char* DefaultFile = "Fonts/IBM_Plex_Serif/IBMPlexSerif-Regular.ttf";
 
     TTF_Font_ctx(int ptsize); // use the default
     explicit TTF_Font_ctx(const std::string& filename, int ptsize);
