@@ -18,7 +18,6 @@ CMakeFiles/
 cmake_install.cmake
 
 # Editors and tooling
-.vs/
 .vscode/
 .idea/
 *.swp

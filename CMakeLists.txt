@@ -114,19 +114,17 @@ target_link_libraries(The_Great_War PRIVATE
     SDL3_ttf::SDL3_ttf
 )
 
+# GCC and Clang share a warning vocabulary. Any other compiler keeps its own
+# defaults rather than being handed flags it has never heard of.
 target_compile_options(The_Great_War PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:/W4 /permissive->
-    $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Woverloaded-virtual -pedantic-errors>
+    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall -Wextra -Woverloaded-virtual -pedantic-errors>
 )
 
 if(NOT TGW_SANITIZE STREQUAL "none")
-    if(MSVC)
-        # MSVC only ships ASan, and spells the flag differently.
-        if(NOT TGW_SANITIZE STREQUAL "address")
-            message(FATAL_ERROR "MSVC only supports TGW_SANITIZE=address, got '${TGW_SANITIZE}'")
-        endif()
-        target_compile_options(The_Great_War PRIVATE /fsanitize=address)
-    elseif(TGW_SANITIZE STREQUAL "address")
+    if(NOT CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|Clang|AppleClang)$")
+        message(FATAL_ERROR "TGW_SANITIZE needs GCC or Clang, not ${CMAKE_CXX_COMPILER_ID}")
+    endif()
+    if(TGW_SANITIZE STREQUAL "address")
         target_compile_options(The_Great_War PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer)
         target_link_options(The_Great_War PRIVATE -fsanitize=address,undefined)
     elseif(TGW_SANITIZE STREQUAL "thread")
