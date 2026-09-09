@@ -11,6 +11,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 
 #include <array>
+#include <cstddef>
 #include <functional>
 #include <iostream>
 #include <map>
@@ -20,6 +21,9 @@
 #include <vector>
 
 class MainWindow {
+    // A cached image, identified by its file and by how many variants of it were made
+    using TextureKey = std::pair<std::string, std::size_t>;
+
 public:
     // Singleton instance interface
     static MainWindow& Instance();
@@ -54,23 +58,22 @@ public:
         event_queue.emplace_back(std::forward<Event>(ev));
     }
 
+    // Loads a file once and hands out the single, unmodified texture from it
     SDL_Texture_ctx& IMG_Load(const std::string& filename);
 
+    /*Loads a file once and keeps one texture per modification handed in - the
+    idle, hovered and inactive tints a button wants, say. The cache is keyed by
+    file *and* by how many variants were asked for, so a caller wanting three
+    tinted copies and one wanting a single plain texture get separate entries
+    rather than one of them finding the other's and mistaking it for its own.
+    An entry is therefore only ever built once and never grown, which is what
+    keeps the references handed out of it valid for the life of the window.*/
     template<class... Mods>
     std::array<TextureRef, sizeof...(Mods)> IMG_Load(const std::string& filename, Mods&&... mods) {
-        auto vecit = [&]{
-            if(auto it = file_textures.find(filename); it != file_textures.end()) {
-                std::cerr << "Cached load of " << filename << std::endl;
-                if(it->second.size() != sizeof...(Mods)) {
-                    // NOTE: This can happen if it was via an Image that only cares about one state.
-                    // If that happens, either we need to create duplicate textures - or we preload them all.
-                    std::cerr << "Mismatch between cached textures and number of Mods" << std::endl;
-                    std::terminate();
-                }
-                return it;
-            }
-            // Not found in cache
-            std::cerr << "First load of " << filename << std::endl;
+        auto key = TextureKey(filename, sizeof...(Mods));
+
+        auto it = file_textures.find(key);
+        if(it == file_textures.end()) {
             auto surface = SDL_Surface_ctx::IMG_Load(filename);
 
             // a functor to create a texture from the surface and apply a modification
@@ -81,16 +84,15 @@ public:
             };
 
             std::vector<SDL_Texture_ctx> txts;
+            txts.reserve(sizeof...(Mods));
             // create textures from the surface and apply modifications
             (..., txts.emplace_back(dupmod(mods)));
 
-            auto [newit, inserted] = file_textures.emplace(filename, std::move(txts));
-
-            return newit;
-        }();
+            it = file_textures.emplace(std::move(key), std::move(txts)).first;
+        }
 
         // Return the array of TextureRefs
-        return [&textures=vecit->second]<std::size_t... I>(std::index_sequence<I...>) -> std::array<TextureRef, sizeof...(I)> {
+        return [&textures = it->second]<std::size_t... I>(std::index_sequence<I...>) -> std::array<TextureRef, sizeof...(I)> {
             return {TextureRef(textures[I])...};
         }(std::make_index_sequence<sizeof...(Mods)>{});
     }
@@ -139,7 +141,7 @@ private:
     bool SetResolution(unsigned resolution, bool vsync, bool fullscreen);
 
     std::vector<std::function<void()>> event_queue; // deferred events
-    std::unordered_map<std::string, std::vector<SDL_Texture_ctx>> file_textures;
+    std::map<TextureKey, std::vector<SDL_Texture_ctx>> file_textures;
     // Declared after audio_ctx so that every sound is torn down before the device
     std::unordered_map<std::string, SDL_Sound_ctx> file_sounds;
     // Declared after ttf_init_ctx so that every font is closed before TTF_Quit

@@ -13,6 +13,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 
 #include <string>
+#include <string_view>
 
 class MainWindow;
 
@@ -25,10 +26,10 @@ public:
     Label(MainWindow& mw, std::string Text, FontSize size, int x, int y, Uint32 xLim, Anchor anchor, Color rgb = Color{});
 
     // Get the label's text
-    std::string GetText();
+    const std::string& GetText() const;
 
     // Change the label's text
-    void ChangeText(std::string Text);
+    void ChangeText(std::string_view Text);
 
     /// Change the size of the label's text
     void ChangeTextSize(FontSize size);
@@ -66,6 +67,10 @@ protected:
 
     // The contents of the label
     std::string text;
+
+    /*The size of the rendered glyph run, kept from the surface it was
+    rasterised into so that the layout never has to ask SDL for it again.*/
+    int texW = 0, texH = 0;
 
     // The label's position
     int x, y;

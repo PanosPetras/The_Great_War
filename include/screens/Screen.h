@@ -84,8 +84,10 @@ protected:
 
     bool bHasBackground = false;
 
-    // Stores the image's texture
-    SDL_Texture_ctx texture;
+    /*Stores the image's texture, which the window owns and keeps decoded. The
+    menu screens share one background file between them, so going back and
+    forth between them no longer re-decodes it every time.*/
+    TextureRef texture;
 
     std::function<void()> QuitFunc;
     std::function<void(std::unique_ptr<Screen>)> ChangeScreenFunc;

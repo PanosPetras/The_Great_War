@@ -38,6 +38,12 @@ public:
     promiscuous_ref& operator=(promiscuous_ref&& other) = delete;
     ~promiscuous_ref() = default;
 
+    /*Whether this refers to anything. Deliberately a named function and not an
+    operator bool: the conversion to U* below is the better match for a
+    non-const object, so `if(ref)` would quietly go through that one and throw
+    on exactly the null reference it was meant to be testing for.*/
+    bool valid() const noexcept { return obj != nullptr; }
+
     operator T&() {
         if(obj == nullptr) throw std::runtime_error("promiscuous_ref::operator T& (): nullptr dereferenced");
         return *obj;

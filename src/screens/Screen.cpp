@@ -11,11 +11,11 @@
 #include <iostream>
 
 Screen::Screen(MainWindow& mw) : main_window(&mw) {
-    std::cerr << "Screen::Screen()\t" << static_cast<void*>(this) << std::endl;
+    std::cerr << "Screen::Screen()\t" << static_cast<void*>(this) << '\n';
 }
 
 Screen::Screen(MainWindow& mw, std::function<void()> qf, std::function<void(std::unique_ptr<Screen>)> csf) : main_window(&mw), QuitFunc(qf), ChangeScreenFunc(csf) {
-    std::cerr << "Screen::Screen(...)\t" << static_cast<void*>(this) << std::endl;
+    std::cerr << "Screen::Screen(...)\t" << static_cast<void*>(this) << '\n';
 }
 
 void Screen::Update(Uint32) {
@@ -28,7 +28,7 @@ void Screen::RenderBackground() {
     If it does, then we create a rectangle and give it the
     appropriate dimensions, based on the magnification
     factor reiceived from user input*/
-    if(texture) {
+    if(texture.valid()) {
         SDL_RenderTexture(*main_window, texture, nullptr, nullptr);
     }
 }
@@ -69,7 +69,7 @@ void Screen::Handle_Input(SDL_Event& ev) {
 
 void Screen::SetupBg(const char* bg) {
     bHasBackground = true;
-    texture = SDL_Texture_ctx::IMG_Load(*main_window, bg);
+    texture = main_window->IMG_Load(bg);
 }
 
 void Screen::DeleteMessageBox(void* p) {

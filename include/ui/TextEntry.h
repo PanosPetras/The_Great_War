@@ -7,6 +7,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <string_view>
 
 class Image;
 class Label;
@@ -31,13 +32,13 @@ public:
 
     bool IsFocused();
 
-    std::string GetText();
+    const std::string& GetText() const;
 
-    void ChangeText(std::string text);
+    void ChangeText(std::string_view text);
 
-    std::string GetHint();
+    const std::string& GetHint() const;
 
-    void ChangeHint(std::string hint);
+    void ChangeHint(std::string_view hint);
 
 protected:
     // Reference the the screen's main window

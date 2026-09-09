@@ -3,34 +3,12 @@
 
 #include <SDL3_ttf/SDL_ttf.h>
 
-#include <iostream>
-#include <unordered_set>
-
-namespace {
-std::array<TextureRef, 3> Load(MainWindow& mw, std::string image) {
-    std::cerr << "Button::Load " << image << std::endl;
-    return mw.IMG_Load(
-        image + ".png",
-        [](SDL_Texture_ctx& texture) { // idle
-            SDL_SetTextureColorMod(texture, 255, 255, 255);
-        },
-        [](SDL_Texture_ctx& texture) { // hoovered
-            SDL_SetTextureColorMod(texture, 170, 170, 170);
-        },
-        [](SDL_Texture_ctx& texture) { // inactive
-            SDL_SetTextureColorMod(texture, 100, 100, 100);
-        });
-}
-} // namespace
-
 Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void()> f, int keybind) : Button(mw, x, y, Width, Height, image, top_left, f, keybind) {}
 
 Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, std::function<void(void*)> f, void* arg, int keybind) : Button(mw, x, y, Width, Height, image, top_left, f, arg, keybind) {}
 
 Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string image, Anchor anchor, std::function<void()> f, int keybind) :
-    InputDrawable(anchor), main_window(&mw), textures{Load(mw, image)}, music{mw.LoadSound("Sounds/ButtonClick.wav")} {
-    std::cerr << "Button::Button image: " << image << std::endl;
-
+    InputDrawable(anchor), main_window(&mw), textures{LoadInteractiveTextures(mw, image + ".png")}, music{mw.LoadSound("Sounds/ButtonClick.wav")} {
     // Saving the button's coordinates
     ChangePosition(x, y, Width, Height);
 
@@ -53,8 +31,6 @@ Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string 
 
 Button::Button(MainWindow& mw, int x, int y, int Width, int Height, std::string Text, FontSize textSize, Anchor anchor, std::function<void()> f, int keybind) :
     Button(mw, x, y, Width, Height, "Drawable/Button/Button", anchor, f, keybind) {
-    std::cerr << "Button::Button text: " << Text << std::endl;
-
     // Saving the button's coordinates
     ChangePosition(x, y, Width, Height);
 
@@ -85,13 +61,21 @@ void Button::pDraw() {
 }
 
 void Button::HandleInput(const SDL_Event& ev) {
-    if(IsActive()) {
+    if(!IsActive()) {
+        active_texture = textures[textureInactive];
+        return;
+    }
+
+    /*Only an event that carries a cursor position can say anything about what
+    is hovered - asking a key press where the mouse is reads a coordinate out
+    of a part of the union that is holding something else entirely.*/
+    if(float mx, my; GetMousePosition(ev, mx, my)) {
         // Detect if the button is hovered
-        if(CheckIfMouseInRect(draw_rect, ev.button)) {
+        if(IsPointInRect(draw_rect, mx, my)) {
             if(bHovered == false) {
                 // If the button is hovered, change to the hovered button image
                 active_texture = textures[textureHoovered];
-                SDL_SetTextureColorMod(text, 170, 170, 170);
+                SetTextTint(170);
                 bHovered = true;
             }
 
@@ -104,16 +88,12 @@ void Button::HandleInput(const SDL_Event& ev) {
         else if(bHovered == true) {
             bHovered = false;
             active_texture = textures[textureIdle];
-            SDL_SetTextureColorMod(text, 255, 255, 255);
+            SetTextTint(255);
         }
+    }
 
-        if(key) {
-            if(ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == static_cast<SDL_Keycode>(key)) {
-                Click();
-            }
-        }
-    } else {
-        active_texture = textures[textureInactive];
+    if(key && ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == static_cast<SDL_Keycode>(key)) {
+        Click();
     }
 }
 
@@ -125,8 +105,9 @@ void Button::Click() {
     CallBoundFunction();
 }
 
-bool Button::CheckIfMouseInRect(const SDL_Rect& rect, const SDL_MouseButtonEvent& ev) {
-    return (ev.x >= rect.x) && (ev.x <= rect.x + rect.w) && (ev.y >= rect.y) && (ev.y <= rect.y + rect.h);
+void Button::SetTextTint(Uint8 level) {
+    // A button built from an image alone has no text texture to tint
+    if(text) SDL_SetTextureColorMod(text, level, level, level);
 }
 
 void Button::ChangeText(std::string textstr, FontSize textSize) {
@@ -180,10 +161,10 @@ void Button::SetActive(bool state) {
 
     if(state) {
         active_texture = textures[textureIdle];
-        SDL_SetTextureColorMod(text, 255, 255, 255);
+        SetTextTint(255);
         bHovered = false;
     } else {
         active_texture = textures[textureInactive];
-        SDL_SetTextureColorMod(text, 100, 100, 100);
+        SetTextTint(100);
     }
 }

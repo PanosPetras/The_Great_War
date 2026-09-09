@@ -1,6 +1,6 @@
 #include "ui/ToggleButton.h"
+
 #include "ui/Button.h"
-#include <iostream>
 
 ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, std::function<void(bool)> f, int keybind) :
     ToggleButton(mw, x, y, Width, Height, activeImage, inactiveImage, top_left, f, keybind) {}
@@ -27,9 +27,8 @@ ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, 
     ChangeKeybind(keybind);
 }
 
-ToggleButton::ToggleButton(MainWindow& mw, [[maybe_unused]] int x, [[maybe_unused]] int y, [[maybe_unused]] int Width, [[maybe_unused]] int Height, [[maybe_unused]] std::string activeImage,
-                           [[maybe_unused]] std::string inactiveImage, [[maybe_unused]] Anchor anchor, [[maybe_unused]] bool val, [[maybe_unused]] std::function<void(bool)> f, [[maybe_unused]] int keybind) :
-    main_window(&mw) {
+ToggleButton::ToggleButton(MainWindow& mw, int x, int y, int Width, int Height, std::string activeImage, std::string inactiveImage, Anchor anchor, bool val, std::function<void(bool)> f, int keybind) :
+    ToggleButton(mw, x, y, Width, Height, std::move(activeImage), std::move(inactiveImage), anchor, std::move(f), keybind) {
     value = val;
 }
 
@@ -38,22 +37,23 @@ there is nothing here left to free.*/
 ToggleButton::~ToggleButton() = default;
 
 void ToggleButton::pDraw() {
-    // Drawing the toggle button
-    if(!value) {
-        RenderTexture(*main_window, inactiveTexture, draw_rect);
-    } else {
-        RenderTexture(*main_window, activeTexture, draw_rect);
-    }
+    // Drawing the toggle button, in whichever state it is currently in
+    auto& textures = value ? activeTextures : inactiveTextures;
+    RenderTexture(*main_window, textures[textureState], draw_rect);
 }
 
 void ToggleButton::HandleInput(const SDL_Event& ev) {
-    if(IsActive()) {
+    if(!IsActive()) return;
+
+    /*Only an event that carries a cursor position can say anything about what
+    is hovered - asking a key press where the mouse is reads a coordinate out
+    of a part of the union that is holding something else entirely.*/
+    if(float mx, my; GetMousePosition(ev, mx, my)) {
         // Detect if the button is hovered
-        if(Button::CheckIfMouseInRect(draw_rect, ev.button)) {
+        if(IsPointInRect(draw_rect, mx, my)) {
             if(bHovered == false) {
                 // If the button is hovered, change to the hovered button image
-                SDL_SetTextureColorMod(inactiveTexture, 170, 170, 170);
-                SDL_SetTextureColorMod(activeTexture, 170, 170, 170);
+                textureState = textureHoovered;
                 bHovered = true;
             }
 
@@ -65,14 +65,12 @@ void ToggleButton::HandleInput(const SDL_Event& ev) {
         // If not hovered, return to the idle button image
         else if(bHovered == true) {
             bHovered = false;
-            SDL_SetTextureColorMod(inactiveTexture, 255, 255, 255);
-            SDL_SetTextureColorMod(activeTexture, 255, 255, 255);
+            textureState = textureIdle;
         }
-        if(key) {
-            if(ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == static_cast<SDL_Keycode>(key)) {
-                Click();
-            }
-        }
+    }
+
+    if(key && ev.type == SDL_EVENT_KEY_DOWN && ev.key.key == static_cast<SDL_Keycode>(key)) {
+        Click();
     }
 }
 
@@ -88,13 +86,9 @@ void ToggleButton::Click() {
 }
 
 void ToggleButton::ChangeImage(std::string activeImage, std::string inactiveImage) {
-    // Saving the image path
-    auto activeImagePath = activeImage + ".png";
-    auto inactiveImagePath = inactiveImage + ".png";
-
-    // Loading the button's textures
-    activeTexture = SDL_Texture_ctx::IMG_Load(*main_window, activeImagePath);
-    inactiveTexture = SDL_Texture_ctx::IMG_Load(*main_window, inactiveImagePath);
+    // Loading the button's textures, which the window keeps for us
+    activeTextures = LoadInteractiveTextures(*main_window, activeImage + ".png");
+    inactiveTextures = LoadInteractiveTextures(*main_window, inactiveImage + ".png");
 }
 
 void ToggleButton::ChangePosition(int x, int y, int Width, int Height) {
@@ -130,12 +124,10 @@ void ToggleButton::SetActive(bool state) {
     InputDrawable::SetActive(state);
 
     if(state) {
-        SDL_SetTextureColorMod(inactiveTexture, 255, 255, 255);
-        SDL_SetTextureColorMod(activeTexture, 255, 255, 255);
+        textureState = textureIdle;
         bHovered = false;
     } else {
-        SDL_SetTextureColorMod(inactiveTexture, 100, 100, 100);
-        SDL_SetTextureColorMod(activeTexture, 100, 100, 100);
+        textureState = textureInactive;
     }
 }
 
