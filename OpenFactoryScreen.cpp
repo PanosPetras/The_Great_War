@@ -21,6 +21,29 @@ The synthetic refineries sit past the end: they are the way round a blockade
 rather than something to build on day one, so they wait on Technology.*/
 constexpr std::size_t OfferedKinds = std::size_t(FactoryType::SyntheticRubberRefinery);
 static_assert(OfferedKinds <= std::size(ButtonColumns) * std::size(ButtonRows));
+/*The goods a factory has to be built out of, written out for the label. The
+four that need none say so.*/
+std::string MaterialsText(const Stockpile& materials) {
+    std::string text;
+
+    for(auto good : AllGoods) {
+        if(materials[good] > 0) {
+            if(not text.empty()) text += ", ";
+            text += std::to_string(materials[good]) + ' ' + std::string(InfoOf(good).name);
+        }
+    }
+
+    return text.empty() ? "no materials" : text;
+}
+
+// Whether a stockpile covers every good a build needs
+bool Covers(const Stockpile& stock, const Stockpile& materials) {
+    for(auto good : AllGoods) {
+        if(stock[good] < materials[good]) return false;
+    }
+
+    return true;
+}
 } // namespace
 
 OpenFactoryScreen::OpenFactoryScreen(MainWindow& mw, unsigned id, PlayerController* PC, std::function<void()> quitfunc) : Screen(mw, quitfunc) {
@@ -29,10 +52,10 @@ OpenFactoryScreen::OpenFactoryScreen(MainWindow& mw, unsigned id, PlayerControll
 
     AddImage<Image>(mw, "Backgrounds/factory1.png", int(Width * 0.25), int(Height * 0.2), int(Width * 0.5), int(Height * 0.6));
     AddLabel<Label>(mw, "Open Factory", FontSize::Heading, int(Width * 0.45), int(Height * 0.22));
-    std::string lbl1txt = "Current Funds: " + std::to_string(PC->player->Stock.Money);
+    std::string lbl1txt = "Current Funds: " + std::to_string(PC->player->Money);
     AddLabel<Label>(mw, lbl1txt.c_str(), FontSize::Heading, int(Width * 0.55), int(Height * 0.35));
-    lbl1txt = "Factory cost: " + std::to_string(10);
-    AddLabel<Label>(mw, lbl1txt.c_str(), FontSize::Heading, int(Width * 0.55), int(Height * 0.41));
+    AddLabel<Label>(mw, "Factory cost: -", FontSize::Heading, int(Width * 0.55), int(Height * 0.41));
+    AddLabel<Label>(mw, "Materials: -", FontSize::Heading, int(Width * 0.55), int(Height * 0.47));
 
     AddDrawable<Button>(mw, int(Width * 0.32), int(Height * 0.7), int(Width * 0.08), int(Height * 0.06), "Back", FontSize::Heading, [this] { Close(); });
     AddDrawable<Button>(mw, int(Width * 0.59), int(Height * 0.7), int(Width * 0.1), int(Height * 0.06), "Confirm", FontSize::Heading, [this] { BuildFactory(); });
@@ -43,7 +66,7 @@ OpenFactoryScreen::OpenFactoryScreen(MainWindow& mw, unsigned id, PlayerControll
         const double x = ButtonColumns[i % std::size(ButtonColumns)];
         const double y = ButtonRows[i / std::size(ButtonColumns)];
 
-        AddDrawable<Button>(mw, int(Width * x), int(Height * y), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/" + std::string(kind.name), [this, type = kind.type] { SelectFactory(type); });
+        AddDrawable<Button>(mw, int(Width * x), int(Height * y), int(Width * 0.025), int(Height * 0.0444), "Icons/Goods/" + std::string(NameOf(kind.type)), [this, type = kind.type] { SelectFactory(type); });
     }
 
     index = id;
@@ -52,20 +75,26 @@ OpenFactoryScreen::OpenFactoryScreen(MainWindow& mw, unsigned id, PlayerControll
 void OpenFactoryScreen::SelectFactory(FactoryType kind) {
     selected = kind;
 
-    std::string txt = "Factory cost: " + std::to_string(KindOf(kind).cost);
-    LabelArr[2]->ChangeText(txt.c_str());
+    const FactoryKind& picked = KindOf(kind);
+    LabelArr[2]->ChangeText(("Factory cost: " + std::to_string(picked.cost)).c_str());
+    LabelArr[3]->ChangeText(("Materials: " + MaterialsText(picked.materials)).c_str());
 }
 
 void OpenFactoryScreen::BuildFactory() {
     if(!selected) return;
 
     const FactoryKind& kind = KindOf(*selected);
-    if(PCref->player->Stock.Money < kind.cost) return;
+    Country& player = *PCref->player;
 
-    auto NF = std::make_unique<Factory>(*selected, &PCref->player->Stock, &PCref->WorldMarket);
+    // Both halves of the price have to be there before any of it is spent
+    if(player.Money < kind.cost || not Covers(player.Stock, kind.materials)) return;
 
-    PCref->player->Stock.Money -= kind.cost;
-    PCref->StatesArr[index].AddFactory(NF);
+    // Nothing is charged for a factory the state had no room for
+    auto NF = std::make_unique<Factory>(*selected);
+    if(PCref->StatesArr[index].AddFactory(NF) != 0) return;
+
+    player.Money -= kind.cost;
+    player.Stock -= kind.materials;
 
     QuitFunc();
 }

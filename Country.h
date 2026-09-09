@@ -30,8 +30,8 @@ public:
     // Functions
 
     // Constructor
-    Country(std::string tag, std::string name, const Stockpile& sp, bool isPlayerControlled, Color rgb);
-    Country(std::string tag, std::string name, const Stockpile& sp, Color rgb = Color{});
+    Country(std::string tag, std::string name, const Stockpile& sp, long long money, bool isPlayerControlled, Color rgb);
+    Country(std::string tag, std::string name, const Stockpile& sp, long long money, Color rgb = Color{});
 
     // Handle the states of the country
     void AddState(State* state);
@@ -67,11 +67,22 @@ private:
 
     void HandleDiplomaticRequests();
 
+    /*A day of work in every factory the country runs. The whole country draws
+    on one set of warehouses, so the factories cannot be run one at a time: the
+    day's demand is added up first, then each good's stock is divided among
+    everything that wants it, and only then does any factory take anything. A
+    factory that cannot have all of its inputs runs at the rate of its
+    scarcest one instead of stopping, and nothing can be spent twice.*/
+    void RunFactories();
+
 public:
     Policy policy;
 
     // A country's currently stockpiled resources
     Stockpile Stock;
+
+    // What it has in the bank
+    long long Money;
 };
 
 #endif

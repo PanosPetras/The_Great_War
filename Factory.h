@@ -2,7 +2,7 @@
 #define FACTORY_H
 
 #pragma once
-#include "Market.h"
+#include "PerGood.h"
 #include "Stockpile.h"
 
 #include <array>
@@ -55,58 +55,199 @@ struct FactoryKind {
     // The kind this row describes. It has to match the row's own position.
     FactoryType type;
 
-    /*What the factory turns out, in lower case. It doubles as the name of the
-    icon that stands for the factory under Icons/Goods.*/
-    std::string_view name;
+    /*The good it exists to make. The factory is named and iconed after it, so
+    the name is never written down twice.*/
+    Good output;
 
-    // What it costs to build one
-    int cost;
+    // What it costs in money to build one
+    int cost = 0;
+
+    /*What it costs in goods to build one. The four kinds that need nothing
+    here - sawmill, kiln, glassworks, steelworks - are what a country with
+    empty warehouses starts from, and every other kind is built out of what
+    those four make. Without that footing no factory could ever be raised.*/
+    Stockpile materials{};
 
     // How long a batch takes. Most factories turn one out every day.
-    int daysToProduce;
+    int daysToProduce = 1;
 
     // What one batch yields
-    Stockpile produces;
+    Stockpile produces{};
 
-    // What a day of work eats, as positive amounts
-    Stockpile consumes;
+    // What a day of work at full throughput eats, as positive amounts
+    Stockpile consumes{};
+
+    /*What a day of work at full throughput would draw from the state's power
+    supply. Nothing reads it yet - it is the hook the per-state energy system
+    will balance against, written down now so that the recipes do not have to
+    be opened up again when that lands.*/
+    int powerDraw = 0;
+
+    // What a day of work adds to that supply, for the power plants to come
+    int powerOutput = 0;
 };
 
 /*The one place a factory's numbers are written down, in the order of the enum
 above, which is also the order the Open Factory screen lists them in.*/
+// clang-format off
 inline constexpr std::array FactoryKinds{
-    FactoryKind{FactoryType::LumberMill, "lumber", 10000, 1, {.Lumber = 15}, {.Coal = 2, .Timber = 10}},
-    FactoryKind{FactoryType::GlassFactory, "glass", 8000, 1, {.Glass = 8}, {.Coal = 4}},
-    FactoryKind{FactoryType::CanningFactory, "canned food", 8000, 1, {.Canned_food = 10}, {.Coal = 2, .Iron = 2, .Grain = 3}},
-    FactoryKind{FactoryType::ClothesFactory, "clothes", 11000, 1, {.Clothes = 10}, {.Coal = 2, .Cotton = 8}},
-    FactoryKind{FactoryType::LiquorDistillery, "liquor", 11000, 1, {.Liquor = 10}, {.Coal = 2, .Fruit = 4, .Glass = 2}},
-    FactoryKind{FactoryType::FurnitureFactory, "furniture", 12000, 1, {.Furniture = 7}, {.Coal = 2, .Lumber = 10}},
-    FactoryKind{FactoryType::AutomobileFactory, "automobile", 16000, 1, {.Automobiles = 3}, {.Coal = 2, .Rubber = 1, .Iron = 4, .Glass = 1, .Lumber = 4}},
-    FactoryKind{FactoryType::PaperMill, "paper", 8000, 1, {.Paper = 20}, {.Coal = 2, .Lumber = 8}},
-    FactoryKind{FactoryType::TelephoneFactory, "telephone", 16000, 1, {.Telephones = 5}, {.Coal = 2, .Electric_gear = 2}},
-    FactoryKind{FactoryType::RadioFactory, "radio", 15000, 1, {.Radios = 5}, {.Coal = 2, .Electric_gear = 2}},
-    FactoryKind{FactoryType::MachinePartFactory, "machine parts", 20000, 1, {.Machine_parts = 6}, {.Coal = 2, .Iron = 12}},
-    FactoryKind{FactoryType::ElectricGearFactory, "electric gear", 19000, 1, {.Electric_gear = 8}, {.Coal = 2, .Iron = 4}},
-    FactoryKind{FactoryType::FuelRefinery, "fuel", 22000, 1, {.Fuel = 8}, {.Coal = 2, .Oil = 4}},
-    FactoryKind{FactoryType::CementFactory, "cement", 12000, 1, {.Cement = 10}, {.Coal = 4}},
-    FactoryKind{FactoryType::Shipyard, "merchant ship", 19000, 120, {.Merchant_ships = 1}, {.Coal = 2, .Rubber = 1, .Iron = 4, .Glass = 1, .Lumber = 4}},
-    FactoryKind{FactoryType::SmallArmsFactory, "small arms", 16000, 1, {.Small_arms = 15}, {.Coal = 2, .Iron = 8, .Lumber = 8}},
-    FactoryKind{FactoryType::AmmunitionFactory, "ammunition", 14000, 1, {.Ammunition = 5}, {.Coal = 2, .Iron = 3}},
-    FactoryKind{FactoryType::ArtilleryFactory, "artillery", 19000, 1, {.Artillery = 3}, {.Coal = 2, .Iron = 3}},
-    FactoryKind{FactoryType::ExplosivesFactory, "explosives", 13000, 1, {.Explosives = 6}, {.Coal = 2}},
-    FactoryKind{FactoryType::TankFactory, "tank", 30000, 1, {.Tanks = 1}, {.Coal = 2, .Iron = 4, .Small_arms = 2, .Artillery = 1}},
-    FactoryKind{FactoryType::AirshipFactory, "airship", 40000, 200, {.Airship = 1}, {.Coal = 2, .Cotton = 12, .Iron = 10, .Electric_gear = 2}},
-    FactoryKind{FactoryType::PlaneFactory, "plane", 24000, 1, {.Planes = 2}, {.Coal = 2, .Rubber = 2, .Iron = 1, .Lumber = 4}},
-    FactoryKind{FactoryType::SteelMill, "steel", 18000, 1, {.Steel = 10}, {.Coal = 6, .Iron = 12}},
+    FactoryKind{.type = FactoryType::LumberMill, .output = Good::Lumber,
+        .cost = 10000,
+        .daysToProduce = 1, .produces = {.Lumber = 15}, .consumes = {.Coal = 2, .Timber = 10},
+        .powerDraw = 6},
+
+    FactoryKind{.type = FactoryType::GlassFactory, .output = Good::Glass,
+        .cost = 8000,
+        .daysToProduce = 1, .produces = {.Glass = 8}, .consumes = {.Coal = 4},
+        .powerDraw = 6},
+
+    FactoryKind{.type = FactoryType::CanningFactory, .output = Good::Canned_food,
+        .cost = 8000, .materials = {.Steel = 30, .Machine_parts = 15, .Cement = 40},
+        .daysToProduce = 1, .produces = {.Canned_food = 10}, .consumes = {.Coal = 2, .Grain = 3, .Steel = 2},
+        .powerDraw = 5},
+
+    FactoryKind{.type = FactoryType::ClothesFactory, .output = Good::Clothes,
+        .cost = 11000, .materials = {.Steel = 30, .Machine_parts = 15, .Cement = 40},
+        .daysToProduce = 1, .produces = {.Clothes = 10}, .consumes = {.Coal = 2, .Cotton = 8},
+        .powerDraw = 5},
+
+    FactoryKind{.type = FactoryType::LiquorDistillery, .output = Good::Liquor,
+        .cost = 11000, .materials = {.Steel = 30, .Machine_parts = 15, .Cement = 40},
+        .daysToProduce = 1, .produces = {.Liquor = 10}, .consumes = {.Coal = 2, .Fruit = 4, .Glass = 2},
+        .powerDraw = 4},
+
+    FactoryKind{.type = FactoryType::FurnitureFactory, .output = Good::Furniture,
+        .cost = 12000, .materials = {.Steel = 30, .Machine_parts = 15, .Cement = 40},
+        .daysToProduce = 1, .produces = {.Furniture = 7}, .consumes = {.Coal = 2, .Lumber = 10},
+        .powerDraw = 5},
+
+    FactoryKind{.type = FactoryType::AutomobileFactory, .output = Good::Automobiles,
+        .cost = 16000, .materials = {.Steel = 150, .Machine_parts = 60, .Boilers = 6, .Cement = 120},
+        .daysToProduce = 1, .produces = {.Automobiles = 3}, .consumes = {.Coal = 2, .Rubber = 1, .Steel = 4, .Engines = 1, .Glass = 1, .Lumber = 4},
+        .powerDraw = 18},
+
+    FactoryKind{.type = FactoryType::PaperMill, .output = Good::Paper,
+        .cost = 8000, .materials = {.Steel = 30, .Machine_parts = 15, .Cement = 40},
+        .daysToProduce = 1, .produces = {.Paper = 20}, .consumes = {.Coal = 2, .Lumber = 8},
+        .powerDraw = 8},
+
+    FactoryKind{.type = FactoryType::TelephoneFactory, .output = Good::Telephones,
+        .cost = 16000, .materials = {.Steel = 60, .Machine_parts = 30, .Boilers = 2, .Cement = 60},
+        .daysToProduce = 1, .produces = {.Telephones = 5}, .consumes = {.Coal = 2, .Copper = 1, .Electric_gear = 2},
+        .powerDraw = 10},
+
+    FactoryKind{.type = FactoryType::RadioFactory, .output = Good::Radios,
+        .cost = 15000, .materials = {.Steel = 60, .Machine_parts = 30, .Boilers = 2, .Cement = 60},
+        .daysToProduce = 1, .produces = {.Radios = 5}, .consumes = {.Coal = 2, .Copper = 1, .Electric_gear = 2},
+        .powerDraw = 10},
+
+    FactoryKind{.type = FactoryType::MachinePartFactory, .output = Good::Machine_parts,
+        .cost = 20000, .materials = {.Steel = 60, .Cement = 50},
+        .daysToProduce = 1, .produces = {.Machine_parts = 6}, .consumes = {.Coal = 2, .Steel = 8},
+        .powerDraw = 15},
+
+    FactoryKind{.type = FactoryType::ElectricGearFactory, .output = Good::Electric_gear,
+        .cost = 19000, .materials = {.Steel = 60, .Machine_parts = 30, .Boilers = 2, .Cement = 60},
+        .daysToProduce = 1, .produces = {.Electric_gear = 8}, .consumes = {.Coal = 2, .Copper = 4, .Steel = 2},
+        .powerDraw = 20},
+
+    FactoryKind{.type = FactoryType::FuelRefinery, .output = Good::Fuel,
+        .cost = 22000, .materials = {.Steel = 60, .Machine_parts = 30, .Boilers = 2, .Cement = 60},
+        .daysToProduce = 1, .produces = {.Fuel = 8}, .consumes = {.Coal = 2, .Oil = 4},
+        .powerDraw = 10},
+
+    FactoryKind{.type = FactoryType::CementFactory, .output = Good::Cement,
+        .cost = 12000,
+        .daysToProduce = 1, .produces = {.Cement = 10}, .consumes = {.Coal = 4},
+        .powerDraw = 6},
+
+    FactoryKind{.type = FactoryType::Shipyard, .output = Good::Merchant_ships,
+        .cost = 19000, .materials = {.Steel = 150, .Machine_parts = 60, .Boilers = 6, .Cement = 120},
+        .daysToProduce = 120, .produces = {.Merchant_ships = 1}, .consumes = {.Coal = 2, .Rubber = 1, .Steel = 4, .Boilers = 1, .Glass = 1, .Lumber = 4, .Radios = 1},
+        .powerDraw = 20},
+
+    FactoryKind{.type = FactoryType::SmallArmsFactory, .output = Good::Small_arms,
+        .cost = 16000, .materials = {.Steel = 60, .Machine_parts = 30, .Boilers = 2, .Cement = 60},
+        .daysToProduce = 1, .produces = {.Small_arms = 15}, .consumes = {.Coal = 2, .Steel = 8, .Lumber = 8},
+        .powerDraw = 12},
+
+    FactoryKind{.type = FactoryType::AmmunitionFactory, .output = Good::Ammunition,
+        .cost = 14000, .materials = {.Steel = 60, .Machine_parts = 30, .Boilers = 2, .Cement = 60},
+        .daysToProduce = 1, .produces = {.Ammunition = 5}, .consumes = {.Coal = 2, .Steel = 3, .Explosives = 2},
+        .powerDraw = 10},
+
+    FactoryKind{.type = FactoryType::ArtilleryFactory, .output = Good::Artillery,
+        .cost = 19000, .materials = {.Steel = 150, .Machine_parts = 60, .Boilers = 6, .Cement = 120},
+        .daysToProduce = 1, .produces = {.Artillery = 3}, .consumes = {.Coal = 2, .Steel = 6, .Machine_parts = 1},
+        .powerDraw = 16},
+
+    /*Nitrates rather than coal: an explosive is fixed nitrogen, and that is
+    what a blockade was for.*/
+    FactoryKind{.type = FactoryType::ExplosivesFactory, .output = Good::Explosives,
+        .cost = 13000, .materials = {.Steel = 60, .Machine_parts = 30, .Boilers = 2, .Cement = 60},
+        .daysToProduce = 1, .produces = {.Explosives = 6}, .consumes = {.Coal = 2, .Nitrates = 4},
+        .powerDraw = 14},
+
+    FactoryKind{.type = FactoryType::TankFactory, .output = Good::Tanks,
+        .cost = 30000, .materials = {.Steel = 150, .Machine_parts = 60, .Boilers = 6, .Cement = 120},
+        .daysToProduce = 1, .produces = {.Tanks = 1}, .consumes = {.Coal = 2, .Steel = 4, .Engines = 1, .Small_arms = 2, .Artillery = 1},
+        .powerDraw = 20},
+
+    /*A rigid airship is a duralumin frame under a doped fabric skin, which is
+    what the aluminium and the canvas are doing here.*/
+    FactoryKind{.type = FactoryType::AirshipFactory, .output = Good::Airship,
+        .cost = 40000, .materials = {.Steel = 150, .Machine_parts = 60, .Boilers = 6, .Cement = 120},
+        .daysToProduce = 200, .produces = {.Airship = 1}, .consumes = {.Coal = 2, .Aluminum = 4, .Electric_gear = 2, .Engines = 2, .Canvas = 12},
+        .powerDraw = 18},
+
+    /*Wood, doped fabric and an engine. There is no aluminium in a 1914
+    airframe - that is what the airships were for.*/
+    FactoryKind{.type = FactoryType::PlaneFactory, .output = Good::Planes,
+        .cost = 24000, .materials = {.Steel = 150, .Machine_parts = 60, .Boilers = 6, .Cement = 120},
+        .daysToProduce = 1, .produces = {.Planes = 2}, .consumes = {.Coal = 2, .Rubber = 2, .Engines = 1, .Lumber = 4, .Canvas = 3},
+        .powerDraw = 12},
+
+    FactoryKind{.type = FactoryType::SteelMill, .output = Good::Steel,
+        .cost = 18000,
+        .daysToProduce = 1, .produces = {.Steel = 10}, .consumes = {.Coal = 6, .Iron = 12},
+        .powerDraw = 30},
+
     /*A smelter is really an appetite for electricity with a factory attached.
-    Until power is metered on its own the coal stands in for it.*/
-    FactoryKind{FactoryType::AluminumSmelter, "aluminum", 26000, 1, {.Aluminum = 4}, {.Coal = 14, .Bauxite = 8}},
-    FactoryKind{FactoryType::EngineFactory, "engine", 24000, 1, {.Engines = 3}, {.Coal = 2, .Copper = 2, .Steel = 6, .Machine_parts = 4}},
-    FactoryKind{FactoryType::BoilerFactory, "boiler", 21000, 1, {.Boilers = 2}, {.Coal = 3, .Steel = 12, .Machine_parts = 2}},
-    FactoryKind{FactoryType::CanvasMill, "canvas", 10000, 1, {.Canvas = 12}, {.Coal = 2, .Cotton = 10}},
-    FactoryKind{FactoryType::SyntheticRubberRefinery, "rubber", 14000, 1, {.Rubber = 6}, {.Coal = 5}},
-    FactoryKind{FactoryType::SyntheticNitratePlant, "nitrates", 20000, 1, {.Nitrates = 5}, {.Coal = 8}},
+    Until power is metered on its own the coal stands in for it, and powerDraw
+    is what it will cost once it is.*/
+    FactoryKind{.type = FactoryType::AluminumSmelter, .output = Good::Aluminum,
+        .cost = 26000, .materials = {.Steel = 150, .Machine_parts = 60, .Boilers = 6, .Cement = 120},
+        .daysToProduce = 1, .produces = {.Aluminum = 4}, .consumes = {.Coal = 14, .Bauxite = 8},
+        .powerDraw = 120},
+
+    FactoryKind{.type = FactoryType::EngineFactory, .output = Good::Engines,
+        .cost = 24000, .materials = {.Steel = 60, .Machine_parts = 30, .Boilers = 2, .Cement = 60},
+        .daysToProduce = 1, .produces = {.Engines = 3}, .consumes = {.Coal = 2, .Copper = 2, .Steel = 6, .Machine_parts = 4},
+        .powerDraw = 15},
+
+    FactoryKind{.type = FactoryType::BoilerFactory, .output = Good::Boilers,
+        .cost = 21000, .materials = {.Steel = 60, .Cement = 50},
+        .daysToProduce = 1, .produces = {.Boilers = 2}, .consumes = {.Coal = 3, .Steel = 12, .Machine_parts = 2},
+        .powerDraw = 12},
+
+    FactoryKind{.type = FactoryType::CanvasMill, .output = Good::Canvas,
+        .cost = 10000, .materials = {.Steel = 30, .Machine_parts = 15, .Cement = 40},
+        .daysToProduce = 1, .produces = {.Canvas = 12}, .consumes = {.Coal = 2, .Cotton = 10},
+        .powerDraw = 6},
+
+    FactoryKind{.type = FactoryType::SyntheticRubberRefinery, .output = Good::Rubber,
+        .cost = 14000, .materials = {.Steel = 30, .Machine_parts = 15, .Cement = 40},
+        .daysToProduce = 1, .produces = {.Rubber = 6}, .consumes = {.Coal = 5},
+        .powerDraw = 12},
+
+    /*Nitrates out of coal and air rather than out of a Chilean mine. Fixing
+    nitrogen is hungry work, which is what the draw is for.*/
+    FactoryKind{.type = FactoryType::SyntheticNitratePlant, .output = Good::Nitrates,
+        .cost = 20000, .materials = {.Steel = 60, .Machine_parts = 30, .Boilers = 2, .Cement = 60},
+        .daysToProduce = 1, .produces = {.Nitrates = 5}, .consumes = {.Coal = 8},
+        .powerDraw = 90},
 };
+// clang-format on
 
 /*The table is subscripted by FactoryType, so every row has to sit at its own
 enumerator and every enumerator has to have a row.*/
@@ -118,21 +259,48 @@ static_assert([] {
     return true;
 }());
 
+/*A factory is named after the one good it turns out, so every row has to
+produce the good it claims to.*/
+static_assert([] {
+    for(const auto& kind : FactoryKinds) {
+        if(kind.produces[kind.output] <= 0) return false;
+    }
+    return true;
+}());
+
 // What a kind of factory costs, makes and eats
 inline constexpr const FactoryKind& KindOf(FactoryType type) {
     return FactoryKinds[std::size_t(type)];
 }
 
-struct Factory {
+// What a kind of factory is called, which is the name of its icon too
+inline constexpr std::string_view NameOf(FactoryType type) {
+    return InfoOf(KindOf(type).output).name;
+}
+
+/*A day of work is measured in thousandths, so that a factory short of an input
+can run at a fraction of a day rather than having to stall or run whole.*/
+inline constexpr int FullThroughput = 1000;
+
+class Factory {
 public:
-    Factory(FactoryType type, Stockpile* Target, Market* market);
-    ~Factory();
+    explicit Factory(FactoryType type);
 
-    /*A day of work. The inputs are taken every day, the batch is handed over on
-    the day it is finished.*/
-    void Tick();
+    /*A day of work at some fraction of full throughput, in thousandths. The
+    inputs are taken out of the stockpile, the batch is handed over on the day
+    it is finished.*/
+    void Work(int throughput, Stockpile& stock);
 
-    void ChangeOwner(Stockpile* NewStockpile);
+    // What a full day of work would eat, which is what the day's demand is built from
+    Stockpile Consumption() const;
+
+    /*The most of a day's work the stockpile can pay for, in thousandths, given
+    how far each good's supply went round. A factory runs at the rate of its
+    scarcest input, so this is the smallest share among the goods it needs.
+
+    This is where the per-state power supply will come in: a factory will run at
+    the lesser of what its inputs and what its state's grid allow.*/
+    int Throughput(const PerGood<int>& share) const;
 
     // What this factory is, and every number that follows from it
     const FactoryKind& Kind;
@@ -141,15 +309,9 @@ public:
     int size;
 
 private:
-    Stockpile materialsNeeded;
-    Stockpile materialsProduced;
-    Stockpile* TargetStockpile;
-
-    Market* TargetMarket;
-
-    // Days spent on the batch under way
-    int days;
-
-    void confirmMaterials();
+    /*How far the batch under way has got, in thousandths of a day of work, so
+    that a factory held back by a shortage takes proportionally longer rather
+    than stalling outright.*/
+    int progress;
 };
 #endif

@@ -9,7 +9,7 @@ EconomyScreen::EconomyScreen(MainWindow& mw, Country* Pl) : Screen(mw), Player(P
     SetupBg("Backgrounds/Industry.png");
     auto [Width, Height] = mw.GetWindowDimensions();
 
-    AddLabel<Label>(*main_window, "Current Funds: " + std::to_string(Pl->Stock.Money), FontSize::Heading, int(0.1 * Width), int(0.1 * Height));
+    AddLabel<Label>(*main_window, "Current Funds: " + std::to_string(Pl->Money), FontSize::Heading, int(0.1 * Width), int(0.1 * Height));
     AddLabel<Label>(*main_window, "Tax Rate: " + std::to_string(Pl->policy.TaxRate) + '%', FontSize::Heading, int(0.1 * Width), int(0.2 * Height));
     AddLabel<Label>(*main_window, "Healthcare: " + std::to_string(Pl->policy.Healthcare) + '%', FontSize::Heading, int(0.4 * Width), int(0.2 * Height));
     AddLabel<Label>(*main_window, "Education: " + std::to_string(Pl->policy.TaxRate) + '%', FontSize::Heading, int(0.4 * Width), int(0.4 * Height));
@@ -20,7 +20,7 @@ EconomyScreen::EconomyScreen(MainWindow& mw, Country* Pl) : Screen(mw), Player(P
 }
 
 void EconomyScreen::Update(Uint32) {
-    std::string l1 = "Current Funds: " + std::to_string(Player->Stock.Money);
+    std::string l1 = "Current Funds: " + std::to_string(Player->Money);
     LabelArr[0]->ChangeText(l1.c_str());
 }
 
