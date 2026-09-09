@@ -16,6 +16,10 @@ public:
     // Constructor
     MessageBox(MainWindow& mw, std::string title, std::string message, std::function<void(void*)> f);
 
+    // Defined in the .cpp: the members are unique_ptrs to types only
+    // forward-declared here, and the destructor needs them complete.
+    ~MessageBox();
+
     // Called when received input
     void HandleInput(const SDL_Event& ev) override;
 

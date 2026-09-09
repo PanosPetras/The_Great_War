@@ -27,7 +27,9 @@ class UI {
 public:
     // Constructor
     UI(MainWindow& mw, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl = nullptr);
-    ~UI() = default;
+    // Defined in the .cpp: the members are unique_ptrs to types only
+    // forward-declared here, and the destructor needs them complete.
+    ~UI();
 
     // This is a reference to the main window's renderer
     MainWindow* main_window;

@@ -14,6 +14,8 @@ MessageBox::MessageBox(MainWindow& mw, std::string Title, std::string message, s
     okButton = std::make_unique<Button>(mw, int(Width * 0.67), int(Height * 0.66), int(Width * 0.09), int(Height * 0.055), "OK", FontSize::Control, bottom_right, f, this, SDLK_RETURN);
 }
 
+MessageBox::~MessageBox() = default;
+
 void MessageBox::HandleInput(const SDL_Event& ev) {
     okButton->HandleInput(ev);
 }

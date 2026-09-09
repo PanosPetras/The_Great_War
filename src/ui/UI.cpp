@@ -9,6 +9,8 @@
 #include "screens/ScreenList.h"
 #include "ui/ToggleButton.h"
 
+UI::~UI() = default;
+
 UI::UI(MainWindow& mw, const char* tag, PlayerController* PC, std::function<void(std::unique_ptr<Screen>, std::string)> fpl) : main_window(&mw) {
     auto [Width, Height] = mw.GetWindowDimensions();
 
