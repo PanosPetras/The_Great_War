@@ -41,9 +41,73 @@ no bugs that will cause a crash as far as I'm aware of.
 
 ---
 
-Created with Visual Studio 2019/2022
+## Building
 
-C++ version: C++/20
+The build is CMake-only (3.28 or newer) and compiles with GCC. You also need
+the SDL 3 development packages listed below.
+
+```sh
+cmake --preset default
+cmake --build --preset default
+```
+
+`cmake --list-presets` shows the rest.
+
+The presets do not pin a generator, so CMake takes it from the `CMAKE_GENERATOR`
+environment variable and falls back to Makefiles when that is unset. Ninja is
+worth having; to make it the default for every CMake project:
+
+```sh
+export CMAKE_GENERATOR=Ninja
+```
+
+The game looks for `Backgrounds/`, `map/`, `Fonts/` and the rest relative to the
+working directory, so run it from the root of the repository:
+
+```sh
+./build/The_Great_War
+```
+
+`cmake --build build --target run` does the same thing and sets the working
+directory for you.
+
+### Presets
+
+Each one configures into its own build tree, so they never fight over object
+files.
+
+| Preset | Tree | What it is |
+| --- | --- | --- |
+| `default` | `build/` | Release. |
+| `debug` | `build-debug/` | Debug. |
+| `asan` | `build-asan/` | Debug with the address and undefined sanitizers. |
+| `tsan` | `build-tsan/` | Debug with the thread sanitizer. |
+
+```sh
+cmake --preset asan
+cmake --build --preset asan
+```
+
+The underlying knob is `TGW_SANITIZE` (`none`, `address` or `thread`) if you
+would rather configure a tree by hand.
+
+There is also a `valgrind` target, present when `valgrind` is found on `PATH`.
+
+### Layout
+
+Headers live in `include/`, translation units in `src/`, and the two mirror each
+other. Headers are included by their group, so `#include "ui/Button.h"` rather
+than a bare filename.
+
+| Group | What is in it |
+| --- | --- |
+| `core` | The window, the SDL wrappers, and the small value types they need. |
+| `ui` | Widgets: buttons, labels, images, sliders, text entry. |
+| `screens` | One file per screen, plus the base class they share. |
+| `game` | The simulation: countries, states, factories, goods, diplomacy. |
+| `util` | Odds and ends with no dependency on the rest. |
+
+C++ version: C++26
 
 This project makes use the following libraries:
 - SDL 3.4.16, 3.4 or newer required(Link: https://github.com/libsdl-org/SDL)
