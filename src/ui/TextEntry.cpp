@@ -3,6 +3,7 @@
 #include "ui/Image.h"
 #include "ui/Label.h"
 #include "core/MainWindow.h"
+#include <utility>
 
 #include <SDL3/SDL.h>
 TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, std::string defaultText, int maxCharacters) : TextEntry(mw, X, Y, Width, Height, top_left, defaultText, maxCharacters) {}
@@ -21,12 +22,7 @@ TextEntry::TextEntry(MainWindow& mw, int X, int Y, int Width, int Height, Anchor
 void TextEntry::HandleInput(const SDL_Event& ev) {
     if(IsActive()) {
         if(ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-            if(ev.button.x >= background->draw_rect.x && ev.button.x <= (background->draw_rect.x + background->draw_rect.w) && ev.button.y >= background->draw_rect.y &&
-               ev.button.y <= (background->draw_rect.y + background->draw_rect.h)) {
-                focused = true;
-            } else {
-                focused = false;
-            }
+            focused = IsPointInRect(background->draw_rect, ev.button.x, ev.button.y);
         }
 
         if(focused) {
@@ -64,29 +60,31 @@ bool TextEntry::IsFocused() {
     return focused;
 }
 
-std::string TextEntry::GetText() {
+const std::string& TextEntry::GetText() const {
     return text;
 }
 
-void TextEntry::ChangeText(std::string Text) {
+void TextEntry::ChangeText(std::string_view Text) {
+    /*A view rather than a string: the label only rebuilds its texture when the
+    text actually changed, so neither call here has to allocate to find out.*/
     textLabel->ChangeText(Text);
     text = Text;
 }
 
-std::string TextEntry::GetHint() {
+const std::string& TextEntry::GetHint() const {
     return hint;
 }
 
-void TextEntry::ChangeHint(std::string Hint) {
-    if(Hint != hint) {
-        if(hintLabel) {
-            hintLabel->ChangeText(Hint);
-        } else {
-            hintLabel = std::make_unique<Label>(*main_window, Hint, FontSize::Input, int(x * 1.08), int(y * 1.08));
-        }
+void TextEntry::ChangeHint(std::string_view Hint) {
+    if(Hint == hint) return;
 
-        hint = Hint;
+    if(hintLabel) {
+        hintLabel->ChangeText(Hint);
+    } else {
+        hintLabel = std::make_unique<Label>(*main_window, std::string(Hint), FontSize::Input, int(x * 1.08), int(y * 1.08));
     }
+
+    hint = Hint;
 }
 
 void TextEntry::pDraw() {

@@ -61,8 +61,8 @@ protected:
     // Executed when the button is clicked
     void Click();
 
-    // Check if the mouse is within the limits of an SDL_Rect
-    static bool CheckIfMouseInRect(const SDL_Rect& rect, const SDL_MouseButtonEvent& ev);
+    // Tint the text texture, if this button has one, to match the button's state
+    void SetTextTint(Uint8 level);
 
     // Reference the the main window
     MainWindow* main_window;
@@ -80,8 +80,7 @@ protected:
     SDL_Rect draw_rect;
     SDL_Rect text_draw_rect;
 
-    // Reference to the button's texture
-    enum { textureIdle, textureHoovered, textureInactive };
+    // Reference to the button's texture, one per visual state
     std::array<TextureRef, 3> textures;
     TextureRef active_texture{textures[textureIdle]};
 

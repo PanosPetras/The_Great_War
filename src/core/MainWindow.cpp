@@ -57,16 +57,16 @@ void MainWindow::Render() {
 }
 
 SDL_Texture_ctx& MainWindow::IMG_Load(const std::string& filename) {
-    if(auto it = file_textures.find(filename); it != file_textures.end()) {
-        // NOTE: If a Button has already loaded this surface, three textures will have been
-        // placed in the std::vector<SDL_Texture_ctx>. idle, hoovered and inactive.
+    auto key = TextureKey(filename, 1);
+
+    if(auto it = file_textures.find(key); it != file_textures.end()) {
         return it->second[0];
-    } else {
-        std::vector<SDL_Texture_ctx> vec;
-        vec.emplace_back(SDL_Texture_ctx::IMG_Load(renderer, filename));
-        auto [newit, inserted] = file_textures.emplace(filename, std::move(vec));
-        return newit->second[0];
     }
+
+    std::vector<SDL_Texture_ctx> vec;
+    vec.emplace_back(SDL_Texture_ctx::IMG_Load(renderer, filename));
+    auto [newit, inserted] = file_textures.emplace(std::move(key), std::move(vec));
+    return newit->second[0];
 }
 
 MainWindow::operator SDL_Renderer_ctx&() {
@@ -128,7 +128,7 @@ void MainWindow::Keyboard() {
         // execute events added by screen and its children
         if(not quit) {
             for(auto&& ev : event_queue) {
-                std::cerr << "MainWindow::Keyboard\tcalling deferred event" << std::endl;
+                std::cerr << "MainWindow::Keyboard\tcalling deferred event\n";
                 ev();
             }
             event_queue.clear();

@@ -74,6 +74,12 @@ public:
 private:
     // The country the player is running, which every management tab reports on
     Country* Player() const;
+
+    // Rebuilds the date label, but only on the frames where the date moved on
+    void UpdateDateLabel();
+
+    // The date the label is currently showing. Zeroed, so the first frame fills it in.
+    int shownDay = 0, shownMonth = 0, shownYear = 0;
 };
 
 #endif

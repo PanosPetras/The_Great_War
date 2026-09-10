@@ -6,6 +6,7 @@
 
 #include <SDL3/SDL.h>
 
+#include <array>
 #include <functional>
 
 class MainWindow;
@@ -45,8 +46,12 @@ protected:
     // Calls the function bound to this slider, when the Value changes
     void callOnValueChanged();
 
-    // The Slider's graphical components
-    SDL_Texture_ctx Marker;
+    /*The Slider's graphical components. The marker's three states come out of
+    the window's texture cache, so every slider in the game shares them.*/
+    std::array<TextureRef, 3> markerTextures;
+
+    // Which of the three states the marker currently draws itself in
+    InteractiveTexture textureState = textureIdle;
 
     // The rectangles of the marker and the slider
     SDL_Rect bg_rect;

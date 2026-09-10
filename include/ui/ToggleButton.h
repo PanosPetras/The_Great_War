@@ -10,6 +10,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 
+#include <array>
 #include <functional>
 #include <string>
 
@@ -79,9 +80,15 @@ protected:
     // Dimensions of the button
     SDL_Rect draw_rect;
 
-    // Reference to the button's texture
-    SDL_Texture_ctx activeTexture;
-    SDL_Texture_ctx inactiveTexture;
+    /*The two images the button toggles between, each in the three visual
+    states. They come out of the window's texture cache, so two checkboxes
+    drawn from the same pair of files share them rather than each loading and
+    uploading the files again.*/
+    std::array<TextureRef, 3> activeTextures;
+    std::array<TextureRef, 3> inactiveTextures;
+
+    // Which of the three states the button currently draws itself in
+    InteractiveTexture textureState = textureIdle;
 
     // The button's onClick sound
     SoundRef music = nullptr;

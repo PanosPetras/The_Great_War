@@ -48,17 +48,17 @@ void UI::Render() {
     // Renders the country menu
     flagbg->Draw();
     flag->Draw();
-    for(unsigned x = 0; x < 5; x++) {
-        Buttons[x]->Draw();
+    for(auto& button : Buttons) {
+        button->Draw();
     }
 
     // Renders the date menu
     SpeedBg->Draw();
-    Date->ChangeText(std::to_string(PCref->Date.Day) + "-" + std::to_string(PCref->Date.Month) + "-" + std::to_string(PCref->Date.Year));
+    UpdateDateLabel();
     Date->Draw();
     SpeedImg->Draw();
-    for(unsigned x = 0; x < 2; x++) {
-        DateButtons[x]->Draw();
+    for(auto& button : DateButtons) {
+        button->Draw();
     }
     PauseButton->Draw();
 }
@@ -67,15 +67,30 @@ void UI::Handle_Input(SDL_Event& ev) {
     // Handles inputs for buttons
     flag->HandleInput(ev);
 
-    for(unsigned x = 0; x < 5; x++) {
-        Buttons[x]->HandleInput(ev);
+    for(auto& button : Buttons) {
+        button->HandleInput(ev);
     }
 
-    for(unsigned x = 0; x < 2; x++) {
-        DateButtons[x]->HandleInput(ev);
+    for(auto& button : DateButtons) {
+        button->HandleInput(ev);
     }
 
     PauseButton->HandleInput(ev);
+}
+
+void UI::UpdateDateLabel() {
+    /*The date changes once per in-game day but this runs every frame, so it is
+    the day itself that is checked rather than the string built from it - the
+    label would compare an identical string and throw it away almost every
+    time, having allocated four of them to get there.*/
+    const auto& date = PCref->Date;
+    if(date.Day == shownDay && date.Month == shownMonth && date.Year == shownYear) return;
+
+    shownDay = date.Day;
+    shownMonth = date.Month;
+    shownYear = date.Year;
+
+    Date->ChangeText(std::to_string(date.Day) + "-" + std::to_string(date.Month) + "-" + std::to_string(date.Year));
 }
 
 void UI::IncreaseSpeed() {

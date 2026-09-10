@@ -2,13 +2,13 @@
 
 #include "core/MainWindow.h"
 
-Label::Label(MainWindow& mw, std::string Text, FontSize size, int X, int Y, Color rgb) : Label(mw, Text, size, X, Y, 300, top_left, rgb) {}
+Label::Label(MainWindow& mw, std::string Text, FontSize size, int X, int Y, Color rgb) : Label(mw, std::move(Text), size, X, Y, 300, top_left, rgb) {}
 
-Label::Label(MainWindow& mw, std::string Text, FontSize size, int X, int Y, Anchor anchor, Color rgb) : Label(mw, Text, size, X, Y, 300, anchor, rgb) {}
+Label::Label(MainWindow& mw, std::string Text, FontSize size, int X, int Y, Anchor anchor, Color rgb) : Label(mw, std::move(Text), size, X, Y, 300, anchor, rgb) {}
 
-Label::Label(MainWindow& mw, std::string Text, FontSize size, int X, int Y, Uint32 xlim, Color rgb) : Label(mw, Text, size, X, Y, xlim, top_left, rgb) {}
+Label::Label(MainWindow& mw, std::string Text, FontSize size, int X, int Y, Uint32 xlim, Color rgb) : Label(mw, std::move(Text), size, X, Y, xlim, top_left, rgb) {}
 
-Label::Label(MainWindow& mw, std::string Text, FontSize size, int X, int Y, Uint32 xlim, Anchor anchor, Color rgb) : Drawable(anchor), main_window(&mw), fontSize(size), color(rgb), text(Text), x(X), y(Y), xLim(xlim) {
+Label::Label(MainWindow& mw, std::string Text, FontSize size, int X, int Y, Uint32 xlim, Anchor anchor, Color rgb) : Drawable(anchor), main_window(&mw), fontSize(size), color(rgb), text(std::move(Text)), x(X), y(Y), xLim(xlim) {
     UpdateLabel();
 }
 
@@ -17,13 +17,16 @@ void Label::pDraw() {
     RenderTexture(*main_window, texture, draw_rect);
 }
 
-void Label::ChangeText(std::string Text) {
+void Label::ChangeText(std::string_view Text) {
     /*Re-rendering costs a glyph raster and a texture upload, and screens call
-    this every frame with a value that only changes once per in-game day.*/
+    this every frame with a value that only changes once per in-game day. The
+    parameter is a view rather than a string so that the overwhelmingly common
+    call - the one that turns out to change nothing - does not allocate just to
+    build the value it is about to compare and throw away.*/
     if(Text == text) return;
 
     // Assign the new text to the label
-    text = std::move(Text);
+    text = Text;
     UpdateLabel();
 }
 
@@ -48,12 +51,7 @@ void Label::ChangePosition(int X, int Y) {
     x = X;
     y = Y;
 
-    /*Setting the texture size. SDL3 replaced SDL_QueryTexture with a call
-    that reports the size in floats, but a rendered glyph run is a whole
-    number of pixels, so the layout stays in integers.*/
-    float texW, texH;
-    SDL_GetTextureSize(texture, &texW, &texH);
-    draw_rect = {x, y, static_cast<int>(texW), static_cast<int>(texH)};
+    draw_rect = {x, y, texW, texH};
 
     ApplyAnchor(draw_rect, dAnchor);
 }
@@ -71,11 +69,18 @@ void Label::UpdateLabel() {
 
     // Convert the text to a surface and then assign the surface to a texture
     auto surface = SDL_Surface_ctx::TTF_RenderText_Blended_Wrapped(font, text, color, xLim);
+
+    /*The surface already knows how big the glyph run it just rasterised is,
+    and a rendered run is a whole number of pixels, so take the size from it
+    rather than asking SDL for the texture's size back in floats.*/
+    texW = surface->w;
+    texH = surface->h;
+
     texture = SDL_Texture_ctx(*main_window, surface);
 
     ChangePosition(x, y);
 }
 
-std::string Label::GetText() {
+const std::string& Label::GetText() const {
     return text;
 }
