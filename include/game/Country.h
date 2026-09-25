@@ -85,7 +85,11 @@ private:
     day's demand is added up first, then each good's stock is divided among
     everything that wants it, and only then does any factory take anything. A
     factory that cannot have all of its inputs runs at the rate of its
-    scarcest one instead of stopping, and nothing can be spent twice.*/
+    scarcest one instead of stopping, and nothing can be spent twice.
+
+    Power is the one input that is not shared country-wide: each state's
+    factories run on what its own power stations make, and a state that draws
+    more than it makes runs every powered factory in it proportionally slower.*/
     void RunFactories();
 
     /*Collects the day's taxes and pays for healthcare. What people can be

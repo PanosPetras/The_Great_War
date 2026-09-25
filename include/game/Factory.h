@@ -8,6 +8,7 @@
 
 #include <array>
 #include <cstddef>
+#include <optional>
 #include <string_view>
 
 /*Every kind of factory the game knows. The table below holds one row per
@@ -41,6 +42,7 @@ enum class FactoryType {
     EngineFactory,
     BoilerFactory,
     CanvasMill,
+    PowerStation,
 
     /*The two ways round a blockade. They come last because the Open Factory
     screen offers the kinds up to here and no further.*/
@@ -57,8 +59,12 @@ struct FactoryKind {
     FactoryType type;
 
     /*The good it exists to make. The factory is named and iconed after it, so
-    the name is never written down twice.*/
-    Good output;
+    the name is never written down twice. A power station makes no good at
+    all, only power, so it has none and is given a name of its own instead.*/
+    std::optional<Good> output;
+
+    // The name and icon of a kind that has no good to borrow them from
+    std::string_view name{};
 
     // What it costs in money to build one
     int cost = 0;
@@ -78,13 +84,12 @@ struct FactoryKind {
     // What a day of work at full throughput eats, as positive amounts
     Stockpile consumes{};
 
-    /*What a day of work at full throughput would draw from the state's power
-    supply. Nothing reads it yet - it is the hook the per-state energy system
-    will balance against, written down now so that the recipes do not have to
-    be opened up again when that lands.*/
+    /*What a day of work at full throughput draws from its state's power
+    supply. Power is not a good: it cannot be stored or shipped, so every
+    state has to generate what its own factories draw. See Country::RunFactories.*/
     int powerDraw = 0;
 
-    // What a day of work adds to that supply, for the power plants to come
+    // What a day of work at full throughput adds to its state's supply
     int powerOutput = 0;
 };
 
@@ -213,12 +218,11 @@ inline constexpr std::array FactoryKinds{
         .daysToProduce = 1, .produces = {.Steel = 10}, .consumes = {.Coal = 6, .Iron = 12},
         .powerDraw = 30},
 
-    /*A smelter is really an appetite for electricity with a factory attached.
-    Until power is metered on its own the coal stands in for it, and powerDraw
-    is what it will cost once it is.*/
+    /*A smelter is really an appetite for electricity with a factory attached:
+    it draws more than one power station makes. The coal is its carbon anodes.*/
     FactoryKind{.type = FactoryType::AluminumSmelter, .output = Good::Aluminum,
         .cost = 26000, .materials = {.Steel = 150, .Machine_parts = 60, .Boilers = 6, .Cement = 120},
-        .daysToProduce = 1, .produces = {.Aluminum = 4}, .consumes = {.Coal = 14, .Bauxite = 8},
+        .daysToProduce = 1, .produces = {.Aluminum = 4}, .consumes = {.Coal = 4, .Bauxite = 8},
         .powerDraw = 120},
 
     FactoryKind{.type = FactoryType::EngineFactory, .output = Good::Engines,
@@ -235,6 +239,14 @@ inline constexpr std::array FactoryKinds{
         .cost = 10000, .materials = {.Steel = 30, .Machine_parts = 15, .Cement = 40},
         .daysToProduce = 1, .produces = {.Canvas = 12}, .consumes = {.Coal = 2, .Cotton = 10},
         .powerDraw = 6},
+
+    /*Coal in, power out, and nothing to put in a warehouse. Every factory
+    draws power, so this has to be buildable from money alone, alongside the
+    four that everything else is built out of.*/
+    FactoryKind{.type = FactoryType::PowerStation, .output = std::nullopt, .name = "power station",
+        .cost = 15000,
+        .daysToProduce = 1, .consumes = {.Coal = 10},
+        .powerOutput = 100},
 
     FactoryKind{.type = FactoryType::SyntheticRubberRefinery, .output = Good::Rubber,
         .cost = 14000, .materials = {.Steel = 30, .Machine_parts = 15, .Cement = 40},
@@ -261,10 +273,11 @@ static_assert([] {
 }());
 
 /*A factory is named after the one good it turns out, so every row has to
-produce the good it claims to.*/
+produce the good it claims to. A kind that turns out no good has to make power
+instead, and to be named by hand.*/
 static_assert([] {
     for(const auto& kind : FactoryKinds) {
-        if(kind.produces[kind.output] <= 0) return false;
+        if(kind.output ? kind.produces[*kind.output] <= 0 : kind.powerOutput <= 0 || kind.name.empty()) return false;
     }
     return true;
 }());
@@ -276,7 +289,8 @@ inline constexpr const FactoryKind& KindOf(FactoryType type) {
 
 // What a kind of factory is called, which is the name of its icon too
 inline constexpr std::string_view NameOf(FactoryType type) {
-    return InfoOf(KindOf(type).output).name;
+    const FactoryKind& kind = KindOf(type);
+    return kind.output ? InfoOf(*kind.output).name : kind.name;
 }
 
 /*A day of work is measured in thousandths, so that a factory short of an input
@@ -310,10 +324,15 @@ public:
     /*The most of a day's work the stockpile can pay for, in thousandths, given
     how far each good's supply went round. A factory runs at the rate of its
     scarcest input, so this is the smallest share among the goods it needs.
-
-    This is where the per-state power supply will come in: a factory will run at
-    the lesser of what its inputs and what its state's grid allow.*/
+    Power is not a good and is not counted here: the country scales this by
+    the state's power share once it knows how far the state's supply goes.*/
     int Throughput(const PerGood<int>& share) const;
+
+    // What the factory draws from its state's grid at a throughput, in thousandths
+    long long PowerDraw(int throughput) const;
+
+    // What it adds to its state's grid at a throughput, in thousandths
+    long long PowerOutput(int throughput) const;
 
     // What this factory is, and every number that follows from it
     const FactoryKind& Kind;

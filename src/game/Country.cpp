@@ -4,6 +4,7 @@
 #include "game/PopNeeds.h"
 
 #include <algorithm>
+#include <array>
 #include <cstdint>
 #include <utility>
 
@@ -79,11 +80,31 @@ void Country::RunFactories() {
     them.*/
     budget.factories = 0;
     for(auto* state : ownedStates) {
-        for(auto& factory : state->State_Factories) {
-            if(factory != nullptr) {
-                const int throughput = factory->Throughput(share);
-                factory->Work(throughput, Stock, technology);
-                budget.factories += factory->RunningCost(throughput);
+        /*Power cannot be carried out of the state that makes it, so each
+        state balances its own grid. The power stations run on their coal like
+        any factory, and what they make goes round the work the other
+        factories could find inputs for, in the same thousandths.*/
+        std::array<int, 4> throughput{};
+        state->PowerSupply = 0;
+        state->PowerDemand = 0;
+        for(std::size_t i = 0; i < state->State_Factories.size(); ++i) {
+            if(const auto& factory = state->State_Factories[i]) {
+                throughput[i] = factory->Throughput(share);
+                state->PowerSupply += factory->PowerOutput(throughput[i]);
+                state->PowerDemand += factory->PowerDraw(throughput[i]);
+            }
+        }
+
+        const long long power = state->PowerDemand > 0 ? std::min<long long>(FullThroughput, FullThroughput * state->PowerSupply / state->PowerDemand) : FullThroughput;
+
+        for(std::size_t i = 0; i < state->State_Factories.size(); ++i) {
+            if(auto& factory = state->State_Factories[i]) {
+                // A factory that draws no power is not held back by a lack of it
+                if(factory->Kind.powerDraw > 0) {
+                    throughput[i] = int(throughput[i] * power / FullThroughput);
+                }
+                factory->Work(throughput[i], Stock, technology);
+                budget.factories += factory->RunningCost(throughput[i]);
             }
         }
     }
