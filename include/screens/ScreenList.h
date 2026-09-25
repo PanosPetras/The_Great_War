@@ -322,6 +322,10 @@ public:
     void OnHealthcareChanged();
 
     Country* Player;
+
+private:
+    // How well the people are living, for the label that says so
+    std::string StandardOfLivingText() const;
 };
 
 class OpenFactoryScreen : public Screen {

@@ -43,6 +43,10 @@ public:
     /*Everyone living in the states the country holds today. Worked out on
     asking, because every state's population grows every day.*/
     int GetPopulation() const;
+
+    /*How well the people lived yesterday, in thousandths: the weighted share
+    of their needs the warehouses could meet. See PopNeeds.h.*/
+    int GetSatisfaction() const;
     bool GetIfIsPlayer() const;
 
 private:
@@ -70,6 +74,14 @@ private:
     factory that cannot have all of its inputs runs at the rate of its
     scarcest one instead of stopping, and nothing can be spent twice.*/
     void RunFactories();
+
+    /*The people take what they need out of whatever the factories left, and
+    how much of it there was becomes the day's satisfaction. They come after
+    the factories: industry has first call on the warehouses, so a country
+    that builds too hungrily will feel it at home.*/
+    void FeedPopulation();
+
+    int satisfaction;
 
 public:
     Policy policy;

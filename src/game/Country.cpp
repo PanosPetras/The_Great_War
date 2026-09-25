@@ -1,6 +1,7 @@
 #include "game/Country.h"
 #include "game/AI.h"
 #include "game/Diplomacy.h"
+#include "game/PopNeeds.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -12,6 +13,7 @@ Country::Country(std::string Tag, std::string Name, const Stockpile& sp, long lo
 
 Country::Country(std::string Tag, std::string Name, const Stockpile& sp, long long money, Color rgb) : color{rgb}, name{std::move(Name)}, tag{std::move(Tag)}, Stock{sp}, Money{money} {
     isPlayer = false;
+    satisfaction = SubsistenceSatisfaction;
 
     policy = {.TaxRate = 50, .Healthcare = 30};
 }
@@ -35,11 +37,14 @@ void Country::CedeState(State* state, Country& to) {
 void Country::Tick() {
     /*The states first, so that what came out of the ground today is in the
     warehouses before the factories are given the chance to eat it.*/
+    const int growth = GrowthPermille(satisfaction);
     for(auto* state : ownedStates) {
-        state->Tick(policy.TaxRate, policy.Healthcare, technology);
+        state->Tick(policy.TaxRate, policy.Healthcare, technology, growth);
     }
 
     RunFactories();
+
+    FeedPopulation();
 
     const int population = GetPopulation();
     Money += int(population * 0.004 * policy.TaxRate / 100);
@@ -81,6 +86,27 @@ void Country::RunFactories() {
     }
 }
 
+void Country::FeedPopulation() {
+    const long long population = GetPopulation();
+
+    int met = 0;
+    int weights = 0;
+    for(const auto& [good, perTenMillion, weight] : PopNeeds) {
+        /*Rounded up, so that a small country still wants a car now and then
+        rather than having every need it is too small for count as met.*/
+        const long long wanted = (population * perTenMillion + TenMillion - 1) / TenMillion;
+        if(wanted <= 0) continue;
+
+        const long long taken = std::min<long long>(std::max(0, Stock[good]), wanted);
+        Stock[good] -= int(taken);
+
+        met += int(FullThroughput * taken / wanted) * weight;
+        weights += weight;
+    }
+
+    satisfaction = weights > 0 ? met / weights : FullThroughput;
+}
+
 void Country::AddRequest(Request request) {
     requests.push_back(request);
 }
@@ -99,6 +125,10 @@ int Country::GetPopulation() const {
         population += state->State_Population;
     }
     return int(population);
+}
+
+int Country::GetSatisfaction() const {
+    return satisfaction;
 }
 
 bool Country::GetIfIsPlayer() const {
