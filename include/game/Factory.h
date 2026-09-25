@@ -243,7 +243,7 @@ inline constexpr std::array FactoryKinds{
     /*Coal in, power out, and nothing to put in a warehouse. Every factory
     draws power, so this has to be buildable from money alone, alongside the
     four that everything else is built out of.*/
-    FactoryKind{.type = FactoryType::PowerStation, .name = "power station",
+    FactoryKind{.type = FactoryType::PowerStation, .output = std::nullopt, .name = "power station",
         .cost = 15000,
         .daysToProduce = 1, .consumes = {.Coal = 10},
         .powerOutput = 100},
