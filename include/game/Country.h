@@ -3,21 +3,11 @@
 
 #include "game/State.h"
 #include "game/Stockpile.h"
+#include "game/Technology.h"
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 class Request;
-
-class Technology {
-public:
-    float FactoryInput;
-    float FactoryThroughput;
-    float FactoryOutput;
-    float MineralOutput;
-    float FarmOutput;
-    float WoodOutput;
-};
 
 class Policy {
 public:
@@ -37,6 +27,10 @@ public:
     void AddState(State* state);
     void RemoveState(State* state);
 
+    /*Hands one of this country's states to another: its output, its factories
+    and its people stop counting here and start counting there.*/
+    void CedeState(State* state, Country& to);
+
     // This is the representing the pass of a single day
     void Tick();
 
@@ -45,6 +39,9 @@ public:
     // Accessor Functions
     std::string GetName() const;
     std::string GetTag() const;
+
+    /*Everyone living in the states the country holds today. Worked out on
+    asking, because every state's population grows every day.*/
     int GetPopulation() const;
     bool GetIfIsPlayer() const;
 
@@ -55,12 +52,11 @@ private:
     bool isPlayer;
     std::string name;
     std::string tag;
-    int population;
 
-    int stateCount;
-    std::unordered_map<std::string, State*> ownedStates;
-
-    Technology technology;
+    /*The states the country controls, whose output lands in its warehouses and
+    whose factories it runs. A list rather than a map by name: seven pairs of
+    states share a name, and a map kept only one of each.*/
+    std::vector<State*> ownedStates;
 
     // The diplomatic requests that a country receives
     std::vector<Request> requests;
@@ -77,6 +73,8 @@ private:
 
 public:
     Policy policy;
+
+    Technology technology;
 
     // A country's currently stockpiled resources
     Stockpile Stock;

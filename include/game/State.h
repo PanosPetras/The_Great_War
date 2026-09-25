@@ -5,6 +5,7 @@
 #include "core/Coordinate.h"
 #include "game/Factory.h"
 #include "game/Stockpile.h"
+#include "game/Technology.h"
 
 #include <array>
 #include <memory>
@@ -18,10 +19,13 @@ public:
     /*A single day for the state itself: the population grows and the mines,
     fields and forests hand over the day's output. The state's factories are
     not run from here - they draw on a stockpile that is shared with every
-    other factory in the country, so the country runs them all together.*/
-    void Tick(int TaxRate, int HealthCare);
+    other factory in the country, so the country runs them all together.
+    What comes out of the ground is scaled by the controller's technology.*/
+    void Tick(int TaxRate, int HealthCare, const Technology& tech);
 
-    void ChangeController(std::string NewOwner, Stockpile* NewStock);
+    /*Points the state's output at its new controller. Only half of a change of
+    hands: Country::CedeState is the whole of it, and the one to call.*/
+    void ChangeController(std::string NewController, Stockpile* NewStock);
 
     int AddFactory(std::unique_ptr<Factory>& NewFactory);
 

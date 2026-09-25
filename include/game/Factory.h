@@ -4,6 +4,7 @@
 #pragma once
 #include "game/PerGood.h"
 #include "game/Stockpile.h"
+#include "game/Technology.h"
 
 #include <array>
 #include <cstddef>
@@ -288,11 +289,13 @@ public:
 
     /*A day of work at some fraction of full throughput, in thousandths. The
     inputs are taken out of the stockpile, the batch is handed over on the day
-    it is finished.*/
-    void Work(int throughput, Stockpile& stock);
+    it is finished. The owner's technology decides how far a day's work goes.*/
+    void Work(int throughput, Stockpile& stock, const Technology& tech);
 
-    // What a full day of work would eat, which is what the day's demand is built from
-    Stockpile Consumption() const;
+    /*What a full day of work would eat, which is what the day's demand is
+    built from. Better throughput gets more done in a day, so it eats more too;
+    better input technology makes the same work eat less.*/
+    Stockpile Consumption(const Technology& tech) const;
 
     /*The most of a day's work the stockpile can pay for, in thousandths, given
     how far each good's supply went round. A factory runs at the rate of its
