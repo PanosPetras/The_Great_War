@@ -21,6 +21,7 @@
 
 struct Color;
 class Country;
+class Market;
 class PlayerController;
 
 class MainMenu : public Screen {
@@ -303,12 +304,12 @@ private:
 
 class TradeScreen : public Screen {
 public:
-    TradeScreen(MainWindow& mw, Country* Pl);
+    TradeScreen(MainWindow& mw, const Market& market);
 
     void Update(Uint32 elapsedMs) override;
 
 private:
-    Country* Player;
+    const Market& WorldMarket;
 };
 
 class EconomyScreen : public Screen {

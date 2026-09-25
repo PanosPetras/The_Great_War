@@ -31,8 +31,8 @@ void EconomyScreen::Update(Uint32) {
 std::string EconomyScreen::BudgetText() const {
     const Budget& budget = Player->GetBudget();
     const long long net = budget.Net();
-    return "Yesterday: " + std::string(net >= 0 ? "+" : "") + std::to_string(net) + "  (taxes +" + std::to_string(budget.taxes) + ", healthcare -" + std::to_string(budget.healthcare) + ", factories -" +
-           std::to_string(budget.factories) + ')';
+    return "Yesterday: " + std::string(net >= 0 ? "+" : "") + std::to_string(net) + "  (taxes +" + std::to_string(budget.taxes) + ", exports +" + std::to_string(budget.exports) + ", healthcare -" +
+           std::to_string(budget.healthcare) + ", factories -" + std::to_string(budget.factories) + ", imports -" + std::to_string(budget.imports) + ')';
 }
 
 std::string EconomyScreen::StandardOfLivingText() const {

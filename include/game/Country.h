@@ -7,16 +7,31 @@
 #include <string>
 #include <vector>
 
+class Market;
 class Request;
 
 /*Where yesterday's money came from and went, for the screens that show it.
-Every figure is positive; the country's balance moved by taxes minus the rest.*/
+Every figure is positive; the country's balance moved by what came in, taxes
+and exports, minus what went out.*/
 struct Budget {
     long long taxes = 0;
     long long healthcare = 0;
     long long factories = 0;
 
-    long long Net() const { return taxes - healthcare - factories; }
+    // What the world market paid for what the country sold, and was paid for what it bought
+    long long exports = 0;
+    long long imports = 0;
+
+    long long Net() const { return taxes + exports - healthcare - factories - imports; }
+};
+
+// What a country puts to the world market in a day
+struct TradeOrders {
+    // What it will sell, in units
+    Stockpile offers{};
+
+    // What it will buy, in units
+    Stockpile bids{};
 };
 
 class Policy {
@@ -60,6 +75,25 @@ public:
 
     // Yesterday's income and spending
     const Budget& GetBudget() const;
+
+    /*What the country got through yesterday: what its factories would eat at
+    full throughput plus what its people need. Trade keeps a reserve of it.*/
+    const Stockpile& GetDailyNeed() const;
+
+    /*What the country will sell and buy today on this market. It keeps a
+    month of its daily need, and enough to raise a couple of factories, and
+    offers a tenth of anything above that; it bids for a tenth of whatever it
+    is short of a month's need, and spends no more than a tenth of its
+    treasury in a day doing it, or today's taxes if those are more. Arms are
+    never sold off automatically.
+
+    It never bids for more than the whole world offered yesterday. Otherwise a
+    poor country's purse is shared out over goods nobody makes, and the grain it
+    could have bought is scaled down to nothing.*/
+    TradeOrders PlaceOrders(const Market& market) const;
+
+    // Hands over what the market cleared of one good, at the price it cleared at
+    void Settle(Good good, int sold, int bought, double price);
     bool GetIfIsPlayer() const;
 
 private:
@@ -106,6 +140,8 @@ private:
     int satisfaction;
 
     Budget budget;
+
+    Stockpile dailyNeed;
 
 public:
     Policy policy;
