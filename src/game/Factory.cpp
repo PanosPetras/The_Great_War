@@ -4,6 +4,11 @@
 
 Factory::Factory(FactoryType type) : Kind{KindOf(type)}, size{1}, progress{0} {}
 
+long long Factory::RunningCost(int throughput) const {
+    const long long cost = static_cast<long long>(Kind.cost) * size;
+    return cost / UpkeepDivisor + cost * std::max(0, throughput) / (WagesDivisor * FullThroughput);
+}
+
 Stockpile Factory::Consumption(const Technology& tech) const {
     return ScaleByPermille(Kind.consumes * size, tech.FactoryInput * tech.FactoryThroughput / 1000);
 }

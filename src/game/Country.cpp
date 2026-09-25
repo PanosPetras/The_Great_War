@@ -46,9 +46,9 @@ void Country::Tick() {
 
     FeedPopulation();
 
-    const int population = GetPopulation();
-    Money += int(population * 0.004 * policy.TaxRate / 100);
-    Money -= int(population * 0.001 * policy.Healthcare / 100);
+    CollectTaxes();
+
+    Money += budget.Net();
 
     HandleDiplomaticRequests();
 }
@@ -77,13 +77,25 @@ void Country::RunFactories() {
     taken, so it makes no difference which state is reached first - which
     matters, because the states are walked in whatever order the list holds
     them.*/
+    budget.factories = 0;
     for(auto* state : ownedStates) {
         for(auto& factory : state->State_Factories) {
             if(factory != nullptr) {
-                factory->Work(factory->Throughput(share), Stock, technology);
+                const int throughput = factory->Throughput(share);
+                factory->Work(throughput, Stock, technology);
+                budget.factories += factory->RunningCost(throughput);
             }
         }
     }
+}
+
+void Country::CollectTaxes() {
+    const long long population = GetPopulation();
+
+    /*A thousandth of a unit a head at full tax from people living at 40%,
+    two and a half times that from people who want for nothing.*/
+    budget.taxes = population * 25 * policy.TaxRate * satisfaction / (100 * 10'000'000LL);
+    budget.healthcare = population * policy.Healthcare / (100 * 1000LL);
 }
 
 void Country::FeedPopulation() {
@@ -129,6 +141,10 @@ int Country::GetPopulation() const {
 
 int Country::GetSatisfaction() const {
     return satisfaction;
+}
+
+const Budget& Country::GetBudget() const {
+    return budget;
 }
 
 bool Country::GetIfIsPlayer() const {
