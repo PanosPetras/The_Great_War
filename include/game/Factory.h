@@ -283,9 +283,19 @@ inline constexpr std::string_view NameOf(FactoryType type) {
 can run at a fraction of a day rather than having to stall or run whole.*/
 inline constexpr int FullThroughput = 1000;
 
+/*What a factory costs to keep, each day, as a fraction of what it cost to
+build. Upkeep is owed whether it works or not - the roof leaks either way - and
+wages scale with how much of the day's work it found inputs for, so an idle
+factory is cheap but not free.*/
+inline constexpr int UpkeepDivisor = 1000;
+inline constexpr int WagesDivisor = 500;
+
 class Factory {
 public:
     explicit Factory(FactoryType type);
+
+    // What a day cost in money, at a throughput given in thousandths
+    long long RunningCost(int throughput) const;
 
     /*A day of work at some fraction of full throughput, in thousandths. The
     inputs are taken out of the stockpile, the batch is handed over on the day
