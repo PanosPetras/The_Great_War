@@ -82,6 +82,7 @@ add_executable(The_Great_War
     include/game/PlayerController.h
     include/game/State.h
     include/game/Stockpile.h
+    include/game/Technology.h
 
     include/screens/CreditScreen.h
     include/screens/Screen.h

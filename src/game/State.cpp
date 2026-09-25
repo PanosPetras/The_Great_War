@@ -1,5 +1,7 @@
 #include "game/State.h"
 
+#include <utility>
+
 State::State(std::string name, int ID, std::string owner, std::string controller, int pop, Coordinate Coords, Color C, const std::array<short int, RawGoodCount>& Res, Stockpile* stock) :
     State_Name{std::move(name)}, State_ID{ID}, State_Owner{std::move(owner)}, State_Controller{std::move(controller)}, State_Population{static_cast<double>(pop)}, State_Coords{Coords}, color{C} {
     // These variables might change during the game's flow
@@ -20,16 +22,16 @@ State::State(std::string name, int ID, std::string owner, std::string controller
     TargetStockpile = stock;
 }
 
-void State::Tick(int TaxRate, int HealthCare) {
+void State::Tick(int TaxRate, int HealthCare, const Technology& tech) {
     State_Population += State_Population * (0.00005479452 / (1.0 + TaxRate / 200.0)) * (1 + HealthCare / 160.0);
 
     for(std::size_t good = 0; good < Resources.size(); ++good) {
-        (*TargetStockpile)[Good(good)] += Resources[good];
+        (*TargetStockpile)[Good(good)] += ScaleByPermille(Resources[good], tech.ExtractionOf(Good(good)));
     }
 }
 
-void State::ChangeController(std::string NewOwner, Stockpile* NewStock) {
-    State_Controller = NewOwner;
+void State::ChangeController(std::string NewController, Stockpile* NewStock) {
+    State_Controller = std::move(NewController);
     TargetStockpile = NewStock;
 }
 
