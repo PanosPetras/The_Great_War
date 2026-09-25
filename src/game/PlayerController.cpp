@@ -265,4 +265,7 @@ void PlayerController::Tick() {
     for(auto& i : Countries) {
         i->Tick();
     }
+
+    // Trade comes last, when every country knows what its day left it with
+    WorldMarket.Clear(Countries);
 }

@@ -1,12 +1,34 @@
 #include "game/Country.h"
 #include "game/AI.h"
 #include "game/Diplomacy.h"
+#include "game/Market.h"
 #include "game/PopNeeds.h"
 
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <cstdint>
 #include <utility>
+
+namespace {
+// How many days of need a country holds back from the market
+constexpr long long ReserveDays = 30;
+
+// The fraction of a surplus or a shortfall traded in a day, and of the treasury spent on it
+constexpr long long TradeFraction = 10;
+
+/*Enough of every building material to raise the dearest factory twice, so the
+market never sells off what a country has been saving up to build with.*/
+constexpr Stockpile BuildReserve = [] {
+    Stockpile reserve{};
+    for(const auto& kind : FactoryKinds) {
+        for(auto good : AllGoods) {
+            reserve[good] = std::max(reserve[good], 2 * kind.materials[good]);
+        }
+    }
+    return reserve;
+}();
+} // namespace
 
 Country::Country(std::string Tag, std::string Name, const Stockpile& sp, long long money, bool isPlayerControlled, Color rgb) : Country(Tag, Name, sp, money, rgb) {
     isPlayer = isPlayerControlled;
@@ -38,6 +60,10 @@ void Country::CedeState(State* state, Country& to) {
 void Country::Tick() {
     /*The states first, so that what came out of the ground today is in the
     warehouses before the factories are given the chance to eat it.*/
+    // The market settles after every country has had its day, and books its own lines
+    budget.exports = 0;
+    budget.imports = 0;
+
     const int growth = GrowthPermille(satisfaction);
     for(auto* state : ownedStates) {
         state->Tick(policy.TaxRate, policy.Healthcare, technology, growth);
@@ -49,7 +75,7 @@ void Country::Tick() {
 
     CollectTaxes();
 
-    Money += budget.Net();
+    Money += budget.taxes - budget.healthcare - budget.factories;
 
     HandleDiplomaticRequests();
 }
@@ -64,6 +90,8 @@ void Country::RunFactories() {
             }
         }
     }
+
+    dailyNeed = wanted;
 
     /*How far each good goes round everything that wants it, in thousandths.
     A good there is enough of, and a good nobody asked for, both come out at
@@ -130,6 +158,8 @@ void Country::FeedPopulation() {
         const long long wanted = (population * perTenMillion + TenMillion - 1) / TenMillion;
         if(wanted <= 0) continue;
 
+        dailyNeed[good] += int(wanted);
+
         const long long taken = std::min<long long>(std::max(0, Stock[good]), wanted);
         Stock[good] -= int(taken);
 
@@ -138,6 +168,48 @@ void Country::FeedPopulation() {
     }
 
     satisfaction = weights > 0 ? met / weights : FullThroughput;
+}
+
+TradeOrders Country::PlaceOrders(const Market& market) const {
+    TradeOrders orders;
+
+    double cost = 0;
+    for(auto good : AllGoods) {
+        if(InfoOf(good).category == GoodCategory::Military) continue;
+
+        const long long held = Stock[good];
+        const long long needed = dailyNeed[good] * ReserveDays;
+        const long long kept = needed + BuildReserve[good];
+
+        if(held > kept) {
+            orders.offers[good] = int((held - kept) / TradeFraction);
+        } else if(held < needed) {
+            orders.bids[good] = int(std::min<long long>(market.Supply[good], (needed - held + TradeFraction - 1) / TradeFraction));
+            cost += orders.bids[good] * market.Price[good];
+        }
+    }
+
+    /*Everything is asked for in the same proportion when the money will not
+    stretch. A country can always spend what it took in today, even in debt:
+    a hungry country taxes little, and if it could not buy bread with what it
+    does collect it would never eat its way back.*/
+    if(const double purse = double(std::max(std::max(0LL, Money) / TradeFraction, budget.taxes)); cost > purse) {
+        for(auto good : AllGoods) {
+            orders.bids[good] = int(orders.bids[good] * purse / cost);
+        }
+    }
+
+    return orders;
+}
+
+void Country::Settle(Good good, int sold, int bought, double price) {
+    Stock[good] += bought - sold;
+
+    const long long earned = std::llround(sold * price);
+    const long long paid = std::llround(bought * price);
+    Money += earned - paid;
+    budget.exports += earned;
+    budget.imports += paid;
 }
 
 void Country::AddRequest(Request request) {
@@ -166,6 +238,10 @@ int Country::GetSatisfaction() const {
 
 const Budget& Country::GetBudget() const {
     return budget;
+}
+
+const Stockpile& Country::GetDailyNeed() const {
+    return dailyNeed;
 }
 
 bool Country::GetIfIsPlayer() const {

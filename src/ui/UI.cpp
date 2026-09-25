@@ -126,5 +126,5 @@ void UI::OpenEconomyScreen() {
 }
 
 void UI::OpenTradeScreen() {
-    ChangeScreenFunc(std::make_unique<TradeScreen>(*main_window, Player()), "TradeScreen");
+    ChangeScreenFunc(std::make_unique<TradeScreen>(*main_window, PCref->WorldMarket), "TradeScreen");
 }
