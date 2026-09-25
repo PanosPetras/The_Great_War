@@ -32,6 +32,9 @@ constexpr int NumberGap = 10;
 
 // The population is counted under the grid, in line with its first column
 constexpr int PopulationTop = 270;
+
+// The state's power balance sits in the blank band above the factories
+constexpr int PowerTop = 330;
 } // namespace
 
 StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, std::string controller, PlayerController* PC, const std::array<short int, RawGoodCount>& res, int pop, std::string Factories[4],
@@ -51,6 +54,10 @@ StatePreview::StatePreview(MainWindow& mw, unsigned id, std::string StateName, s
     }
 
     AddLabel<Label>(mw, std::to_string(pop).c_str(), FontSize::Heading, Width * NumberLeft / ArtWidth, Height * (PanelTop + PopulationTop) / ArtHeight);
+
+    const State& state = PC->StatesArr[id];
+    const std::string power = "Power: " + std::to_string(state.PowerSupply) + " made, " + std::to_string(state.PowerDemand) + " drawn";
+    AddLabel<Label>(mw, power, FontSize::Caption, Width * GridLeft / ArtWidth, Height * (PanelTop + PowerTop) / ArtHeight);
 
     AddImage<Image>(mw, "Backgrounds/StatePreview.png", 0, int(Height * .55), int(Width * 0.2), int(Height * 0.45));
 

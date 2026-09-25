@@ -54,6 +54,12 @@ public:
     // This is the state's factories
     std::array<std::unique_ptr<Factory>, 4> State_Factories = {nullptr, nullptr, nullptr, nullptr};
 
+    /*Yesterday's power: what the state's stations made, and what its factories
+    would have drawn for the work their inputs allowed. Written by the country
+    that runs the factories, read by the screens.*/
+    long long PowerSupply = 0;
+    long long PowerDemand = 0;
+
     Stockpile* TargetStockpile;
 
     // This is the state's unique color

@@ -36,6 +36,16 @@ std::string MaterialsText(const Stockpile& materials) {
     return text.empty() ? "no materials" : text;
 }
 
+/*What a kind does to the state's grid, beside what the grid is doing already,
+so that the player can see a factory will sit idle before paying for it.*/
+std::string PowerText(const FactoryKind& kind, const State& state) {
+    const std::string grid = " (state makes " + std::to_string(state.PowerSupply) + ", draws " + std::to_string(state.PowerDemand) + ")";
+
+    if(kind.powerOutput > 0) return "Power: makes " + std::to_string(kind.powerOutput) + grid;
+    if(kind.powerDraw > 0) return "Power: draws " + std::to_string(kind.powerDraw) + grid;
+    return "Power: none";
+}
+
 // Whether a stockpile covers every good a build needs
 bool Covers(const Stockpile& stock, const Stockpile& materials) {
     for(auto good : AllGoods) {
@@ -56,6 +66,7 @@ OpenFactoryScreen::OpenFactoryScreen(MainWindow& mw, unsigned id, PlayerControll
     AddLabel<Label>(mw, lbl1txt.c_str(), FontSize::Heading, int(Width * 0.55), int(Height * 0.35));
     AddLabel<Label>(mw, "Factory cost: -", FontSize::Heading, int(Width * 0.55), int(Height * 0.41));
     AddLabel<Label>(mw, "Materials: -", FontSize::Heading, int(Width * 0.55), int(Height * 0.47));
+    AddLabel<Label>(mw, "Power: -", FontSize::Heading, int(Width * 0.55), int(Height * 0.53));
 
     AddDrawable<Button>(mw, int(Width * 0.32), int(Height * 0.7), int(Width * 0.08), int(Height * 0.06), "Back", FontSize::Heading, [this] { Close(); });
     AddDrawable<Button>(mw, int(Width * 0.59), int(Height * 0.7), int(Width * 0.1), int(Height * 0.06), "Confirm", FontSize::Heading, [this] { BuildFactory(); });
@@ -78,6 +89,7 @@ void OpenFactoryScreen::SelectFactory(FactoryType kind) {
     const FactoryKind& picked = KindOf(kind);
     LabelArr[2]->ChangeText(("Factory cost: " + std::to_string(picked.cost)).c_str());
     LabelArr[3]->ChangeText(("Materials: " + MaterialsText(picked.materials)).c_str());
+    LabelArr[4]->ChangeText(PowerText(picked, PCref->StatesArr[index]));
 }
 
 void OpenFactoryScreen::BuildFactory() {

@@ -25,6 +25,14 @@ int Factory::Throughput(const PerGood<int>& share) const {
     return throughput;
 }
 
+long long Factory::PowerDraw(int throughput) const {
+    return static_cast<long long>(Kind.powerDraw) * size * throughput / FullThroughput;
+}
+
+long long Factory::PowerOutput(int throughput) const {
+    return static_cast<long long>(Kind.powerOutput) * size * throughput / FullThroughput;
+}
+
 void Factory::Work(int throughput, Stockpile& stock, const Technology& tech) {
     if(throughput <= 0) return;
 
