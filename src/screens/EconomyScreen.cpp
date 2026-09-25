@@ -14,6 +14,7 @@ EconomyScreen::EconomyScreen(MainWindow& mw, Country* Pl) : Screen(mw), Player(P
     AddLabel<Label>(*main_window, "Healthcare: " + std::to_string(Pl->policy.Healthcare) + '%', FontSize::Heading, int(0.4 * Width), int(0.2 * Height));
     AddLabel<Label>(*main_window, "Education: " + std::to_string(Pl->policy.TaxRate) + '%', FontSize::Heading, int(0.4 * Width), int(0.4 * Height));
     AddLabel<Label>(*main_window, "Research: " + std::to_string(Pl->policy.TaxRate) + '%', FontSize::Heading, int(0.4 * Width), int(0.6 * Height));
+    AddLabel<Label>(*main_window, StandardOfLivingText(), FontSize::Heading, int(0.1 * Width), int(0.4 * Height));
 
     AddDrawable<Slider>(*main_window, int(0.11 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.TaxRate, [this] { OnTaxRateChanged(); });
     AddDrawable<Slider>(*main_window, int(0.41 * Width), int(0.25 * Height), int(0.1 * Width), int(0.035 * Height), 0, 100, Pl->policy.Healthcare, [this] { OnHealthcareChanged(); });
@@ -22,6 +23,11 @@ EconomyScreen::EconomyScreen(MainWindow& mw, Country* Pl) : Screen(mw), Player(P
 void EconomyScreen::Update(Uint32) {
     std::string l1 = "Current Funds: " + std::to_string(Player->Money);
     LabelArr[0]->ChangeText(l1.c_str());
+    LabelArr[5]->ChangeText(StandardOfLivingText());
+}
+
+std::string EconomyScreen::StandardOfLivingText() const {
+    return "Standard of living: " + std::to_string(Player->GetSatisfaction() / 10) + '%';
 }
 
 void EconomyScreen::OnTaxRateChanged() {

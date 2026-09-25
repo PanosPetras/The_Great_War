@@ -20,8 +20,10 @@ public:
     fields and forests hand over the day's output. The state's factories are
     not run from here - they draw on a stockpile that is shared with every
     other factory in the country, so the country runs them all together.
-    What comes out of the ground is scaled by the controller's technology.*/
-    void Tick(int TaxRate, int HealthCare, const Technology& tech);
+    What comes out of the ground is scaled by the controller's technology, and
+    the population grows at the rate policy sets scaled by growthPermille,
+    which is how well the country is living.*/
+    void Tick(int TaxRate, int HealthCare, const Technology& tech, int growthPermille);
 
     /*Points the state's output at its new controller. Only half of a change of
     hands: Country::CedeState is the whole of it, and the one to call.*/
@@ -61,9 +63,5 @@ public:
     out of the ground, and those are the leading run of the enum, so the array
     stops there rather than carrying a slot for every manufactured good.*/
     std::array<short int, RawGoodCount> Resources{};
-
-    /*What the state's population wants each day to keep a good standard of
-    living. A population runs to millions, which a short int cannot hold.*/
-    PerGood<int> Pop_needs;
 };
 #endif

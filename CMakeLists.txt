@@ -80,6 +80,7 @@ add_executable(The_Great_War
     include/game/Market.h
     include/game/PerGood.h
     include/game/PlayerController.h
+    include/game/PopNeeds.h
     include/game/State.h
     include/game/Stockpile.h
     include/game/Technology.h
