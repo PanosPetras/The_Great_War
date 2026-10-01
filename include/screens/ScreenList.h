@@ -326,6 +326,9 @@ public:
 private:
     // How well the people are living, for the label that says so
     std::string StandardOfLivingText() const;
+
+    // What came in and went out yesterday, for the label that says so
+    std::string BudgetText() const;
 };
 
 class OpenFactoryScreen : public Screen {

@@ -9,6 +9,16 @@
 
 class Request;
 
+/*Where yesterday's money came from and went, for the screens that show it.
+Every figure is positive; the country's balance moved by taxes minus the rest.*/
+struct Budget {
+    long long taxes = 0;
+    long long healthcare = 0;
+    long long factories = 0;
+
+    long long Net() const { return taxes - healthcare - factories; }
+};
+
 class Policy {
 public:
     int TaxRate;
@@ -47,6 +57,9 @@ public:
     /*How well the people lived yesterday, in thousandths: the weighted share
     of their needs the warehouses could meet. See PopNeeds.h.*/
     int GetSatisfaction() const;
+
+    // Yesterday's income and spending
+    const Budget& GetBudget() const;
     bool GetIfIsPlayer() const;
 
 private:
@@ -75,6 +88,11 @@ private:
     scarcest one instead of stopping, and nothing can be spent twice.*/
     void RunFactories();
 
+    /*Collects the day's taxes and pays for healthcare. What people can be
+    taxed for depends on how well they live, so a country that makes nothing
+    its people want collects little from them.*/
+    void CollectTaxes();
+
     /*The people take what they need out of whatever the factories left, and
     how much of it there was becomes the day's satisfaction. They come after
     the factories: industry has first call on the warehouses, so a country
@@ -82,6 +100,8 @@ private:
     void FeedPopulation();
 
     int satisfaction;
+
+    Budget budget;
 
 public:
     Policy policy;
